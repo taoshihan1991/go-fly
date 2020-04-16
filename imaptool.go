@@ -1,17 +1,52 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
+	"os"
+	"strconv"
+	"strings"
 
-	"github.com/emersion/go-imap/client"
 	"github.com/emersion/go-imap"
+	"github.com/emersion/go-imap/client"
+)
+
+//全局变量
+//imap服务地址,邮箱,密码
+var (
+	server, email, password string
 )
 
 func main() {
+	//获取参数中的数据
+	flag.StringVar(&server, "server", "", "imap服务地址(包含端口)")
+	flag.StringVar(&email, "email", "", "邮箱名")
+	flag.StringVar(&password, "password", "", "密码")
+	flag.Parse()
+	if flag.NFlag() < 3 {
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
+	if server == "" || email == "" || password == "" {
+		log.Fatal("服务器地址,用户名,密码,参数必填")
+	}
 	log.Println("正在连接服务器...")
-
+	//支持加密和非加密端口
+	serverSlice := strings.Split(server, ":")
+	uri := serverSlice[0]
+	port, _ := strconv.Atoi(serverSlice[1])
+	if port != 993 && port != 143 {
+		log.Fatal("服务器地址端口号错误",port)
+	}
 	// 连接到服务器
-	c, err := client.DialTLS("imap.sina.net:993", nil)
+	var c *client.Client
+	var err error
+	if port == 993 {
+		c, err = client.DialTLS(fmt.Sprintf("%s:%d", uri, port), nil)
+	} else {
+		c, err = client.Dial(fmt.Sprintf("%s:%d", uri, port))
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -21,7 +56,7 @@ func main() {
 	defer c.Logout()
 
 	// 登陆
-	if err := c.Login("shihan2@appdev.sinanet.com", "tsh_xxx"); err != nil {
+	if err := c.Login(email, password); err != nil {
 		log.Fatal(err)
 	}
 	log.Println("成功登陆")
@@ -29,7 +64,7 @@ func main() {
 	// 列邮箱
 	mailboxes := make(chan *imap.MailboxInfo, 10)
 	done := make(chan error, 1)
-	go func () {
+	go func() {
 		done <- c.List("", "*", mailboxes)
 	}()
 
@@ -47,7 +82,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("INBOX的Flags标记:", mbox.Flags)
+	log.Println("INBOX的邮件个数:", mbox.Messages)
 
 	// 获取最新的 4 封信
 	from := uint32(1)
