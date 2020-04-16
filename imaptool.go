@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -16,9 +17,11 @@ import (
 //imap服务地址,邮箱,密码
 var (
 	server, email, password string
+	folders                 map[int]string
 )
 
 func main() {
+
 	//获取参数中的数据
 	flag.StringVar(&server, "server", "", "imap服务地址(包含端口)")
 	flag.StringVar(&email, "email", "", "邮箱名")
@@ -33,11 +36,14 @@ func main() {
 	}
 	log.Println("正在连接服务器...")
 	//支持加密和非加密端口
+	if !strings.Contains(server, ":") {
+		log.Fatal("服务器地址端口号错误:", server)
+	}
 	serverSlice := strings.Split(server, ":")
 	uri := serverSlice[0]
 	port, _ := strconv.Atoi(serverSlice[1])
 	if port != 993 && port != 143 {
-		log.Fatal("服务器地址端口号错误",port)
+		log.Fatal("服务器地址端口号错误:", port)
 	}
 	// 连接到服务器
 	var c *client.Client
@@ -67,29 +73,42 @@ func main() {
 	go func() {
 		done <- c.List("", "*", mailboxes)
 	}()
-
-	log.Println("邮箱:")
+	// 存储邮件夹
+	folders = make(map[int]string)
+	i := 1
 	for m := range mailboxes {
-		log.Println("* " + m.Name)
+		log.Println("* ", i, m.Name)
+		folders[i] = m.Name
+		i++
 	}
+	log.Println("输入邮件夹序号:")
+	inLine := readLineFromInput()
+	folderNum, _ := strconv.Atoi(inLine)
+	currentFolder := folders[folderNum]
 
 	if err := <-done; err != nil {
 		log.Fatal(err)
 	}
 
-	// Select INBOX
-	mbox, err := c.Select("INBOX", false)
+	// Select 邮件夹
+	mbox, err := c.Select(currentFolder, false)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("INBOX的邮件个数:", mbox.Messages)
+	log.Printf("%s的邮件个数:%d \r\n", currentFolder, mbox.Messages)
 
-	// 获取最新的 4 封信
+	// 获取最新的信
+	log.Println("读取最新的几封信:")
+	inLine = readLineFromInput()
+	maxNum, _ := strconv.Atoi(inLine)
+
 	from := uint32(1)
 	to := mbox.Messages
-	if mbox.Messages > 3 {
+	if mbox.Messages >= uint32(maxNum) {
 		// 我们在这使用无符号整型, 这是再获取from的id
-		from = mbox.Messages - 3
+		from = mbox.Messages - uint32(maxNum) + 1
+	} else {
+		log.Fatal("超出了邮件封数!")
 	}
 	seqset := new(imap.SeqSet)
 	seqset.AddRange(from, to)
@@ -100,7 +119,7 @@ func main() {
 		done <- c.Fetch(seqset, []imap.FetchItem{imap.FetchEnvelope}, messages)
 	}()
 
-	log.Println("最新的 4 封信:")
+	log.Printf("最新的 %d 封信:", maxNum)
 	for msg := range messages {
 		log.Println("* " + msg.Envelope.Subject)
 	}
@@ -110,4 +129,15 @@ func main() {
 	}
 
 	log.Println("结束!")
+}
+
+//从输入中读取一行
+func readLineFromInput() string {
+	str := ""
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		str = scanner.Text() // Println will add back the final '\n'
+		break
+	}
+	return str
 }
