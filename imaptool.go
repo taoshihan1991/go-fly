@@ -98,15 +98,21 @@ func main() {
 	log.Printf("%s的邮件个数:%d \r\n", currentFolder, mbox.Messages)
 
 	// 获取最新的信
-	log.Println("读取最新的几封信:")
+	log.Println("读取最新的几封信(all全部):")
 	inLine = readLineFromInput()
-	maxNum, _ := strconv.Atoi(inLine)
+	var maxNum uint32
+	if inLine=="all"{
+		maxNum=mbox.Messages
+	}else {
+		tempNum, _ := strconv.Atoi(inLine)
+		maxNum=uint32(tempNum)
+	}
 
 	from := uint32(1)
 	to := mbox.Messages
-	if mbox.Messages >= uint32(maxNum) {
+	if mbox.Messages >= maxNum {
 		// 我们在这使用无符号整型, 这是再获取from的id
-		from = mbox.Messages - uint32(maxNum) + 1
+		from = mbox.Messages - maxNum + 1
 	} else {
 		log.Fatal("超出了邮件封数!")
 	}
@@ -121,7 +127,8 @@ func main() {
 
 	log.Printf("最新的 %d 封信:", maxNum)
 	for msg := range messages {
-		log.Println("* " + msg.Envelope.Subject)
+		log.Printf("* %d:%s\n" ,to,msg.Envelope.Subject)
+		to--
 	}
 
 	if err := <-done; err != nil {
