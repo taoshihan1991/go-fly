@@ -101,15 +101,21 @@ func main() {
 	log.Printf("%s的邮件个数:%d \r\n", currentFolder, mbox.Messages)
 
 	// 获取最新的信
-	log.Println("读取最新的几封信:")
+	log.Println("读取最新的几封信(all全部):")
 	inLine = readLineFromInput()
-	maxNum, _ := strconv.Atoi(inLine)
+	var maxNum uint32
+	if inLine=="all"{
+		maxNum=mbox.Messages
+	}else {
+		tempNum, _ := strconv.Atoi(inLine)
+		maxNum=uint32(tempNum)
+	}
 
 	from := uint32(1)
 	to := mbox.Messages
-	if mbox.Messages >= uint32(maxNum) {
+	if mbox.Messages >= maxNum {
 		// 我们在这使用无符号整型, 这是再获取from的id
-		from = mbox.Messages - uint32(maxNum) + 1
+		from = mbox.Messages - maxNum + 1
 	} else {
 		log.Fatal("超出了邮件封数!")
 	}
@@ -124,7 +130,8 @@ func main() {
 
 	log.Printf("最新的 %d 封信:", maxNum)
 	for msg := range messages {
-		log.Printf("* %d :%s\n" ,msg.Uid,msg.Envelope.Subject)
+		log.Printf("* %d:%s\n" ,to,msg.Envelope.Subject)
+		to--
 	}
 
 	if err := <-done; err != nil {
@@ -147,18 +154,18 @@ func main() {
 	}()
 	msg := <-messages
 	if msg == nil {
-		log.Fatal("Server didn't returned message")
+		log.Fatal("服务器没有返回信息")
 	}
 	r := msg.GetBody(&section)
 	if r == nil {
-		log.Fatal("Server didn't returned message body")
+		log.Fatal("服务器没有返回 message body")
 	}
 	mr, err := mail.CreateReader(r)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print some info about the message
+	//打印信息
 	header := mr.Header
 	if date, err := header.Date(); err == nil {
 		log.Println("Date:", date)
@@ -185,11 +192,11 @@ func main() {
 		case *mail.InlineHeader:
 			// This is the message's text (can be plain-text or HTML)
 			b, _ := ioutil.ReadAll(p.Body)
-			log.Println("Got text: %v", string(b))
+			log.Printf("Got text: %s\n", string(b))
 		case *mail.AttachmentHeader:
 			// This is an attachment
 			filename, _ := h.Filename()
-			log.Println("Got attachment: %v", filename)
+			log.Printf("Got attachment: %s\n", filename)
 		}
 	}
 	log.Println("结束!")
