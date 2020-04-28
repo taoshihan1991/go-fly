@@ -104,11 +104,11 @@ func main() {
 	log.Println("读取最新的几封信(all全部):")
 	inLine = readLineFromInput()
 	var maxNum uint32
-	if inLine=="all"{
-		maxNum=mbox.Messages
-	}else {
+	if inLine == "all" {
+		maxNum = mbox.Messages
+	} else {
 		tempNum, _ := strconv.Atoi(inLine)
-		maxNum=uint32(tempNum)
+		maxNum = uint32(tempNum)
 	}
 
 	from := uint32(1)
@@ -130,7 +130,7 @@ func main() {
 
 	log.Printf("最新的 %d 封信:", maxNum)
 	for msg := range messages {
-		log.Printf("* %d:%s\n" ,to,msg.Envelope.Subject)
+		log.Printf("* %d:%s\n", to, msg.Envelope.Subject)
 		to--
 	}
 

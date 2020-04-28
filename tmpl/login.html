@@ -73,15 +73,15 @@
 
 </head>
 <body class="text-center">
-<form class="form-signin">
+<form class="form-signin" action="/login" method="post">
     <h1 class="h3 mb-3 font-weight-normal">邮箱IMAP工具</h1>
     <label for="inputServer" class="sr-only">IMAP服务器:</label>
-    <input type="email" id="inputServer" class="form-control" placeholder="IMAP服务器" required autofocus>
+    <input type="text" name="server" id="inputServer" class="form-control" placeholder="IMAP服务器" required autofocus>
     <label for="inputEmail" class="sr-only">邮箱地址:</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="邮箱地址" required autofocus>
+    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="邮箱地址" required autofocus>
     <label for="inputPassword" class="sr-only">密码:</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
-
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="密码" required>
+    {{if .}}<div><code>{{.}}</code></div>{{end}}
     <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 </form>
