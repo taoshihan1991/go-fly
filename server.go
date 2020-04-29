@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func main() {
@@ -20,11 +21,19 @@ func main() {
 //输出首页
 func index(w http.ResponseWriter, r *http.Request) {
 	auth := getCookie(r, "auth")
-	if auth == "" {
+	if !strings.Contains(auth,"|"){
 		http.Redirect(w, r, "/login", 302)
+	}else {
+		authStrings := strings.Split(auth, "|")
+		res := tools.CheckEmailPassword(authStrings[0], authStrings[1], authStrings[2])
+		if res{
+			folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2])
+			t, _ := template.ParseFiles("./tmpl/index.html")
+			t.Execute(w, folders)
+		}else{
+			http.Redirect(w, r, "/login", 302)
+		}
 	}
-	t, _ := template.ParseFiles("./tmpl/index.html")
-	t.Execute(w, nil)
 }
 
 //登陆界面
@@ -40,7 +49,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 			t, _ := template.ParseFiles("./tmpl/login.html")
 			t.Execute(w, errStr)
 		} else {
-			auth := fmt.Sprintf("%s:%s:%s", server, email, password)
+			auth := fmt.Sprintf("%s|%s|%s", server, email, password)
 			cookie := http.Cookie{
 				Name:  "auth",
 				Value: auth,

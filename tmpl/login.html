@@ -81,7 +81,7 @@
     <input type="email" id="inputEmail" name="email" class="form-control" placeholder="邮箱地址" required autofocus>
     <label for="inputPassword" class="sr-only">密码:</label>
     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="密码" required>
-    {{if .}}<div><code>{{.}}</code></div>{{end}}
+    {{if .}}<div class="alert alert-danger" role="alert">{{.}}</div>{{end}}
     <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 </form>

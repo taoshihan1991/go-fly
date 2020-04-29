@@ -1,1 +1,34 @@
-<h1>hello</h1>
+<!doctype html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>邮箱IMAP-首页</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            {{ range $key, $value := .}}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{$value}}
+                <span class="badge badge-primary badge-pill">14</span>
+            </li>
+            {{end}}}
+        </ul>
+    </div>
+    <div class="col-md-8">.col-md-8</div>
+</div>
+</body>
+</html>
+
