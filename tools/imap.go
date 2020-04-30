@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
+	"log"
 	"strconv"
 	"strings"
+	"sync"
 )
 //验证邮箱密码
 func CheckEmailPassword(server string, email string, password string) bool {
@@ -55,7 +57,7 @@ func connect(server string, email string, password string)*client.Client{
 	return c
 }
 //获取邮件夹
-func GetFolders(server string, email string, password string)[]string{
+func GetFolders(server string, email string, password string)map[string]int{
 	var c *client.Client
 	//defer c.Logout()
 	c=connect(server,email,password)
@@ -69,9 +71,23 @@ func GetFolders(server string, email string, password string)[]string{
 		done <- c.List("", "*", mailboxes)
 	}()
 	// 存储邮件夹
-	var folders []string
+	var folders =make(map[string]int)
 	for m := range mailboxes {
-		folders=append(folders,m.Name)
+		folders[m.Name]=1
 	}
+	var wg sync.WaitGroup
+	var k string
+	for k,_=range folders{
+		//wg.Add(1)
+		//go func(k string) {
+			mbox, _ := c.Select(k, false)
+			if mbox!=nil{
+				log.Println(k,mbox.Messages)
+				folders[k]=int(mbox.Messages)
+			}
+			//wg.Done()
+		//}(k)
+	}
+	wg.Wait()
 	return folders
 }
