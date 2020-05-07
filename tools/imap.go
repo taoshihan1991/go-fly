@@ -7,7 +7,6 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	"sync"
 )
 //验证邮箱密码
 func CheckEmailPassword(server string, email string, password string) bool {
@@ -73,21 +72,45 @@ func GetFolders(server string, email string, password string)map[string]int{
 	// 存储邮件夹
 	var folders =make(map[string]int)
 	for m := range mailboxes {
-		folders[m.Name]=1
+		folders[m.Name]=0
 	}
-	var wg sync.WaitGroup
-	var k string
-	for k,_=range folders{
-		//wg.Add(1)
-		//go func(k string) {
-			mbox, _ := c.Select(k, false)
-			if mbox!=nil{
-				log.Println(k,mbox.Messages)
-				folders[k]=int(mbox.Messages)
+	for m,_ := range folders {
+		if m=="INBOX" {
+			mbox, _ := c.Select(m, true)
+			if mbox != nil {
+				folders[m] = int(mbox.Messages)
 			}
-			//wg.Done()
-		//}(k)
+			break
+		}
 	}
-	wg.Wait()
+	log.Println(folders)
 	return folders
+}
+//获取邮件夹邮件
+func GetFolderMail(server string, email string, password string,folder string,pagesize int)[]string{
+	var c *client.Client
+	//defer c.Logout()
+	c=connect(server,email,password)
+	if c==nil{
+		return nil
+	}
+
+	mbox, _ := c.Select(folder, true)
+	to := mbox.Messages
+	from := to-uint32(pagesize)
+
+	seqset := new(imap.SeqSet)
+	seqset.AddRange(from, to)
+
+	messages := make(chan *imap.Message, pagesize)
+	done := make(chan error, 1)
+	go func() {
+		done <- c.Fetch(seqset, []imap.FetchItem{imap.FetchEnvelope}, messages)
+	}()
+	log.Println(111)
+	var res []string
+	for msg := range messages {
+		res=append(res,msg.Envelope.Subject)
+	}
+	return res
 }

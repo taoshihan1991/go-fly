@@ -9,31 +9,54 @@ import (
 	"strings"
 )
 
+type IndexData struct {
+	Folders map[string]int
+	Mails   interface{}
+}
+
 func main() {
 	log.Println("listen on 8080...")
 	http.HandleFunc("/", index)
+	http.HandleFunc("/list", list)
 	//登陆界面
 	http.HandleFunc("/login", login)
 	//监听端口
 	http.ListenAndServe(":8080", nil)
 }
 
-//输出首页
+//首页跳转
 func index(w http.ResponseWriter, r *http.Request) {
+	if r.URL.RequestURI()=="/favicon.ico"{
+		return
+	}
+
 	auth := getCookie(r, "auth")
-	if !strings.Contains(auth,"|"){
+	if !strings.Contains(auth, "|") {
 		http.Redirect(w, r, "/login", 302)
-	}else {
+	} else {
 		authStrings := strings.Split(auth, "|")
 		res := tools.CheckEmailPassword(authStrings[0], authStrings[1], authStrings[2])
-		if res{
-			folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2])
-			t, _ := template.ParseFiles("./tmpl/index.html")
-			t.Execute(w, folders)
-		}else{
+		if res {
+			http.Redirect(w, r, "/list", 302)
+		} else {
 			http.Redirect(w, r, "/login", 302)
 		}
 	}
+}
+
+//输出列表
+func list(w http.ResponseWriter, r *http.Request) {
+
+	auth := getCookie(r, "auth")
+	authStrings := strings.Split(auth, "|")
+
+	render := new(IndexData)
+	folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2])
+	render.Folders = folders
+	mails := tools.GetFolderMail(authStrings[0], authStrings[1], authStrings[2], "INBOX", 10)
+	render.Mails = mails
+	t, _ := template.ParseFiles("./tmpl/index.html")
+	t.Execute(w, render)
 }
 
 //登陆界面
