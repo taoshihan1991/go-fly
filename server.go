@@ -6,7 +6,9 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
+	"sync"
 )
 
 type IndexData struct {
@@ -46,15 +48,37 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 //输出列表
 func list(w http.ResponseWriter, r *http.Request) {
+	values:=r.URL.Query()
+	fid:=""
+	currentPage:=0
+	if len(values["fid"])!=0{
+		fid=values["fid"][0]
+	}
+	if len(values["page"])!=0{
+		currentPage,_=strconv.Atoi(values["page"][0])
+	}
+	if fid==""{
+		fid="INBOX"
+	}
+	if currentPage==0{
+		currentPage=1
+	}
+
 
 	auth := getCookie(r, "auth")
 	authStrings := strings.Split(auth, "|")
 
 	render := new(IndexData)
-	folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2])
-	render.Folders = folders
-	mails := tools.GetFolderMail(authStrings[0], authStrings[1], authStrings[2], "INBOX", 10)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		folders :=tools.GetFolders(authStrings[0], authStrings[1], authStrings[2])
+		render.Folders = folders
+	}()
+	mails := tools.GetFolderMail(authStrings[0], authStrings[1], authStrings[2], fid,currentPage, 20)
 	render.Mails = mails
+	wg.Wait()
 	t, _ := template.ParseFiles("./tmpl/index.html")
 	t.Execute(w, render)
 }

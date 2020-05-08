@@ -86,8 +86,9 @@ func GetFolders(server string, email string, password string)map[string]int{
 	log.Println(folders)
 	return folders
 }
+
 //获取邮件夹邮件
-func GetFolderMail(server string, email string, password string,folder string,pagesize int)[]string{
+func GetFolderMail(server string, email string, password string,folder string,currentPage int,pagesize int)[]string{
 	var c *client.Client
 	//defer c.Logout()
 	c=connect(server,email,password)
@@ -96,7 +97,7 @@ func GetFolderMail(server string, email string, password string,folder string,pa
 	}
 
 	mbox, _ := c.Select(folder, true)
-	to := mbox.Messages
+	to := mbox.Messages-uint32((currentPage-1)*pagesize)
 	from := to-uint32(pagesize)
 
 	seqset := new(imap.SeqSet)
@@ -107,10 +108,11 @@ func GetFolderMail(server string, email string, password string,folder string,pa
 	go func() {
 		done <- c.Fetch(seqset, []imap.FetchItem{imap.FetchEnvelope}, messages)
 	}()
-	log.Println(111)
 	var res []string
 	for msg := range messages {
 		res=append(res,msg.Envelope.Subject)
 	}
+	log.Println(res)
+
 	return res
 }

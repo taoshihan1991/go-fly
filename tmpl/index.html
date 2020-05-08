@@ -24,7 +24,7 @@
             <li class="list-group-item active">邮件夹</li>
             {{ range $key, $value := .Folders}}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{$key}}
+                <a href="/list?fid={{$key}}">{{$key}}</a>
                 {{if ne $value 0 }}<span class="badge badge-primary badge-pill">{{$value}}</span>{{end}}
             </li>
             {{end}}
