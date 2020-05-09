@@ -1,10 +1,15 @@
 package tools
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/axgle/mahonia"
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
+	"io"
+	"io/ioutil"
 	"log"
+	"mime"
 	"strconv"
 	"strings"
 )
@@ -109,10 +114,58 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 		done <- c.Fetch(seqset, []imap.FetchItem{imap.FetchEnvelope}, messages)
 	}()
 	var res []string
-	for msg := range messages {
-		res=append(res,msg.Envelope.Subject)
-	}
-	log.Println(res)
 
+	dec :=new(mime.WordDecoder)
+	dec.CharsetReader= func(charset string, input io.Reader) (io.Reader, error) {
+		switch charset {
+		case "gb2312":
+			content, err := ioutil.ReadAll(input)
+			if err != nil {
+				return nil, err
+			}
+			//ret:=bytes.NewReader(content)
+			//ret:=transform.NewReader(bytes.NewReader(content), simplifiedchinese.HZGB2312.NewEncoder())
+
+			utf8str:=ConvertToStr(string(content),"gbk","utf-8")
+			t:=bytes.NewReader([]byte(utf8str))
+			//ret:=utf8.DecodeRune(t)
+			//log.Println(ret)
+			return t, nil
+		case "gb18030":
+			content, err := ioutil.ReadAll(input)
+			if err != nil {
+				return nil, err
+			}
+			//ret:=bytes.NewReader(content)
+			//ret:=transform.NewReader(bytes.NewReader(content), simplifiedchinese.HZGB2312.NewEncoder())
+
+			utf8str:=ConvertToStr(string(content),"gbk","utf-8")
+			t:=bytes.NewReader([]byte(utf8str))
+			//ret:=utf8.DecodeRune(t)
+			//log.Println(ret)
+			return t, nil
+		default:
+			return nil,fmt.Errorf("unhandle charset:%s",charset)
+
+		}
+	}
+	for msg:=range messages{
+		ret,err:=dec.Decode(msg.Envelope.Subject)
+		if err!=nil{
+			ret,_=dec.DecodeHeader(msg.Envelope.Subject)
+		}
+		res=append(res,ret)
+	}
+
+	log.Println(res)
 	return res
+}
+// 任意编码转特定编码
+func ConvertToStr(src string, srcCode string, tagCode string) string {
+	srcCoder := mahonia.NewDecoder(srcCode)
+	srcResult := srcCoder.ConvertString(src)
+	tagCoder := mahonia.NewDecoder(tagCode)
+	_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
+	result := string(cdata)
+	return result
 }

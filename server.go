@@ -16,7 +16,7 @@ type IndexData struct {
 	Mails   interface{}
 	CurrentPage int
 	NextPage,PrePage string
-	NumPages map[string]template.HTML
+	NumPages template.HTML
 
 }
 const PAGE_SIZE=20
@@ -84,34 +84,37 @@ func list(w http.ResponseWriter, r *http.Request) {
 	render.NextPage = fmt.Sprintf("/list?fid=%s&page=%d",fid,currentPage+1)
 
 	var wg sync.WaitGroup
-	wg.Add(1)
+	wg.Add(2)
 	go func() {
 		defer wg.Done()
 		folders :=tools.GetFolders(authStrings[0], authStrings[1], authStrings[2],fid)
 		render.Folders = folders
-	}()
-	mails := tools.GetFolderMail(authStrings[0], authStrings[1], authStrings[2], fid,currentPage, PAGE_SIZE)
-	render.Mails = mails
-	wg.Wait()
-
-	PageCount:=(render.Folders[fid]/PAGE_SIZE)
-	log.Println(PageCount)
-	numPages:=""
-	start:=currentPage-5
-	if start <=0 {
-		start=1
-	}
-	end:=start+11
-
-	for i:=start;i<end;i++{
-		active:=""
-		if currentPage==i{
-			active="active"
+		PageCount:= render.Folders[fid]/PAGE_SIZE
+		log.Println(PageCount)
+		numPages:=""
+		start:=currentPage-5
+		if start <=0 {
+			start=1
 		}
-		numPages+=fmt.Sprintf("<li class=\"page-item %s\"><a class=\"page-link\" href=\"/list?fid=%s&page=%d\">%d</a></li>",active,fid,i,i)
-	}
-	render.NumPages=map[string]template.HTML{"NumPages": template.HTML(numPages)}
+		end:=start+11
+
+		for i:=start;i<end;i++{
+			active:=""
+			if currentPage==i{
+				active="active"
+			}
+			numPages+=fmt.Sprintf("<li class=\"page-item %s\"><a class=\"page-link\" href=\"/list?fid=%s&page=%d\">%d</a></li>",active,fid,i,i)
+		}
+		render.NumPages=template.HTML(numPages)
+	}()
+	go func() {
+		defer wg.Done()
+		mails := tools.GetFolderMail(authStrings[0], authStrings[1], authStrings[2], fid, currentPage, PAGE_SIZE)
+		render.Mails = mails
+	}()
+
 	t, _ := template.ParseFiles("./tmpl/index.html")
+	wg.Wait()
 	t.Execute(w, render)
 }
 
