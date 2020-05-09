@@ -39,6 +39,17 @@
                 </li>
             {{end}}
         </ul>
+        <nav aria-label="..." style="margin:20px 0;">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="{{.PrePage}}">Previous</a>
+                </li>
+                {{.NumPages.NumPages}}
+                <li class="page-item">
+                    <a class="page-link" href="{{.NextPage}}">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 </body>

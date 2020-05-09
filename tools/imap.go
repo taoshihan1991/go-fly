@@ -56,7 +56,7 @@ func connect(server string, email string, password string)*client.Client{
 	return c
 }
 //获取邮件夹
-func GetFolders(server string, email string, password string)map[string]int{
+func GetFolders(server string, email string, password string,folder string)map[string]int{
 	var c *client.Client
 	//defer c.Logout()
 	c=connect(server,email,password)
@@ -75,7 +75,7 @@ func GetFolders(server string, email string, password string)map[string]int{
 		folders[m.Name]=0
 	}
 	for m,_ := range folders {
-		if m=="INBOX" {
+		if m==folder {
 			mbox, _ := c.Select(m, true)
 			if mbox != nil {
 				folders[m] = int(mbox.Messages)
