@@ -15,6 +15,7 @@ type IndexData struct {
 	Folders map[string]int
 	Mails   interface{}
 	CurrentPage int
+	Fid string
 	NextPage,PrePage string
 	NumPages template.HTML
 
@@ -89,6 +90,8 @@ func list(w http.ResponseWriter, r *http.Request) {
 		defer wg.Done()
 		folders :=tools.GetFolders(authStrings[0], authStrings[1], authStrings[2],fid)
 		render.Folders = folders
+		render.Fid = fid
+
 		PageCount:= render.Folders[fid]/PAGE_SIZE
 		log.Println(PageCount)
 		numPages:=""

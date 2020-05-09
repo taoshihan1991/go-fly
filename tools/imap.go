@@ -104,6 +104,9 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 	mbox, _ := c.Select(folder, true)
 	to := mbox.Messages-uint32((currentPage-1)*pagesize)
 	from := to-uint32(pagesize)
+	if to <=uint32(pagesize){
+		from=1
+	}
 
 	seqset := new(imap.SeqSet)
 	seqset.AddRange(from, to)
@@ -119,6 +122,19 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 	dec.CharsetReader= func(charset string, input io.Reader) (io.Reader, error) {
 		switch charset {
 		case "gb2312":
+			content, err := ioutil.ReadAll(input)
+			if err != nil {
+				return nil, err
+			}
+			//ret:=bytes.NewReader(content)
+			//ret:=transform.NewReader(bytes.NewReader(content), simplifiedchinese.HZGB2312.NewEncoder())
+
+			utf8str:=ConvertToStr(string(content),"gbk","utf-8")
+			t:=bytes.NewReader([]byte(utf8str))
+			//ret:=utf8.DecodeRune(t)
+			//log.Println(ret)
+			return t, nil
+		case "gbk":
 			content, err := ioutil.ReadAll(input)
 			if err != nil {
 				return nil, err
@@ -150,6 +166,7 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 		}
 	}
 	for msg:=range messages{
+
 		ret,err:=dec.Decode(msg.Envelope.Subject)
 		if err!=nil{
 			ret,_=dec.DecodeHeader(msg.Envelope.Subject)
