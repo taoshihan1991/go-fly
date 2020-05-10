@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
 	"html/template"
 	"log"
@@ -116,9 +117,8 @@ func list(w http.ResponseWriter, r *http.Request) {
 		render.Mails = mails
 	}()
 
-	t, _ := template.ParseFiles("./tmpl/index.html")
 	wg.Wait()
-	t.Execute(w, render)
+	tmpl.RenderList(w,render)
 }
 
 //登陆界面
@@ -131,8 +131,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		res := tools.CheckEmailPassword(server, email, password)
 		if !res {
 			errStr = "连接或验证失败"
-			t, _ := template.ParseFiles("./tmpl/login.html")
-			t.Execute(w, errStr)
+			tmpl.RenderLogin(w,errStr)
 		} else {
 			auth := fmt.Sprintf("%s|%s|%s", server, email, password)
 			cookie := http.Cookie{
@@ -143,8 +142,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", 302)
 		}
 	} else {
-		t, _ := template.ParseFiles("./tmpl/login.html")
-		t.Execute(w, nil)
+		tmpl.RenderLogin(w,errStr)
 	}
 }
 

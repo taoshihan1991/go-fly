@@ -1,3 +1,12 @@
+package tmpl
+
+import (
+	"html/template"
+	"net/http"
+)
+
+func RenderList(w http.ResponseWriter,render interface{}){
+	const html = `
 <!doctype html>
 <html lang="cn">
 <head>
@@ -54,4 +63,7 @@
 </div>
 </body>
 </html>
-
+`
+	t, _ := template.New("list").Parse(html)
+	t.Execute(w, render)
+}
