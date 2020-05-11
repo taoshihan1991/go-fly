@@ -93,7 +93,7 @@ func GetFolders(server string, email string, password string,folder string)map[s
 }
 
 //获取邮件夹邮件
-func GetFolderMail(server string, email string, password string,folder string,currentPage int,pagesize int)[]string{
+func GetFolderMail(server string, email string, password string,folder string,currentPage int,pagesize int)[]*MailItem{
 	var c *client.Client
 	//defer c.Logout()
 	c=connect(server,email,password)
@@ -116,7 +116,7 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 	go func() {
 		done <- c.Fetch(seqset, []imap.FetchItem{imap.FetchEnvelope}, messages)
 	}()
-	var res []string
+	var mailPagelist=new(MailPageList)
 
 	dec :=new(mime.WordDecoder)
 	dec.CharsetReader= func(charset string, input io.Reader) (io.Reader, error) {
@@ -171,11 +171,15 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 		if err!=nil{
 			ret,_=dec.DecodeHeader(msg.Envelope.Subject)
 		}
-		res=append(res,ret)
-	}
+		var mailitem =new(MailItem)
+		log.Println(msg.SeqNum)
 
-	log.Println(res)
-	return res
+		mailitem.Subject=ret
+		mailitem.Id=msg.SeqNum
+		mailitem.Fid=folder
+		mailPagelist.MailItems=append(mailPagelist.MailItems,mailitem)
+	}
+	return mailPagelist.MailItems
 }
 // 任意编码转特定编码
 func ConvertToStr(src string, srcCode string, tagCode string) string {

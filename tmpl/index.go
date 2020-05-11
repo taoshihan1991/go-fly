@@ -42,9 +42,11 @@ func RenderList(w http.ResponseWriter,render interface{}){
     <div class="col-md-9">
         <ul class="list-group">
             <li class="list-group-item active">[{{.Fid}}]邮件列表</li>
-            {{ range $key, $value := .Mails}}
+            {{ range .MailPagelist}}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{$value}}{{if eq $value "" }}无标题{{end}}
+					<a href="/view?fid={{.Fid}}&id={{.Id}}">
+                    {{.Subject}}{{if eq .Subject "" }}无标题{{end}}
+					</a>
                 </li>
             {{end}}
         </ul>

@@ -12,15 +12,7 @@ import (
 	"sync"
 )
 
-type IndexData struct {
-	Folders map[string]int
-	Mails   interface{}
-	CurrentPage int
-	Fid string
-	NextPage,PrePage string
-	NumPages template.HTML
 
-}
 const PAGE_SIZE=20
 func main() {
 	log.Println("listen on 8080...")
@@ -74,7 +66,7 @@ func list(w http.ResponseWriter, r *http.Request) {
 	auth := getCookie(r, "auth")
 	authStrings := strings.Split(auth, "|")
 
-	render := new(IndexData)
+	render := new(tools.IndexData)
 	render.CurrentPage = currentPage
 	var prePage int
 	if(currentPage-1) <=0 {
@@ -93,14 +85,16 @@ func list(w http.ResponseWriter, r *http.Request) {
 		render.Folders = folders
 		render.Fid = fid
 
-		PageCount:= render.Folders[fid]/PAGE_SIZE
-		log.Println(PageCount)
+		//PageCount:= render.Folders[fid]/PAGE_SIZE
 		numPages:=""
 		start:=currentPage-5
 		if start <=0 {
 			start=1
 		}
 		end:=start+11
+		//if end>=PageCount{
+		//	end=PageCount
+		//}
 
 		for i:=start;i<end;i++{
 			active:=""
@@ -114,7 +108,7 @@ func list(w http.ResponseWriter, r *http.Request) {
 	go func() {
 		defer wg.Done()
 		mails := tools.GetFolderMail(authStrings[0], authStrings[1], authStrings[2], fid, currentPage, PAGE_SIZE)
-		render.Mails = mails
+		render.MailPagelist = mails
 	}()
 
 	wg.Wait()
