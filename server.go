@@ -20,6 +20,8 @@ func main() {
 	http.HandleFunc("/list", list)
 	//登陆界面
 	http.HandleFunc("/login", login)
+	//详情界面
+	http.HandleFunc("/view", view)
 	//监听端口
 	http.ListenAndServe(":8080", nil)
 }
@@ -115,6 +117,30 @@ func list(w http.ResponseWriter, r *http.Request) {
 	tmpl.RenderList(w,render)
 }
 
+//详情界面
+func view(w http.ResponseWriter, r *http.Request) {
+	values:=r.URL.Query()
+	fid:=""
+	if len(values["fid"])!=0{
+		fid=values["fid"][0]
+	}else{
+		fid="INBOX"
+	}
+
+	auth := getCookie(r, "auth")
+	authStrings := strings.Split(auth, "|")
+	var wg sync.WaitGroup
+	var render=new(tools.ViewData)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		folders :=tools.GetFolders(authStrings[0], authStrings[1], authStrings[2],fid)
+		render.Folders = folders
+		render.Fid = fid
+	}()
+	wg.Wait()
+	tmpl.RenderView(w,render)
+}
 //登陆界面
 func login(w http.ResponseWriter, r *http.Request) {
 	email := r.PostFormValue("email")
@@ -139,7 +165,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 		tmpl.RenderLogin(w,errStr)
 	}
 }
-
 //加密cookie
 //func authCookie(){
 //

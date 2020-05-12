@@ -12,6 +12,10 @@ type IndexData struct {
 	NumPages template.HTML
 
 }
+type ViewData struct {
+	Folders map[string]int
+	Fid string
+}
 type MailItem struct{
 	Subject string
 	Id uint32
