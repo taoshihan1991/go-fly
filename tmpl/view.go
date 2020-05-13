@@ -43,19 +43,27 @@ func RenderView(w http.ResponseWriter,render interface{}){
 		<table class="table table-hover">
 		  <tbody>
 			<tr>
-			  <th scope="row">主题:</th>
-			  <td>Mark</td>
+			  <th scope="row">日期:</th>
+			  <td>{{.Date}}</td>
 			</tr>
 			<tr>
 			  <th scope="row">发件人:</th>
-			  <td>Mark</td>
+			  <td>{{.From}}</td>
+			</tr>
+			<tr>
+			  <th scope="row">收件人:</th>
+			  <td>{{.To}}</td>
+			</tr>
+			<tr>
+			  <th scope="row">主题:</th>
+			  <td>{{.Subject}}</td>
 			</tr>
 			<tr>
 			  <th scope="row">内容:</th>
 			  <td>Jacob</td>
 			</tr>
 		  </tbody>
-		</table>      
+		</table>    
     </div>
 </div>
 </body>

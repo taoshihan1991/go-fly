@@ -14,12 +14,16 @@ type IndexData struct {
 }
 type ViewData struct {
 	Folders map[string]int
-	Fid string
+	MailItem
 }
 type MailItem struct{
 	Subject string
-	Id uint32
 	Fid string
+	Id uint32
+	From string
+	To string
+	Body string
+	Date string
 }
 type MailPageList struct{
 	MailItems []*MailItem

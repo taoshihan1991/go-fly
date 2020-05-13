@@ -126,6 +126,13 @@ func view(w http.ResponseWriter, r *http.Request) {
 	}else{
 		fid="INBOX"
 	}
+	var id uint32
+	if len(values["id"])!=0{
+		i,_:=strconv.Atoi(values["id"][0])
+		id=uint32(i)
+	}else{
+		id=0
+	}
 
 	auth := getCookie(r, "auth")
 	authStrings := strings.Split(auth, "|")
@@ -137,6 +144,15 @@ func view(w http.ResponseWriter, r *http.Request) {
 		folders :=tools.GetFolders(authStrings[0], authStrings[1], authStrings[2],fid)
 		render.Folders = folders
 		render.Fid = fid
+	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		mail:=tools.GetMessage(authStrings[0], authStrings[1], authStrings[2],fid,id)
+		render.From=mail.From
+		render.To=mail.To
+		render.Subject=mail.Subject
+		render.Date=mail.Date
 	}()
 	wg.Wait()
 	tmpl.RenderView(w,render)

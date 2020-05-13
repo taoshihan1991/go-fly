@@ -6,6 +6,7 @@ import (
 	"github.com/axgle/mahonia"
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
+	"github.com/emersion/go-message/mail"
 	"io"
 	"io/ioutil"
 	"log"
@@ -118,6 +119,126 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 	}()
 	var mailPagelist=new(MailPageList)
 
+	dec :=GetDecoder()
+
+	for msg:=range messages{
+
+		ret,err:=dec.Decode(msg.Envelope.Subject)
+		if err!=nil{
+			ret,_=dec.DecodeHeader(msg.Envelope.Subject)
+		}
+		var mailitem =new(MailItem)
+		log.Println(msg.SeqNum)
+
+		mailitem.Subject=ret
+		mailitem.Id=msg.SeqNum
+		mailitem.Fid=folder
+		mailPagelist.MailItems=append(mailPagelist.MailItems,mailitem)
+	}
+	return mailPagelist.MailItems
+}
+func GetMessage(server string, email string, password string,folder string,id uint32)*MailItem{
+	var c *client.Client
+	//defer c.Logout()
+	c=connect(server,email,password)
+	if c==nil{
+		//return nil
+	}
+	// Select INBOX
+	mbox, err := c.Select(folder, false)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Get the last message
+	if mbox.Messages == 0 {
+		log.Fatal("No message in mailbox")
+	}
+	seqSet := new(imap.SeqSet)
+	seqSet.AddNum(id)
+
+	// Get the whole message body
+	var section imap.BodySectionName
+	items := []imap.FetchItem{section.FetchItem()}
+
+	messages := make(chan *imap.Message, 1)
+	go func() {
+		if err := c.Fetch(seqSet, items, messages); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	msg := <-messages
+	if msg == nil {
+		log.Fatal("Server didn't returned message")
+	}
+
+	r := msg.GetBody(&section)
+	if r == nil {
+		log.Fatal("Server didn't returned message body")
+	}
+
+	// Create a new mail reader
+	mr, err := mail.CreateReader(r)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var mailitem =new(MailItem)
+
+	// Print some info about the message
+	header := mr.Header
+	if date, err := header.Date(); err == nil {
+		log.Println("Date:", date)
+		mailitem.Date=date.String()
+	}
+	var f string
+	if from, err := header.AddressList("From"); err == nil {
+		log.Println("From:", from)
+		for _,address:=range from{
+			f+=" "+address.String()
+		}
+	}
+	mailitem.From=f
+	var t string
+	if to, err := header.AddressList("To"); err == nil {
+		log.Println("To:", to)
+		for _,address:=range to{
+			t+=" "+address.String()
+		}
+	}
+	mailitem.To=t
+	dec:=GetDecoder()
+	if subject, err := header.Subject(); err == nil {
+		s,err:=dec.Decode(subject)
+		if err!=nil{
+			s,_=dec.DecodeHeader(subject)
+		}
+		log.Println("Subject:", s)
+		mailitem.Subject=s
+	}
+	// Process each message's part
+	//for {
+	//	p, err := mr.NextPart()
+	//	if err == io.EOF {
+	//		break
+	//	} else if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//
+	//	switch h := p.Header.(type) {
+	//	case *mail.InlineHeader:
+	//		// This is the message's text (can be plain-text or HTML)
+	//		b, _ := ioutil.ReadAll(p.Body)
+	//		log.Println("Got text: ", string(b))
+	//	case *mail.AttachmentHeader:
+	//		// This is an attachment
+	//		filename, _ := h.Filename()
+	//		log.Println("Got attachment: ", filename)
+	//	}
+	//}
+	return mailitem
+}
+func GetDecoder()*mime.WordDecoder{
 	dec :=new(mime.WordDecoder)
 	dec.CharsetReader= func(charset string, input io.Reader) (io.Reader, error) {
 		switch charset {
@@ -165,21 +286,7 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 
 		}
 	}
-	for msg:=range messages{
-
-		ret,err:=dec.Decode(msg.Envelope.Subject)
-		if err!=nil{
-			ret,_=dec.DecodeHeader(msg.Envelope.Subject)
-		}
-		var mailitem =new(MailItem)
-		log.Println(msg.SeqNum)
-
-		mailitem.Subject=ret
-		mailitem.Id=msg.SeqNum
-		mailitem.Fid=folder
-		mailPagelist.MailItems=append(mailPagelist.MailItems,mailitem)
-	}
-	return mailPagelist.MailItems
+	return dec
 }
 // 任意编码转特定编码
 func ConvertToStr(src string, srcCode string, tagCode string) string {
