@@ -192,10 +192,13 @@ func GetMessage(server string, email string, password string,folder string,id ui
 		mailitem.Date=date.String()
 	}
 	var f string
+	dec:=GetDecoder()
+
 	if from, err := header.AddressList("From"); err == nil {
 		log.Println("From:", from)
 		for _,address:=range from{
-			f+=" "+address.String()
+			temp,_:=dec.DecodeHeader(address.String())
+			f+=" "+temp
 		}
 	}
 	mailitem.From=f
@@ -203,11 +206,11 @@ func GetMessage(server string, email string, password string,folder string,id ui
 	if to, err := header.AddressList("To"); err == nil {
 		log.Println("To:", to)
 		for _,address:=range to{
-			t+=" "+address.String()
+			temp,_:=dec.DecodeHeader(address.String())
+			t+=" "+temp
 		}
 	}
 	mailitem.To=t
-	dec:=GetDecoder()
 	if subject, err := header.Subject(); err == nil {
 		s,err:=dec.Decode(subject)
 		if err!=nil{
