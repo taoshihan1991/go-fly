@@ -217,25 +217,26 @@ func GetMessage(server string, email string, password string,folder string,id ui
 		mailitem.Subject=s
 	}
 	// Process each message's part
-	//for {
-	//	p, err := mr.NextPart()
-	//	if err == io.EOF {
-	//		break
-	//	} else if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//
-	//	switch h := p.Header.(type) {
-	//	case *mail.InlineHeader:
-	//		// This is the message's text (can be plain-text or HTML)
-	//		b, _ := ioutil.ReadAll(p.Body)
-	//		log.Println("Got text: ", string(b))
-	//	case *mail.AttachmentHeader:
-	//		// This is an attachment
-	//		filename, _ := h.Filename()
-	//		log.Println("Got attachment: ", filename)
-	//	}
-	//}
+	for {
+		p, err := mr.NextPart()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			//log.Fatal(err)
+		}
+		switch h := p.Header.(type) {
+		case *mail.InlineHeader:
+			// This is the message's text (can be plain-text or HTML)
+			b, _ := ioutil.ReadAll(p.Body)
+			mailitem.Body+=string(b)
+			//body,_:=dec.Decode(string(b))
+			log.Println("Got text: ", string(b))
+		case *mail.AttachmentHeader:
+			// This is an attachment
+			filename, _ := h.Filename()
+			log.Println("Got attachment: ", filename)
+		}
+	}
 	return mailitem
 }
 func GetDecoder()*mime.WordDecoder{

@@ -153,6 +153,7 @@ func view(w http.ResponseWriter, r *http.Request) {
 		render.To=mail.To
 		render.Subject=mail.Subject
 		render.Date=mail.Date
+		render.HtmlBody=template.HTML(mail.Body)
 	}()
 	wg.Wait()
 	tmpl.RenderView(w,render)

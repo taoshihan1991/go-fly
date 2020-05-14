@@ -14,6 +14,7 @@ type IndexData struct {
 }
 type ViewData struct {
 	Folders map[string]int
+	HtmlBody template.HTML
 	MailItem
 }
 type MailItem struct{

@@ -60,7 +60,7 @@ func RenderView(w http.ResponseWriter,render interface{}){
 			</tr>
 			<tr>
 			  <th scope="row">内容:</th>
-			  <td>Jacob</td>
+			  <td>{{.HtmlBody}}</td>
 			</tr>
 		  </tbody>
 		</table>    
