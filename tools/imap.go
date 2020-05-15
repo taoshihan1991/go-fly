@@ -239,6 +239,7 @@ func GetMessage(server string, email string, password string,folder string,id ui
 			filename, _ := h.Filename()
 			log.Println("Got attachment: ", filename)
 		}
+		mailitem.Body=Encoding(mailitem.Body)
 	}
 	return mailitem
 }
