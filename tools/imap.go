@@ -181,8 +181,9 @@ func GetMessage(server string, email string, password string,folder string,id ui
 	// Create a new mail reader
 	mr, err := mail.CreateReader(r)
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
 	}
+
 	var mailitem =new(MailItem)
 
 	// Print some info about the message
@@ -197,7 +198,8 @@ func GetMessage(server string, email string, password string,folder string,id ui
 	if from, err := header.AddressList("From"); err == nil {
 		log.Println("From:", from)
 		for _,address:=range from{
-			temp,_:=dec.DecodeHeader(address.String())
+			fromStr:=strings.ToLower(address.String())
+			temp,_:=dec.DecodeHeader(fromStr)
 			f+=" "+temp
 		}
 	}
@@ -206,12 +208,15 @@ func GetMessage(server string, email string, password string,folder string,id ui
 	if to, err := header.AddressList("To"); err == nil {
 		log.Println("To:", to)
 		for _,address:=range to{
-			temp,_:=dec.DecodeHeader(address.String())
+			toStr:=strings.ToLower(address.String())
+			temp,_:=dec.DecodeHeader(toStr)
 			t+=" "+temp
 		}
 	}
 	mailitem.To=t
+
 	if subject, err := header.Subject(); err == nil {
+		subject=strings.ToLower(subject)
 		s,err:=dec.Decode(subject)
 		if err!=nil{
 			s,_=dec.DecodeHeader(subject)
@@ -233,7 +238,6 @@ func GetMessage(server string, email string, password string,folder string,id ui
 			b, _ := ioutil.ReadAll(p.Body)
 			mailitem.Body+=string(b)
 			//body,_:=dec.Decode(string(b))
-			log.Println("Got text: ", string(b))
 		case *mail.AttachmentHeader:
 			// This is an attachment
 			filename, _ := h.Filename()
@@ -246,6 +250,7 @@ func GetMessage(server string, email string, password string,folder string,id ui
 func GetDecoder()*mime.WordDecoder{
 	dec :=new(mime.WordDecoder)
 	dec.CharsetReader= func(charset string, input io.Reader) (io.Reader, error) {
+		charset=strings.ToLower(charset)
 		switch charset {
 		case "gb2312":
 			content, err := ioutil.ReadAll(input)
