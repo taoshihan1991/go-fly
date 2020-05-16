@@ -7,7 +7,6 @@ import (
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 	"io/ioutil"
-	"log"
 	"strings"
 )
 
@@ -32,7 +31,6 @@ func Encoding(html string,ct string) string {
 	utf8Reader := transform.NewReader(r, e.NewDecoder())
 	//将其他编码的reader转换为常用的utf8reader
 	all, _ := ioutil.ReadAll(utf8Reader)
-	log.Println(string(all))
 	return string(all)
 }
 func DetermineEncoding(html string) (encoding.Encoding,string) {

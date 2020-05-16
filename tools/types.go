@@ -1,7 +1,9 @@
 package tools
 
 import "html/template"
-
+type MailServer struct{
+	Server,Email,Password string
+}
 type IndexData struct {
 	Folders           map[string]int
 	Mails             interface{}

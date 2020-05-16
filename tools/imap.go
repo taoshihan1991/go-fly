@@ -92,7 +92,7 @@ func GetFolders(server string, email string, password string, folder string) map
 			break
 		}
 	}
-	log.Println(folders)
+	//log.Println(folders)
 	return folders
 }
 
@@ -131,7 +131,6 @@ func GetFolderMail(server string, email string, password string, folder string, 
 			ret, _ = dec.DecodeHeader(msg.Envelope.Subject)
 		}
 		var mailitem = new(MailItem)
-		log.Println(msg.SeqNum)
 
 		mailitem.Subject = ret
 		mailitem.Id = msg.SeqNum
@@ -191,7 +190,6 @@ func GetMessage(server string, email string, password string, folder string, id 
 
 	// Print some info about the message
 	header := mr.Header
-	log.Println(header)
 	date, _ := header.Date()
 	log.Println("Date:", date)
 	mailitem.Date = date.String()
@@ -200,7 +198,6 @@ func GetMessage(server string, email string, password string, folder string, id 
 	dec := GetDecoder()
 
 	if from, err := header.AddressList("From"); err == nil {
-		log.Println("From:", from)
 		for _, address := range from {
 			fromStr := address.String()
 			temp, _ := dec.DecodeHeader(fromStr)
@@ -208,6 +205,8 @@ func GetMessage(server string, email string, password string, folder string, id 
 		}
 	}
 	mailitem.From = f
+	log.Println("From:", mailitem.From)
+
 	var t string
 	if to, err := header.AddressList("To"); err == nil {
 		log.Println("To:", to)
@@ -227,6 +226,10 @@ func GetMessage(server string, email string, password string, folder string, id 
 	log.Println("Subject:", s)
 	mailitem.Subject = s
 	// Process each message's part
+	var bodyMap=make(map[string]string)
+	bodyMap["text/plain"]= ""
+	bodyMap["text/html"]= ""
+
 	for {
 		p, err := mr.NextPart()
 		if err == io.EOF {
@@ -237,18 +240,28 @@ func GetMessage(server string, email string, password string, folder string, id 
 		switch h := p.Header.(type) {
 		case *mail.InlineHeader:
 			// This is the message's text (can be plain-text or HTML)
+
 			b, _ := ioutil.ReadAll(p.Body)
-			mailitem.Body += string(b)
+			ct:=p.Header.Get("Content-Type")
+			if strings.Contains(ct,"text/plain"){
+				bodyMap["text/plain"]+=Encoding(string(b),ct)
+			}else{
+				bodyMap["text/html"]+=Encoding(string(b),ct)
+			}
 			//body,_:=dec.Decode(string(b))
 		case *mail.AttachmentHeader:
 			// This is an attachment
 			filename, _ := h.Filename()
 			log.Println("Got attachment: ", filename)
 		}
-		ct,_,_:=header.ContentType()
-		log.Println(ct)
-		mailitem.Body = Encoding(mailitem.Body,ct)
+
 	}
+	if bodyMap["text/html"]!=""{
+		mailitem.Body =bodyMap["text/html"]
+	}else{
+		mailitem.Body =bodyMap["text/plain"]
+	}
+	//log.Println(mailitem.Body)
 	return mailitem
 }
 func GetDecoder() *mime.WordDecoder {

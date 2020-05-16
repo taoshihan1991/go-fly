@@ -8,15 +8,16 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 	"sync"
 )
 
-const PAGE_SIZE = 20
+const PageSize = 20
 
 func main() {
-	log.Println("listen on 8080...")
+	log.Println("listen on 8080...\r\n访问：http://127.0.0.1:8080")
+	//根路径
 	http.HandleFunc("/", index)
+	//邮件夹
 	http.HandleFunc("/list", list)
 	//登陆界面
 	http.HandleFunc("/login", login)
@@ -32,12 +33,11 @@ func index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	auth := getCookie(r, "auth")
-	if !strings.Contains(auth, "|") {
+	mailServer:=tools.GetMailServerFromCookie(r)
+	if mailServer==nil {
 		http.Redirect(w, r, "/login", 302)
 	} else {
-		authStrings := strings.Split(auth, "|")
-		res := tools.CheckEmailPassword(authStrings[0], authStrings[1], authStrings[2])
+		res := tools.CheckEmailPassword(mailServer.Server, mailServer.Email, mailServer.Password)
 		if res {
 			http.Redirect(w, r, "/list", 302)
 		} else {
@@ -64,8 +64,7 @@ func list(w http.ResponseWriter, r *http.Request) {
 		currentPage = 1
 	}
 
-	auth := getCookie(r, "auth")
-	authStrings := strings.Split(auth, "|")
+	mailServer:=tools.GetMailServerFromCookie(r)
 
 	render := new(tools.IndexData)
 	render.CurrentPage = currentPage
@@ -82,7 +81,7 @@ func list(w http.ResponseWriter, r *http.Request) {
 	wg.Add(2)
 	go func() {
 		defer wg.Done()
-		folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2], fid)
+		folders := tools.GetFolders(mailServer.Server, mailServer.Email,mailServer.Password, fid)
 		render.Folders = folders
 		render.Fid = fid
 
@@ -108,7 +107,7 @@ func list(w http.ResponseWriter, r *http.Request) {
 	}()
 	go func() {
 		defer wg.Done()
-		mails := tools.GetFolderMail(authStrings[0], authStrings[1], authStrings[2], fid, currentPage, PAGE_SIZE)
+		mails := tools.GetFolderMail(mailServer.Server, mailServer.Email, mailServer.Password, fid, currentPage, PageSize)
 		render.MailPagelist = mails
 	}()
 
@@ -133,21 +132,20 @@ func view(w http.ResponseWriter, r *http.Request) {
 		id = 0
 	}
 
-	auth := getCookie(r, "auth")
-	authStrings := strings.Split(auth, "|")
+	mailServer:=tools.GetMailServerFromCookie(r)
 	var wg sync.WaitGroup
 	var render = new(tools.ViewData)
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2], fid)
+		folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
 		render.Folders = folders
 		render.Fid = fid
 	}()
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		mail := tools.GetMessage(authStrings[0], authStrings[1], authStrings[2], fid, id)
+		mail := tools.GetMessage(mailServer.Server, mailServer.Email, mailServer.Password, fid, id)
 		render.From = mail.From
 		render.To = mail.To
 		render.Subject = mail.Subject
@@ -187,13 +185,4 @@ func login(w http.ResponseWriter, r *http.Request) {
 //func authCookie(){
 //
 //}
-//获取cookie
-func getCookie(r *http.Request, name string) string {
-	cookies := r.Cookies()
-	for _, cookie := range cookies {
-		if cookie.Name == name {
-			return cookie.Value
-		}
-	}
-	return ""
-}
+
