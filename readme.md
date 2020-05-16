@@ -14,6 +14,7 @@
 6.充分实践了struct，interface，map，slice，for range等基础知识
 
 ###项目预览
+
 ![Image text](https://img2020.cnblogs.com/blog/726254/202005/726254-20200516183509721-1526715752.png)
 
 ![Image text](https://img2020.cnblogs.com/blog/726254/202005/726254-20200516183521692-598821905.png)
@@ -22,6 +23,7 @@
 
 
 ###安装使用
+
 1.git clone https://github.com/taoshihan1991/imaptool.git
 
 2.进入目录执行 go mod tidy
