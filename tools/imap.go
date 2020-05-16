@@ -179,14 +179,14 @@ func GetMessage(server string, email string, password string, folder string, id 
 	if r == nil {
 		log.Fatal("Server didn't returned message body")
 	}
+	var mailitem = new(MailItem)
 
 	// Create a new mail reader
 	mr, err := mail.CreateReader(r)
-	if err != nil {
-		//log.Fatal(err)
-	}
 
-	var mailitem = new(MailItem)
+	if err != nil {
+		return mailitem
+	}
 
 	// Print some info about the message
 	header := mr.Header
@@ -226,9 +226,9 @@ func GetMessage(server string, email string, password string, folder string, id 
 	log.Println("Subject:", s)
 	mailitem.Subject = s
 	// Process each message's part
-	var bodyMap=make(map[string]string)
-	bodyMap["text/plain"]= ""
-	bodyMap["text/html"]= ""
+	var bodyMap = make(map[string]string)
+	bodyMap["text/plain"] = ""
+	bodyMap["text/html"] = ""
 
 	for {
 		p, err := mr.NextPart()
@@ -242,11 +242,11 @@ func GetMessage(server string, email string, password string, folder string, id 
 			// This is the message's text (can be plain-text or HTML)
 
 			b, _ := ioutil.ReadAll(p.Body)
-			ct:=p.Header.Get("Content-Type")
-			if strings.Contains(ct,"text/plain"){
-				bodyMap["text/plain"]+=Encoding(string(b),ct)
-			}else{
-				bodyMap["text/html"]+=Encoding(string(b),ct)
+			ct := p.Header.Get("Content-Type")
+			if strings.Contains(ct, "text/plain") {
+				bodyMap["text/plain"] += Encoding(string(b), ct)
+			} else {
+				bodyMap["text/html"] += Encoding(string(b), ct)
 			}
 			//body,_:=dec.Decode(string(b))
 		case *mail.AttachmentHeader:
@@ -256,10 +256,10 @@ func GetMessage(server string, email string, password string, folder string, id 
 		}
 
 	}
-	if bodyMap["text/html"]!=""{
-		mailitem.Body =bodyMap["text/html"]
-	}else{
-		mailitem.Body =bodyMap["text/plain"]
+	if bodyMap["text/html"] != "" {
+		mailitem.Body = bodyMap["text/html"]
+	} else {
+		mailitem.Body = bodyMap["text/plain"]
 	}
 	//log.Println(mailitem.Body)
 	return mailitem

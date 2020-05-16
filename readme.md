@@ -24,11 +24,9 @@
 
 ### 安装使用
 
-1.git clone https://github.com/taoshihan1991/imaptool.git
+1.在$GOPATH的src/github.com下， git clone https://github.com/taoshihan1991/imaptool.git
 
-2.进入目录执行 go mod tidy
+2.源码运行 go run server.go
 
-3.源码运行 go run server.go
-
-4.源码打包 go build server.go
+3.源码打包 go build server.go
 

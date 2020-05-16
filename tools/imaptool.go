@@ -1,4 +1,4 @@
-package main
+package tools
 
 import (
 	"bufio"
@@ -23,7 +23,7 @@ var (
 	folders                 map[int]string
 )
 
-func main() {
+func testmain() {
 
 	//获取参数中的数据
 	flag.StringVar(&server, "server", "", "imap服务地址(包含端口)")
