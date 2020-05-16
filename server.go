@@ -12,8 +12,8 @@ import (
 	"sync"
 )
 
+const PAGE_SIZE = 20
 
-const PAGE_SIZE=20
 func main() {
 	log.Println("listen on 8080...")
 	http.HandleFunc("/", index)
@@ -28,7 +28,7 @@ func main() {
 
 //首页跳转
 func index(w http.ResponseWriter, r *http.Request) {
-	if r.URL.RequestURI()=="/favicon.ico"{
+	if r.URL.RequestURI() == "/favicon.ico" {
 		return
 	}
 
@@ -48,22 +48,21 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 //输出列表
 func list(w http.ResponseWriter, r *http.Request) {
-	values:=r.URL.Query()
-	fid:=""
-	currentPage:=0
-	if len(values["fid"])!=0{
-		fid=values["fid"][0]
+	values := r.URL.Query()
+	fid := ""
+	currentPage := 0
+	if len(values["fid"]) != 0 {
+		fid = values["fid"][0]
 	}
-	if len(values["page"])!=0{
-		currentPage,_=strconv.Atoi(values["page"][0])
+	if len(values["page"]) != 0 {
+		currentPage, _ = strconv.Atoi(values["page"][0])
 	}
-	if fid==""{
-		fid="INBOX"
+	if fid == "" {
+		fid = "INBOX"
 	}
-	if currentPage==0{
-		currentPage=1
+	if currentPage == 0 {
+		currentPage = 1
 	}
-
 
 	auth := getCookie(r, "auth")
 	authStrings := strings.Split(auth, "|")
@@ -71,41 +70,41 @@ func list(w http.ResponseWriter, r *http.Request) {
 	render := new(tools.IndexData)
 	render.CurrentPage = currentPage
 	var prePage int
-	if(currentPage-1) <=0 {
-		prePage=1
-	}else{
-		prePage=currentPage-1
+	if (currentPage - 1) <= 0 {
+		prePage = 1
+	} else {
+		prePage = currentPage - 1
 	}
-	render.PrePage = fmt.Sprintf("/list?fid=%s&page=%d",fid,prePage)
-	render.NextPage = fmt.Sprintf("/list?fid=%s&page=%d",fid,currentPage+1)
+	render.PrePage = fmt.Sprintf("/list?fid=%s&page=%d", fid, prePage)
+	render.NextPage = fmt.Sprintf("/list?fid=%s&page=%d", fid, currentPage+1)
 
 	var wg sync.WaitGroup
 	wg.Add(2)
 	go func() {
 		defer wg.Done()
-		folders :=tools.GetFolders(authStrings[0], authStrings[1], authStrings[2],fid)
+		folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2], fid)
 		render.Folders = folders
 		render.Fid = fid
 
 		//PageCount:= render.Folders[fid]/PAGE_SIZE
-		numPages:=""
-		start:=currentPage-5
-		if start <=0 {
-			start=1
+		numPages := ""
+		start := currentPage - 5
+		if start <= 0 {
+			start = 1
 		}
-		end:=start+11
+		end := start + 11
 		//if end>=PageCount{
 		//	end=PageCount
 		//}
 
-		for i:=start;i<end;i++{
-			active:=""
-			if currentPage==i{
-				active="active"
+		for i := start; i < end; i++ {
+			active := ""
+			if currentPage == i {
+				active = "active"
 			}
-			numPages+=fmt.Sprintf("<li class=\"page-item %s\"><a class=\"page-link\" href=\"/list?fid=%s&page=%d\">%d</a></li>",active,fid,i,i)
+			numPages += fmt.Sprintf("<li class=\"page-item %s\"><a class=\"page-link\" href=\"/list?fid=%s&page=%d\">%d</a></li>", active, fid, i, i)
 		}
-		render.NumPages=template.HTML(numPages)
+		render.NumPages = template.HTML(numPages)
 	}()
 	go func() {
 		defer wg.Done()
@@ -114,50 +113,51 @@ func list(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	wg.Wait()
-	tmpl.RenderList(w,render)
+	tmpl.RenderList(w, render)
 }
 
 //详情界面
 func view(w http.ResponseWriter, r *http.Request) {
-	values:=r.URL.Query()
-	fid:=""
-	if len(values["fid"])!=0{
-		fid=values["fid"][0]
-	}else{
-		fid="INBOX"
+	values := r.URL.Query()
+	fid := ""
+	if len(values["fid"]) != 0 {
+		fid = values["fid"][0]
+	} else {
+		fid = "INBOX"
 	}
 	var id uint32
-	if len(values["id"])!=0{
-		i,_:=strconv.Atoi(values["id"][0])
-		id=uint32(i)
-	}else{
-		id=0
+	if len(values["id"]) != 0 {
+		i, _ := strconv.Atoi(values["id"][0])
+		id = uint32(i)
+	} else {
+		id = 0
 	}
 
 	auth := getCookie(r, "auth")
 	authStrings := strings.Split(auth, "|")
 	var wg sync.WaitGroup
-	var render=new(tools.ViewData)
+	var render = new(tools.ViewData)
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		folders :=tools.GetFolders(authStrings[0], authStrings[1], authStrings[2],fid)
+		folders := tools.GetFolders(authStrings[0], authStrings[1], authStrings[2], fid)
 		render.Folders = folders
 		render.Fid = fid
 	}()
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		mail:=tools.GetMessage(authStrings[0], authStrings[1], authStrings[2],fid,id)
-		render.From=mail.From
-		render.To=mail.To
-		render.Subject=mail.Subject
-		render.Date=mail.Date
-		render.HtmlBody=template.HTML(mail.Body)
+		mail := tools.GetMessage(authStrings[0], authStrings[1], authStrings[2], fid, id)
+		render.From = mail.From
+		render.To = mail.To
+		render.Subject = mail.Subject
+		render.Date = mail.Date
+		render.HtmlBody = template.HTML(mail.Body)
 	}()
 	wg.Wait()
-	tmpl.RenderView(w,render)
+	tmpl.RenderView(w, render)
 }
+
 //登陆界面
 func login(w http.ResponseWriter, r *http.Request) {
 	email := r.PostFormValue("email")
@@ -168,7 +168,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		res := tools.CheckEmailPassword(server, email, password)
 		if !res {
 			errStr = "连接或验证失败"
-			tmpl.RenderLogin(w,errStr)
+			tmpl.RenderLogin(w, errStr)
 		} else {
 			auth := fmt.Sprintf("%s|%s|%s", server, email, password)
 			cookie := http.Cookie{
@@ -179,9 +179,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", 302)
 		}
 	} else {
-		tmpl.RenderLogin(w,errStr)
+		tmpl.RenderLogin(w, errStr)
 	}
 }
+
 //加密cookie
 //func authCookie(){
 //

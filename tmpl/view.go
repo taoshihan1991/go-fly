@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func RenderView(w http.ResponseWriter,render interface{}){
+func RenderView(w http.ResponseWriter, render interface{}) {
 	const html = `
 <!doctype html>
 <html lang="cn">
@@ -43,7 +43,7 @@ func RenderView(w http.ResponseWriter,render interface{}){
 		<table class="table table-hover">
 		  <tbody>
 			<tr>
-			  <th scope="row">日期:</th>
+			  <th scope="row" width="100">日期:</th>
 			  <td>{{.Date}}</td>
 			</tr>
 			<tr>

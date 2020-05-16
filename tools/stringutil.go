@@ -3,6 +3,8 @@ package tools
 
 import (
 	"golang.org/x/net/html/charset"
+	"golang.org/x/text/encoding"
+	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 	"io/ioutil"
 	"log"
@@ -17,14 +19,23 @@ func Reverse(s string) string {
 	}
 	return string(r)
 }
-//转换编码
-func Encoding(html string)string {
-	e,_,_ :=charset.DetermineEncoding([]byte(html),"")
-	r:=strings.NewReader(html)
-	log.Println(r);
 
-	utf8Reader := transform.NewReader(r,e.NewDecoder())
+//转换编码
+func Encoding(html string,ct string) string {
+	e,name:=DetermineEncoding(html)
+	if name!="utf-8"{
+		html=ConvertToStr(html,"gbk","utf-8")
+		e=unicode.UTF8
+	}
+	r := strings.NewReader(html)
+
+	utf8Reader := transform.NewReader(r, e.NewDecoder())
 	//将其他编码的reader转换为常用的utf8reader
-	all,_ := ioutil.ReadAll(utf8Reader)
+	all, _ := ioutil.ReadAll(utf8Reader)
+	log.Println(string(all))
 	return string(all)
+}
+func DetermineEncoding(html string) (encoding.Encoding,string) {
+	e, name, _ := charset.DetermineEncoding([]byte(html), "")
+	return e,name
 }

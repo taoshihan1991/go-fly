@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 )
+
 //验证邮箱密码
 func CheckEmailPassword(server string, email string, password string) bool {
 	if !strings.Contains(server, ":") {
@@ -30,14 +31,15 @@ func CheckEmailPassword(server string, email string, password string) bool {
 	//defer c.Logout()
 
 	// 登陆
-	c=connect(server,email,password)
-	if c==nil{
+	c = connect(server, email, password)
+	if c == nil {
 		return false
 	}
 	return true
 }
+
 //获取连接
-func connect(server string, email string, password string)*client.Client{
+func connect(server string, email string, password string) *client.Client {
 	var c *client.Client
 	var err error
 	serverSlice := strings.Split(server, ":")
@@ -61,12 +63,13 @@ func connect(server string, email string, password string)*client.Client{
 	}
 	return c
 }
+
 //获取邮件夹
-func GetFolders(server string, email string, password string,folder string)map[string]int{
+func GetFolders(server string, email string, password string, folder string) map[string]int {
 	var c *client.Client
 	//defer c.Logout()
-	c=connect(server,email,password)
-	if c==nil{
+	c = connect(server, email, password)
+	if c == nil {
 		return nil
 	}
 	// 列邮箱
@@ -76,12 +79,12 @@ func GetFolders(server string, email string, password string,folder string)map[s
 		done <- c.List("", "*", mailboxes)
 	}()
 	// 存储邮件夹
-	var folders =make(map[string]int)
+	var folders = make(map[string]int)
 	for m := range mailboxes {
-		folders[m.Name]=0
+		folders[m.Name] = 0
 	}
-	for m,_ := range folders {
-		if m==folder {
+	for m, _ := range folders {
+		if m == folder {
 			mbox, _ := c.Select(m, true)
 			if mbox != nil {
 				folders[m] = int(mbox.Messages)
@@ -94,19 +97,19 @@ func GetFolders(server string, email string, password string,folder string)map[s
 }
 
 //获取邮件夹邮件
-func GetFolderMail(server string, email string, password string,folder string,currentPage int,pagesize int)[]*MailItem{
+func GetFolderMail(server string, email string, password string, folder string, currentPage int, pagesize int) []*MailItem {
 	var c *client.Client
 	//defer c.Logout()
-	c=connect(server,email,password)
-	if c==nil{
+	c = connect(server, email, password)
+	if c == nil {
 		return nil
 	}
 
 	mbox, _ := c.Select(folder, true)
-	to := mbox.Messages-uint32((currentPage-1)*pagesize)
-	from := to-uint32(pagesize)
-	if to <=uint32(pagesize){
-		from=1
+	to := mbox.Messages - uint32((currentPage-1)*pagesize)
+	from := to - uint32(pagesize)
+	if to <= uint32(pagesize) {
+		from = 1
 	}
 
 	seqset := new(imap.SeqSet)
@@ -117,31 +120,31 @@ func GetFolderMail(server string, email string, password string,folder string,cu
 	go func() {
 		done <- c.Fetch(seqset, []imap.FetchItem{imap.FetchEnvelope}, messages)
 	}()
-	var mailPagelist=new(MailPageList)
+	var mailPagelist = new(MailPageList)
 
-	dec :=GetDecoder()
+	dec := GetDecoder()
 
-	for msg:=range messages{
+	for msg := range messages {
 
-		ret,err:=dec.Decode(msg.Envelope.Subject)
-		if err!=nil{
-			ret,_=dec.DecodeHeader(msg.Envelope.Subject)
+		ret, err := dec.Decode(msg.Envelope.Subject)
+		if err != nil {
+			ret, _ = dec.DecodeHeader(msg.Envelope.Subject)
 		}
-		var mailitem =new(MailItem)
+		var mailitem = new(MailItem)
 		log.Println(msg.SeqNum)
 
-		mailitem.Subject=ret
-		mailitem.Id=msg.SeqNum
-		mailitem.Fid=folder
-		mailPagelist.MailItems=append(mailPagelist.MailItems,mailitem)
+		mailitem.Subject = ret
+		mailitem.Id = msg.SeqNum
+		mailitem.Fid = folder
+		mailPagelist.MailItems = append(mailPagelist.MailItems, mailitem)
 	}
 	return mailPagelist.MailItems
 }
-func GetMessage(server string, email string, password string,folder string,id uint32)*MailItem{
+func GetMessage(server string, email string, password string, folder string, id uint32) *MailItem {
 	var c *client.Client
 	//defer c.Logout()
-	c=connect(server,email,password)
-	if c==nil{
+	c = connect(server, email, password)
+	if c == nil {
 		//return nil
 	}
 	// Select INBOX
@@ -184,46 +187,45 @@ func GetMessage(server string, email string, password string,folder string,id ui
 		//log.Fatal(err)
 	}
 
-	var mailitem =new(MailItem)
+	var mailitem = new(MailItem)
 
 	// Print some info about the message
 	header := mr.Header
-	if date, err := header.Date(); err == nil {
-		log.Println("Date:", date)
-		mailitem.Date=date.String()
-	}
+	log.Println(header)
+	date, _ := header.Date()
+	log.Println("Date:", date)
+	mailitem.Date = date.String()
+
 	var f string
-	dec:=GetDecoder()
+	dec := GetDecoder()
 
 	if from, err := header.AddressList("From"); err == nil {
 		log.Println("From:", from)
-		for _,address:=range from{
-			fromStr:=strings.ToLower(address.String())
-			temp,_:=dec.DecodeHeader(fromStr)
-			f+=" "+temp
+		for _, address := range from {
+			fromStr := address.String()
+			temp, _ := dec.DecodeHeader(fromStr)
+			f += " " + temp
 		}
 	}
-	mailitem.From=f
+	mailitem.From = f
 	var t string
 	if to, err := header.AddressList("To"); err == nil {
 		log.Println("To:", to)
-		for _,address:=range to{
-			toStr:=strings.ToLower(address.String())
-			temp,_:=dec.DecodeHeader(toStr)
-			t+=" "+temp
+		for _, address := range to {
+			toStr := address.String()
+			temp, _ := dec.DecodeHeader(toStr)
+			t += " " + temp
 		}
 	}
-	mailitem.To=t
+	mailitem.To = t
 
-	if subject, err := header.Subject(); err == nil {
-		subject=strings.ToLower(subject)
-		s,err:=dec.Decode(subject)
-		if err!=nil{
-			s,_=dec.DecodeHeader(subject)
-		}
-		log.Println("Subject:", s)
-		mailitem.Subject=s
+	subject, _ := header.Subject()
+	s, err := dec.Decode(subject)
+	if err != nil {
+		s, _ = dec.DecodeHeader(subject)
 	}
+	log.Println("Subject:", s)
+	mailitem.Subject = s
 	// Process each message's part
 	for {
 		p, err := mr.NextPart()
@@ -236,21 +238,23 @@ func GetMessage(server string, email string, password string,folder string,id ui
 		case *mail.InlineHeader:
 			// This is the message's text (can be plain-text or HTML)
 			b, _ := ioutil.ReadAll(p.Body)
-			mailitem.Body+=string(b)
+			mailitem.Body += string(b)
 			//body,_:=dec.Decode(string(b))
 		case *mail.AttachmentHeader:
 			// This is an attachment
 			filename, _ := h.Filename()
 			log.Println("Got attachment: ", filename)
 		}
-		mailitem.Body=Encoding(mailitem.Body)
+		ct,_,_:=header.ContentType()
+		log.Println(ct)
+		mailitem.Body = Encoding(mailitem.Body,ct)
 	}
 	return mailitem
 }
-func GetDecoder()*mime.WordDecoder{
-	dec :=new(mime.WordDecoder)
-	dec.CharsetReader= func(charset string, input io.Reader) (io.Reader, error) {
-		charset=strings.ToLower(charset)
+func GetDecoder() *mime.WordDecoder {
+	dec := new(mime.WordDecoder)
+	dec.CharsetReader = func(charset string, input io.Reader) (io.Reader, error) {
+		charset = strings.ToLower(charset)
 		switch charset {
 		case "gb2312":
 			content, err := ioutil.ReadAll(input)
@@ -260,8 +264,8 @@ func GetDecoder()*mime.WordDecoder{
 			//ret:=bytes.NewReader(content)
 			//ret:=transform.NewReader(bytes.NewReader(content), simplifiedchinese.HZGB2312.NewEncoder())
 
-			utf8str:=ConvertToStr(string(content),"gbk","utf-8")
-			t:=bytes.NewReader([]byte(utf8str))
+			utf8str := ConvertToStr(string(content), "gbk", "utf-8")
+			t := bytes.NewReader([]byte(utf8str))
 			//ret:=utf8.DecodeRune(t)
 			//log.Println(ret)
 			return t, nil
@@ -273,8 +277,8 @@ func GetDecoder()*mime.WordDecoder{
 			//ret:=bytes.NewReader(content)
 			//ret:=transform.NewReader(bytes.NewReader(content), simplifiedchinese.HZGB2312.NewEncoder())
 
-			utf8str:=ConvertToStr(string(content),"gbk","utf-8")
-			t:=bytes.NewReader([]byte(utf8str))
+			utf8str := ConvertToStr(string(content), "gbk", "utf-8")
+			t := bytes.NewReader([]byte(utf8str))
 			//ret:=utf8.DecodeRune(t)
 			//log.Println(ret)
 			return t, nil
@@ -286,24 +290,26 @@ func GetDecoder()*mime.WordDecoder{
 			//ret:=bytes.NewReader(content)
 			//ret:=transform.NewReader(bytes.NewReader(content), simplifiedchinese.HZGB2312.NewEncoder())
 
-			utf8str:=ConvertToStr(string(content),"gbk","utf-8")
-			t:=bytes.NewReader([]byte(utf8str))
+			utf8str := ConvertToStr(string(content), "gbk", "utf-8")
+			t := bytes.NewReader([]byte(utf8str))
 			//ret:=utf8.DecodeRune(t)
 			//log.Println(ret)
 			return t, nil
 		default:
-			return nil,fmt.Errorf("unhandle charset:%s",charset)
+			return nil, fmt.Errorf("unhandle charset:%s", charset)
 
 		}
 	}
 	return dec
 }
+
 // 任意编码转特定编码
 func ConvertToStr(src string, srcCode string, tagCode string) string {
-	srcCoder := mahonia.NewDecoder(srcCode)
-	srcResult := srcCoder.ConvertString(src)
-	tagCoder := mahonia.NewDecoder(tagCode)
-	_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
-	result := string(cdata)
+	result := mahonia.NewDecoder(srcCode).ConvertString(src)
+	//srcCoder := mahonia.NewDecoder(srcCode)
+	//srcResult := srcCoder.ConvertString(src)
+	//tagCoder := mahonia.NewDecoder(tagCode)
+	//_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
+	//result := string(cdata)
 	return result
 }

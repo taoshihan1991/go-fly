@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func RenderLogin(w http.ResponseWriter,render interface{}){
+func RenderLogin(w http.ResponseWriter, render interface{}) {
 	const html = `
 <!doctype html>
 <html lang="cn">

@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func RenderList(w http.ResponseWriter,render interface{}){
+func RenderList(w http.ResponseWriter, render interface{}) {
 	const html = `
 <!doctype html>
 <html lang="cn">
