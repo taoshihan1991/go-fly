@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
@@ -14,13 +15,15 @@ import (
 const PageSize = 20
 
 func main() {
-	log.Println("listen on 8080...\r\n访问：http://127.0.0.1:8080")
+	log.Println("listen on 8080...\r\ngo：http://127.0.0.1:8080")
 	//根路径
 	http.HandleFunc("/", index)
 	//邮件夹
 	http.HandleFunc("/list", list)
 	//登陆界面
 	http.HandleFunc("/login", login)
+	//验证接口
+	http.HandleFunc("/check", check)
 	//详情界面
 	http.HandleFunc("/view", view)
 	//监听端口
@@ -181,6 +184,28 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//验证接口
+func check(w http.ResponseWriter, r *http.Request) {
+	email := r.PostFormValue("email")
+	server := r.PostFormValue("server")
+	password := r.PostFormValue("password")
+	msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
+
+	w.Header().Set("content-type","text/json")
+	if email != "" && server != "" && password != "" {
+		res := tools.CheckEmailPassword(server, email, password)
+		if res {
+			msg, _ = json.Marshal(tools.JsonResult{Code: 200, Msg: "验证成功"})
+			w.Write(msg)
+		} else {
+			w.WriteHeader(400)
+			w.Write(msg)
+		}
+	} else {
+		w.WriteHeader(400)
+		w.Write(msg)
+	}
+}
 //加密cookie
 //func authCookie(){
 //
