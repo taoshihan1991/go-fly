@@ -198,11 +198,9 @@ func check(w http.ResponseWriter, r *http.Request) {
 			msg, _ = json.Marshal(tools.JsonResult{Code: 200, Msg: "验证成功"})
 			w.Write(msg)
 		} else {
-			w.WriteHeader(400)
 			w.Write(msg)
 		}
 	} else {
-		w.WriteHeader(400)
 		w.Write(msg)
 	}
 }
