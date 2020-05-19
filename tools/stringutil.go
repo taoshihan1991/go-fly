@@ -2,6 +2,7 @@
 package tools
 
 import (
+	"github.com/gobuffalo/packr"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/unicode"
@@ -36,4 +37,13 @@ func Encoding(html string,ct string) string {
 func DetermineEncoding(html string) (encoding.Encoding,string) {
 	e, name, _ := charset.DetermineEncoding([]byte(html), "")
 	return e,name
+}
+func FileGetContent(file string)string{
+	str:=""
+	box := packr.NewBox("../static")
+	content,err:=box.FindString(file)
+	if err!=nil{
+		return str
+	}
+	return content
 }
