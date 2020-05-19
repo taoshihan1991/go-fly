@@ -24,6 +24,8 @@ func main() {
 	http.HandleFunc("/login", login)
 	//验证接口
 	http.HandleFunc("/check", check)
+	//邮件夹接口
+	http.HandleFunc("/folders", folders)
 	//详情界面
 	http.HandleFunc("/view", view)
 	//监听端口
@@ -205,6 +207,48 @@ func check(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.Write(msg)
 	}
+}
+//邮件夹接口
+func folders(w http.ResponseWriter, r *http.Request) {
+	values := r.URL.Query()
+	fid := ""
+	currentPage := 0
+	if len(values["fid"]) != 0 {
+		fid = values["fid"][0]
+	}
+	if len(values["page"]) != 0 {
+		currentPage, _ = strconv.Atoi(values["page"][0])
+	}
+	if fid == "" {
+		fid = "INBOX"
+	}
+	if currentPage == 0 {
+		currentPage = 1
+	}
+
+	mailServer:=tools.GetMailServerFromCookie(r)
+	var wg sync.WaitGroup
+	wg.Add(2)
+	result :=make(map[string]interface{})
+	go func() {
+		defer wg.Done()
+		folders := tools.GetFolders(mailServer.Server, mailServer.Email,mailServer.Password, fid)
+		result["folders"]=folders
+
+	}()
+	go func() {
+		defer wg.Done()
+		mails := tools.GetFolderMail(mailServer.Server, mailServer.Email, mailServer.Password, fid, currentPage, PageSize)
+		result["mails"]=mails
+	}()
+	wg.Wait()
+
+	w.Header().Set("content-type","text/json;charset=utf-8;")
+	msg, _ := json.Marshal(tools.JsonFolders{
+		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
+		Result:     result,
+	})
+	w.Write(msg)
 }
 //加密cookie
 //func authCookie(){

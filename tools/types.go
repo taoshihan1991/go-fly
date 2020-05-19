@@ -34,3 +34,7 @@ type JsonResult  struct{
 	Code int `json:"code"`
 	Msg  string `json:"msg"`
 }
+type JsonFolders struct{
+	JsonResult
+	Result interface{} `json:"result"`
+}
