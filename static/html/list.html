@@ -1,0 +1,103 @@
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="陶士涵">
+    <title>GO-IMAP网页版邮箱imap工具</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+        .el-container{
+            margin-top:10px;
+            height: 100%;
+        }
+        .el-aside{
+            height: 100%;
+            background: #fff;
+            border: solid 1px #e6e6e6;
+        }
+        .el-aside .el-menu{
+            border-right: none;
+        }
+    </style>
+
+</head>
+<body class="text-center">
+<div id="app" style="width:100%">
+    <template>
+        <el-menu
+                default-active="2"
+                mode="horizontal">
+            <el-menu-item index="1" class="mainLogo">GO-IMAP</el-menu-item>
+            <el-menu-item index="2">收信</el-menu-item>
+            <el-menu-item index="3">写信</el-menu-item>
+            <el-header style="text-align: right; font-size: 12px" class="logout">
+                <a href="/logout">退出</a>
+            </el-header>
+        </el-menu>
+        <el-container  v-loading.fullscreen.lock="fullscreenLoading">
+                <el-aside>
+                    <el-menu
+                    default-active="1">
+                        <el-menu-item index="1" v-on:click="" v-for="(f,v) in folderlist.folders" v-bind:key="v">
+                            <i class="el-icon-menu"></i>
+                            <span slot="title"><{v}></span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-aside>
+
+                <el-main class="mainMain">
+                    <div class="block">
+                        <el-timeline>
+                            <el-timeline-item  v-for="item in folderlist.mails" v-bind:key="item.Id" timestamp="2018/4/12" placement="top">
+                                <el-card>
+                                    <h4><{item.Subject}></h4>
+                                    <p>王小虎 提交于 2018/4/12 20:46</p>
+                                </el-card>
+                            </el-timeline-item>
+                        </el-timeline>
+                    </div>
+                </el-main>
+        </el-container>
+</template>
+</div>
+</body>
+<script>
+	new Vue({
+		el: '#app',
+        delimiters:["<{","}>"],
+		data: {
+            fullscreenLoading:true,
+            folderlist:[],
+		},
+		methods: {
+            //提交表单
+            getFolders: function () {
+                let _this = this;
+                $.get('/folders', function (rs) {
+                    _this.folderlist=rs.result;
+                }).then(()=>{
+                    _this.fullscreenLoading=false;
+                });
+            },
+		},
+        created: function () {
+            this.getFolders();
+        }
+	})
+
+</script>
+</html>

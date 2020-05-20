@@ -227,6 +227,13 @@ func folders(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mailServer:=tools.GetMailServerFromCookie(r)
+	w.Header().Set("content-type","text/json;charset=utf-8;")
+
+	if mailServer==nil{
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
+		w.Write(msg)
+		return
+	}
 	var wg sync.WaitGroup
 	wg.Add(2)
 	result :=make(map[string]interface{})
@@ -243,7 +250,6 @@ func folders(w http.ResponseWriter, r *http.Request) {
 	}()
 	wg.Wait()
 
-	w.Header().Set("content-type","text/json;charset=utf-8;")
 	msg, _ := json.Marshal(tools.JsonFolders{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
 		Result:     result,
