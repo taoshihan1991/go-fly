@@ -70,6 +70,13 @@
                             </el-timeline-item>
                         </el-timeline>
                     </div>
+                    <el-pagination
+                            background
+                            :current-page="page"
+                            @current-change="getFolders"
+                            layout="prev, pager, next"
+                            :total="mailTotal">
+                    </el-pagination>
                 </el-main>
         </el-container>
 </template>
@@ -82,13 +89,23 @@
 		data: {
             fullscreenLoading:true,
             folderlist:[],
+            mailTotal:0,
+            page:1,
 		},
 		methods: {
             //提交表单
-            getFolders: function () {
+            getFolders: function (page) {
+                this.fullscreenLoading=true;
+                if(page==""){
+                    page=1;
+                }
+                var data={};
+                data.page=page;
                 let _this = this;
-                $.get('/folders', function (rs) {
+                $.get('/folders',data, function (rs) {
                     _this.folderlist=rs.result;
+                    _this.mailTotal=rs.result.total;
+                    _this.fullscreenLoading=false;
                 }).then(()=>{
                     _this.fullscreenLoading=false;
                 });

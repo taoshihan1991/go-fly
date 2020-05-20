@@ -241,7 +241,7 @@ func folders(w http.ResponseWriter, r *http.Request) {
 		defer wg.Done()
 		folders := tools.GetFolders(mailServer.Server, mailServer.Email,mailServer.Password, fid)
 		result["folders"]=folders
-
+		result["total"]=folders[fid]
 	}()
 	go func() {
 		defer wg.Done()
