@@ -135,6 +135,12 @@ func GetFolderMail(server string, email string, password string, folder string, 
 		mailitem.Subject = ret
 		mailitem.Id = msg.SeqNum
 		mailitem.Fid = folder
+		mailitem.Date=msg.Envelope.Date.String()
+		from:=""
+		for _,s:=range msg.Envelope.Sender{
+			from+=s.Address()
+		}
+		mailitem.From=from
 		mailPagelist.MailItems = append(mailPagelist.MailItems, mailitem)
 	}
 	return mailPagelist.MailItems

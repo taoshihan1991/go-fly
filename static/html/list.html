@@ -61,11 +61,11 @@
 
                 <el-main class="mainMain">
                     <div class="block">
-                        <el-timeline>
-                            <el-timeline-item  v-for="item in folderlist.mails" v-bind:key="item.Id" timestamp="2018/4/12" placement="top">
+                        <el-timeline :reverse="true">
+                            <el-timeline-item  v-for="item in folderlist.mails" v-bind:key="item.Id" :timestamp="item.Date" placement="top">
                                 <el-card>
                                     <h4><{item.Subject}></h4>
-                                    <p>王小虎 提交于 2018/4/12 20:46</p>
+                                    <p><{item.From}> 发送于 <{item.Date}></p>
                                 </el-card>
                             </el-timeline-item>
                         </el-timeline>
