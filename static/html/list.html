@@ -17,7 +17,7 @@
             margin: 0;
         }
         body {
-            padding-bottom: 40px;
+            overflow: hidden;
             background-color: #f5f5f5;
         }
         .el-container{
@@ -32,6 +32,15 @@
         .el-aside .el-menu{
             border-right: none;
         }
+        .mainLogo{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .mainMain{
+            background: #fff;
+            margin-left: 10px;
+            margin-bottom: 60px;
+        }
     </style>
 
 </head>
@@ -41,8 +50,9 @@
         <el-menu
                 default-active="2"
                 mode="horizontal">
-            <el-menu-item index="1" class="mainLogo">GO-IMAP</el-menu-item>
-            <el-menu-item index="2">收信</el-menu-item>
+            <el-menu-item index="1" class="mainLogo" v-on:click="getFolders(1)">GO-IMAP</el-menu-item>
+            <el-menu-item index="2" v-on:click="getFolders(1,fid)">收信<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
+            </el-menu-item>
             <el-menu-item index="3">写信</el-menu-item>
             <el-header style="text-align: right; font-size: 12px" class="logout">
                 <a href="/logout">退出</a>
@@ -51,8 +61,8 @@
         <el-container  v-loading.fullscreen.lock="fullscreenLoading">
                 <el-aside>
                     <el-menu
-                    default-active="1">
-                        <el-menu-item index="1" v-on:click="" v-for="(f,v) in folderlist.folders" v-bind:key="v">
+                    :default-active="fid">
+                        <el-menu-item :index="v" v-for="(f,v) in folderlist.folders" v-bind:key="v"  v-on:click="getFolders(1,v)">
                             <i class="el-icon-menu"></i>
                             <span slot="title"><{v}></span>
                         </el-menu-item>
@@ -63,7 +73,7 @@
                     <div class="block">
                         <el-timeline :reverse="true">
                             <el-timeline-item  v-for="item in folderlist.mails" v-bind:key="item.Id" :timestamp="item.Date" placement="top">
-                                <el-card>
+                                <el-card  v-on:click.native="openUrl('/view?fid='+fid+'&id='+item.Id)">
                                     <h4><{item.Subject}></h4>
                                     <p><{item.From}> 发送于 <{item.Date}></p>
                                 </el-card>
@@ -73,6 +83,7 @@
                     <el-pagination
                             background
                             :current-page="page"
+                            :page-size="pagesize"
                             @current-change="getFolders"
                             layout="prev, pager, next"
                             :total="mailTotal">
@@ -91,24 +102,36 @@
             folderlist:[],
             mailTotal:0,
             page:1,
+            pagesize:10,
+            fid:"INBOX",
 		},
 		methods: {
-            //提交表单
-            getFolders: function (page) {
+            //获取邮件夹
+            getFolders: function (page,fid) {
                 this.fullscreenLoading=true;
                 if(page==""){
                     page=1;
                 }
                 var data={};
                 data.page=page;
+                if(fid!=""){
+                    data.fid=fid;
+                    this.fid=fid;
+                }
                 let _this = this;
                 $.get('/folders',data, function (rs) {
                     _this.folderlist=rs.result;
                     _this.mailTotal=rs.result.total;
+                    _this.pagesize=rs.result.pagesize;
+                    _this.fid=rs.result.fid;
                     _this.fullscreenLoading=false;
                 }).then(()=>{
                     _this.fullscreenLoading=false;
                 });
+            },
+            //跳转
+            openUrl(url){
+                window.location.href=url;
             },
 		},
         created: function () {
