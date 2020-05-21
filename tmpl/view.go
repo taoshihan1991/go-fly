@@ -1,6 +1,7 @@
 package tmpl
 
 import (
+	"github.com/taoshihan1991/imaptool/tools"
 	"html/template"
 	"net/http"
 )
@@ -71,6 +72,7 @@ func RenderView(w http.ResponseWriter, render interface{}) {
 </body>
 </html>
 `
-	t, _ := template.New("view").Parse(html)
+	html1:=tools.FileGetContent("html/view.html")
+	t, _ := template.New("view").Parse(html1)
 	t.Execute(w, render)
 }

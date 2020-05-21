@@ -7,6 +7,7 @@
     <title>GO-IMAP网页版邮箱imap工具</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router/dist/vue-router.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <style>
@@ -89,12 +90,27 @@
                             :total="mailTotal">
                     </el-pagination>
                 </el-main>
+            <router-view></router-view>
+
         </el-container>
+</template>
+<template id="mailList">
+    <div>aaa</div>
 </template>
 </div>
 </body>
 <script>
+    const list = { template: mailList };
+    const view = { template: '<div>bbb</div>' };
+    const routes = [
+        { path: '/', component: list },
+        { path: '/view', component: view }
+    ];
+    const router = new VueRouter({
+        routes // (缩写) 相当于 routes: routes
+    })
 	new Vue({
+        router,
 		el: '#app',
         delimiters:["<{","}>"],
 		data: {
