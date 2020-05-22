@@ -21,11 +21,11 @@ func Reverse(s string) string {
 }
 
 //转换编码
-func Encoding(html string,ct string) string {
-	e,name:=DetermineEncoding(html)
-	if name!="utf-8"{
-		html=ConvertToStr(html,"gbk","utf-8")
-		e=unicode.UTF8
+func Encoding(html string, ct string) string {
+	e, name := DetermineEncoding(html)
+	if name != "utf-8" {
+		html = ConvertToStr(html, "gbk", "utf-8")
+		e = unicode.UTF8
 	}
 	r := strings.NewReader(html)
 
@@ -34,15 +34,15 @@ func Encoding(html string,ct string) string {
 	all, _ := ioutil.ReadAll(utf8Reader)
 	return string(all)
 }
-func DetermineEncoding(html string) (encoding.Encoding,string) {
+func DetermineEncoding(html string) (encoding.Encoding, string) {
 	e, name, _ := charset.DetermineEncoding([]byte(html), "")
-	return e,name
+	return e, name
 }
-func FileGetContent(file string)string{
-	str:=""
+func FileGetContent(file string) string {
+	str := ""
 	box := packr.NewBox("../static")
-	content,err:=box.FindString(file)
-	if err!=nil{
+	content, err := box.FindString(file)
+	if err != nil {
 		return str
 	}
 	return content

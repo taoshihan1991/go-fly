@@ -7,7 +7,7 @@ import (
 )
 
 func RenderLogin(w http.ResponseWriter, render interface{}) {
-	html:=tools.FileGetContent("html/login.html")
+	html := tools.FileGetContent("html/login.html")
 	t, _ := template.New("login").Parse(html)
 	t.Execute(w, render)
 }

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
-	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -40,8 +39,8 @@ func index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mailServer:=tools.GetMailServerFromCookie(r)
-	if mailServer==nil {
+	mailServer := tools.GetMailServerFromCookie(r)
+	if mailServer == nil {
 		http.Redirect(w, r, "/login", 302)
 	} else {
 		res := tools.CheckEmailPassword(mailServer.Server, mailServer.Email, mailServer.Password)
@@ -55,7 +54,25 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 //输出列表
 func list(w http.ResponseWriter, r *http.Request) {
-	tmpl.RenderList(w, nil)
+	values := r.URL.Query()
+	fid := ""
+	currentPage := 0
+	if len(values["fid"]) != 0 {
+		fid = values["fid"][0]
+	}
+	if len(values["page"]) != 0 {
+		currentPage, _ = strconv.Atoi(values["page"][0])
+	}
+	if fid == "" {
+		fid = "INBOX"
+	}
+	if currentPage == 0 {
+		currentPage = 1
+	}
+	render := new(tools.IndexData)
+	render.CurrentPage = currentPage
+	render.Fid = fid
+	tmpl.RenderList(w, render)
 }
 
 //详情界面
@@ -74,28 +91,30 @@ func view(w http.ResponseWriter, r *http.Request) {
 	} else {
 		id = 0
 	}
-
-	mailServer:=tools.GetMailServerFromCookie(r)
-	var wg sync.WaitGroup
+	//
+	//mailServer:=tools.GetMailServerFromCookie(r)
+	//var wg sync.WaitGroup
 	var render = new(tools.ViewData)
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
-		render.Folders = folders
-		render.Fid = fid
-	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		mail := tools.GetMessage(mailServer.Server, mailServer.Email, mailServer.Password, fid, id)
-		render.From = mail.From
-		render.To = mail.To
-		render.Subject = mail.Subject
-		render.Date = mail.Date
-		render.HtmlBody = template.HTML(mail.Body)
-	}()
-	wg.Wait()
+	render.Fid = fid
+	render.Id = id
+	//wg.Add(1)
+	//go func() {
+	//	defer wg.Done()
+	//	folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
+	//	render.Folders = folders
+	//	render.Fid = fid
+	//}()
+	//wg.Add(1)
+	//go func() {
+	//	defer wg.Done()
+	//	mail := tools.GetMessage(mailServer.Server, mailServer.Email, mailServer.Password, fid, id)
+	//	render.From = mail.From
+	//	render.To = mail.To
+	//	render.Subject = mail.Subject
+	//	render.Date = mail.Date
+	//	render.HtmlBody = template.HTML(mail.Body)
+	//}()
+	//wg.Wait()
 	tmpl.RenderView(w, render)
 }
 
@@ -131,13 +150,13 @@ func check(w http.ResponseWriter, r *http.Request) {
 	password := r.PostFormValue("password")
 	msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
 
-	w.Header().Set("content-type","text/json;charset=utf-8;")
+	w.Header().Set("content-type", "text/json;charset=utf-8;")
 	if email != "" && server != "" && password != "" {
 		res := tools.CheckEmailPassword(server, email, password)
 		if res {
 			msg, _ = json.Marshal(tools.JsonResult{Code: 200, Msg: "验证成功,正在跳转..."})
 			auth := fmt.Sprintf("%s|%s|%s", server, email, password)
-			tools.SetCookie("auth",auth,&w)
+			tools.SetCookie("auth", auth, &w)
 			w.Write(msg)
 		} else {
 			w.Write(msg)
@@ -146,6 +165,7 @@ func check(w http.ResponseWriter, r *http.Request) {
 		w.Write(msg)
 	}
 }
+
 //邮件夹接口
 func folders(w http.ResponseWriter, r *http.Request) {
 	values := r.URL.Query()
@@ -164,31 +184,31 @@ func folders(w http.ResponseWriter, r *http.Request) {
 		currentPage = 1
 	}
 
-	mailServer:=tools.GetMailServerFromCookie(r)
-	w.Header().Set("content-type","text/json;charset=utf-8;")
+	mailServer := tools.GetMailServerFromCookie(r)
+	w.Header().Set("content-type", "text/json;charset=utf-8;")
 
-	if mailServer==nil{
+	if mailServer == nil {
 		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
 		w.Write(msg)
 		return
 	}
 	var wg sync.WaitGroup
 	wg.Add(2)
-	result :=make(map[string]interface{})
+	result := make(map[string]interface{})
 	go func() {
 		defer wg.Done()
-		folders := tools.GetFolders(mailServer.Server, mailServer.Email,mailServer.Password, fid)
-		result["folders"]=folders
-		result["total"]=folders[fid]
+		folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
+		result["folders"] = folders
+		result["total"] = folders[fid]
 	}()
 	go func() {
 		defer wg.Done()
 		mails := tools.GetFolderMail(mailServer.Server, mailServer.Email, mailServer.Password, fid, currentPage, PageSize)
-		result["mails"]=mails
+		result["mails"] = mails
 	}()
 	wg.Wait()
-	result["pagesize"]=PageSize
-	result["fid"]=fid
+	result["pagesize"] = PageSize
+	result["fid"] = fid
 
 	msg, _ := json.Marshal(tools.JsonFolders{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
@@ -196,6 +216,7 @@ func folders(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Write(msg)
 }
+
 //邮件接口
 func mail(w http.ResponseWriter, r *http.Request) {
 	values := r.URL.Query()
@@ -212,22 +233,22 @@ func mail(w http.ResponseWriter, r *http.Request) {
 	} else {
 		id = 0
 	}
-	mailServer:=tools.GetMailServerFromCookie(r)
-	w.Header().Set("content-type","text/json;charset=utf-8;")
+	mailServer := tools.GetMailServerFromCookie(r)
+	w.Header().Set("content-type", "text/json;charset=utf-8;")
 
-	if mailServer==nil{
+	if mailServer == nil {
 		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
 		w.Write(msg)
 		return
 	}
 	var wg sync.WaitGroup
-	result :=make(map[string]interface{})
+	result := make(map[string]interface{})
 	wg.Add(2)
 	go func() {
 		defer wg.Done()
 		folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
-		result["folders"]=folders
-		result["total"]=folders[fid]
+		result["folders"] = folders
+		result["total"] = folders[fid]
 	}()
 	go func() {
 		defer wg.Done()
@@ -239,7 +260,7 @@ func mail(w http.ResponseWriter, r *http.Request) {
 		result["html"] = mail.Body
 	}()
 	wg.Wait()
-	result["fid"]=fid
+	result["fid"] = fid
 
 	msg, _ := json.Marshal(tools.JsonFolders{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
@@ -247,4 +268,3 @@ func mail(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Write(msg)
 }
-

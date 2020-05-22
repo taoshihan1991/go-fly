@@ -1,8 +1,9 @@
 package tools
 
 import "html/template"
-type MailServer struct{
-	Server,Email,Password string
+
+type MailServer struct {
+	Server, Email, Password string
 }
 type IndexData struct {
 	Folders           map[string]int
@@ -30,11 +31,11 @@ type MailItem struct {
 type MailPageList struct {
 	MailItems []*MailItem
 }
-type JsonResult  struct{
-	Code int `json:"code"`
+type JsonResult struct {
+	Code int    `json:"code"`
 	Msg  string `json:"msg"`
 }
-type JsonFolders struct{
+type JsonFolders struct {
 	JsonResult
 	Result interface{} `json:"result"`
 }
