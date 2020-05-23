@@ -5,8 +5,11 @@ import "html/template"
 type MailServer struct {
 	Server, Email, Password string
 }
-type IndexData struct {
+type ViewHtml struct{
 	Header 			  template.HTML
+}
+type IndexData struct {
+	ViewHtml
 	Folders           map[string]int
 	Mails             interface{}
 	MailPagelist      []*MailItem

@@ -29,6 +29,8 @@ func main() {
 	http.HandleFunc("/mail", mail)
 	//详情界面
 	http.HandleFunc("/view", view)
+	//写信界面
+	http.HandleFunc("/write", write)
 	//监听端口
 	http.ListenAndServe(":8080", nil)
 }
@@ -103,7 +105,11 @@ func view(w http.ResponseWriter, r *http.Request) {
 func login(w http.ResponseWriter, r *http.Request) {
 	tmpl.RenderLogin(w, nil)
 }
-
+//写信界面
+func write(w http.ResponseWriter, r *http.Request) {
+	render:=new(tools.ViewHtml)
+	tmpl.RenderWrite(w, render)
+}
 //验证接口
 func check(w http.ResponseWriter, r *http.Request) {
 	email := r.PostFormValue("email")

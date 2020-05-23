@@ -3,56 +3,39 @@
 <div id="app" style="width:100%">
     <template>
         <el-menu
-                default-active="2"
+                default-active="3"
                 mode="horizontal">
-            <el-menu-item index="1" class="mainLogo" v-on:click="getFolders(1)">GO-IMAP</el-menu-item>
-            <el-menu-item index="2" v-on:click="getFolders(1,fid)">收信<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
+            <el-menu-item index="1" class="mainLogo" v-on:click="openUrl('/list')">GO-IMAP</el-menu-item>
+            <el-menu-item index="2" v-on:click="openUrl('/list?fid='+fid)">收信<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
             </el-menu-item>
             <el-menu-item index="3" v-on:click="openUrl('/write')">写信</el-menu-item>
             <el-menu-item index="4" v-on:click="openUrl('/logout')">退出</el-menu-item>
         </el-menu>
         <el-container  v-loading.fullscreen.lock="fullscreenLoading">
-                <el-aside>
-                    <el-menu
-                    :default-active="fid">
-                        <el-menu-item :index="v" v-for="(f,v) in folders" v-bind:key="v"  v-on:click="getFolders(1,v,true)">
-                            <i class="el-icon-menu"></i>
-                            <span slot="title"><{v}></span>
-                        </el-menu-item>
-                    </el-menu>
-                </el-aside>
+            <el-aside>
+                <el-menu
+                        :default-active="fid">
+                    <el-menu-item :index="v" v-for="(f,v) in folders" v-bind:key="v"  v-on:click="openUrl('/list?fid='+v)">
+                        <i class="el-icon-menu"></i>
+                        <span slot="title"><{v}></span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
 
-                <el-main class="mainMain">
-                    <div class="block">
-                        <el-timeline :reverse="true">
-                            <el-timeline-item  v-for="item in mails" v-bind:key="item.Id" :timestamp="item.Date" placement="top">
-                                <el-card  v-on:click.native="openUrl('/view?fid='+fid+'&id='+item.Id)">
-                                    <h4><{item.Subject}></h4>
-                                    <p><{item.From}> 发送于 <{item.Date}></p>
-                                </el-card>
-                            </el-timeline-item>
-                        </el-timeline>
-                    </div>
-                    <el-pagination
-                            background
-                            :current-page="page"
-                            :page-size="pagesize"
-                            @current-change="getFolders"
-                            layout="prev, pager, next"
-                            :total="mailTotal">
-                    </el-pagination>
-                </el-main>
+            <el-main class="mainMain">
+                bbb
+            </el-main>
 
         </el-container>
-</template>
+    </template>
 
 </div>
 </body>
 <script>
-	new Vue({
-		el: '#app',
+    new Vue({
+        el: '#app',
         delimiters:["<{","}>"],
-		data: {
+        data: {
             fullscreenLoading:true,
             folders:[],
             mails:[],
@@ -60,8 +43,8 @@
             page:1,
             pagesize:10,
             fid:"",
-		},
-		methods: {
+        },
+        methods: {
             //获取邮件夹
             getFolders: function (page,fid,isLeft) {
                 this.fullscreenLoading=true;
@@ -96,11 +79,11 @@
             openUrl(url){
                 window.location.href=url;
             },
-		},
+        },
         created: function () {
-            this.getFolders({{.CurrentPage}},{{.Fid}});
+            this.getFolders();
         }
-	})
+    })
 
 </script>
 </html>
