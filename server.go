@@ -54,15 +54,8 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 //输出列表
 func list(w http.ResponseWriter, r *http.Request) {
-	values := r.URL.Query()
-	fid := ""
-	currentPage := 0
-	if len(values["fid"]) != 0 {
-		fid = values["fid"][0]
-	}
-	if len(values["page"]) != 0 {
-		currentPage, _ = strconv.Atoi(values["page"][0])
-	}
+	fid:=tools.GetUrlArg(r,"fid")
+	currentPage, _ :=strconv.Atoi(tools.GetUrlArg(r,"page"))
 	if fid == "" {
 		fid = "INBOX"
 	}
@@ -77,26 +70,14 @@ func list(w http.ResponseWriter, r *http.Request) {
 
 //详情界面
 func view(w http.ResponseWriter, r *http.Request) {
-	values := r.URL.Query()
-	fid := ""
-	if len(values["fid"]) != 0 {
-		fid = values["fid"][0]
-	} else {
-		fid = "INBOX"
-	}
-	var id uint32
-	if len(values["id"]) != 0 {
-		i, _ := strconv.Atoi(values["id"][0])
-		id = uint32(i)
-	} else {
-		id = 0
-	}
+	fid:=tools.GetUrlArg(r,"fid")
+	id, _ :=strconv.Atoi(tools.GetUrlArg(r,"id"))
 	//
 	//mailServer:=tools.GetMailServerFromCookie(r)
 	//var wg sync.WaitGroup
 	var render = new(tools.ViewData)
 	render.Fid = fid
-	render.Id = id
+	render.Id = uint32(id)
 	//wg.Add(1)
 	//go func() {
 	//	defer wg.Done()

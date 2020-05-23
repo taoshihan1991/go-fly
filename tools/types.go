@@ -6,6 +6,7 @@ type MailServer struct {
 	Server, Email, Password string
 }
 type IndexData struct {
+	Header 			  template.HTML
 	Folders           map[string]int
 	Mails             interface{}
 	MailPagelist      []*MailItem
