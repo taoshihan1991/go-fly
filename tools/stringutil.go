@@ -8,9 +8,16 @@ import (
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 	"io/ioutil"
+	"net/http"
 	"strings"
 )
-
+//获取URL的GET参数
+func GetUrlArg(r *http.Request,name string)string{
+	var arg string
+	values := r.URL.Query()
+	arg=values.Get(name)
+	return arg
+}
 // Reverse 将其实参字符串以符文为单位左右反转。
 func Reverse(s string) string {
 	r := []rune(s)
@@ -38,6 +45,7 @@ func DetermineEncoding(html string) (encoding.Encoding, string) {
 	e, name, _ := charset.DetermineEncoding([]byte(html), "")
 	return e, name
 }
+//获取文件内容，可以打包到二进制
 func FileGetContent(file string) string {
 	str := ""
 	box := packr.NewBox("../static")

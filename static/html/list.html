@@ -65,7 +65,7 @@
                 <el-aside>
                     <el-menu
                     :default-active="fid">
-                        <el-menu-item :index="v" v-for="(f,v) in folderlist.folders" v-bind:key="v"  v-on:click="getFolders(1,v)">
+                        <el-menu-item :index="v" v-for="(f,v) in folders" v-bind:key="v"  v-on:click="getFolders(1,v,true)">
                             <i class="el-icon-menu"></i>
                             <span slot="title"><{v}></span>
                         </el-menu-item>
@@ -75,7 +75,7 @@
                 <el-main class="mainMain">
                     <div class="block">
                         <el-timeline :reverse="true">
-                            <el-timeline-item  v-for="item in folderlist.mails" v-bind:key="item.Id" :timestamp="item.Date" placement="top">
+                            <el-timeline-item  v-for="item in mails" v-bind:key="item.Id" :timestamp="item.Date" placement="top">
                                 <el-card  v-on:click.native="openUrl('/view?fid='+fid+'&id='+item.Id)">
                                     <h4><{item.Subject}></h4>
                                     <p><{item.From}> 发送于 <{item.Date}></p>
@@ -104,28 +104,36 @@
         delimiters:["<{","}>"],
 		data: {
             fullscreenLoading:true,
-            folderlist:[],
+            folders:[],
+            mails:[],
             mailTotal:0,
             page:1,
             pagesize:10,
-            fid:"INBOX",
+            fid:"",
 		},
 		methods: {
             //获取邮件夹
-            getFolders: function (page,fid) {
+            getFolders: function (page,fid,isLeft) {
                 this.fullscreenLoading=true;
-                if(page==""){
+                if(typeof(page)=="undefined" || page==""){
                     page=1;
+                }else{
+                    this.page=page;
                 }
-                var data={};
+                let data={};
                 data.page=page;
-                if(fid!=""){
+                if(typeof(fid)!="undefined" && fid!=""){
                     data.fid=fid;
                     this.fid=fid;
+                }else if(this.fid!=""){
+                    data.fid=this.fid;
                 }
                 let _this = this;
                 $.get('/folders',data, function (rs) {
-                    _this.folderlist=rs.result;
+                    if(!isLeft){
+                        _this.folders=rs.result.folders;
+                    }
+                    _this.mails=rs.result.mails
                     _this.mailTotal=rs.result.total;
                     _this.pagesize=rs.result.pagesize;
                     _this.fid=rs.result.fid;

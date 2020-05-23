@@ -120,27 +120,7 @@ func view(w http.ResponseWriter, r *http.Request) {
 
 //登陆界面
 func login(w http.ResponseWriter, r *http.Request) {
-	email := r.PostFormValue("email")
-	server := r.PostFormValue("server")
-	password := r.PostFormValue("password")
-	var errStr string
-	if email != "" && server != "" && password != "" {
-		res := tools.CheckEmailPassword(server, email, password)
-		if !res {
-			errStr = "连接或验证失败"
-			tmpl.RenderLogin(w, errStr)
-		} else {
-			auth := fmt.Sprintf("%s|%s|%s", server, email, password)
-			cookie := http.Cookie{
-				Name:  "auth",
-				Value: auth,
-			}
-			http.SetCookie(w, &cookie)
-			http.Redirect(w, r, "/", 302)
-		}
-	} else {
-		tmpl.RenderLogin(w, errStr)
-	}
+	tmpl.RenderLogin(w, nil)
 }
 
 //验证接口
@@ -168,15 +148,9 @@ func check(w http.ResponseWriter, r *http.Request) {
 
 //邮件夹接口
 func folders(w http.ResponseWriter, r *http.Request) {
-	values := r.URL.Query()
-	fid := ""
-	currentPage := 0
-	if len(values["fid"]) != 0 {
-		fid = values["fid"][0]
-	}
-	if len(values["page"]) != 0 {
-		currentPage, _ = strconv.Atoi(values["page"][0])
-	}
+	fid:=tools.GetUrlArg(r,"fid")
+	currentPage, _ :=strconv.Atoi(tools.GetUrlArg(r,"page"))
+
 	if fid == "" {
 		fid = "INBOX"
 	}
@@ -219,20 +193,8 @@ func folders(w http.ResponseWriter, r *http.Request) {
 
 //邮件接口
 func mail(w http.ResponseWriter, r *http.Request) {
-	values := r.URL.Query()
-	fid := ""
-	if len(values["fid"]) != 0 {
-		fid = values["fid"][0]
-	} else {
-		fid = "INBOX"
-	}
-	var id uint32
-	if len(values["id"]) != 0 {
-		i, _ := strconv.Atoi(values["id"][0])
-		id = uint32(i)
-	} else {
-		id = 0
-	}
+	fid:=tools.GetUrlArg(r,"fid")
+	id, _ :=strconv.Atoi(tools.GetUrlArg(r,"id"))
 	mailServer := tools.GetMailServerFromCookie(r)
 	w.Header().Set("content-type", "text/json;charset=utf-8;")
 
@@ -252,7 +214,7 @@ func mail(w http.ResponseWriter, r *http.Request) {
 	}()
 	go func() {
 		defer wg.Done()
-		mail := tools.GetMessage(mailServer.Server, mailServer.Email, mailServer.Password, fid, id)
+		mail := tools.GetMessage(mailServer.Server, mailServer.Email, mailServer.Password, fid, uint32(id))
 		result["from"] = mail.From
 		result["to"] = mail.To
 		result["subject"] = mail.Subject
