@@ -1,0 +1,179 @@
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="陶士涵">
+    <title>GO-IMAP网页版邮箱imap工具</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router/dist/vue-router.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+        .el-container{
+            margin-top:10px;
+            height: 100%;
+        }
+        .el-aside{
+            height: 100%;
+            background: #fff;
+            border: solid 1px #e6e6e6;
+        }
+        .el-aside .el-menu{
+            border-right: none;
+        }
+        .mainLogo{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .mainMain{
+            background: #fff;
+            margin-left: 10px;
+            margin-bottom: 60px;
+        }
+        .el-row{
+            margin-bottom: 15px;
+        }
+        .mainMain .el-col-2{
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body class="text-center">
+<div id="app" style="width:100%">
+    <template>
+        <el-menu
+                default-active="2"
+                mode="horizontal">
+            <el-menu-item index="1" class="mainLogo" v-on:click="openUrl('/list')">GO-IMAP</el-menu-item>
+            <el-menu-item index="2" v-on:click="openUrl('/list?fid='+fid)">收信<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
+            </el-menu-item>
+            <el-menu-item index="3">写信</el-menu-item>
+            <el-header style="text-align: right; font-size: 12px" class="logout">
+                <a href="/logout">退出</a>
+            </el-header>
+        </el-menu>
+        <el-container  v-loading.fullscreen.lock="fullscreenLoading">
+            <el-aside>
+                <el-menu
+                        :default-active="fid">
+                    <el-menu-item :index="v" v-for="(f,v) in folderlist.folders" v-bind:key="v"  v-on:click="openUrl('/list?fid='+v)">
+                        <i class="el-icon-menu"></i>
+                        <span slot="title"><{v}></span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+
+            <el-main class="mainMain">
+                <el-row :gutter="10">
+                    <el-col :span="2">
+                        发件人:
+                    </el-col>
+                    <el-col :span="22">
+                        <{from}>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :span="2">
+                        收件人:
+                    </el-col>
+                    <el-col :span="22">
+                        <{to}>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :span="2">
+                        时间:
+                    </el-col>
+                    <el-col :span="22">
+                        <{date}>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :span="2">
+                        标题:
+                    </el-col>
+                    <el-col :span="22">
+                        <{subject}>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :span="2">
+                        内容:
+                    </el-col>
+                    <el-col :span="22" v-html="html">
+                    </el-col>
+                </el-row>
+            </el-main>
+
+        </el-container>
+    </template>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            fullscreenLoading:true,
+            folderlist:[],
+            mailTotal:0,
+            fid:"INBOX",
+            from:"",
+            to:"",
+            date:"",
+            subject:"",
+            html:"",
+        },
+        methods: {
+            //获取邮件夹
+            getMail: function (fid,id) {
+                this.fullscreenLoading=true;
+                var data={};
+                if(fid!=""){
+                    data.fid=fid;
+                    this.fid=fid;
+                }
+                if(id!=""){
+                    data.id=id;
+                }
+                let _this = this;
+                $.get('/mail',data, function (rs) {
+                    _this.folderlist=rs.result;
+                    _this.fid=rs.result.fid;
+                    _this.mailTotal=rs.result.total;
+                    _this.from=rs.result.from;
+                    _this.to=rs.result.to;
+                    _this.date=rs.result.date;
+                    _this.subject=rs.result.subject;
+                    _this.html=rs.result.html;
+                    _this.fullscreenLoading=false;
+                }).then(()=>{
+                    _this.fullscreenLoading=false;
+                });
+            },
+            //跳转
+            openUrl(url){
+                window.location.href=url;
+            },
+        },
+        created: function () {
+            this.getMail({{.Fid}},{{.Id}});
+        }
+    })
+
+</script>
+</html>
