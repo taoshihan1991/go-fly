@@ -43,3 +43,9 @@ type JsonFolders struct {
 	JsonResult
 	Result interface{} `json:"result"`
 }
+type SmtpBody struct{
+	Smtp string
+	From string
+	To string
+	Body string
+}

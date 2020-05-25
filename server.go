@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -31,6 +32,8 @@ func main() {
 	http.HandleFunc("/view", view)
 	//写信界面
 	http.HandleFunc("/write", write)
+	//发送邮件接口
+	http.HandleFunc("/send", send)
 	//监听端口
 	http.ListenAndServe(":8080", nil)
 }
@@ -132,7 +135,38 @@ func check(w http.ResponseWriter, r *http.Request) {
 		w.Write(msg)
 	}
 }
+//发送邮件接口
+func send(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("content-type", "text/json;charset=utf-8;")
+	mailServer := tools.GetMailServerFromCookie(r)
 
+	if mailServer == nil {
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
+		w.Write(msg)
+		return
+	}
+
+	bodyBytes,err:=ioutil.ReadAll(r.Body)
+	if err!=nil{
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "操作失败,"+err.Error()})
+		w.Write(msg)
+		return
+	}
+	var sendData tools.SmtpBody
+	err = json.Unmarshal(bodyBytes, &sendData)
+	if err!=nil{
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "操作失败,"+err.Error()})
+		w.Write(msg)
+		return
+	}
+
+	smtpServer:=sendData.Smtp
+	smtpFrom:=sendData.From
+	//smtpTo:=sendData["to"].(string)
+	//smtpBody:=sendData["body"].(string)
+	msg, _ := json.Marshal(tools.JsonResult{Code: 200, Msg: smtpServer+smtpFrom})
+	w.Write(msg)
+}
 //邮件夹接口
 func folders(w http.ResponseWriter, r *http.Request) {
 	fid:=tools.GetUrlArg(r,"fid")
