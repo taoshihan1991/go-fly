@@ -46,6 +46,8 @@ type JsonFolders struct {
 type SmtpBody struct{
 	Smtp string
 	From string
-	To string
+	To []string
+	Password string
+	Subject string
 	Body string
 }

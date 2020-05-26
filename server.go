@@ -162,9 +162,17 @@ func send(w http.ResponseWriter, r *http.Request){
 
 	smtpServer:=sendData.Smtp
 	smtpFrom:=sendData.From
-	//smtpTo:=sendData["to"].(string)
-	//smtpBody:=sendData["body"].(string)
-	msg, _ := json.Marshal(tools.JsonResult{Code: 200, Msg: smtpServer+smtpFrom})
+	smtpTo:=sendData.To
+	smtpBody:=sendData.Body
+	smtpPass:=sendData.Password
+	smtpSubject:=sendData.Subject
+	err=tools.Send(smtpServer,smtpFrom,smtpPass,smtpTo,smtpSubject,smtpBody)
+	if err!=nil{
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: err.Error()})
+		w.Write(msg)
+		return
+	}
+	msg, _ := json.Marshal(tools.JsonResult{Code: 200, Msg: "发送成功!"})
 	w.Write(msg)
 }
 //邮件夹接口
