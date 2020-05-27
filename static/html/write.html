@@ -15,22 +15,22 @@
             </el-aside>
 
             <el-main class="mainMain">
-                <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                    <el-form-item label="smtp地址">
-                        <el-input v-model="form.smtp"></el-input>
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  label-width="120px">
+                    <el-form-item label="smtp地址" prop="smtp">
+                        <el-input v-model="ruleForm.smtp" placeholder="smtp地址"></el-input>
                     </el-form-item>
-                    <el-form-item label="主题">
-                        <el-input v-model="form.subject"></el-input>
+                    <el-form-item label="主题" prop="subject">
+                        <el-input v-model="ruleForm.subject"></el-input>
                     </el-form-item>
-                    <el-form-item label="收件人">
-                        <el-input v-model="form.email"></el-input>
+                    <el-form-item label="收件人" prop="email">
+                        <el-input v-model="ruleForm.email"></el-input>
                     </el-form-item>
-                    <el-form-item label="内容">
-                        <el-input type="textarea" v-model="form.content"></el-input>
+                    <el-form-item label="内容" prop="content">
+                        <el-input type="textarea" v-model="ruleForm.content"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('form')">立即发送</el-button>
-                        <el-button @click="resetForm('form')">取消</el-button>
+                        <el-button type="primary" @click="submitForm('ruleForm')">立即发送</el-button>
+                        <el-button @click="resetForm('ruleForm')">取消</el-button>
                     </el-form-item>
                 </el-form>
             </el-main>
@@ -49,7 +49,7 @@
             folders:[],
             fid:"",
             mailTotal:0,
-            form: {
+            ruleForm: {
                 smtp: '',
                 email: '',
                 subject: '',
@@ -91,6 +91,7 @@
             submitForm(formName){
                 let _this=this;
                 this.$refs[formName].validate((valid) => {
+                    console.log(valid,formName,this.$refs[formName]);
                     if (valid) {
                     } else {
                         return false;
