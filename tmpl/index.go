@@ -13,10 +13,4 @@ func RenderList(w http.ResponseWriter, render interface{}) {
 	render.(*tools.IndexData).Header=template.HTML(header)
 	t.Execute(w, render)
 }
-func RenderWrite(w http.ResponseWriter, render interface{}){
-	header := tools.FileGetContent("html/header.html")
-	html := tools.FileGetContent("html/write.html")
-	t, _ := template.New("write").Parse(html)
-	render.(*tools.ViewHtml).Header=template.HTML(header)
-	t.Execute(w, render)
-}
+

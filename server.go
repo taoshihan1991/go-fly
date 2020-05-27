@@ -80,7 +80,7 @@ func view(w http.ResponseWriter, r *http.Request) {
 	//
 	//mailServer:=tools.GetMailServerFromCookie(r)
 	//var wg sync.WaitGroup
-	var render = new(tools.ViewData)
+	var render = new(tmpl.ViewHtml)
 	render.Fid = fid
 	render.Id = uint32(id)
 	//wg.Add(1)
@@ -110,7 +110,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 }
 //写信界面
 func write(w http.ResponseWriter, r *http.Request) {
-	render:=new(tools.ViewHtml)
+	render:=new(tmpl.CommonHtml)
 	tmpl.RenderWrite(w, render)
 }
 //验证接口

@@ -2,15 +2,7 @@
 <body class="text-center">
 <div id="app" style="width:100%">
     <template>
-        <el-menu
-                default-active="3"
-                mode="horizontal">
-            <el-menu-item index="1" class="mainLogo" v-on:click="openUrl('/list')">GO-IMAP</el-menu-item>
-            <el-menu-item index="2" v-on:click="openUrl('/list?fid='+fid)">收信<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
-            </el-menu-item>
-            <el-menu-item index="3" v-on:click="openUrl('/write')">写信</el-menu-item>
-            <el-menu-item index="4" v-on:click="openUrl('/logout')">退出</el-menu-item>
-        </el-menu>
+        {{.Nav}}
         <el-container  v-loading.fullscreen.lock="fullscreenLoading">
             <el-aside>
                 <el-menu
@@ -23,7 +15,24 @@
             </el-aside>
 
             <el-main class="mainMain">
-                bbb
+                <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+                    <el-form-item label="smtp地址">
+                        <el-input v-model="form.smtp"></el-input>
+                    </el-form-item>
+                    <el-form-item label="主题">
+                        <el-input v-model="form.subject"></el-input>
+                    </el-form-item>
+                    <el-form-item label="收件人">
+                        <el-input v-model="form.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="内容">
+                        <el-input type="textarea" v-model="form.content"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submitForm('form')">立即发送</el-button>
+                        <el-button @click="resetForm('form')">取消</el-button>
+                    </el-form-item>
+                </el-form>
             </el-main>
 
         </el-container>
@@ -38,38 +47,37 @@
         data: {
             fullscreenLoading:true,
             folders:[],
-            mails:[],
-            mailTotal:0,
-            page:1,
-            pagesize:10,
             fid:"",
+            mailTotal:0,
+            form: {
+                smtp: '',
+                email: '',
+                subject: '',
+                content: '',
+            },
+            rules: {
+                smtp: [
+                    { required: true, message: 'SMTP服务器如"smtp.sina.net:25"包含端口号', trigger: 'blur' },
+                ],
+                email: [
+                    { required: true, message: '邮箱地址', trigger: 'blur' },
+                ],
+                subject: [
+                    { required: true, message: '主题', trigger: 'blur' },
+                ],
+                content: [
+                    { required: true, message: '内容', trigger: 'blur' },
+                ],
+            },
         },
         methods: {
             //获取邮件夹
-            getFolders: function (page,fid,isLeft) {
+            getFolders: function () {
                 this.fullscreenLoading=true;
-                if(typeof(page)=="undefined" || page==""){
-                    page=1;
-                }else{
-                    this.page=page;
-                }
-                let data={};
-                data.page=page;
-                if(typeof(fid)!="undefined" && fid!=""){
-                    data.fid=fid;
-                    this.fid=fid;
-                }else if(this.fid!=""){
-                    data.fid=this.fid;
-                }
                 let _this = this;
-                $.get('/folders',data, function (rs) {
-                    if(!isLeft){
-                        _this.folders=rs.result.folders;
-                    }
-                    _this.mails=rs.result.mails
+                $.get('/folders', function (rs) {
+                    _this.folders=rs.result.folders;
                     _this.mailTotal=rs.result.total;
-                    _this.pagesize=rs.result.pagesize;
-                    _this.fid=rs.result.fid;
                     _this.fullscreenLoading=false;
                 }).then(()=>{
                     _this.fullscreenLoading=false;
@@ -78,6 +86,21 @@
             //跳转
             openUrl(url){
                 window.location.href=url;
+            },
+            //提交表单
+            submitForm(formName){
+                let _this=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            //重置表单
+            resetForm(formName) {
+                this.loading=false;
+                this.$refs[formName].resetFields();
             },
         },
         created: function () {

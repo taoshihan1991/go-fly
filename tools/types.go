@@ -7,6 +7,7 @@ type MailServer struct {
 }
 type ViewHtml struct{
 	Header 			  template.HTML
+	Nav 			  template.HTML
 }
 type IndexData struct {
 	ViewHtml
