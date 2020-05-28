@@ -1,0 +1,41 @@
+{{.Header}}
+<body class="text-center">
+<div id="app" style="width:100%">
+    <template>
+        <el-container v-loading.fullscreen.lock="fullscreenLoading">
+            <el-aside>
+                <el-menu
+                        :default-active="1">
+                    <el-menu-item :index="1">
+                        <i class="el-icon-menu"></i>
+                        <span slot="title">账户中心</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+
+            <el-main class="mainMain">
+            aaa
+            </el-main>
+
+        </el-container>
+    </template>
+
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            fullscreenLoading:true,
+        },
+        methods: {
+
+        },
+        created: function () {
+            this.fullscreenLoading=false;
+        }
+    })
+
+</script>
+</html>

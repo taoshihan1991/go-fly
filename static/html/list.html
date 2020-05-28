@@ -2,15 +2,6 @@
 <body class="text-center">
 <div id="app" style="width:100%">
     <template>
-        <el-menu
-                default-active="2"
-                mode="horizontal">
-            <el-menu-item index="1" class="mainLogo" v-on:click="getFolders(1)">GO-IMAP</el-menu-item>
-            <el-menu-item index="2" v-on:click="getFolders(1,fid)">收信<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
-            </el-menu-item>
-            <el-menu-item index="3" v-on:click="openUrl('/write')">写信</el-menu-item>
-            <el-menu-item index="4" v-on:click="openUrl('/logout')">退出</el-menu-item>
-        </el-menu>
         <el-container  v-loading.fullscreen.lock="fullscreenLoading">
                 <el-aside>
                     <el-menu

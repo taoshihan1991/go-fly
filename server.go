@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
 	"io/ioutil"
@@ -32,6 +33,10 @@ func main() {
 	http.HandleFunc("/view", view)
 	//写信界面
 	http.HandleFunc("/write", write)
+	//框架界面
+	http.HandleFunc("/main", controller.ActionMain)
+	//设置界面
+	http.HandleFunc("/setting", controller.ActionSetting)
 	//发送邮件接口
 	http.HandleFunc("/send", send)
 	//监听端口
@@ -113,6 +118,7 @@ func write(w http.ResponseWriter, r *http.Request) {
 	render:=new(tmpl.CommonHtml)
 	tmpl.RenderWrite(w, render)
 }
+
 //验证接口
 func check(w http.ResponseWriter, r *http.Request) {
 	email := r.PostFormValue("email")

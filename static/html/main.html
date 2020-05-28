@@ -1,0 +1,28 @@
+{{.Header}}
+<body>
+<div id="app">
+    <template>
+        {{.Nav}}
+        <iframe  class="mainIframe"  v-bind:src="iframeUrl" frameborder="0"></iframe>
+    </template>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            iframeUrl:"/setting",
+            mailTotal:0,
+        },
+        methods: {
+            openIframeUrl(url){
+                this.iframeUrl=url;
+            }
+        },
+        created: function () {
+        }
+    })
+
+</script>
+</html>
