@@ -4,12 +4,17 @@
     <template>
         <el-container v-loading.fullscreen.lock="fullscreenLoading">
             <el-aside>
-                <el-menu
-                        :default-active="1">
-                    <el-menu-item :index="1">
-                        <i class="el-icon-menu"></i>
-                        <span slot="title">账户中心</span>
-                    </el-menu-item>
+                <el-menu default-active="1" @open="1">
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>账户中心</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="1-1">设置密码</el-menu-item>
+                            <el-menu-item index="1-2">新增用户</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
                 </el-menu>
             </el-aside>
 

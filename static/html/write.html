@@ -16,13 +16,13 @@
             <el-main class="mainMain">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm"  label-width="120px">
                     <el-form-item label="smtp地址" prop="smtp">
-                        <el-input v-model="ruleForm.smtp" placeholder="smtp地址"></el-input>
+                        <el-input v-model="ruleForm.smtp" placeholder="SMTP服务器如smtp.sina.net:25包含端口号"></el-input>
                     </el-form-item>
                     <el-form-item label="主题" prop="subject">
                         <el-input v-model="ruleForm.subject"></el-input>
                     </el-form-item>
-                    <el-form-item label="收件人" prop="email">
-                        <el-input v-model="ruleForm.email"></el-input>
+                    <el-form-item label="收件人" prop="to">
+                        <el-input v-model="ruleForm.to"></el-input>
                     </el-form-item>
                     <el-form-item label="内容" prop="content">
                         <el-input type="textarea" v-model="ruleForm.content"></el-input>
@@ -39,6 +39,7 @@
 
 </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     new Vue({
         el: '#app',
@@ -50,7 +51,7 @@
             mailTotal:0,
             ruleForm: {
                 smtp: '',
-                email: '',
+                to: '',
                 subject: '',
                 content: '',
             },
@@ -58,7 +59,7 @@
                 smtp: [
                     { required: true, message: 'SMTP服务器如"smtp.sina.net:25"包含端口号', trigger: 'blur' },
                 ],
-                email: [
+                to: [
                     { required: true, message: '邮箱地址', trigger: 'blur' },
                 ],
                 subject: [
@@ -74,9 +75,10 @@
             getFolders: function () {
                 this.fullscreenLoading=true;
                 let _this = this;
-                $.get('/folders', function (rs) {
+                $.get('/folder_dirs', function (rs) {
                     _this.folders=rs.result.folders;
                     _this.mailTotal=rs.result.total;
+                    _this.fid=rs.result.fid;
                     _this.fullscreenLoading=false;
                 }).then(()=>{
                     _this.fullscreenLoading=false;
@@ -92,6 +94,15 @@
                 this.$refs[formName].validate((valid) => {
                     console.log(valid,formName,this.$refs[formName]);
                     if (valid) {
+                        let data=this.ruleForm;
+                        let to=[];
+                        to.push(this.ruleForm.to);
+                        data.to=to;
+                        axios.post('/send', data).then(function (response) {
+                                console.log(response);
+                        }).catch(function (error) {
+                                console.log(error);
+                        });
                     } else {
                         return false;
                     }
