@@ -11,7 +11,6 @@ import (
 	"sync"
 )
 
-
 func main() {
 	log.Println("listen on 8080...\r\ngo：http://127.0.0.1:8080")
 	//根路径
@@ -36,6 +35,8 @@ func main() {
 	http.HandleFunc("/main", controller.ActionMain)
 	//设置界面
 	http.HandleFunc("/setting", controller.ActionSetting)
+	//设置账户接口
+	http.HandleFunc("/setting_account", controller.SettingAccount)
 	//发送邮件接口
 	http.HandleFunc("/send", controller.FolderSend)
 	//监听端口
@@ -113,7 +114,7 @@ func mail(w http.ResponseWriter, r *http.Request) {
 	wg.Wait()
 	result["fid"] = fid
 
-	msg, _ := json.Marshal(tools.JsonFolders{
+	msg, _ := json.Marshal(tools.JsonListResult{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
 		Result:     result,
 	})

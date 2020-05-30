@@ -1,0 +1,14 @@
+<el-menu default-active="1-3" :default-openeds="openIndex">
+    <el-submenu index="1">
+        <template slot="title">
+            <i class="el-icon-s-custom"></i>
+            <span>账户中心</span>
+        </template>
+        <el-menu-item-group>
+            <el-menu-item index="1-1">设置smtp</el-menu-item>
+            <el-menu-item index="1-2">设置imap</el-menu-item>
+            <el-menu-item index="1-3">设置登陆账号</el-menu-item>
+            <el-menu-item index="1-4"  v-on:click="openUrl('/setting_mysql')">设置mysql</el-menu-item>
+        </el-menu-item-group>
+    </el-submenu>
+</el-menu>

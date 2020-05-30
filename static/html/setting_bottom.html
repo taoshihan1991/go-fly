@@ -1,0 +1,72 @@
+<script>
+    var app=new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            fullscreenLoading:true,
+            openIndex:[1],
+            account: {
+                username: Username,
+                password: Password,
+            },
+            rules: {
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                ],
+            },
+
+        },
+        methods: {
+            //提交表单
+            setAccount(formName){
+                let _this=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        $.post("/setting_account",_this.account,function(data){
+                            if(data.code==200){
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'success'
+                                });
+                            }else{
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            //重置表单
+            resetForm(formName) {
+                this.loading=false;
+                this.$refs[formName].resetFields();
+            },
+            //跳转
+            openUrl(url){
+                window.location.href=url;
+            },
+            //展示提示
+            showNotice(){
+                this.fullscreenLoading=false;
+                this.$message({
+                    message: '配置信息写入同级config目录，目录不存在会自动创建！',
+                    type: 'warning',
+                    duration:'8000',
+                    showClose:true,
+                });
+            }
+        },
+        created: function () {
+            this.showNotice();
+        }
+    })
+
+</script>
+</html>

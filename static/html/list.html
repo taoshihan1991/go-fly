@@ -6,8 +6,12 @@
                 <el-aside>
                     <el-menu
                     :default-active="fid">
+                        <el-menu-item  v-on:click="openUrl('/write')">
+                            <i class="el-icon-edit"></i>
+                            <span slot="title">写信</span>
+                        </el-menu-item>
                         <el-menu-item :index="v" v-for="(f,v) in folders" v-bind:key="v"  v-on:click="getFolders(1,v,true)">
-                            <i class="el-icon-menu"></i>
+                            <i class="el-icon-message"></i>
                             <span slot="title"><{v}></span>
                         </el-menu-item>
                     </el-menu>

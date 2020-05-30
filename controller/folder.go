@@ -46,7 +46,7 @@ func FolderDir(w http.ResponseWriter, r *http.Request){
 	result["folders"] = folders
 	result["total"] = folders[fid]
 	result["fid"] = fid
-	msg, _ := json.Marshal(tools.JsonFolders{
+	msg, _ := json.Marshal(tools.JsonListResult{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
 		Result:     result,
 	})
@@ -90,7 +90,7 @@ func FoldersList(w http.ResponseWriter, r *http.Request) {
 	result["pagesize"] = PageSize
 	result["fid"] = fid
 
-	msg, _ := json.Marshal(tools.JsonFolders{
+	msg, _ := json.Marshal(tools.JsonListResult{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
 		Result:     result,
 	})

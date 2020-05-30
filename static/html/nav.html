@@ -1,10 +1,9 @@
 <el-menu
         default-active="4"
         mode="horizontal">
-    <el-menu-item index="1" class="mainLogo" v-on:click="openIframeUrl('/list')">GO-IMAP</el-menu-item>
-    <el-menu-item index="2" v-on:click="openIframeUrl('/list')">收信<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
+    <el-menu-item  class="mainLogo" v-on:click="openUrl('/login')">GO-IMAP</el-menu-item>
+    <el-menu-item index="2" v-on:click="openIframeUrl('/list')">邮箱<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
     </el-menu-item>
-    <el-menu-item index="3" v-on:click="openIframeUrl('/write')">写信</el-menu-item>
     <el-menu-item index="4" v-on:click="openIframeUrl('/setting')">设置</el-menu-item>
     <el-menu-item index="10" v-on:click="openIframeUrl('/logout')">退出</el-menu-item>
 </el-menu>

@@ -9,6 +9,8 @@ import (
 type CommonHtml struct{
 	Header 			  template.HTML
 	Nav 			  template.HTML
+	Left 			  template.HTML
+	Bottom			  template.HTML
 	Rw				  http.ResponseWriter
 }
 func NewRender(rw http.ResponseWriter)*CommonHtml{
@@ -19,6 +21,14 @@ func NewRender(rw http.ResponseWriter)*CommonHtml{
 	obj.Header=template.HTML(header)
 	obj.Nav=template.HTML(nav)
 	return obj
+}
+func (obj *CommonHtml)SetLeft(file string){
+	leftStr := tools.FileGetContent("html/"+file+".html")
+	obj.Left=template.HTML(leftStr)
+}
+func (obj *CommonHtml)SetBottom(file string){
+	str := tools.FileGetContent("html/"+file+".html")
+	obj.Bottom=template.HTML(str)
 }
 func (obj *CommonHtml)Display(file string,data interface{}){
 	main := tools.FileGetContent("html/"+file+".html")

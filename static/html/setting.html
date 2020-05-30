@@ -4,22 +4,22 @@
     <template>
         <el-container v-loading.fullscreen.lock="fullscreenLoading">
             <el-aside>
-                <el-menu default-active="1" @open="1">
-                    <el-submenu index="1">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>账户中心</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="1-1">设置密码</el-menu-item>
-                            <el-menu-item index="1-2">新增用户</el-menu-item>
-                        </el-menu-item-group>
-                    </el-submenu>
-                </el-menu>
+                {{.Left}}
             </el-aside>
 
             <el-main class="mainMain">
-            aaa
+                <el-form :model="account" :rules="rules" ref="account"  label-width="120px">
+                    <el-form-item label="用户名" prop="username">
+                        <el-input v-model="account.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input v-model="account.password"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="setAccount('account')">立即创建</el-button>
+                        <el-button @click="resetForm('account')">取消</el-button>
+                    </el-form-item>
+                </el-form>
             </el-main>
 
         </el-container>
@@ -28,19 +28,7 @@
 </div>
 </body>
 <script>
-    new Vue({
-        el: '#app',
-        delimiters:["<{","}>"],
-        data: {
-            fullscreenLoading:true,
-        },
-        methods: {
-
-        },
-        created: function () {
-            this.fullscreenLoading=false;
-        }
-    })
-
+    var Password="{{.Password}}";
+    var Username="{{.Username}}";
 </script>
-</html>
+{{.Bottom}}
