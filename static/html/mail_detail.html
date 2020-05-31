@@ -4,13 +4,7 @@
     <template>
         <el-container  v-loading.fullscreen.lock="fullscreenLoading">
             <el-aside>
-                <el-menu
-                        :default-active="fid">
-                    <el-menu-item :index="v" v-for="(f,v) in folderlist.folders" v-bind:key="v"  v-on:click="openUrl('/list?fid='+v)">
-                        <i class="el-icon-menu"></i>
-                        <span slot="title"><{v}></span>
-                    </el-menu-item>
-                </el-menu>
+            {{.Left}}
             </el-aside>
 
             <el-main class="mainMain">
@@ -65,7 +59,7 @@
         delimiters:["<{","}>"],
         data: {
             fullscreenLoading:true,
-            folderlist:[],
+            folders:[],
             mailTotal:0,
             fid:"INBOX",
             from:"",
@@ -88,7 +82,7 @@
                 }
                 let _this = this;
                 $.get('/mail',data, function (rs) {
-                    _this.folderlist=rs.result;
+                    _this.folders=rs.result.folders;
                     _this.fid=rs.result.fid;
                     _this.mailTotal=rs.result.total;
                     _this.from=rs.result.from;

@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"github.com/taoshihan1991/imaptool/controller"
-	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 	"net/http"
@@ -28,7 +27,7 @@ func main() {
 	//邮件接口
 	http.HandleFunc("/mail", mail)
 	//详情界面
-	http.HandleFunc("/view", view)
+	http.HandleFunc("/view", controller.ActionDetail)
 	//写信界面
 	http.HandleFunc("/write", controller.ActionWrite)
 	//框架界面
@@ -42,38 +41,6 @@ func main() {
 	//监听端口
 	http.ListenAndServe(":8080", nil)
 }
-
-//详情界面
-func view(w http.ResponseWriter, r *http.Request) {
-	fid:=tools.GetUrlArg(r,"fid")
-	id, _ :=strconv.Atoi(tools.GetUrlArg(r,"id"))
-	//
-	//mailServer:=tools.GetMailServerFromCookie(r)
-	//var wg sync.WaitGroup
-	var render = new(tmpl.ViewHtml)
-	render.Fid = fid
-	render.Id = uint32(id)
-	//wg.Add(1)
-	//go func() {
-	//	defer wg.Done()
-	//	folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
-	//	render.Folders = folders
-	//	render.Fid = fid
-	//}()
-	//wg.Add(1)
-	//go func() {
-	//	defer wg.Done()
-	//	mail := tools.GetMessage(mailServer.Server, mailServer.Email, mailServer.Password, fid, id)
-	//	render.From = mail.From
-	//	render.To = mail.To
-	//	render.Subject = mail.Subject
-	//	render.Date = mail.Date
-	//	render.HtmlBody = template.HTML(mail.Body)
-	//}()
-	//wg.Wait()
-	tmpl.RenderView(w, render)
-}
-
 
 //邮件接口
 func mail(w http.ResponseWriter, r *http.Request) {

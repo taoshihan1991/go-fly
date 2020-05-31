@@ -31,6 +31,17 @@ func ActionWrite(w http.ResponseWriter, r *http.Request){
 	render.SetLeft("mail_left")
 	render.Display("write",nil)
 }
+//读信界面
+func ActionDetail(w http.ResponseWriter, r *http.Request){
+	fid:=tools.GetUrlArg(r,"fid")
+	id, _ :=strconv.Atoi(tools.GetUrlArg(r,"id"))
+
+	render:=tmpl.NewDetailHtml(w)
+	render.SetLeft("mail_left")
+	render.Fid=fid
+	render.Id=uint32(id)
+	render.Display("mail_detail",render)
+}
 //获取邮件夹接口
 func FolderDir(w http.ResponseWriter, r *http.Request){
 	fid:=tools.GetUrlArg(r,"fid")
