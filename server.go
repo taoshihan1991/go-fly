@@ -39,6 +39,8 @@ func main() {
 	mux.HandleFunc("/setting_account", controller.SettingAccount)
 	//发送邮件接口
 	mux.HandleFunc("/send", controller.FolderSend)
+	//聊天界面
+	mux.HandleFunc("/chat_main", controller.ActionMain)
 	//监听端口
 	//http.ListenAndServe(":8080", nil)
 	//var myHandler http.Handler

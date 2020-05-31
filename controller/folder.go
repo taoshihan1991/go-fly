@@ -20,10 +20,10 @@ func ActionFolder(w http.ResponseWriter, r *http.Request){
 	if currentPage == 0 {
 		currentPage = 1
 	}
-	render := new(tools.IndexData)
+	render := tmpl.NewFolderHtml(w)
 	render.CurrentPage = currentPage
 	render.Fid = fid
-	tmpl.RenderList(w, render)
+	render.Display("list",render)
 }
 //写信界面
 func ActionWrite(w http.ResponseWriter, r *http.Request){
