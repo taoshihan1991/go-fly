@@ -31,6 +31,9 @@ func (obj *CommonHtml)SetBottom(file string){
 	obj.Bottom=template.HTML(str)
 }
 func (obj *CommonHtml)Display(file string,data interface{}){
+	if data==nil{
+		data=obj
+	}
 	main := tools.FileGetContent("html/"+file+".html")
 	t, _ := template.New(file).Parse(main)
 	t.Execute(obj.Rw, data)

@@ -25,6 +25,12 @@ func ActionFolder(w http.ResponseWriter, r *http.Request){
 	render.Fid = fid
 	tmpl.RenderList(w, render)
 }
+//写信界面
+func ActionWrite(w http.ResponseWriter, r *http.Request){
+	render:=tmpl.NewRender(w)
+	render.SetLeft("mail_left")
+	render.Display("write",nil)
+}
 //获取邮件夹接口
 func FolderDir(w http.ResponseWriter, r *http.Request){
 	fid:=tools.GetUrlArg(r,"fid")

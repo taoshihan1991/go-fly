@@ -30,7 +30,7 @@ func main() {
 	//详情界面
 	http.HandleFunc("/view", view)
 	//写信界面
-	http.HandleFunc("/write", write)
+	http.HandleFunc("/write", controller.ActionWrite)
 	//框架界面
 	http.HandleFunc("/main", controller.ActionMain)
 	//设置界面
@@ -72,12 +72,6 @@ func view(w http.ResponseWriter, r *http.Request) {
 	//}()
 	//wg.Wait()
 	tmpl.RenderView(w, render)
-}
-
-//写信界面
-func write(w http.ResponseWriter, r *http.Request) {
-	render:=new(tmpl.CommonHtml)
-	tmpl.RenderWrite(w, render)
 }
 
 

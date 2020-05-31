@@ -4,13 +4,7 @@
     <template>
         <el-container  v-loading.fullscreen.lock="fullscreenLoading">
             <el-aside>
-                <el-menu
-                        :default-active="fid">
-                    <el-menu-item :index="v" v-for="(f,v) in folders" v-bind:key="v"  v-on:click="openUrl('/list?fid='+v)">
-                        <i class="el-icon-menu"></i>
-                        <span slot="title"><{v}></span>
-                    </el-menu-item>
-                </el-menu>
+                {{.Left}}
             </el-aside>
 
             <el-main class="mainMain">
