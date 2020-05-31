@@ -8,38 +8,48 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
+	"time"
 )
-
 func main() {
 	log.Println("listen on 8080...\r\ngo：http://127.0.0.1:8080")
+	mux:=&http.ServeMux{}
 	//根路径
-	http.HandleFunc("/", controller.ActionIndex)
+	mux.HandleFunc("/", controller.ActionIndex)
 	//邮件夹
-	http.HandleFunc("/list", controller.ActionFolder)
+	mux.HandleFunc("/list", controller.ActionFolder)
 	//登陆界面
-	http.HandleFunc("/login", controller.ActionLogin)
+	mux.HandleFunc("/login", controller.ActionLogin)
 	//验证接口
-	http.HandleFunc("/check", controller.LoginCheck)
+	mux.HandleFunc("/check", controller.LoginCheck)
 	//邮件夹接口
-	http.HandleFunc("/folders", controller.FoldersList)
+	mux.HandleFunc("/folders", controller.FoldersList)
 	//新邮件夹接口
-	http.HandleFunc("/folder_dirs", controller.FolderDir)
+	mux.HandleFunc("/folder_dirs", controller.FolderDir)
 	//邮件接口
-	http.HandleFunc("/mail", mail)
+	mux.HandleFunc("/mail", mail)
 	//详情界面
-	http.HandleFunc("/view", controller.ActionDetail)
+	mux.HandleFunc("/view", controller.ActionDetail)
 	//写信界面
-	http.HandleFunc("/write", controller.ActionWrite)
+	mux.HandleFunc("/write", controller.ActionWrite)
 	//框架界面
-	http.HandleFunc("/main", controller.ActionMain)
+	mux.HandleFunc("/main", controller.ActionMain)
 	//设置界面
-	http.HandleFunc("/setting", controller.ActionSetting)
+	mux.HandleFunc("/setting", controller.ActionSetting)
 	//设置账户接口
-	http.HandleFunc("/setting_account", controller.SettingAccount)
+	mux.HandleFunc("/setting_account", controller.SettingAccount)
 	//发送邮件接口
-	http.HandleFunc("/send", controller.FolderSend)
+	mux.HandleFunc("/send", controller.FolderSend)
 	//监听端口
-	http.ListenAndServe(":8080", nil)
+	//http.ListenAndServe(":8080", nil)
+	//var myHandler http.Handler
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        mux,
+		ReadTimeout:    30 * time.Second,
+		WriteTimeout:   30 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
 }
 
 //邮件接口
