@@ -89,6 +89,8 @@ func FoldersList(w http.ResponseWriter, r *http.Request) {
 		w.Write(msg)
 		return
 	}
+
+
 	var wg sync.WaitGroup
 	wg.Add(2)
 	result := make(map[string]interface{})

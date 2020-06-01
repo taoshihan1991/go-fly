@@ -63,7 +63,33 @@ func connect(server string, email string, password string) *client.Client {
 	}
 	return c
 }
-
+//获取邮件总数
+func GetMailNum(server string, email string, password string) map[string]int {
+	var c *client.Client
+	//defer c.Logout()
+	c = connect(server, email, password)
+	if c == nil {
+		return nil
+	}
+	// 列邮箱
+	mailboxes := make(chan *imap.MailboxInfo, 10)
+	done := make(chan error, 1)
+	go func() {
+		done <- c.List("", "*", mailboxes)
+	}()
+	//// 存储邮件夹
+	var folders = make(map[string]int)
+	for m := range mailboxes {
+		folders[m.Name] = 0
+	}
+	for m, _ := range folders {
+		mbox, _ := c.Select(m, true)
+		if mbox != nil {
+			folders[m] = int(mbox.Messages)
+		}
+	}
+	return folders
+}
 //获取邮件夹
 func GetFolders(server string, email string, password string, folder string) map[string]int {
 	var c *client.Client

@@ -114,6 +114,13 @@
             },
             websocketonmessage(e){ //数据接收
                 const redata = JSON.parse(e.data);
+                if (redata.code==200){
+                    this.$notify({
+                        title: '新邮件',
+                        message: redata.msg,
+                        type: 'success'
+                    });
+                }
             },
             websocketsend(Data){//数据发送
                 this.websock.send(Data);
