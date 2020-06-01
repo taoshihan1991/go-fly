@@ -41,6 +41,8 @@ func main() {
 	mux.HandleFunc("/send", controller.FolderSend)
 	//聊天界面
 	mux.HandleFunc("/chat_main", controller.ActionMain)
+	//推送新邮件
+	mux.HandleFunc("/push_mail", controller.PushMailServer)
 	//监听端口
 	//http.ListenAndServe(":8080", nil)
 	//var myHandler http.Handler
