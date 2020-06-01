@@ -1,7 +1,7 @@
 package controller
-import(
+
+import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
@@ -35,11 +35,15 @@ func PushMailServer(w http.ResponseWriter, r *http.Request){
 			}
 		}else{
 			folders:=tools.GetMailNum(mailServer.Server, mailServer.Email, mailServer.Password)
-			log.Println(folders)
-			log.Println(oldFolders)
 			for name,num:=range folders{
 				if oldFolders[name]!=num{
-					msg, _ = json.Marshal(tools.JsonResult{Code: 200, Msg: fmt.Sprintf("%s:%d",name,num)})
+					result := make(map[string]interface{})
+					result["folder_name"] = name
+					result["new_num"] = num-oldFolders[name]
+					msg, _ := json.Marshal(tools.JsonListResult{
+						JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
+						Result:     result,
+					})
 					c.WriteMessage(mt,msg)
 				}
 			}

@@ -116,9 +116,10 @@
                 const redata = JSON.parse(e.data);
                 if (redata.code==200){
                     this.$notify({
-                        title: '新邮件',
-                        message: redata.msg,
-                        type: 'success'
+                        title: redata.result.folder_name,
+                        message: "新邮件："+redata.result.new_num,
+                        type: 'success',
+                        duration: 0,
                     });
                 }
             },
