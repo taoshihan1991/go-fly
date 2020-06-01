@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="陶士涵">
-    <title>GO-IMAP网页版邮箱imap工具登录页</title>
+    <title>GO-FLY登录页</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
@@ -30,11 +30,11 @@
             padding-bottom: 40px;
             background-color: #f5f5f5;
         }
-        .form-signin {
+        .signin {
             width: 100%;
             max-width: 400px;
             padding: 20px;
-            margin: auto;
+            margin:0 auto;
             background: #fff;
             -webkit-box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
             box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
@@ -43,24 +43,42 @@
 
 </head>
 <body class="text-center">
-<div id="app" style="width:100%">
+<div id="app" class="signin">
     <template>
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="form-signin">
-          <h1 class="h3 mb-3 font-weight-normal">邮箱网页版IMAP工具</h1>
-          <el-form-item  prop="server">
-            <el-input v-model="ruleForm.server" placeholder="IMAP服务器如imap.sina.net:143"></el-input>
-          </el-form-item>
-          <el-form-item  prop="email">
-            <el-input v-model="ruleForm.email" placeholder="邮箱地址"></el-input>
-          </el-form-item>
-          <el-form-item  prop="password">
-            <el-input v-model="ruleForm.password" placeholder="密码"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">立即登录</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
-          </el-form-item>
-        </el-form>
+        <h1 class="h3 mb-3 font-weight-normal">登录页</h1>
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="本地认证" name="first">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+                    <el-form-item  prop="email">
+                        <el-input v-model="ruleForm.email" placeholder="邮箱地址"></el-input>
+                    </el-form-item>
+                    <el-form-item  prop="password">
+                        <el-input v-model="ruleForm.password" placeholder="密码"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button :loading="loading" type="primary" @click="">本地验证</el-button>
+                        <el-button @click="window.location.href='/main'">设置账户</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="IMAP认证" name="second">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+                    <el-form-item  prop="server">
+                        <el-input v-model="ruleForm.server" placeholder="IMAP服务器如imap.sina.net:143"></el-input>
+                    </el-form-item>
+                    <el-form-item  prop="email">
+                        <el-input v-model="ruleForm.email" placeholder="邮箱地址"></el-input>
+                    </el-form-item>
+                    <el-form-item  prop="password">
+                        <el-input v-model="ruleForm.password" placeholder="密码"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">IMAP验证</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+        </el-tabs>
+
         <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 </template>           
 </div>
@@ -69,6 +87,8 @@
 	new Vue({
 		el: '#app',
 		data: {
+            window:window,
+            activeName:"first",
 			loading:false,
             ruleForm:{
                 server:'',

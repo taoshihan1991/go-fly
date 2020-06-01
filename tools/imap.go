@@ -166,7 +166,7 @@ func GetMessage(server string, email string, password string, folder string, id 
 	seqSet.AddNum(id)
 
 	// Get the whole message body
-	var section imap.BodySectionName
+	section:= &imap.BodySectionName{}
 	items := []imap.FetchItem{section.FetchItem()}
 
 	messages := make(chan *imap.Message, 1)
@@ -181,23 +181,21 @@ func GetMessage(server string, email string, password string, folder string, id 
 		log.Fatal("Server didn't returned message")
 	}
 
-	r := msg.GetBody(&section)
+	r := msg.GetBody(section)
+
 	if r == nil {
 		log.Fatal("Server didn't returned message body")
 	}
 	var mailitem = new(MailItem)
 
 	// Create a new mail reader
-	mr, err := mail.CreateReader(r)
+	mr, _ := mail.CreateReader(r)
 
-	if err != nil {
-		return mailitem
-	}
 
 	// Print some info about the message
 	header := mr.Header
 	date, _ := header.Date()
-	log.Println("Date:", date)
+
 	mailitem.Date = date.String()
 
 	var f string
