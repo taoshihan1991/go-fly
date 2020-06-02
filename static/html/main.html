@@ -103,7 +103,7 @@
                 this.websock.onclose = this.websocketclose;
             },
             websocketonopen(){ //连接建立之后执行send方法发送数据
-                let actions = {"test":"12345"};
+                let actions = "ping";
                 let _this=this;
                 setInterval(function(){
                     _this.websocketsend(JSON.stringify(actions));
@@ -132,4 +132,1124 @@
         },
     });
 </script>
+
+<!-- 代码开始 -->
+<style>
+    .sw-chat-btn{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px 0 rgba(0,0,0,.15);
+        background-color: #03b8cf;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+    }
+    .sw-chat-btn:hover {
+        cursor:pointer;
+        background-color: #2ebcd2;
+    }
+    .small-chat-box {
+        background: #fff;
+        width: 100%;
+        height: 100%;
+    }
+    .small-chat-box .heading {
+        background: rgb(225,170,140);
+        padding: 10px 15px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .small-chat-box .chat-date {
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 400;
+    }
+    .small-chat-box .content {
+        text-align: center;
+        padding: 15px;
+    }
+    .slimScrollDiv >* {
+        overflow: hidden;
+    }
+    .small-chat-box .content>div {
+        padding-bottom: 10px;
+    }
+    .small-chat-box .content .author-name {
+        font-weight: 700;
+        margin-bottom: 3px;
+        font-size: 11px;
+    }
+    .small-chat-box a{
+        text-decoration: none;
+        color: #fff;
+    }
+    .small-chat-box .content .chat-mine {
+        text-align: right;
+        padding-left: 0;
+    }
+    .small-chat-box .content .chat-other {
+        text-align: left;
+        padding-left: 0;
+    }
+    .small-chat-box .content .chat-mine .chat-text {
+        margin-left: 0;
+        text-align: left;
+        background-color: #2F4056;
+        color: #fff;
+    }
+    .small-chat-box .content .chat-text {
+        position: relative;
+        line-height: 22px;
+        margin-top: 5px;
+        padding: 8px 15px;
+        background-color: #e2e2e2;
+        border-radius: 3px;
+        color: #333;
+        word-break: break-all;
+        max-width: 462px;
+    }
+    .small-chat-box .content .chat-text{
+        display: inline-block;
+        vertical-align: top;
+        font-size: 14px;
+    }
+
+    .small-chat-box .content .chat-mine .chat-text:after {
+        left: auto;
+        right: -10px;
+        border-top-color: #2F4056;
+    }
+
+    .small-chat-box .content .chat-text:after {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 13px;
+        width: 0;
+        height: 0;
+        border-style: solid dashed dashed;
+        border-color: #e2e2e2 transparent transparent;
+        overflow: hidden;
+        border-width: 10px;
+    }
+    .small-chat-box .slimScrollDiv{
+        position: absolute;
+        width: 100%;
+        top: 40px;
+        bottom: 110px;
+    }
+
+    .small-chat-box .form-chat {
+        padding: 0px 3px;
+        width: 98%;
+        position: absolute;
+        bottom: 0px;
+    }
+    .small-chat-box .form-chat .btn-event {
+        cursor: pointer;
+    }
+    .small-chat-box .form-chat .input-group {
+        margin: 6px 15px;
+        width: 83%;
+        position: relative;
+        display: table;
+        border-collapse: separate;
+    }
+
+    .small-chat-box .form-chat .input-group .form-control, .input-group-addon, .input-group-btn {
+        display: table-cell;
+    }
+
+    .small-chat-box .form-chat .input-group-sm>.form-control, .input-group-sm>.input-group-addon, .input-group-sm>.input-group-btn>.btn {
+        height: 35px;
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .small-chat-box .form-chat .input-group .form-control {
+        position: relative;
+        z-index: 2;
+        float: left;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .small-chat-box .form-chat .input-group .form-control, .single-line {
+        background-color: #FFF;
+        background-image: none;
+        border: 1px solid #2F4056;
+        box-shadow: none;
+    }
+
+    .small-chat-box .form-chat .input-group .input-group-btn {
+        float: right;
+        position: relative;
+        font-size: 0;
+        white-space: nowrap;
+    }
+
+    .small-chat-box .form-chat .input-group .input-group-addon, .input-group-btn {
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .input-group .form-control, .input-group-addon, .input-group-btn {
+        display: table-cell;
+    }
+
+    .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+        z-index: 2;
+        margin-left: -1px;
+    }
+
+    .small-chat-box .form-chat .input-group .btn-primary {
+        background-color: #33cde5;
+        color: #FFF;
+    }
+
+    .chat-area{
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 13px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(51, 205, 229, 0.47);
+        border-radius: 2px;
+        width: 100%;
+        height: 100px;
+        resize: none;
+    }
+
+    .small-chat-box .form-chat .input-group .input-group-btn>.btn {
+        position: relative;
+    }
+
+    .small-chat-box .send-btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        background-color: rgb(225,170,140);;
+        color: #FFF;
+    }
+
+    .small-chat-box .pull-right{float:right}
+    .small-chat-box .face-box{
+        background: #fff;
+        position: absolute;
+        z-index: 99999999;
+        bottom: 40px;
+        padding: 2px;
+    }
+    .small-chat-box .face-box:after{content:'';display:block;clear:both}
+    .small-chat-box .face-box ul li{
+        cursor: pointer;
+        float: left;
+        border: 1px solid #e8e8e8;
+        height: 25px;
+        width: 28px;
+        overflow: hidden;
+        margin: -1px 0 0 -1px;
+        padding: 4px 2px;
+        text-align: center;
+    }
+
+    .layui-swchat-file,
+    .small-chat-box .layui-swchat-file{
+        display: block;
+        text-align: center;
+    }
+    .small-chat-box .layui-swchat-file{
+        color: #333;
+    }
+    .small-chat-box .layui-swchat-file:hover{
+        opacity: 0.9
+    }
+    .small-chat-box .layui-swchat-file i{
+        font-size: 80px;
+        line-height: 80px;
+    }
+    .small-chat-box .layui-swchat-file cite{
+        display: block;
+        line-height: 20px;
+        font-size: 14px;
+    }
+    .small-chat-box .layui-swchat-audio{
+        text-align: center;
+        cursor: pointer;
+    }
+    .small-chat-box .layui-swchat-audio .layui-icon{
+        position: relative;
+        top: 5px;
+        font-size: 24px;
+    }
+    .small-chat-box .layui-swchat-audio p{
+        margin-top: 3px;
+    }
+    .small-chat-box .layui-swchat-video{
+        width: 120px;
+        height: 80px;
+        line-height: 80px;
+        background-color: #333;
+        text-align: center;
+        border-radius: 3px;
+    }
+    .small-chat-box .layui-swchat-video .layui-icon{
+        font-size: 36px;
+        cursor: pointer;
+        color: #fff;
+    }
+    .small-chat-box .swchat-chat-system span {
+        display: inline-block;
+        line-height: 30px;
+        padding: 0 15px;
+        border-radius: 3px;
+        background-color: #e2e2e2;
+        cursor: default;
+        font-size: 14px;
+    }
+    .tpl {
+        position:fixed;
+        bottom:20px;
+        z-index:999999;
+        right:20px;
+        padding:0;
+        margin:0;
+        overflow:hidden;
+        background-color:transparent;
+        box-shadow:0 0 20px 0 rgba(0, 0, 0, .15);
+        display:block;
+    }
+
+
+    .layui-nav-item{
+        height:60px;
+        padding:10px 0px 0px 10px;
+        cursor:pointer;
+        border-bottom: 1px solid #fff;
+    }
+    .layui-nav-item:hover{
+        background:#c2c2c2;
+        color:white;
+    }
+
+    .layui-nav-item img{width: 50px;height: 50px;border-radius: 100%;}
+    .chat-left{width:70%;height:100%;float:left;border-right:1px solid #33cde5}
+    .msg-send{width:100%;height:28%;background:white;}
+    .tools-bar{width:98%;height:13%;padding:1% 1% 2% 1%;border-top:1px solid #33cde5;}
+    .tools-bar i{cursor: pointer;margin-left:10px}
+    .msg-box{width:100%;height:65%;}
+    .msg-area{width:98%;height:98%;padding:0 1%;resize:none;border:none;overflow-y: auto;}
+    .send-area{width:100%;height:18%;}
+    .user-name{width:80px;display:inline-block;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position: relative;top: 5px;left: 10px;}
+    .clear{ height:0px;font-size:0;clear:both;}
+
+
+    .chat-box{width: auto;height: 100%;overflow: auto;;padding: 2% 1%}
+    .chat-box ul{display:none}
+    .chat-box .show-chat-detail{display:block}
+    .swchat-chat-main ul li{position: relative; font-size: 0; margin-bottom: 10px; padding-left: 60px; min-height: 68px;}
+    .swchat-chat-user,
+    .swchat-chat-text{display: inline-block; *display:inline; *zoom:1; vertical-align:top; font-size: 14px;min-height: 35px;}
+    .swchat-chat-user{position: absolute; left: 3px;}
+    .swchat-chat-user img{width: 40px; height: 40px; border-radius: 100%;}
+    .swchat-chat-user cite{position: absolute; left: 60px; top: -2px;line-height: 24px; font-size: 12px; white-space: nowrap; color: #999; text-align: left; font-style: normal;}
+    .swchat-chat-user cite i{padding-left: 15px; font-style: normal;}
+    .swchat-chat-text{position: relative; line-height: 22px; margin-top: 25px; padding: 8px 15px; background-color: rgb(172,186,203); border-radius: 3px; color: #000; word-break: break-all;}
+    .swchat-chat-text:after{content: ''; position: absolute; left: -10px; top: 13px; width: 0; height: 0; border-style: dashed; border-color:transparent; overflow:hidden; border-width: 10px; border-top-style: solid; border-top-color: rgb(172,186,203);}
+    .swchat-chat-text{max-width: 462px;}
+    .swchat-chat-text a{color: #33DF83;}
+    .swchat-chat-text img{ max-width: 100%; vertical-align: middle;}
+    .layui-swchat-file,
+    .swchat-chat-text .layui-swchat-file{display: block; text-align: center; }
+    .swchat-chat-text .layui-swchat-file{color: #333;}
+    .layui-swchat-file:hover{opacity: 0.9}
+    .layui-swchat-file i{font-size: 80px; line-height: 80px;}
+    .layui-swchat-file cite{display: block; line-height: 20px; font-size: 14px;}
+    .layui-swchat-audio{text-align: center; cursor: pointer;}
+    .layui-swchat-audio .layui-icon{position: relative; top: 5px; font-size: 24px;}
+    .layui-swchat-audio p{margin-top: 3px;}
+    .layui-swchat-video{width: 120px; height: 80px; line-height: 80px; background-color: #333; text-align: center; border-radius: 3px;}
+    .layui-swchat-video .layui-icon{font-size: 36px; cursor: pointer; color: #fff;}
+    .swchat-chat-main ul .swchat-chat-system,.swchat-chat-time{min-height: 0; padding: 0;text-align: center;margin: 5px 0 10px 0;}
+
+    .swchat-chat-main ul .swchat-chat-mine{text-align: right; padding-left: 0; padding-right: 60px;}
+    .swchat-chat-mine .swchat-chat-user{left: auto; right: 3px;}
+    .swchat-chat-mine .swchat-chat-user cite{left: auto; right: 60px; text-align: right;}
+    .swchat-chat-mine .swchat-chat-user cite i{padding-left: 0; padding-right: 15px;}
+    .swchat-chat-mine .swchat-chat-text{margin-left: 0; text-align: left; background-color: rgb(166,212,242); color: #000;border: 1px solid rgb(152, 199, 230);}
+    .swchat-chat-mine .swchat-chat-text:after{left: auto; right: -10px; border-top-color: rgb(166,212,242);}
+    .swchat-chat-mine .swchat-chat-text a{color: #fff;}
+
+    .swchat-chat-footer{border-top: 1px solid #F1F1F1;}
+    .swchat-chat-tool{position: relative; padding: 0 8px; height: 38px; line-height: 38px; font-size: 0;}
+    .swchat-chat-tool span{position: relative; margin: 0 10px; display: inline-block; *display:inline; *zoom:1; vertical-align:top; font-size: 24px; cursor: pointer;}
+    .swchat-chat-tool .swchat-tool-log{position: absolute; right: 5px; font-size: 14px; }
+    .swchat-tool-log i{position: relative; top: 2px; margin-right: 5px; font-size: 20px; color: #999}
+    .swchat-tool-image input{position: absolute; font-size: 0; left: 0; top: 0; width: 100%; height: 100%; opacity: 0.01; filter: Alpha(opacity=1); cursor: pointer;}
+
+    .chat_page{position:absolute;bottom:0;right:0;width:320px;height:480px;background:#e8e8e8;z-index:9999}
+
+    body .layui-swchat-face{border: none; background: none;}
+    body .layui-swchat-face  .layui-layer-content{padding:0; background-color:#fff; color:#666; box-shadow:none}
+    .layui-swchat-face .layui-layer-TipsG{display:none;}
+    .layui-swchat-face ul{position:relative; width:372px; padding:10px; border:1px solid #D9D9D9; background-color:#fff; box-shadow: 0 0 20px rgba(0,0,0,.2);}
+    .layui-swchat-face ul li{cursor: pointer; float: left; border: 1px solid #e8e8e8; height: 22px; width: 26px; overflow: hidden; margin: -1px 0 0 -1px; padding: 4px 2px; text-align: center;}
+    .layui-swchat-face ul li:hover{position: relative; z-index: 2; border: 1px solid #eb7350; background: #fff9ec;}
+
+    .swchat-bigimg{width:600px;position: fixed;left: 0;top: 0; right: 0;bottom: 0;margin:auto;display: none;z-index:9999;border: 3px solid #fff;}
+    .swchat-mask{position: fixed;left: 0;top: 0; right: 0;bottom: 0;background-color: #000;opacity:0.5;filter: Alpha(opacity=50);z-index: 98;transition:all 1s;display: none}
+    .bigbox{width:840px;background: #fff;border:1px solid #ededed;margin:0 auto;border-radius: 10px;overflow: hidden;padding:10px;}
+    .bigbox>.imgbox{width:400px;height:250px;float:left;border-radius:5px;overflow: hidden;margin: 0 10px 10px 10px;}
+    .bigbox>.imgbox>img{width:100%;}
+    .imgbox:hover{cursor:zoom-in}
+    .swchat-mask:hover{cursor:zoom-out}
+    .swchat-mask>img{position: fixed;right:10px;top: 10px;width: 60px;}
+    .swchat-mask>img:hover{cursor:pointer}
+
+    .icono-smile,.icono-smile:after,.icono-image{
+        border: 1px solid
+    }
+    .icono-smile{
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -o-border-radius: 50%;
+        border-radius: 50%;
+        height: 28px;
+        width: 28px;
+        margin: 2px
+    }
+
+    .icono-smile:before {
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -o-border-radius: 50%;
+        border-radius: 50%;
+        box-shadow: 8px 0 0 0,0 0 0 2px inset;
+        height: 4px;
+        width: 4px;
+        left: 7px;
+        position: absolute;
+        top: 29%;
+    }
+
+    .icono-smile:after{
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -o-border-radius: 50%;
+        border-radius: 50%;
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+        transform: translateX(-50%);
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        height: 15px;
+        left: 50%;
+        position: absolute;
+        top: 10%;
+        width: 15px;
+    }
+
+
+    .icono-image {
+        width: 32px;
+        height: 23px;
+        overflow: hidden;
+        margin: 4px 12px;
+    }
+
+    .icono-image:before {
+        position: absolute;
+        width: 17px;
+        height: 16px;
+        left: -2px;
+        top: 10px;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+        box-shadow: inset 0 0 0 32px, 10px -6px 0 0;
+    }
+
+
+    .icono-image:after {
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -o-border-radius: 50%;
+        border-radius: 50%;
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        box-shadow: inset 0 0 0 32px;
+        top: 5px;
+        right: 5px
+    }
+
+
+    [class*="icono-"] {
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        font-style: normal;
+        color: #9da0a0;;
+        text-align: left;
+        text-indent: -9999px;
+        direction: ltr
+    }
+
+    [class*="icono-"]:before,[class*="icono-"]:after {
+        content: '';
+        pointer-events: none
+    }
+
+    [class*="icono-"],[class*="icono-"] * {
+        box-sizing: border-box
+    }
+
+    .swchat-newMsg {
+        height: 9px;
+        position: absolute;
+        width: 9px;
+        border-radius: 50%;
+        background: #e28f8f;
+        right: 2px;
+    }
+</style>
+<div class="sw-chat-btn " id="show-swchat">咨询客服</div>
+<script type="text/javascript">
+    ;!function(win){
+        "use strict";
+        var SwChat = function(){
+            this.v = '1.0'; //版本号
+        },kf_id = 0
+            ,kf_name = ''
+            ,socket = null
+            ,uinfo = null //用户信息
+            ,time = 0
+            ,timer = 0 //通知定时器
+            ,config = {
+            uid: '',//用户id
+            name: '',//用户name
+            avatar: '',//用户头像
+            group: '',//客服分组
+            socket: '',//聊天服务器地址
+            face_path: '',//表情地址
+            height: '',//窗口高度
+            width: '', //窗口宽度
+        },check = function(){
+            if('' == config.url || 0 == config.group || '' == config.socket){
+                console.log("配置文件错误");
+                return false;
+            }
+            if (!getCache('swchatUserInfo')) {//是否已分配账号
+                config.uid = config.uid || generateUUID();
+                config.name = config.name || '访客-'+getDate();
+                cacheChat({key:"swchatUserInfo",data:[{'userId':config.uid,'name': config.name,'avatar': config.avatar}]});
+            }
+            if (!getCache('nowMinutes')) {//显示消息时间
+                cacheChat({key:"nowMinutes",data:{'now':getMinutes()}});
+            }
+        },cacheChat = function (obj){
+            if(typeof(Storage) !== "undefined"){
+                localStorage.setItem(obj.key, JSON.stringify(obj.data));
+            }
+        },getCache = function (key){
+            return JSON.parse(localStorage.getItem(key));
+        },register = function(){//注册监听事件
+            check();
+            $(tpl()).prependTo('body');//插入客服页面
+            isMobile();
+            isVisible();
+            var protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
+            socket = new ReconnectingWebSocket(protocol + config.socket);//创建Socket实例
+            uinfo = getCache('swchatUserInfo');
+            socket.onopen = function (res) {
+                var login_data = '{"type":"userInit", "uid": "' + uinfo[0].userId + '", "name" : "' + uinfo[0].name +
+                    '", "avatar" : "' + config.avatar + '", "group" : ' + config.group + '}';
+                socket.send(login_data);
+                ping(30000);
+                isLock(false);
+            };
+
+            socket.onmessage = function (res) {
+                try {
+                    var data=JSON.parse(res.data);
+                    switch(data['message_type']){
+                        // 已经被分配了客服
+                        case 'connect':
+                            kf_id = data.data.kf_id;
+                            kf_name = data.data.kf_name;
+                            showSystem({content: '客服 ' + kf_name + ' 为您服务'});
+                            $('#swchat-title').html('与 ' + kf_name + ' 交流中');
+
+                            break;
+                        // 排队等待
+                        case 'wait':
+                            isLock(true);
+                            // if('暂时没有客服上班,请稍后再咨询。' == data.data.content){
+                            //     socket.close();
+                            // }
+                            $('#swchat-title').html('暂时没有客服');
+                            showSystem(data.data);
+                            break;
+                        // 监测客服上线
+                        case 'kf_online':
+                            if (data.data.kf_group == config.group) {
+                                kf_id = data.data.kf_id;
+                                kf_name = data.data.kf_name;
+                                $('#swchat-title').html('与 ' + kf_name + ' 交流中');
+                                showSystem({content: '客服 ' + kf_name + ' 为您服务'});
+                                wordBottom();
+                                isLock(false);
+                            }
+
+                            break;
+                        // 监测客服下线
+                        case 'kf_offline':
+                            if (data.data.kf_group == config.group) {
+                                kf_id = data.data.kf_id;
+                                kf_name = data.data.kf_name;
+                                $('#swchat-title').html('暂时没有客服');
+                                showSystem({content: '客服 ' + kf_name + ' 暂时停止服务'});
+                                wordBottom();
+                                isLock(true);
+                            }
+
+                            break;
+                        // 监测聊天数据
+                        case 'chatMessage':
+                            kf_id = data.data.kf_id;
+                            kf_name =typeof(data.data.kf_name) == 'undefined'?"客服":data.data.kf_name;
+                            data.data.name=kf_name;
+                            showSystem({content: '客服 ' + kf_name + ' 为您服务'});
+                            $('#swchat-title').html('与 ' + kf_name + ' 交流中');
+                            showMsg(data.data);
+                            break;
+                        // 问候语
+                        case 'helloMessage':
+                            showMsg(data.data);
+                            break;
+                        // 转接
+                        case 'relinkMessage':
+                            $('#swchat-title').html('正在转接中...');
+                            break;
+                    }
+                }catch(e){
+                    console.log("response data not json");
+                }
+
+            };
+            //聊天记录
+            setTimeout(function(){
+                showChatLog();
+            },2000);
+            socket.onclose = function (err) {
+                $('#swchat-title').html('正在离线状态...');
+                console.log('连接断开');
+            };
+        },setMember = function(){
+            var d = new Date(new Date());
+            return  digit(d.getDate()) + digit(d.getHours()) + digit(d.getMinutes()) + digit(d.getSeconds());
+        },isLock = function(state){
+            state?($('#msg-area').attr('readonly', 'readonly')):$('#msg-area').removeAttr('readonly');
+        },ping = function(time){
+            //每30秒ping服务器
+            setInterval(function(){
+                socket.send('{"type":"ping"}');
+            },time);
+        },showTime = function(msg){
+            var _html = '<div class="swchat-chat-time"><span>' + msg.content + '</span></div>';
+            $("#swchat-chat-list ul").append(_html);
+        },showSystem = function(msg){
+            var _html = '<div class="swchat-chat-system"><span>' + msg.content + '</span></div>';
+            $("#swchat-chat-list ul").append(_html);
+        },showChatLog = function(){// 展示本地聊天缓存
+            var chatLog = getCache(kf_id + '-' + uinfo[0].userId);
+            if(chatLog == null || chatLog.length == 0){
+                return ;
+            }
+            var _html = '';
+            var len = chatLog.length;
+            for(var i = 0; i < len; i++){
+                var v = chatLog[i];
+                if ('time' !== v.type) {
+                    if ('mine' == v.type) {
+                        _html += '<li class="swchat-chat-mine">';
+                    } else {
+                        _html += '<li>';
+                    }
+                    _html += '<div class="swchat-chat-user">';
+                    _html += '<img src="' + v.avatar + '">';
+                    if ('mine' == v.type) {
+                        _html += '<cite>' + v.name + '</cite>';
+                    } else {
+                        _html += '<cite>' + v.name + '</cite>';
+                    }
+                    _html += '</div><div class="swchat-chat-text">' + v.content + '</div>';
+                    _html += '</li>';
+                }else{
+                    var data = getTimeText(v.time);
+                    _html += '<div class="swchat-chat-system"><span>' + data + '</span></div>';
+                }
+            }
+            $("#swchat-chat-list ul").append(_html);
+            showBigPic();
+            // 滚动条自动定位到最底端
+            wordBottom();
+        },tpl = function(){
+            var tpl  = "<div style= 'width:" + config.width + ";display:none;height:"+ config.height+";' class='tpl' id='swchat'>";
+            tpl +=      '<div class="small-chat-box fadeInRight animated">';
+            tpl +=          '<div class="heading" draggable="true">';
+            tpl +=              '<small class="chat-date pull-right" id="hidden-swchat">';
+            tpl +=              '关闭';
+            tpl +=              '</small>';
+            tpl +=              '<span id="swchat-title">与 客服 交流中</span>'
+            tpl +=          '</div>';
+            tpl +=          '<div class="slimScrollDiv" id="chat-content-box">';
+            tpl +=              '<div class="chat-box swchat-chat-main" id="swchat-chat-list">';
+            tpl +=                  '<ul style="display: block;"></ul>';
+            tpl +=              '</div>';
+            tpl +=          '</div>';
+            tpl +=          '<div class="form-chat">';
+            tpl +=              '<textarea class="form-control chat-area" id="msg-area" ></textarea>';
+            tpl +=              '<div class="input-group">';
+            tpl +=                  '<span class="icono-smile" id="swchat-face"></span>';
+            tpl +=                  '<span class="icono-image" id="swchat-uploadimg"></span>';
+            tpl +=                  '<span class="input-group-btn">';
+            tpl +=                      '<button class="send-btn" type="button" id="send">发送</button>';
+            tpl +=                  '</span>';
+            tpl +=              '</div>';
+            tpl +=          '</div>';
+            tpl +=          '<div class="bar">';
+
+            tpl +=          '</div>';
+            tpl +=          '<div class="face-box" style="display:none" id="face-box">';
+            tpl +=          '</div>';
+            tpl +=      '</div>';
+            tpl += '</div>';
+            return tpl;
+        },sendMsg = function(sendMsg){// 发送信息
+            (typeof($('#msg-area').attr('readonly')) == 'undefined')?isLock(false):isLock(true);
+            var msg = (typeof(sendMsg) == 'undefined') ? $('#msg-area').val() : sendMsg;
+            if('' == msg) return false;
+            var content = replaceContent(msg);
+            var time = getDate();
+            var word = msgFactory(content, 'mine',time,uinfo[0]);
+            $("#swchat-chat-list ul").append(word);
+            $('#msg-area').val('');
+            // 滚动条自动定位到最底端
+            showBigPic();
+            wordBottom();
+            // 发送消息
+            socket.send(JSON.stringify({
+                type: 'chatMessage',
+                data: {to_id: kf_id, to_name: kf_name, content: msg, from_name: uinfo[0].name,
+                    from_id: uinfo[0].userId, from_avatar: config.avatar}
+            }));
+        },showMsg = function(info){// 展示收到的消息
+            // 清除系统消息
+            $('.swchat-chat-system').html('');
+            clearMsg();//清除已有提醒
+            var _html = $('#swchat-chat-list').html();
+            var content = replaceContent(info.content);
+            var word = msgFactory(content, 'other',info.time,info);
+            $("#swchat-chat-list ul").append(word);
+            if ($('#swchat').css('display') == 'none') {
+                notice(true);
+            }
+            document.hidden && newMsg();
+            showBigPic();
+            // 滚动条自动定位到最底端
+            wordBottom();
+        },msgFactory = function(content, type,time,info) {// 消息体
+            // 储存信息
+            var key = kf_id + '-' + uinfo[0].userId;
+            if(typeof(Storage) !== "undefined"){
+                var localMsg = getCache(key);
+                if(localMsg == null || localMsg.length == 0){
+                    localMsg = [];
+                }
+                if(type == 'mine') info.name='我';
+                if (getCache('nowMinutes').now != getMinutes()) {//消息发送接收时间大于当前记录时间
+                    var data = {};
+                    data.content = getTimeText(time);
+                    showSystem(data);
+                    localMsg.push({type: 'time', time: time,});
+                    cacheChat({key:"nowMinutes",data:{'now':getMinutes()}});//更新时间
+                }
+                localMsg.push({type: type, name: info.name, time: time, content: content,avatar:info.avatar});
+                cacheChat({key: key, data: localMsg});
+            }
+            var _html = '';
+            if ('time' !== type) {
+                if ('mine' == type) {
+                    _html += '<li class="swchat-chat-mine">';
+                } else{
+                    _html += '<li>';
+                }
+                _html += '<div class="swchat-chat-user">';
+                _html += '<img src="' + info.avatar + '">';
+                if ('mine' == type) {
+                    _html += '<cite>' + name + '</cite>';
+                } else {
+                    _html += '<cite>' + info.name + '</cite>';
+                }
+                _html += '</div><div class="swchat-chat-text">' + content + '</div>';
+                _html += '</li>';
+            }else{
+                _html = '<div class="swchat-chat-system"><span>' + data.content + '</span></div>';
+            }
+
+            return _html;
+        },mGetDate = function() {// 获取天数
+            return Math.ceil(( new Date() - new Date(new Date().getFullYear().toString()))/(24*60*60*1000))+1;
+        },getMinutes = function() {// 获取当前分钟
+            var d = new Date(new Date());
+            var hour = 60;//1小时
+            var day = 24*hour;//1天
+            var totalDay = mGetDate()-1;//共多少天
+            var totalHour = digit(d.getHours());
+            var totalMinutes = digit(d.getMinutes());
+            return totalDay*day+totalHour*hour+totalMinutes;
+        },getDate = function() {// 获取日期
+            var d = new Date(new Date());
+            return d.getFullYear() + '-' + digit(d.getMonth() + 1) + '-' + digit(d.getDate())
+                + ' ' + digit(d.getHours()) + ':' + digit(d.getMinutes()) + ':' + digit(d.getSeconds());
+        },digit = function (num) {//补齐数位
+            return num < 10 ? '0' + (num | 0) : num;
+        },getTimeText = function (time){//
+            var timeS = time;
+            var todayT = ''; //
+            var yestodayT = '';
+            var d = new Date(new Date());
+            var year = '';
+            var month = '';
+            var day = '';
+            var timeCha = getTimeS(timeS);
+            timeS = timeS.slice(-8);
+            year = time.slice(0,4);
+            month = time.slice(5,7);
+            day = time.slice(8,10);
+            todayT = digit(d.getHours())*60*60*1000 + digit(d.getMinutes())*60*1000 + digit(d.getSeconds())*1000;
+            yestodayT = todayT + 24*60*60*1000;
+            if(timeCha > yestodayT) {
+                if(year < d.getFullYear() ){
+                    return timeS.slice(0,2)>12?year+'年'+month+'月'+day+'日'+' 下午'+(timeS.slice(0,2)==12 ? 12 : timeS.slice(0,2) - 12)+timeS.slice(2,5):year+'年'+month+'月'+day+'日'+' 上午'+timeS.slice(0,5);
+                }else{
+                    return timeS.slice(0,2)>12?month+'月'+day+'日'+' 下午'+(timeS.slice(0,2)==12 ? 12 : timeS.slice(0,2) - 12)+timeS.slice(2,5):month+'月'+day+'日'+' 上午'+timeS.slice(0,5);
+                }
+
+            }
+            if(timeCha > todayT && timeCha < yestodayT) {
+                return '昨天 '+timeS.slice(0,5);
+            }
+            if(timeCha < todayT) {
+                return timeS.slice(0,5);
+            }
+        },getTimeS = function (argument){// 日期转时间戳
+            var timeS = argument;
+            timeS = timeS.replace(/[年月]/g,'/').replace(/[日]/,'');
+            return new Date().getTime() - new Date(timeS).getTime() - 1000; //有一秒的误差
+        },wordBottom = function (){// 对话框定位到最底端
+            var ex = $("#swchat-chat-list");
+            ex.scrollTop(ex[0].scrollHeight);
+        },replaceContent = function(content) {// 转义聊天内容中的特殊字符
+            // 支持的html标签
+            var html = function (end) {
+                return new RegExp('\\n*\\[' + (end || '') + '(pre|div|span|p|table|thead|th|tbody|tr|td|ul|li|ol|li|dl|dt|dd|h2|h3|h4|h5)([\\s\\S]*?)\\]\\n*', 'g');
+            };
+            content = (content || '').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+                .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;') // XSS
+                .replace(/face\[([^\s\[\]]+?)\]/g, function (face) {  // 转义表情
+                    var alt = face.replace(/^face/g, '');
+                    return '<img alt="' + alt + '" title="' + alt + '" src="' + getFaces()[alt] + '">';
+                })
+                .replace(/img\[([^\s]+?)\]/g, function (img) {  // 转义图片
+                    return '<img class="swchat-img" src="' + img.replace(/(^img\[)|(\]$)/g, '') + '" width="100px" height="100%">';
+                })
+                .replace(/file\([\s\S]+?\)\[[\s\S]*?\]/g, function (str) { // 转义文件
+                    var href = (str.match(/file\(([\s\S]+?)\)\[/) || [])[1];
+                    var text = (str.match(/\)\[([\s\S]*?)\]/) || [])[1];
+                    if (!href) return str;
+                    return '<a class="swchat-file" href="' + href + '" download target="_blank"><i class="layui-icon">&#xe61e;</i><cite>' + (text || href) + '</cite></a>';
+                }).replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') // 转移HTML代码
+                .replace(/\n/g, '<br>') // 转义换行
+
+            return content;
+        },showFaces = function(){// 展示表情数据
+            if ($('#msg-area').attr('readonly') == 'readonly') return false;
+            var _html = '<ul class="layim-face-list">';
+            var faces = getFaces();
+            for(var key in faces){
+                _html += '<li title="'+ key +'"><img src="'+ faces[key] +'"></li>';
+            }
+            _html += '</ul>';
+            document.getElementById('face-box').innerHTML = _html;
+        },getFaces = function () {// 表情替换
+            var alt = ["[微笑]", "[嘻嘻]", "[哈哈]", "[可爱]", "[可怜]", "[挖鼻]", "[吃惊]", "[害羞]", "[挤眼]", "[闭嘴]", "[鄙视]", "[爱你]", "[泪]", "[偷笑]", "[亲亲]", "[生病]", "[太开心]", "[白眼]", "[右哼哼]", "[左哼哼]", "[嘘]", "[衰]", "[委屈]", "[吐]", "[哈欠]", "[抱抱]", "[怒]", "[疑问]", "[馋嘴]", "[拜拜]", "[思考]", "[汗]", "[困]", "[睡]", "[钱]", "[失望]", "[酷]", "[色]", "[哼]", "[鼓掌]", "[晕]", "[悲伤]", "[抓狂]", "[黑线]", "[阴险]", "[怒骂]", "[互粉]", "[心]", "[伤心]", "[猪头]", "[熊猫]", "[兔子]", "[ok]", "[耶]", "[good]", "[NO]", "[赞]", "[来]", "[弱]", "[草泥马]", "[神马]", "[囧]", "[浮云]", "[给力]", "[围观]", "[威武]", "[奥特曼]", "[礼物]", "[钟]", "[话筒]", "[蜡烛]", "[蛋糕]"], arr = {};
+            $.each(alt, function (index, item) {
+                arr[item] = config.face_path + index + '.gif';
+            });
+            return arr;
+        },generateUUID =function () {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = (d + Math.random()*16)%16 | 0;
+                d = Math.floor(d/16);
+                return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+            });
+            return uuid;
+        },imgClick = function() {
+            var _html = '<img src="" alt="" class="swchat-bigimg" style="display:none; inline;z-index:9999999999"><div class="swchat-mask" style="display: none;z-index: 9999999;"></div>';
+            $('body').append(_html);
+            $(".swchat-mask").click(function() {
+                $(".swchat-bigimg").fadeOut();
+                $(".swchat-mask").fadeOut()
+            })
+            if (document.attachEvent) {
+                $(".swchat-bigimg").attachEvent("onmousewheel", scrollFn)
+            } else {
+                if (document.addEventListener) {
+                    $('.swchat-bigimg').on('mousewheel', scrollFn);
+                }
+            }
+        },scrollFn = function (){// 双击图片
+            var ev = window.event;
+            var dir = ev.deltaY;
+            var width = $(".swchat-bigimg").width();
+            var height = $(".swchat-bigimg").height();
+            if (dir < 0) {
+                if (width > ($(window).width())) return
+                if (height > ($(window).height())) return
+                height += 50;
+                width += 50;
+            } else {
+                if (width < 150) return
+                if (height < 150) return
+                height = height-50;
+                width = width-50;
+            }
+            $(".swchat-bigimg").css({
+                height: height + "px",
+                width: width + "px"
+            })
+        },showBigPic = function (){// 双击图片
+            $(".swchat-img").click(function() {
+                $(".swchat-bigimg").css({
+                    height: $(this).height() * 5,
+                    width: $(this).width() * 5
+                });
+                $(".swchat-mask").fadeIn();
+                $(".swchat-bigimg").attr("src", $(this).attr("src")).fadeIn()
+            });
+        },uploadImg = function(){
+            if ($('#msg-area').attr('readonly') == 'readonly') return false;
+            $('#swchat-uploadimg').after('<input type="file" id="swchat-upload" name="file" style="display:none" >');
+            $("#swchat-upload").click();
+            $("#swchat-upload").change(function (e) {
+                var formData = new FormData(this);
+                var file = $("#swchat-upload")[0].files[0];
+                formData.append("file",file); //传给后台的file的key值是可以自己定义的
+                filter(file) && $.ajax({
+                    url: config.upload_url || '',
+                    type: "post",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'JSON',
+                    mimeType: "multipart/form-data",
+                    success: function (res) {
+                        sendMsg('img[' + res.data.src + ']');
+                        showBigPic();
+                        $("#swchat-upload").remove();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
+        },filter = function(obj){
+            var imgType = ["image/jpeg","image/png"];
+            var filetypes = config.imgType|| imgType;
+            var isnext = false;
+            for (var i = 0; i < filetypes.length; i++) {
+                if (filetypes[i] == obj.type) {
+                    return true;
+                }
+            }
+            return false;
+        },isMobile = function (){
+            // 是否移动端访问
+            if( navigator.userAgent.match(/Android/i)
+                || navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i)
+                || navigator.userAgent.match(/BlackBerry/i)
+                || navigator.userAgent.match(/Windows Phone/i)
+            ){
+                $("#swchat").css({'width':'100%','height':'100%','bottom':'0px','right':'0px'});
+            }
+        },notice = function(state){//新消息红点提示
+            state?$('.swchat-min').append('<i class="swchat-newMsg"></i>'):$('.swchat-newMsg').remove();
+        },isMinStatus = function(){//当前窗口是否可见
+            //除了Internet Explorer浏览器，其他主流浏览器均支持Window outerHeight 和outerWidth 属性
+            if (window.outerWidth != undefined && window.outerHeight != undefined) {
+                isMin = window.outerWidth <= 160 && window.outerHeight <= 27;
+            } else {
+                isMin = window.outerWidth <= 160 && window.outerHeight <= 27;
+            }
+            //除了Internet Explorer浏览器，其他主流浏览器均支持Window screenY 和screenX 属性
+            if (window.screenY != undefined && window.screenX != undefined) {
+                isMin = window.screenY < -30000 && window.screenX < -30000;//FF Chrome
+            } else {
+                isMin = window.screenTop < -30000 && window.screenLeft < -30000;//IE
+            }
+            return isMin;
+        },isVisible = function(){//当前窗口是否可见
+            $(document).on('visibilitychange', function(e) {
+                if (e.target.visibilityState === "hidden" && $('.swchat-newMsg').length >0) {
+                    newMsg();
+                }else{
+                    clearMsg();
+                }
+            });
+        },newMsg = function(){//消息提醒
+            var title = document.title.replace("【　　　】", "").replace("【新消息】", "");
+            // 定时器，设置消息切换频率闪烁效果就此产生
+            timer = setTimeout(function () {
+                time++;
+                newMsg();
+                if (time % 2 == 0) {
+                    document.title = "【新消息】" + title
+                }
+                else {
+                    document.title = "【　　　】" + title
+                };
+            }, 600);
+            return timer;
+        },clearMsg = function(){// 清除消息提示
+            clearTimeout(timer);
+            document.title = document.title.replace("【　　　】", "").replace("【新消息】", "");
+        },event = function(){
+            // 发送表情
+            $('#swchat-face').click(function(e){
+                e.stopPropagation();
+                showFaces();
+                $(".layim-face-list").find("li").click(function() {
+                    var content = $(this).attr("title");
+                    var contentvalue = $("#msg-area").val();
+                    $("#msg-area").val(contentvalue +'face'+ content);
+                    $('#face-box').css('display','none');
+                    return false;
+                });
+                $('#face-box').css('display','block');
+            });
+            //发送图片
+            $("#swchat-uploadimg").click(function (e) {
+                uploadImg();
+            });
+            // 监听点击旁边关闭表情
+            document.addEventListener("click",function(){
+                $('#face-box').css('display','none');
+            });
+            // 点击发送消息
+            $('#send').click(function(){
+                sendMsg();
+            });
+            // 监听快捷键发送
+            $('#msg-area').on('keydown', function (e) {
+                if (e.keyCode != 13) return;
+                e.preventDefault();  // 取消事件的默认动作
+                sendMsg();
+            });
+            //点击图片事件
+            imgClick();
+            $("#hidden-swchat").click(function(){
+                $("#swchat").css('display','none');
+                $(config.div_id).css('display','block');
+            });
+            $(config.div_id).click(function(){
+                $(this).css('display','none');
+                $("#swchat").css('display','block');
+                clearMsg();
+                notice(false);
+                wordBottom();
+            });
+        },loadJs=function(url,callback){
+            var script = document.createElement('script'), fn = callback || function(){};
+            script.type = 'text/javascript';
+            //IE
+            if(script.readyState){
+                script.onreadystatechange = function(){
+                    if( script.readyState == 'loaded' || script.readyState == 'complete' ){
+                        script.onreadystatechange = null;
+                        fn();
+                    }
+                };
+            }else{
+                //其他浏览器
+                script.onload = function(){
+                    fn();
+                };
+            }
+            script.src = url;
+            document.getElementsByTagName('head')[0].appendChild(script);
+        };
+
+        SwChat.prototype.init = function(options){
+            options.div_id=options.div_id,
+                options.uid = options.uid || '',//客户id
+                options.name = options.name || '',//客户昵称
+                options.avatar = options.avatar ||'https://img.52z.com/upload/news/image/20180213/20180213062641_35687.jpg',//用户头像
+                options.group = options.group,//客服分组
+                options.socket = options.socket,//聊天服务器地址
+                options.face_path = options.face_path+'/',
+                options.uploadUrl = options.uploadUrl || '',
+                options.height = options.height || '550px',//窗口高度
+                options.width = options.width || '400px', //窗口宽度
+                config = options;
+            loadJs("https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js",function(){
+                loadJs("https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js",function(){
+                    register();
+                    event();
+                });
+            });
+
+        }
+        win.swchat = new SwChat();
+
+    }(window);
+
+    swchat.init({
+        div_id:"#show-swchat",
+        group: 1,//客服分组
+        socket:'127.0.0.1:8080/chat_server',//聊天服务器地址
+        face_path:'images/face',//表情包路径
+        upload_url:'http://115.159.28.111:9502/uploadImg',//图片上传路径
+    });
+</script>
+<!-- 代码结束 -->
 </html>

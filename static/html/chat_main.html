@@ -1,0 +1,56 @@
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="陶士涵">
+    <title>聊天界面</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <style>
+        html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
+        .el-row{width:100%}
+    </style>
+</head>
+<body>
+<div id="app">
+    <template>
+        <el-container v-loading.fullscreen.lock="fullscreenLoading">
+            <el-row :gutter="5">
+                <el-col :span="6">
+                    <el-menu>
+                        <el-menu-item>
+                            <i class="el-icon-edit"></i>
+                            <span slot="title">访客1112</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-col>
+                <el-col :span="12">聊天主界面</el-col>
+                <el-col :span="6">常用功能</el-col>
+            </el-row>
+        </el-container>
+    </template>
+</div>
+</body>
+<script>
+    var app=new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            fullscreenLoading:true,
+        },
+        methods: {
+            //跳转
+            openUrl(url){
+                window.location.href=url;
+            },
+        },
+        created: function () {
+            this.fullscreenLoading=false
+        }
+    })
+
+</script>
+</html>

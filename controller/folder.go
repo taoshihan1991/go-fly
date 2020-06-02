@@ -115,6 +115,45 @@ func FoldersList(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Write(msg)
 }
+//邮件接口
+func FolderMail(w http.ResponseWriter, r *http.Request) {
+	fid:=tools.GetUrlArg(r,"fid")
+	id, _ :=strconv.Atoi(tools.GetUrlArg(r,"id"))
+	mailServer := tools.GetMailServerFromCookie(r)
+	w.Header().Set("content-type", "text/json;charset=utf-8;")
+
+	if mailServer == nil {
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
+		w.Write(msg)
+		return
+	}
+	var wg sync.WaitGroup
+	result := make(map[string]interface{})
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
+		folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
+		result["folders"] = folders
+		result["total"] = folders[fid]
+	}()
+	go func() {
+		defer wg.Done()
+		mail := tools.GetMessage(mailServer.Server, mailServer.Email, mailServer.Password, fid, uint32(id))
+		result["from"] = mail.From
+		result["to"] = mail.To
+		result["subject"] = mail.Subject
+		result["date"] = mail.Date
+		result["html"] = mail.Body
+	}()
+	wg.Wait()
+	result["fid"] = fid
+
+	msg, _ := json.Marshal(tools.JsonListResult{
+		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
+		Result:     result,
+	})
+	w.Write(msg)
+}
 //发送邮件接口
 func FolderSend(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("content-type", "text/json;charset=utf-8;")

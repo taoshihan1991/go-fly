@@ -143,14 +143,18 @@ func GetFolderMail(server string, email string, password string, folder string, 
 
 	messages := make(chan *imap.Message, pagesize)
 	done := make(chan error, 1)
+	fetchItem:=imap.FetchItem(imap.FetchEnvelope)
+	items := make([]imap.FetchItem,0)
+	items=append(items,fetchItem)
 	go func() {
-		done <- c.Fetch(seqset, []imap.FetchItem{imap.FetchEnvelope}, messages)
+		done <- c.Fetch(seqset, items, messages)
 	}()
 	var mailPagelist = new(MailPageList)
 
 	dec := GetDecoder()
 
 	for msg := range messages {
+		log.Println(msg.Envelope.Date)
 
 		ret, err := dec.Decode(msg.Envelope.Subject)
 		if err != nil {
