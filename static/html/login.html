@@ -48,15 +48,15 @@
         <h1 class="h3 mb-3 font-weight-normal">登录页</h1>
         <el-tabs v-model="activeName">
             <el-tab-pane label="本地认证" name="first">
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-                    <el-form-item  prop="email">
-                        <el-input v-model="ruleForm.email" placeholder="邮箱地址"></el-input>
+                <el-form :model="localAuth" :rules="rules" ref="localAuth">
+                    <el-form-item  prop="username">
+                        <el-input v-model="localAuth.username" placeholder="用户名"></el-input>
                     </el-form-item>
                     <el-form-item  prop="password">
-                        <el-input v-model="ruleForm.password" placeholder="密码"></el-input>
+                        <el-input v-model="localAuth.password" placeholder="密码"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button :loading="loading" type="primary" @click="">本地验证</el-button>
+                        <el-button :loading="loading" type="primary" @click="checkLocal('localAuth')">本地验证</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
@@ -105,6 +105,10 @@
             window:window,
             activeName:"first",
 			loading:false,
+            localAuth:{
+                username:'',
+                password:'',
+            },
             ruleForm:{
                 server:'',
                 email:'',
@@ -117,8 +121,11 @@
                 email: [
                     { required: true, message: '邮箱地址', trigger: 'blur' },
                 ],
+                username: [
+                    { required: true, message: '用户名不能为空', trigger: 'blur' },
+                ],
                 password: [
-                    { required: true, message: '邮箱密码', trigger: 'blur' },
+                    { required: true, message: '密码不能为空', trigger: 'blur' },
                 ],
             },
 		},
@@ -157,6 +164,36 @@
             resetForm(formName) {
                 this.loading=false;
                 this.$refs[formName].resetFields();
+            },
+            //本地验证
+            checkLocal(formName){
+                let _this=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var data={}
+                        data.type="local";
+                        data.username=_this.localAuth.username;
+                        data.password=_this.localAuth.password;
+                        _this.loading=true;
+                        $.post("/check",data,function(data){
+                            if(data.code==200){
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'success'
+                                });
+                                window.location.href="/";
+                            }else{
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'error'
+                                });
+                            }
+                            _this.loading=false;
+                        });
+                    } else {
+                        return false;
+                    }
+                });
             },
 		}
 	})

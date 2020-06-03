@@ -3,20 +3,19 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
-	"io/ioutil"
 	"net/http"
 	"os"
 )
 
-const configDir = "config/"
-const configFile=configDir+"account.json"
+
 func ActionSetting(w http.ResponseWriter, r *http.Request){
 	render:=tmpl.NewSettingHtml(w)
 	render.SetLeft("setting_left")
 	render.SetBottom("setting_bottom")
-	account:=getAccount()
+	account:=config.GetAccount()
 	render.Username=account["Username"]
 	render.Password=account["Password"]
 	render.Display("setting",render)
@@ -34,11 +33,11 @@ func SettingAccount(w http.ResponseWriter, r *http.Request){
 	username:=r.PostFormValue("username")
 	password:=r.PostFormValue("password")
 
-	isExist,_:=tools.IsFileExist(configDir)
+	isExist,_:=tools.IsFileExist(config.Dir)
 	if !isExist{
-		os.Mkdir(configDir,os.ModePerm)
+		os.Mkdir(config.Dir,os.ModePerm)
 	}
-	fileConfig:=configFile
+	fileConfig:=config.AccountConf
 	file, _ := os.OpenFile(fileConfig, os.O_RDWR|os.O_CREATE, os.ModePerm)
 
 	format:=`{
@@ -61,24 +60,10 @@ func SettingGetAccount(w http.ResponseWriter, r *http.Request){
 		w.Write(msg)
 		return
 	}
-	result:=getAccount()
+	result:=config.GetAccount()
 	msg, _ := json.Marshal(tools.JsonListResult{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
 		Result:     result,
 	})
 	w.Write(msg)
-}
-func getAccount()map[string]string{
-	var account map[string]string
-	isExist,_:=tools.IsFileExist(configFile)
-	if !isExist{
-		return account
-	}
-	info,err:=ioutil.ReadFile(configFile)
-	if err!=nil{
-		return account
-	}
-
-	err=json.Unmarshal(info,&account)
-	return account
 }
