@@ -12,8 +12,43 @@
     <style>
         html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
         .el-row{width:100%}
+        .chatLeft{border-bottom: solid 1px #e6e6e6}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
-        .chatContext{background: #fff}
+        .chatContext .el-row{margin-bottom: 5px;}
+        .chatUser{
+            line-height: 24px;
+            font-size: 12px;
+            white-space: nowrap;
+            color: #999;
+        }
+        .chatContent{
+            text-align: left;
+            background-color: rgb(166,212,242);
+            color: #000;
+            border: 1px solid rgb(152, 199, 230);
+            padding: 8px 15px;
+            min-height: 35px;
+            word-break: break-all;
+            position: relative;
+        }
+        .chatContent:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 13px;
+            width: 0;
+            height: 0;
+            border-style: dashed;
+            border-color: transparent;
+            overflow: hidden;
+            border-width: 10px;
+            border-top-style: solid;
+            border-top-color: rgb(166,212,242);
+        }
+        .chatBoxMe .el-col-3{float: right;text-align: right;}
+        .chatBoxMe .chatUser{text-align: right}
+        .chatBoxMe .chatContent:after{left:auto;right: -10px;}
+        .chatArea{margin: 10px 0;}
     </style>
 </head>
 <body>
@@ -21,7 +56,7 @@
     <template>
             <el-row :gutter="5">
                 <el-col :span="6">
-                    <el-menu>
+                    <el-menu class="chatLeft">
                         <el-menu-item>
                             <i class="el-icon-user"></i>
                             <span slot="title">访客1112</span>
@@ -29,16 +64,22 @@
                     </el-menu>
                 </el-col>
                 <el-col :span="12">
-                    <div class="sw-bg">
+                    <div class="sw-bg chatContext">
                         <el-row :gutter="2">
-                            <el-col :span="4"><el-avatar :size="60" :src="circleUrl"></el-avatar></el-col>
-                            <el-col :span="20">内容</el-col>
+                            <el-col :span="3"><el-avatar :size="60" :src="circleUrl"></el-avatar></el-col>
+                            <el-col :span="21">
+                                <div class="chatUser">内容</div>
+                                <div class="chatContent">内容</div>
+                            </el-col>
                         </el-row>
-                        <el-row :gutter="2">
-                            <el-col :span="20">内容</el-col>
-                            <el-col :span="4"><el-avatar :size="60" :src="circleUrl"></el-avatar></el-col>
+                        <el-row :gutter="2" class="chatBoxMe">
+                            <el-col :span="3"><el-avatar :size="60" :src="circleUrl"></el-avatar></el-col>
+                            <el-col :span="21">
+                                <div class="chatUser">内容</div>
+                                <div class="chatContent">内容</div>
+                            </el-col>
                         </el-row>
-                        <el-input type="textarea"></el-input>
+                        <el-input type="textarea" class="chatArea"></el-input>
                         <el-button type="primary">发送</el-button>
                     </div>
                 </el-col>
