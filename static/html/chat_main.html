@@ -9,10 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
     <style>
         html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
-        .el-row{width:100%}
-        .chatLeft{border-bottom: solid 1px #e6e6e6}
+        .el-row{width:100%}#app{margin-top: 10px;}
+        .chatLeft{border-bottom: solid 1px #e6e6e6;overflow: hidden;}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
         .chatContext .el-row{margin-bottom: 5px;}
         .chatUser{
@@ -57,9 +58,9 @@
             <el-row :gutter="5">
                 <el-col :span="6">
                     <el-menu class="chatLeft">
-                        <el-menu-item>
+                        <el-menu-item v-for="v in onlineUsers" v-bind:key="v"  v-on:click="talkTo(v.uid)">
                             <i class="el-icon-user"></i>
-                            <span slot="title">访客1112</span>
+                            <span slot="title">访客:<{v.uid}></span>
                         </el-menu-item>
                     </el-menu>
                 </el-col>
@@ -85,7 +86,7 @@
                 </el-col>
                 <el-col :span="6">
                     <div class="sw-bg">
-                        sss
+                        常用功能
                     </div>
                 </el-col>
             </el-row>
@@ -98,15 +99,66 @@
         delimiters:["<{","}>"],
         data: {
             fullscreenLoading:true,
+            onlineUsers:[],
+            server:"ws://127.0.0.1:8080/chat_server",
+            socket:null,
         },
         methods: {
             //跳转
             openUrl(url){
                 window.location.href=url;
             },
+            getOnlineUsers(){
+                let _this=this;
+                $.get('/chat_users',function (rs) {
+                    _this.onlineUsers=rs.result
+                    _this.fullscreenLoading=false;
+                }).then(()=>{
+                    _this.fullscreenLoading=false;
+                });
+            },
+            //初始化websocket
+            initConn(){
+                let socket=new ReconnectingWebSocket(this.server);//创建Socket实例
+                this.socket = socket
+                this.socket.onmessage = this.OnMessage;
+                this.socket.onopen = this.OnOpen;
+            },
+            OnOpen(){
+                let data={};
+                data.type="kfOnline";
+                data.uid="kf_1";
+                data.name="客服丽丽";
+                data.avatar="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
+                data.group="1";
+                this.socket.send(JSON.stringify(data));
+            },
+            OnMessage(e){
+                const redata = JSON.parse(e.data);
+                if (redata.type=="notice"){
+                    this.$notify({
+                        title: "通知",
+                        message: "新客户访问",
+                        type: 'success',
+                        duration: 0,
+                    });
+                    this.onlineUsers=redata.data;
+                }
+            },
+            //接手客户
+            talkTo(guestId){
+                let data={};
+                data.type="kfOnline";
+                data.uid="kf_1";
+                data.name="客服丽丽";
+                data.avatar="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
+                data.group="1";
+                socket.send(JSON.stringify(data));
+            },
         },
         created: function () {
-            this.fullscreenLoading=false
+            this.getOnlineUsers();
+            this.initConn();
         }
     })
 

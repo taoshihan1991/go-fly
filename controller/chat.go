@@ -9,19 +9,21 @@ import (
 	"net/http"
 	"time"
 )
+
 //聊天主界面
-func ActionChatMain(w http.ResponseWriter, r *http.Request){
-	render:=tmpl.NewRender(w)
-	render.Display("chat_main",nil)
+func ActionChatMain(w http.ResponseWriter, r *http.Request) {
+	render := tmpl.NewRender(w)
+	render.Display("chat_main", nil)
 }
+
 //获取在线用户
-func ChatUsers(w http.ResponseWriter, r *http.Request){
+func ChatUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/json;charset=utf-8;")
-	result:=make([]map[string]string,0)
-	for uid,_:=range clientList{
-		userInfo:=make(map[string]string)
-		userInfo["uid"]=uid
-		result=append(result,userInfo)
+	result := make([]map[string]string, 0)
+	for uid, _ := range clientList {
+		userInfo := make(map[string]string)
+		userInfo["uid"] = uid
+		result = append(result, userInfo)
 	}
 	msg, _ := json.Marshal(tools.JsonListResult{
 		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
@@ -29,8 +31,9 @@ func ChatUsers(w http.ResponseWriter, r *http.Request){
 	})
 	w.Write(msg)
 }
+
 //兼容之前的聊天服务
-func ChatServer(w *websocket.Conn){
+func ChatServer(w *websocket.Conn) {
 	var error error
 	for {
 		//接受消息
@@ -39,55 +42,60 @@ func ChatServer(w *websocket.Conn){
 			log.Println("接受消息失败", error)
 			break
 		}
-		message := Message{}
-		err := json.Unmarshal([]byte(receive), &message)
-		if err != nil {
-			log.Println(err)
-		}
-		chat := ChatUserMessage{}
-		json.Unmarshal([]byte(receive), &chat)
-		log.Println("客户端:", message)
-		kfMessageData := KfMessageData{
-			Kf_name: "客服小美",
-			Avatar:  "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg",
-			Kf_id:   "KF2",
-			Time:    time.Now().Format("2006-01-02 15:04:05"),
-			Content: chat.Data.Content,
-		}
-		switch message.Type.(string) {
-		//用户初始化
+		log.Println("客户端:", receive)
+
+		var loginMsg Message
+		json.Unmarshal([]byte(receive), &loginMsg)
+
+		switch loginMsg.Type.(string) {
+		//用户上线
 		case "userInit":
-			clientList[message.Uid.(string)] = w
+			//用户id对应的连接
+			clientList[loginMsg.Uid.(string)] = w
+			if len(kefuList)==0{
+				websocket.Message.Send(w, "无客服在线")
+			}else{
+				//发送给客服通知
+				for _, conn := range kefuList {
+					result := make([]map[string]string, 0)
+					for uid, _ := range clientList {
+						userInfo := make(map[string]string)
+						userInfo["uid"] = uid
+						result = append(result, userInfo)
+					}
+					msg:=NoticeMessage{
+						Type: "notice",
+						Data:result,
+					}
+					str,_:=json.Marshal(msg);sendStr:=string(str)
+					websocket.Message.Send(conn,sendStr)
+				}
+			}
+		//客服上线
+		case "kfOnline":
+			//客服id对应的连接
+			kefuList[loginMsg.Uid.(string)] = w
 			sendMsg := ChatKfMessage{
-				Message_type: "kf_online",
-				Data:         kfMessageData,
+				Message_type: "kfOnline",
+				Data: KfMessageData{
+					Kf_name: loginMsg.Name,
+					Avatar:  loginMsg.Avatar,
+					Kf_id:   loginMsg.Uid,
+					Time:    time.Now().Format("2006-01-02 15:04:05"),
+					Content: "客服上线",
+				},
 			}
 			jsonStrByte, _ := json.Marshal(sendMsg)
-			log.Println("服务端:", string(jsonStrByte))
-			websocket.Message.Send(w, string(jsonStrByte))
-			//正常发送消息
+			log.Println("发送给客户",clientList,string(jsonStrByte))
+			for _, conn := range clientList {
+				websocket.Message.Send(conn, string(jsonStrByte))
+			}
 		case "chatMessage":
 
-			sendMsg := ChatKfMessage{
-				Message_type: "chatMessage",
-				Data:         kfMessageData,
-			}
-			jsonStrByte, _ := json.Marshal(sendMsg)
-			log.Println("服务端:", string(jsonStrByte))
-			websocket.Message.Send(w, string(jsonStrByte))
-			//回应ping
-		case "ping":
-
-			sendMsg := PingMessage{
-				Type: "pong",
-			}
-			jsonStrByte, _ := json.Marshal(sendMsg)
-			log.Println("服务端:", string(jsonStrByte))
-			websocket.Message.Send(w, string(jsonStrByte))
 		}
 	}
 }
-
+//客户登陆和客服登陆发送的消息
 type Message struct {
 	Type   interface{}
 	Uid    interface{}
@@ -118,8 +126,10 @@ type ChatUserMessage struct {
 	Message_type interface{}     `json:"message_type"`
 	Data         UserMessageData `json:"data"`
 }
-type PingMessage struct {
+type NoticeMessage struct {
 	Type interface{} `json:"type"`
+	Data interface{} `json:"data"`
 }
 
-var clientList =make(map[string]*websocket.Conn)
+var clientList = make(map[string]*websocket.Conn)
+var kefuList = make(map[string]*websocket.Conn)

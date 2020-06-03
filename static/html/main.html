@@ -103,11 +103,11 @@
                 this.websock.onclose = this.websocketclose;
             },
             websocketonopen(){ //连接建立之后执行send方法发送数据
-                let actions = "ping";
-                let _this=this;
-                setInterval(function(){
-                    _this.websocketsend(JSON.stringify(actions));
-                },10000);
+                // let actions = "ping";
+                // let _this=this;
+                // setInterval(function(){
+                //     _this.websocketsend(JSON.stringify(actions));
+                // },10000);
             },
             websocketonerror(){//连接建立失败重连
                 this.initWebSocket();
@@ -775,9 +775,9 @@
             state?($('#msg-area').attr('readonly', 'readonly')):$('#msg-area').removeAttr('readonly');
         },ping = function(time){
             //每30秒ping服务器
-            setInterval(function(){
-                socket.send('{"type":"ping"}');
-            },time);
+            // setInterval(function(){
+            //     socket.send('{"type":"ping"}');
+            // },time);
         },showTime = function(msg){
             var _html = '<div class="swchat-chat-time"><span>' + msg.content + '</span></div>';
             $("#swchat-chat-list ul").append(_html);

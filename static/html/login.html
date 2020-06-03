@@ -57,7 +57,6 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button :loading="loading" type="primary" @click="">本地验证</el-button>
-                        <el-button @click="window.location.href='/main'">设置账户</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
@@ -74,6 +73,22 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">IMAP验证</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="MYSQL认证" name="third">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+                    <el-form-item  prop="server">
+                        <el-input v-model="ruleForm.server" placeholder="MYSQL服务地址"></el-input>
+                    </el-form-item>
+                    <el-form-item  prop="email">
+                        <el-input v-model="ruleForm.email" placeholder="MYSQL用户名"></el-input>
+                    </el-form-item>
+                    <el-form-item  prop="password">
+                        <el-input v-model="ruleForm.password" placeholder="MYSQL密码"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">MYSQL验证</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
