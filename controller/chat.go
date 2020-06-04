@@ -86,10 +86,24 @@ func ChatServer(w *websocket.Conn) {
 				},
 			}
 			jsonStrByte, _ := json.Marshal(sendMsg)
+			//发送给客户
 			log.Println("发送给客户",clientList,string(jsonStrByte))
 			for _, conn := range clientList {
 				websocket.Message.Send(conn, string(jsonStrByte))
 			}
+			//发送给客服通知
+			result := make([]map[string]string, 0)
+			for uid, _ := range clientList {
+				userInfo := make(map[string]string)
+				userInfo["uid"] = uid
+				result = append(result, userInfo)
+			}
+			msg:=NoticeMessage{
+				Type: "notice",
+				Data:result,
+			}
+			str,_:=json.Marshal(msg);sendStr:=string(str)
+			websocket.Message.Send(w,sendStr)
 		case "chatMessage":
 
 		}

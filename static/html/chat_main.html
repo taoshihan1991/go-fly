@@ -58,7 +58,7 @@
             <el-row :gutter="5">
                 <el-col :span="6">
                     <el-menu class="chatLeft">
-                        <el-menu-item v-for="v in onlineUsers" v-bind:key="v"  v-on:click="talkTo(v.uid)">
+                        <el-menu-item v-for="v in users" v-bind:key="v.uid"  v-on:click="talkTo(v.uid)">
                             <i class="el-icon-user"></i>
                             <span slot="title">访客:<{v.uid}></span>
                         </el-menu-item>
@@ -67,21 +67,21 @@
                 <el-col :span="12">
                     <div class="sw-bg chatContext">
                         <el-row :gutter="2">
-                            <el-col :span="3"><el-avatar :size="60" :src="circleUrl"></el-avatar></el-col>
+                            <el-col :span="3"><el-avatar :size="60" ></el-avatar></el-col>
                             <el-col :span="21">
                                 <div class="chatUser">内容</div>
                                 <div class="chatContent">内容</div>
                             </el-col>
                         </el-row>
                         <el-row :gutter="2" class="chatBoxMe">
-                            <el-col :span="3"><el-avatar :size="60" :src="circleUrl"></el-avatar></el-col>
+                            <el-col :span="3"><el-avatar :size="60" ></el-avatar></el-col>
                             <el-col :span="21">
                                 <div class="chatUser">内容</div>
                                 <div class="chatContent">内容</div>
                             </el-col>
                         </el-row>
-                        <el-input type="textarea" class="chatArea"></el-input>
-                        <el-button type="primary">发送</el-button>
+                        <el-input type="textarea" class="chatArea" v-model="messageContent"></el-input>
+                        <el-button type="primary" v-on:click="chatToUser">发送</el-button>
                     </div>
                 </el-col>
                 <el-col :span="6">
@@ -99,9 +99,11 @@
         delimiters:["<{","}>"],
         data: {
             fullscreenLoading:true,
-            onlineUsers:[],
+            users:[],
             server:"ws://127.0.0.1:8080/chat_server",
             socket:null,
+            messageContent:"",
+            currentGuest:"",
         },
         methods: {
             //跳转
@@ -110,12 +112,12 @@
             },
             getOnlineUsers(){
                 let _this=this;
-                $.get('/chat_users',function (rs) {
-                    _this.onlineUsers=rs.result
-                    _this.fullscreenLoading=false;
-                }).then(()=>{
-                    _this.fullscreenLoading=false;
-                });
+                // $.get('/chat_users',function (rs) {
+                //     _this.users=rs.result
+                //     _this.fullscreenLoading=false;
+                // }).then(()=>{
+                //     _this.fullscreenLoading=false;
+                // });
             },
             //初始化websocket
             initConn(){
@@ -142,18 +144,26 @@
                         type: 'success',
                         duration: 0,
                     });
-                    this.onlineUsers=redata.data;
+                    this.users=redata.data;
+                    this.currentGuest=redata.data[0].uid;
                 }
             },
             //接手客户
             talkTo(guestId){
+                this.currentGuest=guestId;
+            },
+            //发送给客户
+            chatToUser(){
+                let mes={};
                 let data={};
-                data.type="kfOnline";
-                data.uid="kf_1";
-                data.name="客服丽丽";
+                mes.type="messageType";
+                data.content=this.messageContent;
+                data.kf_id="kf_1";
+                data.guest_id=this.currentGuest;
+                data.kf_name="客服丽丽";
                 data.avatar="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
-                data.group="1";
-                socket.send(JSON.stringify(data));
+                mes.data=data;
+                this.socket.send(JSON.stringify(mes));
             },
         },
         created: function () {
