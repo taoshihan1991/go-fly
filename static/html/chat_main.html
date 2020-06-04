@@ -66,18 +66,11 @@
                 </el-col>
                 <el-col :span="12">
                     <div class="sw-bg chatContext">
-                        <el-row :gutter="2">
-                            <el-col :span="3"><el-avatar :size="60" ></el-avatar></el-col>
+                        <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                            <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
                             <el-col :span="21">
-                                <div class="chatUser">内容</div>
-                                <div class="chatContent">内容</div>
-                            </el-col>
-                        </el-row>
-                        <el-row :gutter="2" class="chatBoxMe">
-                            <el-col :span="3"><el-avatar :size="60" ></el-avatar></el-col>
-                            <el-col :span="21">
-                                <div class="chatUser">内容</div>
-                                <div class="chatContent">内容</div>
+                                <div class="chatUser"><{v.name}></div>
+                                <div class="chatContent"><{v.content}></div>
                             </el-col>
                         </el-row>
                         <el-input type="textarea" class="chatArea" v-model="messageContent"></el-input>
@@ -104,6 +97,8 @@
             socket:null,
             messageContent:"",
             currentGuest:"",
+            msgList:[],
+            msgListUser:[],
         },
         methods: {
             //跳转
@@ -128,12 +123,14 @@
             },
             OnOpen(){
                 let data={};
-                data.type="kfOnline";
-                data.uid="kf_1";
-                data.name="客服丽丽";
+                let mes={}
+                mes.type="kfOnline";
+                data.kf_id="kf_1";
+                data.kf_name="客服丽丽";
                 data.avatar="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
                 data.group="1";
-                this.socket.send(JSON.stringify(data));
+                mes.data=data;
+                this.socket.send(JSON.stringify(mes));
             },
             OnMessage(e){
                 const redata = JSON.parse(e.data);
@@ -147,16 +144,35 @@
                     this.users=redata.data;
                     this.currentGuest=redata.data[0].uid;
                 }
+
+                if (redata.type=="chatMessage"){
+                    let msg=redata.data
+                    let content={}
+                    content.avatar=msg.from_avatar;
+                    content.name=msg.from_name;
+                    content.content=msg.content;
+                    content.is_kefu=false;
+                    content.time=msg.time;
+                    if(msg.from_id==this.currentGuest){
+                        this.msgList.push(content);
+                    }
+                    if (typeof(this.msgListUser[msg.from_id])=="undefined"){
+                        this.msgListUser[msg.from_id]=[];
+                    }
+                    this.msgListUser[msg.from_id].push(content);
+                }
             },
             //接手客户
             talkTo(guestId){
                 this.currentGuest=guestId;
+                this.msgList=[];
+                this.msgList=this.msgListUser[guestId];
             },
             //发送给客户
             chatToUser(){
                 let mes={};
                 let data={};
-                mes.type="messageType";
+                mes.type="kfChatMessage";
                 data.content=this.messageContent;
                 data.kf_id="kf_1";
                 data.guest_id=this.currentGuest;
@@ -164,6 +180,19 @@
                 data.avatar="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
                 mes.data=data;
                 this.socket.send(JSON.stringify(mes));
+                this.messageContent="";
+
+                let content={}
+                content.avatar=data.avatar;
+                content.name=data.kf_name;
+                content.content=data.content;
+                content.is_kefu=true;
+                content.time=data.time;
+                this.msgList.push(content);
+                if (typeof(this.msgListUser[this.currentGuest])=="undefined"){
+                    this.msgListUser[this.currentGuest]=[];
+                }
+                this.msgListUser[this.currentGuest].push(content);
             },
         },
         created: function () {

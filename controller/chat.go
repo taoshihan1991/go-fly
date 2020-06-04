@@ -31,7 +31,27 @@ func ChatUsers(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Write(msg)
 }
-
+type TypeMessage struct {
+	Type interface{} `json:"type"`
+	Data interface{} `json:"data"`
+}
+type KfMessage struct {
+	Kf_name string `json:"kf_name"`
+	Avatar  string `json:"avatar"`
+	Kf_id   string `json:"kf_id"`
+	Time    string `json:"time"`
+	Guest_id string `json:"guest_id"`
+	Content string `json:"content"`
+}
+type UserMessage struct {
+	From_avatar string `json:"from_avatar"`
+	From_id     string `json:"from_id"`
+	From_name   string `json:"from_name"`
+	To_id       string `json:"to_id"`
+	To_name     string `json:"to_name"`
+	Time     string `json:"time"`
+	Content     string `json:"content"`
+}
 //兼容之前的聊天服务
 func ChatServer(w *websocket.Conn) {
 	var error error
@@ -44,18 +64,26 @@ func ChatServer(w *websocket.Conn) {
 		}
 		log.Println("客户端:", receive)
 
-		var loginMsg Message
-		json.Unmarshal([]byte(receive), &loginMsg)
+		var typeMsg TypeMessage
+		var kfMsg KfMessage
+		var userMsg UserMessage
+		json.Unmarshal([]byte(receive), &typeMsg)
+		if typeMsg.Type==nil||typeMsg.Data==nil{
+			break
+		}
+		msgType:=typeMsg.Type.(string)
+		msgData, _ :=json.Marshal(typeMsg.Data)
 
-		switch loginMsg.Type.(string) {
+		switch msgType {
 		//用户上线
 		case "userInit":
+			json.Unmarshal(msgData,&userMsg)
 			//用户id对应的连接
-			clientList[loginMsg.Uid.(string)] = w
+			clientList[userMsg.From_id] = w
 			if len(kefuList)==0{
 				websocket.Message.Send(w, "无客服在线")
 			}else{
-				//发送给客服通知
+				//发送给客服通知s
 				for _, conn := range kefuList {
 					result := make([]map[string]string, 0)
 					for uid, _ := range clientList {
@@ -73,21 +101,24 @@ func ChatServer(w *websocket.Conn) {
 			}
 		//客服上线
 		case "kfOnline":
+			json.Unmarshal(msgData,&kfMsg)
 			//客服id对应的连接
-			kefuList[loginMsg.Uid.(string)] = w
-			sendMsg := ChatKfMessage{
-				Message_type: "kfOnline",
-				Data: KfMessageData{
-					Kf_name: loginMsg.Name,
-					Avatar:  loginMsg.Avatar,
-					Kf_id:   loginMsg.Uid,
+			kefuList[kfMsg.Kf_id] = w
+			sendMsg := TypeMessage{
+				Type: "kfOnline",
+				Data: KfMessage{
+					Kf_name: kfMsg.Kf_name,
+					Avatar:  kfMsg.Avatar,
+					Kf_id:   kfMsg.Kf_id,
 					Time:    time.Now().Format("2006-01-02 15:04:05"),
 					Content: "客服上线",
 				},
 			}
 			jsonStrByte, _ := json.Marshal(sendMsg)
 			//发送给客户
-			log.Println("发送给客户",clientList,string(jsonStrByte))
+			if len(clientList)==0{
+				break
+			}
 			for _, conn := range clientList {
 				websocket.Message.Send(conn, string(jsonStrByte))
 			}
@@ -104,8 +135,39 @@ func ChatServer(w *websocket.Conn) {
 			}
 			str,_:=json.Marshal(msg);sendStr:=string(str)
 			websocket.Message.Send(w,sendStr)
+		case "kfChatMessage":
+			json.Unmarshal(msgData,&kfMsg)
+			conn:=clientList[kfMsg.Guest_id]
+			msg:=NoticeMessage{
+				Type: "kfChatMessage",
+				Data:KfMessage{
+					Kf_name:  kfMsg.Kf_name,
+					Avatar:   kfMsg.Avatar,
+					Kf_id:    kfMsg.Kf_id,
+					Time:     time.Now().Format("2006-01-02 15:04:05"),
+					Guest_id: kfMsg.Guest_id,
+					Content:  kfMsg.Content,
+				},
+			}
+			str,_:=json.Marshal(msg);sendStr:=string(str)
+			websocket.Message.Send(conn,sendStr)
 		case "chatMessage":
-
+			json.Unmarshal(msgData,&userMsg)
+			conn:=kefuList[userMsg.To_id]
+			msg:=NoticeMessage{
+				Type: "chatMessage",
+				Data:UserMessage{
+					From_avatar: userMsg.From_avatar,
+					From_id:     userMsg.From_id,
+					From_name:   userMsg.From_name,
+					To_id:       userMsg.To_id,
+					To_name:     userMsg.To_name,
+					Content:     userMsg.Content,
+					Time:    time.Now().Format("2006-01-02 15:04:05"),
+				},
+			}
+			str,_:=json.Marshal(msg);sendStr:=string(str)
+			websocket.Message.Send(conn,sendStr)
 		}
 	}
 }

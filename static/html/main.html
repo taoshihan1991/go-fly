@@ -685,8 +685,8 @@
             socket = new ReconnectingWebSocket(protocol + config.socket);//创建Socket实例
             uinfo = getCache('swchatUserInfo');
             socket.onopen = function (res) {
-                var login_data = '{"type":"userInit", "uid": "' + uinfo[0].userId + '", "name" : "' + uinfo[0].name +
-                    '", "avatar" : "' + config.avatar + '", "group" : ' + config.group + '}';
+                var login_data = '{"type":"userInit", "data":{"from_id": "' + uinfo[0].userId + '", "name" : "' + uinfo[0].name +
+                    '", "avatar" : "' + config.avatar + '", "group" : ' + config.group + '}}';
                 socket.send(login_data);
                 ping(30000);
                 isLock(false);
@@ -695,7 +695,8 @@
             socket.onmessage = function (res) {
                 try {
                     var data=JSON.parse(res.data);
-                    switch(data['message_type']){
+                    console.log(data);
+                    switch(data['type']){
                         // 已经被分配了客服
                         case 'connect':
                             kf_id = data.data.kf_id;
@@ -738,7 +739,7 @@
 
                             break;
                         // 监测聊天数据
-                        case 'chatMessage':
+                        case 'kfChatMessage':
                             kf_id = data.data.kf_id;
                             kf_name =typeof(data.data.kf_name) == 'undefined'?"客服":data.data.kf_name;
                             data.data.name=kf_name;
