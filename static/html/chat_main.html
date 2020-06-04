@@ -166,7 +166,7 @@
             talkTo(guestId){
                 this.currentGuest=guestId;
                 this.msgList=[];
-                this.msgList=this.msgListUser[guestId];
+                this.msgList=this.clone(this.msgListUser[guestId]);
             },
             //发送给客户
             chatToUser(){
@@ -194,6 +194,26 @@
                 }
                 this.msgListUser[this.currentGuest].push(content);
             },
+            clone(Obj){
+                var buf;
+                if(Obj instanceof Array){
+                    buf=[];
+                    var i=Obj.length;
+                    while(i--){
+                        buf[i]=clone(Obj[i]);
+                    }
+                    return buf;
+                }else if(Obj instanceof Object){
+                    buf={};
+                    for(var k in Obj){
+                        buf[k]=clone(Obj[k]);
+                    }
+                    return buf;
+                }else{
+                    return Obj;
+                }
+            },
+
         },
         created: function () {
             this.getOnlineUsers();
