@@ -102,11 +102,11 @@
         },
         methods: {
             //跳转
-            openUrl(url){
-                window.location.href=url;
+            openUrl(url) {
+                window.location.href = url;
             },
-            getOnlineUsers(){
-                let _this=this;
+            getOnlineUsers() {
+                let _this = this;
                 // $.get('/chat_users',function (rs) {
                 //     _this.users=rs.result
                 //     _this.fullscreenLoading=false;
@@ -115,105 +115,95 @@
                 // });
             },
             //初始化websocket
-            initConn(){
-                let socket=new ReconnectingWebSocket(this.server);//创建Socket实例
+            initConn() {
+                let socket = new ReconnectingWebSocket(this.server);//创建Socket实例
                 this.socket = socket
                 this.socket.onmessage = this.OnMessage;
                 this.socket.onopen = this.OnOpen;
             },
-            OnOpen(){
-                let data={};
-                let mes={}
-                mes.type="kfOnline";
-                data.kf_id="kf_1";
-                data.kf_name="客服丽丽";
-                data.avatar="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
-                data.group="1";
-                mes.data=data;
+            OnOpen() {
+                let data = {};
+                let mes = {}
+                mes.type = "kfOnline";
+                data.kf_id = "kf_1";
+                data.kf_name = "客服丽丽";
+                data.avatar = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
+                data.group = "1";
+                mes.data = data;
                 this.socket.send(JSON.stringify(mes));
             },
-            OnMessage(e){
+            OnMessage(e) {
                 const redata = JSON.parse(e.data);
-                if (redata.type=="notice"){
+                if (redata.type == "notice") {
                     this.$notify({
                         title: "通知",
                         message: "新客户访问",
                         type: 'success',
                         duration: 0,
                     });
-                    this.users=redata.data;
-                    this.currentGuest=redata.data[0].uid;
+                    this.users = redata.data;
+                    this.currentGuest = redata.data[0].uid;
+                    for(i=0;i<redata.data.length;i++){
+                        if (typeof (this.msgListUser[redata.data[i].uid]) == "undefined") {
+                            this.msgListUser[redata.data[i].uid] = [];
+                        }
+                    }
                 }
 
-                if (redata.type=="chatMessage"){
-                    let msg=redata.data
-                    let content={}
-                    content.avatar=msg.from_avatar;
-                    content.name=msg.from_name;
-                    content.content=msg.content;
-                    content.is_kefu=false;
-                    content.time=msg.time;
-                    if(msg.from_id==this.currentGuest){
+                if (redata.type == "chatMessage") {
+                    let msg = redata.data
+                    let content = {}
+                    content.avatar = msg.from_avatar;
+                    content.name = msg.from_name;
+                    content.content = msg.content;
+                    content.is_kefu = false;
+                    content.time = msg.time;
+                    if (msg.from_id == this.currentGuest) {
                         this.msgList.push(content);
                     }
-                    if (typeof(this.msgListUser[msg.from_id])=="undefined"){
-                        this.msgListUser[msg.from_id]=[];
+                    if (typeof (this.msgListUser[msg.from_id]) == "undefined") {
+                        this.msgListUser[msg.from_id] = [];
                     }
                     this.msgListUser[msg.from_id].push(content);
                 }
             },
             //接手客户
-            talkTo(guestId){
-                this.currentGuest=guestId;
-                this.msgList=[];
-                this.msgList=this.clone(this.msgListUser[guestId]);
+            talkTo(guestId) {
+                this.currentGuest = guestId;
+                this.msgList = [];
+                let buf = [];
+                var i = this.msgListUser[guestId].length;
+                while (i--) {
+                    buf[i] = this.msgListUser[guestId][i];
+                }
+                this.msgList = buf;
             },
             //发送给客户
-            chatToUser(){
-                let mes={};
-                let data={};
-                mes.type="kfChatMessage";
-                data.content=this.messageContent;
-                data.kf_id="kf_1";
-                data.guest_id=this.currentGuest;
-                data.kf_name="客服丽丽";
-                data.avatar="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
-                mes.data=data;
+            chatToUser() {
+                let mes = {};
+                let data = {};
+                mes.type = "kfChatMessage";
+                data.content = this.messageContent;
+                data.kf_id = "kf_1";
+                data.guest_id = this.currentGuest;
+                data.kf_name = "客服丽丽";
+                data.avatar = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
+                mes.data = data;
                 this.socket.send(JSON.stringify(mes));
-                this.messageContent="";
+                this.messageContent = "";
 
-                let content={}
-                content.avatar=data.avatar;
-                content.name=data.kf_name;
-                content.content=data.content;
-                content.is_kefu=true;
-                content.time=data.time;
+                let content = {}
+                content.avatar = data.avatar;
+                content.name = data.kf_name;
+                content.content = data.content;
+                content.is_kefu = true;
+                content.time = data.time;
                 this.msgList.push(content);
-                if (typeof(this.msgListUser[this.currentGuest])=="undefined"){
-                    this.msgListUser[this.currentGuest]=[];
+                if (typeof (this.msgListUser[this.currentGuest]) == "undefined") {
+                    this.msgListUser[this.currentGuest] = [];
                 }
                 this.msgListUser[this.currentGuest].push(content);
             },
-            clone(Obj){
-                var buf;
-                if(Obj instanceof Array){
-                    buf=[];
-                    var i=Obj.length;
-                    while(i--){
-                        buf[i]=clone(Obj[i]);
-                    }
-                    return buf;
-                }else if(Obj instanceof Object){
-                    buf={};
-                    for(var k in Obj){
-                        buf[k]=clone(Obj[k]);
-                    }
-                    return buf;
-                }else{
-                    return Obj;
-                }
-            },
-
         },
         created: function () {
             this.getOnlineUsers();
