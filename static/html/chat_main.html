@@ -148,6 +148,7 @@
                             this.msgListUser[redata.data[i].uid] = [];
                         }
                     }
+
                 }
 
                 if (redata.type == "chatMessage") {
@@ -177,6 +178,17 @@
                     buf[i] = this.msgListUser[guestId][i];
                 }
                 this.msgList = buf;
+
+                //发送给客户我在线
+                let data = {};
+                let mes = {}
+                mes.type = "kfOnline";
+                data.kf_id = "kf_1";
+                data.kf_name = "客服丽丽";
+                data.avatar = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
+                data.group = "1";
+                mes.data = data;
+                this.socket.send(JSON.stringify(mes));
             },
             //发送给客户
             chatToUser() {

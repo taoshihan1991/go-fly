@@ -31,6 +31,10 @@ func ChatUsers(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Write(msg)
 }
+type NoticeMessage struct {
+	Type interface{} `json:"type"`
+	Data interface{} `json:"data"`
+}
 type TypeMessage struct {
 	Type interface{} `json:"type"`
 	Data interface{} `json:"data"`
@@ -80,25 +84,8 @@ func ChatServer(w *websocket.Conn) {
 			json.Unmarshal(msgData,&userMsg)
 			//用户id对应的连接
 			clientList[userMsg.From_id] = w
-			if len(kefuList)==0{
-				websocket.Message.Send(w, "无客服在线")
-			}else{
-				//发送给客服通知s
-				for _, conn := range kefuList {
-					result := make([]map[string]string, 0)
-					for uid, _ := range clientList {
-						userInfo := make(map[string]string)
-						userInfo["uid"] = uid
-						result = append(result, userInfo)
-					}
-					msg:=NoticeMessage{
-						Type: "notice",
-						Data:result,
-					}
-					str,_:=json.Marshal(msg);sendStr:=string(str)
-					websocket.Message.Send(conn,sendStr)
-				}
-			}
+			SendUserAllNotice()
+
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData,&kfMsg)
@@ -171,41 +158,27 @@ func ChatServer(w *websocket.Conn) {
 		}
 	}
 }
-//客户登陆和客服登陆发送的消息
-type Message struct {
-	Type   interface{}
-	Uid    interface{}
-	Name   interface{}
-	Avatar interface{}
-	Group  interface{}
+func SendUserAllNotice(){
+	if len(kefuList)!=0{
+		//发送给客服通知
+		for _, conn := range kefuList {
+			result := make([]map[string]string, 0)
+			for uid, _ := range clientList {
+				userInfo := make(map[string]string)
+				userInfo["uid"] = uid
+				result = append(result, userInfo)
+			}
+			msg:=NoticeMessage{
+				Type: "notice",
+				Data:result,
+			}
+			str,_:=json.Marshal(msg);sendStr:=string(str)
+			websocket.Message.Send(conn,sendStr)
+		}
+	}
 }
-type KfMessageData struct {
-	Kf_name interface{} `json:"kf_name"`
-	Avatar  interface{} `json:"avatar"`
-	Kf_id   interface{} `json:"kf_id"`
-	Time    interface{} `json:"time"`
-	Content interface{} `json:"content"`
-}
-type UserMessageData struct {
-	From_avatar interface{} `json:"from_avatar"`
-	From_id     interface{} `json:"from_id"`
-	From_name   interface{} `json:"from_name"`
-	To_id       interface{} `json:"to_id"`
-	To_name     interface{} `json:"to_name"`
-	Content     interface{} `json:"content"`
-}
-type ChatKfMessage struct {
-	Message_type interface{}   `json:"message_type"`
-	Data         KfMessageData `json:"data"`
-}
-type ChatUserMessage struct {
-	Message_type interface{}     `json:"message_type"`
-	Data         UserMessageData `json:"data"`
-}
-type NoticeMessage struct {
-	Type interface{} `json:"type"`
-	Data interface{} `json:"data"`
-}
-
+func SendKefuOnline(){}
+func SendUserChat(){}
+func SendKefuChat(){}
 var clientList = make(map[string]*websocket.Conn)
 var kefuList = make(map[string]*websocket.Conn)
