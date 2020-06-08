@@ -60,7 +60,7 @@
                     <el-menu class="chatLeft">
                         <el-menu-item v-for="v in users" v-bind:key="v.uid"  v-on:click="talkTo(v.uid)">
                             <i class="el-icon-user"></i>
-                            <span slot="title">访客:<{v.uid}></span>
+                            <span slot="title"><{v.username}></span>
                         </el-menu-item>
                     </el-menu>
                 </el-col>
@@ -91,7 +91,7 @@
     kfConfig.kf_id = "kf_1";
     kfConfig.kf_name = "客服丽丽";
     kfConfig.avatar = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
-    kfConfig.group = "1";
+    kfConfig.kf_group = "1";
 
     var app=new Vue({
         el: '#app',
@@ -182,7 +182,7 @@
 
                 //发送给客户我在线
                 let mes = {}
-                mes.type = "kfOnline";
+                mes.type = "kfConnect";
                 kfConfig.guest_id=guestId;
                 mes.data = kfConfig;
                 this.socket.send(JSON.stringify(mes));

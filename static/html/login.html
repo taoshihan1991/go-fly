@@ -39,6 +39,52 @@
             -webkit-box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
             box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
         }
+
+
+        .chatContext{
+            background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;
+            position: fixed;
+            right: 2px;
+            bottom: 10px;
+            min-height: 300px;
+        }
+        .chatBox{
+            min-height: 200px;
+        }
+        .chatUser{
+            line-height: 24px;
+            font-size: 12px;
+            white-space: nowrap;
+            color: #999;
+        }
+        .chatContent{
+            text-align: left;
+            background-color: rgb(166,212,242);
+            color: #000;
+            border: 1px solid rgb(152, 199, 230);
+            padding: 8px 15px;
+            min-height: 35px;
+            word-break: break-all;
+            position: relative;
+        }
+        .chatContent:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 13px;
+            width: 0;
+            height: 0;
+            border-style: dashed;
+            border-color: transparent;
+            overflow: hidden;
+            border-width: 10px;
+            border-top-style: solid;
+            border-top-color: rgb(166,212,242);
+        }
+        .chatBoxMe .el-col-3{float: right;text-align: right;}
+        .chatBoxMe .chatUser{text-align: right}
+        .chatBoxMe .chatContent:after{left:auto;right: -10px;}
+        .chatArea{margin: 10px 0;}
     </style>
 
 </head>
@@ -95,12 +141,39 @@
         </el-tabs>
 
         <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+
+        <!--客服代码-->
+        <div class="chatContext">
+            <div class="chatBox">
+                <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                    <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
+                    <el-col :span="21">
+                        <div class="chatUser"><{v.name}></div>
+                        <div class="chatContent"><{v.content}></div>
+                    </el-col>
+                </el-row>
+            </div>
+            <el-input type="textarea" class="chatArea" v-model="messageContent"></el-input>
+            <el-button type="primary" v-on:click="chatToUser">发送</el-button>
+        </div>
+        <!--//客服代码-->
+
 </template>           
 </div>
 </body>
+
+<script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
 <script>
+    var guest={};
+    guest.from_id = "";
+    guest.from_name = "小明";
+    guest.from_avatar = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
+    guest.from_group = "1";
+    guest.to_id="";
+
 	new Vue({
 		el: '#app',
+        delimiters:["<{","}>"],
 		data: {
             window:window,
             activeName:"first",
@@ -128,6 +201,10 @@
                     { required: true, message: '密码不能为空', trigger: 'blur' },
                 ],
             },
+            server:"ws://127.0.0.1:8080/chat_server",
+            socket:null,
+            msgList:[],
+            messageContent:"",
 		},
 		methods: {
             //提交表单
@@ -195,8 +272,80 @@
                     }
                 });
             },
-		}
+            //初始化websocket
+            initConn() {
+                let socket = new ReconnectingWebSocket(this.server);//创建Socket实例
+                this.socket = socket
+                this.socket.onmessage = this.OnMessage;
+                this.socket.onopen = this.OnOpen;
+            },
+            OnOpen() {
+                let mes = {}
+                mes.type = "userInit";
+                let obj=this.getCache("guest");
+                if(!obj){
+                    guest.from_id=this.generateUUID();
+                    this.setCache("guest",guest)
+                    obj=guest;
+                }
+                mes.data = obj;
+                this.socket.send(JSON.stringify(mes));
+            },
+            OnMessage(e) {
+                const redata = JSON.parse(e.data);
+                if (redata.type == "kfOnline") {
+                    let msg = redata.data
+                    guest.to_id=msg.kf_id;
+                }
+                if (redata.type == "kfChatMessage") {
+                    let msg = redata.data
+                    let content = {}
+                    content.avatar = msg.avatar;
+                    content.name = msg.from_name;
+                    content.content = msg.content;
+                    content.is_kefu = false;
+                    content.time = msg.time;
+                    this.msgList.push(content);
+                }
+            },
+            //发送给客户
+            chatToUser() {
+                let mes = {};
+                mes.type = "chatMessage";
+                guest.content = this.messageContent;
+                mes.data = this.getCache("guest");;
+                this.socket.send(JSON.stringify(mes));
+                this.messageContent = "";
+
+                let content = {}
+                content.avatar=guest.from_avatar;
+                content.content = guest.content;
+                content.is_kefu = true;
+                content.time = '';
+                this.msgList.push(content);
+            },
+            setCache : function (key,obj){
+                if(typeof(Storage) !== "undefined"){
+                    localStorage.setItem(key, JSON.stringify(obj));
+                }
+            },getCache : function (key){
+                return JSON.parse(localStorage.getItem(key));
+            },
+            generateUUID:function () {
+                var d = new Date().getTime();
+                var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var r = (d + Math.random()*16)%16 | 0;
+                    d = Math.floor(d/16);
+                    return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+                });
+                return uuid;
+            },
+		},
+        created: function () {
+            this.initConn();
+        }
 	})
 
 </script>
+
 </html>

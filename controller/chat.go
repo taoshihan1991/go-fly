@@ -43,6 +43,7 @@ type KfMessage struct {
 	Kf_name string `json:"kf_name"`
 	Avatar  string `json:"avatar"`
 	Kf_id   string `json:"kf_id"`
+	Kf_group string `json:"kf_group"`
 	Time    string `json:"time"`
 	Guest_id string `json:"guest_id"`
 	Content string `json:"content"`
@@ -84,44 +85,25 @@ func ChatServer(w *websocket.Conn) {
 			json.Unmarshal(msgData,&userMsg)
 			//用户id对应的连接
 			clientList[userMsg.From_id] = w
-			SendUserAllNotice()
-
+			clientNameList[userMsg.From_id]=userMsg.From_name
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData,&kfMsg)
 			//客服id对应的连接
 			kefuList[kfMsg.Kf_id] = w
-			sendMsg := TypeMessage{
-				Type: "kfOnline",
-				Data: KfMessage{
-					Kf_name: kfMsg.Kf_name,
-					Avatar:  kfMsg.Avatar,
-					Kf_id:   kfMsg.Kf_id,
-					Time:    time.Now().Format("2006-01-02 15:04:05"),
-					Content: "客服上线",
-				},
-			}
-			jsonStrByte, _ := json.Marshal(sendMsg)
 			//发送给客户
 			if len(clientList)==0{
 				break
 			}
 			for _, conn := range clientList {
-				websocket.Message.Send(conn, string(jsonStrByte))
+				SendKefuOnline(kfMsg,conn)
 			}
 			//发送给客服通知
-			result := make([]map[string]string, 0)
-			for uid, _ := range clientList {
-				userInfo := make(map[string]string)
-				userInfo["uid"] = uid
-				result = append(result, userInfo)
-			}
-			msg:=NoticeMessage{
-				Type: "notice",
-				Data:result,
-			}
-			str,_:=json.Marshal(msg);sendStr:=string(str)
-			websocket.Message.Send(w,sendStr)
+			SendOnekfuAllNotice(w)
+		//客服接手
+		case "kfConnect":
+			json.Unmarshal(msgData,&kfMsg)
+			SendKefuOnline(kfMsg,clientList[kfMsg.Guest_id])
 		case "kfChatMessage":
 			json.Unmarshal(msgData,&kfMsg)
 			conn:=clientList[kfMsg.Guest_id]
@@ -158,6 +140,7 @@ func ChatServer(w *websocket.Conn) {
 		}
 	}
 }
+//发送给所有客服客户上线
 func SendUserAllNotice(){
 	if len(kefuList)!=0{
 		//发送给客服通知
@@ -166,6 +149,7 @@ func SendUserAllNotice(){
 			for uid, _ := range clientList {
 				userInfo := make(map[string]string)
 				userInfo["uid"] = uid
+				userInfo["username"]=clientNameList[uid]
 				result = append(result, userInfo)
 			}
 			msg:=NoticeMessage{
@@ -177,8 +161,40 @@ func SendUserAllNotice(){
 		}
 	}
 }
-func SendKefuOnline(){}
+//发送给客户客服上线
+func SendKefuOnline(kfMsg KfMessage,conn *websocket.Conn){
+	sendMsg := TypeMessage{
+		Type: "kfOnline",
+		Data: KfMessage{
+			Kf_name: kfMsg.Kf_name,
+			Avatar:  kfMsg.Avatar,
+			Kf_id:   kfMsg.Kf_id,
+			Kf_group: kfMsg.Kf_group,
+			Time:    time.Now().Format("2006-01-02 15:04:05"),
+			Content: "客服上线",
+		},
+	}
+	jsonStrByte, _ := json.Marshal(sendMsg)
+	websocket.Message.Send(conn, string(jsonStrByte))
+}
+//发送给所有客服客户上线
+func SendOnekfuAllNotice(conn *websocket.Conn){
+	result := make([]map[string]string, 0)
+	for uid, _ := range clientList {
+		userInfo := make(map[string]string)
+		userInfo["uid"] = uid
+		userInfo["username"]=clientNameList[uid]
+		result = append(result, userInfo)
+	}
+	msg:=NoticeMessage{
+		Type: "notice",
+		Data:result,
+	}
+	str,_:=json.Marshal(msg);sendStr:=string(str)
+	websocket.Message.Send(conn,sendStr)
+}
 func SendUserChat(){}
 func SendKefuChat(){}
 var clientList = make(map[string]*websocket.Conn)
+var clientNameList = make(map[string]string)
 var kefuList = make(map[string]*websocket.Conn)
