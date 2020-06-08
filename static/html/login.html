@@ -46,16 +46,20 @@
             position: fixed;
             right: 2px;
             bottom: 10px;
-            min-height: 300px;
+            width: 325px;
         }
         .chatBox{
-            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
+        .chatBox .el-col{margin:10px 0;}
         .chatUser{
             line-height: 24px;
             font-size: 12px;
             white-space: nowrap;
             color: #999;
+            text-align: left;
         }
         .chatContent{
             text-align: left;
@@ -146,7 +150,7 @@
         <div class="chatContext">
             <div class="chatBox">
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
-                    <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
+                    <el-col :span="3"><el-avatar :size="30" :src="v.avatar"></el-avatar></el-col>
                     <el-col :span="21">
                         <div class="chatUser"><{v.name}></div>
                         <div class="chatContent"><{v.content}></div>
@@ -161,13 +165,13 @@
 </template>           
 </div>
 </body>
-
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
 <script>
     var guest={};
     guest.from_id = "";
-    guest.from_name = "小明";
-    guest.from_avatar = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
+    guest.from_name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+returnCitySN["cname"]:"小米";
+    guest.from_avatar = "https://dss2.bdstatic.com/6Ot1bjeh1BF3odCf/it/u=1539628792,3031847515&fm=85&app=92&f=JPEG?w=121&h=75&s=65F03DC608BA199ED70C5D3703009040";
     guest.from_group = "1";
     guest.to_id="";
 
@@ -288,6 +292,7 @@
                     this.setCache("guest",guest)
                     obj=guest;
                 }
+                guest.from_id=obj.from_id;
                 mes.data = obj;
                 this.socket.send(JSON.stringify(mes));
             },
@@ -299,9 +304,11 @@
                 }
                 if (redata.type == "kfChatMessage") {
                     let msg = redata.data
+                    guest.to_id=msg.kf_id;
+
                     let content = {}
                     content.avatar = msg.avatar;
-                    content.name = msg.from_name;
+                    content.name = msg.kf_name;
                     content.content = msg.content;
                     content.is_kefu = false;
                     content.time = msg.time;
@@ -312,14 +319,16 @@
             chatToUser() {
                 let mes = {};
                 mes.type = "chatMessage";
+
                 guest.content = this.messageContent;
-                mes.data = this.getCache("guest");;
+                mes.data = guest;
                 this.socket.send(JSON.stringify(mes));
                 this.messageContent = "";
 
                 let content = {}
                 content.avatar=guest.from_avatar;
                 content.content = guest.content;
+                content.name = guest.from_name;
                 content.is_kefu = true;
                 content.time = '';
                 this.msgList.push(content);
