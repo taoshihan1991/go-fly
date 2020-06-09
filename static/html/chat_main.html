@@ -50,6 +50,7 @@
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
         .chatArea{margin: 10px 0;}
+        .chatBox{max-height: 350px;overflow-y: auto;overflow-x: hidden;}
     </style>
 </head>
 <body>
@@ -66,13 +67,15 @@
                 </el-col>
                 <el-col :span="12">
                     <div class="sw-bg chatContext">
-                        <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
-                            <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
-                            <el-col :span="21">
-                                <div class="chatUser"><{v.name}></div>
-                                <div class="chatContent"><{v.content}></div>
-                            </el-col>
-                        </el-row>
+                        <div class="chatBox">
+                            <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                                <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
+                                <el-col :span="21">
+                                    <div class="chatUser"><{v.name}></div>
+                                    <div class="chatContent"><{v.content}></div>
+                                </el-col>
+                            </el-row>
+                        </div>
                         <el-input type="textarea" class="chatArea" v-model="messageContent"></el-input>
                         <el-button type="primary" v-on:click="chatToUser">发送</el-button>
                     </div>
@@ -149,6 +152,12 @@
                             this.msgListUser[redata.data[i].uid] = [];
                         }
                     }
+                    //发送给客户我在线
+                    let mes = {}
+                    mes.type = "kfConnect";
+                    kfConfig.guest_id=redata.data[0].uid;
+                    mes.data = kfConfig;
+                    this.socket.send(JSON.stringify(mes));
 
                 }
 
@@ -167,6 +176,9 @@
                         this.msgListUser[msg.from_id] = [];
                     }
                     this.msgListUser[msg.from_id].push(content);
+                    this.$nextTick(() => {
+                        $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                    });
                 }
             },
             //接手客户
@@ -207,6 +219,9 @@
                     this.msgListUser[this.currentGuest] = [];
                 }
                 this.msgListUser[this.currentGuest].push(content);
+                this.$nextTick(() => {
+                    $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                });
             },
         },
         created: function () {

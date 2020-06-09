@@ -47,6 +47,7 @@
             right: 2px;
             bottom: 10px;
             width: 325px;
+            text-align: left;
         }
         .chatBox{
             max-height: 400px;
@@ -62,7 +63,6 @@
             text-align: left;
         }
         .chatContent{
-            text-align: left;
             background-color: rgb(166,212,242);
             color: #000;
             border: 1px solid rgb(152, 199, 230);
@@ -89,6 +89,7 @@
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
         .chatArea{margin: 10px 0;}
+        .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
     </style>
 
 </head>
@@ -148,6 +149,7 @@
 
         <!--客服代码-->
         <div class="chatContext">
+            <div class="chatTitle">在线咨询</div>
             <div class="chatBox">
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                     <el-col :span="3"><el-avatar :size="30" :src="v.avatar"></el-avatar></el-col>
@@ -313,6 +315,9 @@
                     content.is_kefu = false;
                     content.time = msg.time;
                     this.msgList.push(content);
+                    this.$nextTick(() => {
+                        $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                    });
                 }
             },
             //发送给客户
@@ -332,6 +337,9 @@
                 content.is_kefu = true;
                 content.time = '';
                 this.msgList.push(content);
+                this.$nextTick(() => {
+                    $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                });
             },
             setCache : function (key,obj){
                 if(typeof(Storage) !== "undefined"){
