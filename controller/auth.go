@@ -1,12 +1,24 @@
 package controller
 
-import "github.com/taoshihan1991/imaptool/config"
-
-func AuthLocal(username string,password string)bool{
+import (
+	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/tools"
+)
+func AuthLocal(username string,password string)string{
 	account:=config.GetAccount()
 	if username==account["Username"] && password==account["Password"]{
-		return true
+
+		sessionId:=tools.Md5(username)
+		info:=make(map[string]string)
+		info["username"]=username
+		config.SetUserInfo(sessionId,info)
+		return sessionId
 	}
-	return false
+	return ""
+}
+//验证是否已经登录
+func AuthCheck(uid string)map[string]string{
+	info:=config.GetUserInfo(uid)
+	return info
 }
 

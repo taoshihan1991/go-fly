@@ -2,6 +2,8 @@
 package tools
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"github.com/gobuffalo/packr"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
@@ -54,4 +56,11 @@ func FileGetContent(file string) string {
 		return str
 	}
 	return content
+}
+//md5加密
+func Md5(src string)string{
+	m:=md5.New()
+	m.Write([]byte(src))
+	res:=hex.EncodeToString(m.Sum(nil))
+	return res
 }

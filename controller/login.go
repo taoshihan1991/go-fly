@@ -22,7 +22,9 @@ func LoginCheck(w http.ResponseWriter, r *http.Request) {
 	switch authType {
 	case "local":
 		username := r.PostFormValue("username")
-		if AuthLocal(username,password){
+		sessionId:=AuthLocal(username,password)
+		if sessionId!=""{
+			tools.SetCookie("session_id", sessionId, &w)
 			msg, _ = json.Marshal(tools.JsonResult{Code: 200, Msg: "验证成功,正在跳转..."})
 			w.Write(msg)
 			return

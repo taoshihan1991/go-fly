@@ -22,13 +22,6 @@ func ActionSetting(w http.ResponseWriter, r *http.Request){
 }
 func SettingAccount(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("content-type", "text/json;charset=utf-8;")
-	mailServer := tools.GetMailServerFromCookie(r)
-
-	if mailServer == nil {
-		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
-		w.Write(msg)
-		return
-	}
 
 	username:=r.PostFormValue("username")
 	password:=r.PostFormValue("password")

@@ -116,12 +116,12 @@
             },
             getOnlineUsers() {
                 let _this = this;
-                // $.get('/chat_users',function (rs) {
-                //     _this.users=rs.result
-                //     _this.fullscreenLoading=false;
-                // }).then(()=>{
-                //     _this.fullscreenLoading=false;
-                // });
+                $.get('/chat_users',function (rs) {
+                    _this.users=rs.result
+                    _this.fullscreenLoading=false;
+                }).then(()=>{
+                    _this.fullscreenLoading=false;
+                });
             },
             //初始化websocket
             initConn() {
@@ -145,7 +145,7 @@
                         type: 'success',
                         duration: 0,
                     });
-                    this.users = redata.data;
+                    //this.users = redata.data;
                     this.currentGuest = redata.data[0].uid;
                     for(i=0;i<redata.data.length;i++){
                         if (typeof (this.msgListUser[redata.data[i].uid]) == "undefined") {
@@ -226,6 +226,7 @@
         },
         created: function () {
             this.initConn();
+            this.getOnlineUsers();
         }
     })
 

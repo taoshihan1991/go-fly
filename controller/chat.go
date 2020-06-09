@@ -23,6 +23,7 @@ func ChatUsers(w http.ResponseWriter, r *http.Request) {
 	for uid, _ := range clientList {
 		userInfo := make(map[string]string)
 		userInfo["uid"] = uid
+		userInfo["username"]=clientNameList[uid]
 		result = append(result, userInfo)
 	}
 	msg, _ := json.Marshal(tools.JsonListResult{
@@ -86,6 +87,7 @@ func ChatServer(w *websocket.Conn) {
 			//用户id对应的连接
 			clientList[userMsg.From_id] = w
 			clientNameList[userMsg.From_id]=userMsg.From_name
+			SendUserAllNotice(userMsg.From_id)
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData,&kfMsg)
@@ -99,7 +101,7 @@ func ChatServer(w *websocket.Conn) {
 				SendKefuOnline(kfMsg,conn)
 			}
 			//发送给客服通知
-			SendOnekfuAllNotice(w)
+			//SendOnekfuAllNotice(w)
 		//客服接手
 		case "kfConnect":
 			json.Unmarshal(msgData,&kfMsg)
@@ -141,17 +143,15 @@ func ChatServer(w *websocket.Conn) {
 	}
 }
 //发送给所有客服客户上线
-func SendUserAllNotice(){
+func SendUserAllNotice(uid string){
 	if len(kefuList)!=0{
 		//发送给客服通知
 		for _, conn := range kefuList {
 			result := make([]map[string]string, 0)
-			for uid, _ := range clientList {
-				userInfo := make(map[string]string)
-				userInfo["uid"] = uid
-				userInfo["username"]=clientNameList[uid]
-				result = append(result, userInfo)
-			}
+			userInfo := make(map[string]string)
+			userInfo["uid"] = uid
+			userInfo["username"]=clientNameList[uid]
+			result = append(result, userInfo)
 			msg:=NoticeMessage{
 				Type: "notice",
 				Data:result,

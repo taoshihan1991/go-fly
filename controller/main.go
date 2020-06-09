@@ -2,9 +2,16 @@ package controller
 
 import (
 	"github.com/taoshihan1991/imaptool/tmpl"
+	"github.com/taoshihan1991/imaptool/tools"
 	"net/http"
 )
 func ActionMain(w http.ResponseWriter, r *http.Request){
+	sessionId:=tools.GetCookie(r,"session_id")
+	info:=AuthCheck(sessionId)
+	if len(info)==0{
+		http.Redirect(w, r, "/login", 302)
+		return
+	}
 	render:=tmpl.NewRender(w)
 	render.Display("main",render)
 }
