@@ -41,10 +41,14 @@ func main() {
 	mux.HandleFunc("/chat_main", controller.ActionChatMain)
 	//新邮件提醒服务
 	mux.HandleFunc("/push_mail", controller.PushMailServer)
+	//聊天界面
+	mux.HandleFunc("/chat_page",controller.ActionChatPage)
 	//聊天服务
 	mux.Handle("/chat_server",websocket.Handler(controller.ChatServer))
 	//获取在线用户
 	mux.HandleFunc("/chat_users", controller.ChatUsers)
+	//后台任务
+	controller.TimerSessFile()
 	//监听端口
 	//http.ListenAndServe(":8080", nil)
 	//var myHandler http.Handler

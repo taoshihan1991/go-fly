@@ -15,7 +15,11 @@ func ActionChatMain(w http.ResponseWriter, r *http.Request) {
 	render := tmpl.NewRender(w)
 	render.Display("chat_main", nil)
 }
-
+//聊天客户端界面
+func ActionChatPage(w http.ResponseWriter, r *http.Request){
+	render := tmpl.NewRender(w)
+	render.Display("chat_page", nil)
+}
 //获取在线用户
 func ChatUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/json;charset=utf-8;")

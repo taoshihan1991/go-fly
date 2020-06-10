@@ -1,0 +1,203 @@
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="陶士涵">
+    <title>GO-FLY咨询页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+        body {
+            background-color: #f5f5f5;
+        }
+        .chatContext{
+            background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;
+            width: 100%;
+            text-align: left;
+        }
+        .chatBox{
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .chatBox .el-col{margin:10px 0;}
+        .chatUser{
+            line-height: 24px;
+            font-size: 12px;
+            white-space: nowrap;
+            color: #999;
+            text-align: left;
+        }
+        .chatContent{
+            background-color: rgb(166,212,242);
+            color: #000;
+            border: 1px solid rgb(152, 199, 230);
+            padding: 8px 15px;
+            min-height: 35px;
+            word-break: break-all;
+            position: relative;
+            border-radius: 5px;
+        }
+        .chatContent:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 13px;
+            width: 0;
+            height: 0;
+            border-style: dashed;
+            border-color: transparent;
+            overflow: hidden;
+            border-width: 10px;
+            border-top-style: solid;
+            border-top-color: rgb(166,212,242);
+        }
+        .chatBoxMe .el-col-3{float: right;text-align: right;}
+        .chatBoxMe .chatUser{text-align: right}
+        .chatBoxMe .chatContent:after{left:auto;right: -10px;}
+        .chatArea{margin: 10px 0;}
+        .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
+    </style>
+
+</head>
+<body class="text-center">
+<div id="app" style="width:100%">
+    <template>
+        <!--客服代码-->
+        <div class="chatContext">
+            <div class="chatTitle">在线咨询</div>
+            <div class="chatBox">
+                <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                    <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
+                    <el-col :span="21">
+                        <div class="chatUser"><{v.name}></div>
+                        <div class="chatContent"><{v.content}></div>
+                    </el-col>
+                </el-row>
+            </div>
+            <el-input type="textarea" class="chatArea" v-model="messageContent"></el-input>
+            <el-button type="primary" v-on:click="chatToUser">发送</el-button>
+        </div>
+        <!--//客服代码-->
+
+    </template>
+</div>
+</body>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+<script>
+    var guest={};
+    guest.from_id = "";
+    guest.from_name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+returnCitySN["cname"]:"小米";
+    guest.from_avatar = "https://dss2.bdstatic.com/6Ot1bjeh1BF3odCf/it/u=1539628792,3031847515&fm=85&app=92&f=JPEG?w=121&h=75&s=65F03DC608BA199ED70C5D3703009040";
+    guest.from_group = "1";
+    guest.to_id="";
+
+    new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            window:window,
+            server:"ws://127.0.0.1:8080/chat_server",
+            socket:null,
+            msgList:[],
+            messageContent:"",
+        },
+        methods: {
+            //初始化websocket
+            initConn() {
+                let socket = new ReconnectingWebSocket(this.server);//创建Socket实例
+                this.socket = socket
+                this.socket.onmessage = this.OnMessage;
+                this.socket.onopen = this.OnOpen;
+            },
+            OnOpen() {
+                let mes = {}
+                mes.type = "userInit";
+                let obj=this.getCache("guest");
+                if(!obj){
+                    guest.from_id=this.generateUUID();
+                    this.setCache("guest",guest)
+                    obj=guest;
+                }
+                guest.from_id=obj.from_id;
+                mes.data = obj;
+                this.socket.send(JSON.stringify(mes));
+            },
+            OnMessage(e) {
+                const redata = JSON.parse(e.data);
+                if (redata.type == "kfOnline") {
+                    let msg = redata.data
+                    guest.to_id=msg.kf_id;
+                }
+                if (redata.type == "kfChatMessage") {
+                    let msg = redata.data
+                    guest.to_id=msg.kf_id;
+
+                    let content = {}
+                    content.avatar = msg.avatar;
+                    content.name = msg.kf_name;
+                    content.content = msg.content;
+                    content.is_kefu = false;
+                    content.time = msg.time;
+                    this.msgList.push(content);
+                    this.$nextTick(() => {
+                        $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                    });
+                }
+            },
+            //发送给客户
+            chatToUser() {
+                let mes = {};
+                mes.type = "chatMessage";
+
+                guest.content = this.messageContent;
+                mes.data = guest;
+                this.socket.send(JSON.stringify(mes));
+                this.messageContent = "";
+
+                let content = {}
+                content.avatar=guest.from_avatar;
+                content.content = guest.content;
+                content.name = guest.from_name;
+                content.is_kefu = true;
+                content.time = '';
+                this.msgList.push(content);
+                this.$nextTick(() => {
+                    $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                });
+            },
+            setCache : function (key,obj){
+                if(typeof(Storage) !== "undefined"){
+                    localStorage.setItem(key, JSON.stringify(obj));
+                }
+            },getCache : function (key){
+                return JSON.parse(localStorage.getItem(key));
+            },
+            generateUUID:function () {
+                var d = new Date().getTime();
+                var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    var r = (d + Math.random()*16)%16 | 0;
+                    d = Math.floor(d/16);
+                    return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+                });
+                return uuid;
+            },
+        },
+        created: function () {
+            this.initConn();
+        }
+    })
+
+</script>
+
+</html>
