@@ -61,6 +61,8 @@
             border-top-style: solid;
             border-top-color: rgb(166,212,242);
         }
+        .chatBoxMe .chatContent{background-color: rgb(152,225,101);border: 1px solid rgb(145, 215, 96);}
+        .chatBoxMe .chatContent:after{border-top-color: rgb(152,225,101);}
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
@@ -74,7 +76,10 @@
     <template>
         <!--客服代码-->
         <div class="chatContext">
-            <div class="chatTitle">在线咨询</div>
+            <el-alert
+                    :title="chatTitle"
+                    type="success">
+            </el-alert>
             <div class="chatBox">
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                     <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
@@ -84,7 +89,7 @@
                     </el-col>
                 </el-row>
             </div>
-            <el-input type="textarea" class="chatArea" v-model="messageContent"></el-input>
+            <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
             <el-button type="primary" v-on:click="chatToUser">发送</el-button>
         </div>
         <!--//客服代码-->
@@ -111,6 +116,7 @@
             socket:null,
             msgList:[],
             messageContent:"",
+            chatTitle:"连接成功!暂时没有客服在线",
         },
         methods: {
             //初始化websocket
@@ -121,16 +127,18 @@
                 this.socket.onopen = this.OnOpen;
             },
             OnOpen() {
-                let mes = {}
-                mes.type = "userInit";
+                //从缓存中取出用户
                 let obj=this.getCache("guest");
                 if(!obj){
                     guest.from_id=this.generateUUID();
-                    this.setCache("guest",guest)
-                    obj=guest;
+                    obj=guest
+                    this.setCache("guest",obj);
                 }
+                guest=obj;
                 guest.from_id=obj.from_id;
-                mes.data = obj;
+                let mes = {}
+                mes.type = "userInit";
+                mes.data = guest;
                 this.socket.send(JSON.stringify(mes));
             },
             OnMessage(e) {
@@ -138,6 +146,7 @@
                 if (redata.type == "kfOnline") {
                     let msg = redata.data
                     guest.to_id=msg.kf_id;
+                    this.chatTitle=msg.kf_name+",正在与您沟通!"
                 }
                 if (redata.type == "kfChatMessage") {
                     let msg = redata.data
@@ -157,6 +166,22 @@
             },
             //发送给客户
             chatToUser() {
+
+                if(guest.to_id==""){
+                    this.$message({
+                        message: '暂时没有客服接手',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                if(this.messageContent==""){
+                    this.$message({
+                        message: '不能发送空白信息',
+                        type: 'warning'
+                    });
+                    return;
+                }
+
                 let mes = {};
                 mes.type = "chatMessage";
 
