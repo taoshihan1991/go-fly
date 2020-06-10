@@ -102,7 +102,7 @@
 <script>
     var guest={};
     guest.from_id = "";
-    guest.from_name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+returnCitySN["cname"]:"小米";
+    guest.from_name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+"-"+returnCitySN["cname"]:"小米";
     guest.from_avatar = "https://dss2.bdstatic.com/6Ot1bjeh1BF3odCf/it/u=1539628792,3031847515&fm=85&app=92&f=JPEG?w=121&h=75&s=65F03DC608BA199ED70C5D3703009040";
     guest.from_group = "1";
     guest.to_id="";
@@ -116,7 +116,7 @@
             socket:null,
             msgList:[],
             messageContent:"",
-            chatTitle:"连接成功!暂时没有客服在线",
+            chatTitle:"正在连接...",
         },
         methods: {
             //初始化websocket
@@ -125,20 +125,15 @@
                 this.socket = socket
                 this.socket.onmessage = this.OnMessage;
                 this.socket.onopen = this.OnOpen;
+                this.socket.onclose = this.OnClose;
             },
             OnOpen() {
+                this.chatTitle="连接成功! 等待客服接入"
                 //从缓存中取出用户
-                let obj=this.getCache("guest");
-                if(!obj){
-                    guest.from_id=this.generateUUID();
-                    obj=guest
-                    this.setCache("guest",obj);
-                }
-                guest=obj;
-                guest.from_id=obj.from_id;
+                let userinfo=this.getUserInfo();
                 let mes = {}
                 mes.type = "userInit";
-                mes.data = guest;
+                mes.data = userinfo;
                 this.socket.send(JSON.stringify(mes));
             },
             OnMessage(e) {
@@ -200,6 +195,20 @@
                 this.$nextTick(() => {
                     $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
                 });
+            },
+            OnClose() {
+                this.chatTitle="连接关闭!"
+            },
+            //获取当前用户信息
+            getUserInfo(){
+                let obj=this.getCache("guest");
+                if(!obj){
+                    guest.from_id=this.generateUUID();
+                    this.setCache("guest",guest);
+                    obj=this.getCache("guest");
+                }
+                guest=obj;
+                return obj;
             },
             setCache : function (key,obj){
                 if(typeof(Storage) !== "undefined"){
