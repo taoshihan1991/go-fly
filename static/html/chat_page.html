@@ -154,9 +154,9 @@
                     content.is_kefu = false;
                     content.time = msg.time;
                     this.msgList.push(content);
-                    this.$nextTick(() => {
-                        $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
-                    });
+
+                    this.saveHistory(content);
+                    this.scrollBottom();
                 }
             },
             //发送给客户
@@ -190,11 +190,10 @@
                 content.content = guest.content;
                 content.name = guest.from_name;
                 content.is_kefu = true;
-                content.time = '';
+                content.time = this.getNowDate();
                 this.msgList.push(content);
-                this.$nextTick(() => {
-                    $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
-                });
+                this.saveHistory(content);
+                this.scrollBottom();
             },
             OnClose() {
                 this.chatTitle="连接关闭!"
@@ -209,6 +208,36 @@
                 }
                 guest=obj;
                 return obj;
+            },
+            //加载历史
+            getHistory:function(){
+                let history=this.getCache("history");
+                if(history==null){
+                    history=[];
+                }
+                return history;
+            },
+            //保存历史
+            saveHistory:function(row){
+                let history=this.getHistory("history");
+                history.push(row);
+                this.setCache("history",history);
+            },
+            //滚动到底部
+            scrollBottom:function(){
+                this.$nextTick(() => {
+                    $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                });
+            },
+            //获取日期
+            getNowDate : function() {// 获取日期
+                var d = new Date(new Date());
+                return d.getFullYear() + '-' + this.digit(d.getMonth() + 1) + '-' + this.digit(d.getDate())
+                    + ' ' + this.digit(d.getHours()) + ':' + this.digit(d.getMinutes()) + ':' + this.digit(d.getSeconds());
+            },
+            //补齐数位
+            digit : function (num) {
+                return num < 10 ? '0' + (num | 0) : num;
             },
             setCache : function (key,obj){
                 if(typeof(Storage) !== "undefined"){
@@ -229,6 +258,10 @@
         },
         created: function () {
             this.initConn();
+            //加载历史记录
+            this.msgList=this.getHistory();
+            //滚动底部
+            this.scrollBottom();
         }
     })
 
