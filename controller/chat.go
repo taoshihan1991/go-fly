@@ -85,6 +85,9 @@ func ChatServer(w *websocket.Conn) {
 		msgData, _ :=json.Marshal(typeMsg.Data)
 
 		switch msgType {
+		//获取当前在线的所有用户
+		case "getOnlineUsers":
+			getOnlineUser(w)
 		//用户上线
 		case "userInit":
 			json.Unmarshal(msgData,&userMsg)
@@ -109,6 +112,7 @@ func ChatServer(w *websocket.Conn) {
 		//客服接手
 		case "kfConnect":
 			json.Unmarshal(msgData,&kfMsg)
+			kefuList[kfMsg.Kf_id] = w
 			SendKefuOnline(kfMsg,clientList[kfMsg.Guest_id])
 		case "kfChatMessage":
 			json.Unmarshal(msgData,&kfMsg)
@@ -151,14 +155,12 @@ func SendUserAllNotice(uid string){
 	if len(kefuList)!=0{
 		//发送给客服通知
 		for _, conn := range kefuList {
-			result := make([]map[string]string, 0)
 			userInfo := make(map[string]string)
 			userInfo["uid"] = uid
 			userInfo["username"]=clientNameList[uid]
-			result = append(result, userInfo)
 			msg:=NoticeMessage{
 				Type: "notice",
-				Data:result,
+				Data:userInfo,
 			}
 			str,_:=json.Marshal(msg);sendStr:=string(str)
 			websocket.Message.Send(conn,sendStr)
@@ -196,6 +198,22 @@ func SendOnekfuAllNotice(conn *websocket.Conn){
 	}
 	str,_:=json.Marshal(msg);sendStr:=string(str)
 	websocket.Message.Send(conn,sendStr)
+}
+//获取当前的在线用户
+func getOnlineUser(w *websocket.Conn){
+	result := make([]map[string]string, 0)
+	for uid, _ := range clientList {
+		userInfo := make(map[string]string)
+		userInfo["uid"] = uid
+		userInfo["username"]=clientNameList[uid]
+		result = append(result, userInfo)
+	}
+	msg:=NoticeMessage{
+		Type: "getOnlineUsers",
+		Data:result,
+	}
+	str,_:=json.Marshal(msg);sendStr:=string(str)
+	websocket.Message.Send(w,sendStr)
 }
 func SendUserChat(){}
 func SendKefuChat(){}

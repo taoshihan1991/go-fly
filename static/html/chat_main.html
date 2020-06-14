@@ -13,7 +13,7 @@
     <style>
         html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
         .el-row{width:100%}#app{margin-top: 10px;}
-        .chatLeft{border-bottom: solid 1px #e6e6e6;overflow: hidden;}
+        .chatLeft{min-height: 100%;border-bottom: solid 1px #e6e6e6;overflow: hidden;border-top: solid 1px #e6e6e6;}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
         .chatContext .el-row{margin-bottom: 5px;}
         .chatUser{
@@ -31,6 +31,7 @@
             min-height: 35px;
             word-break: break-all;
             position: relative;
+            border-radius: 5px;
         }
         .chatContent:after {
             content: '';
@@ -46,6 +47,8 @@
             border-top-style: solid;
             border-top-color: rgb(166,212,242);
         }
+        .chatBoxMe .chatContent{background-color: rgb(152,225,101);border: 1px solid rgb(145, 215, 96);}
+        .chatBoxMe .chatContent:after{border-top-color: rgb(152,225,101);}
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
@@ -58,8 +61,12 @@
     <template>
             <el-row :gutter="5">
                 <el-col :span="6">
-                    <el-menu class="chatLeft">
-                        <el-menu-item v-for="v in users" v-bind:key="v.uid"  v-on:click="talkTo(v.uid)">
+                    <el-menu class="chatLeft" :default-active="currentGuest">
+                        <el-menu-item>
+                            <i class="el-icon-s-promotion"></i>
+                            <span slot="title">在线用户</span>
+                        </el-menu-item>
+                        <el-menu-item :index="v.uid" v-for="v in users" v-bind:key="v.uid"  v-on:click="talkTo(v.uid)">
                             <i class="el-icon-user"></i>
                             <span slot="title"><{v.username}></span>
                         </el-menu-item>
@@ -67,6 +74,10 @@
                 </el-col>
                 <el-col :span="12">
                     <div class="sw-bg chatContext">
+                        <el-alert
+                                :title="chatTitle"
+                                type="success">
+                        </el-alert>
                         <div class="chatBox">
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                                 <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
@@ -81,9 +92,13 @@
                     </div>
                 </el-col>
                 <el-col :span="6">
-                    <div class="sw-bg">
-                        常用功能
-                    </div>
+                        <el-menu class="chatLeft">
+                            <el-menu-item>
+                                <i class="el-icon-s-tools"></i>
+                                <span slot="title">常用工具</span>
+                            </el-menu-item>
+
+                        </el-menu>
                 </el-col>
             </el-row>
     </template>
@@ -102,12 +117,14 @@
         data: {
             fullscreenLoading:true,
             users:[],
+            usersMap:[],
             server:"ws://127.0.0.1:8080/chat_server",
             socket:null,
             messageContent:"",
             currentGuest:"",
             msgList:[],
             msgListUser:[],
+            chatTitle:"暂时未处理咨询",
         },
         methods: {
             //跳转
@@ -115,13 +132,16 @@
                 window.location.href = url;
             },
             getOnlineUsers() {
-                let _this = this;
-                $.get('/chat_users',function (rs) {
-                    _this.users=rs.result
-                    _this.fullscreenLoading=false;
-                }).then(()=>{
-                    _this.fullscreenLoading=false;
-                });
+                let mes = {}
+                mes.type = "getOnlineUsers";
+                mes.data = kfConfig;
+                this.socket.send(JSON.stringify(mes));
+            },
+            sendKefuOnline(){
+                let mes = {}
+                mes.type = "kfOnline";
+                mes.data = kfConfig;
+                this.socket.send(JSON.stringify(mes));
             },
             //初始化websocket
             initConn() {
@@ -131,35 +151,41 @@
                 this.socket.onopen = this.OnOpen;
             },
             OnOpen() {
-                let mes = {}
-                mes.type = "kfOnline";
-                mes.data = kfConfig;
-                this.socket.send(JSON.stringify(mes));
+                this.getOnlineUsers();
             },
             OnMessage(e) {
                 const redata = JSON.parse(e.data);
-                if (redata.type == "notice") {
-                    this.$notify({
-                        title: "通知",
-                        message: "新客户访问",
-                        type: 'success',
-                        duration: 0,
-                    });
-                    //this.users = redata.data;
-                    this.currentGuest = redata.data[0].uid;
-                    for(i=0;i<redata.data.length;i++){
-                        if (typeof (this.msgListUser[redata.data[i].uid]) == "undefined") {
-                            this.msgListUser[redata.data[i].uid] = [];
+                switch (redata.type){
+                    case "getOnlineUsers":
+                        this.handleOnlineUsers(redata.data);
+                        break;
+                    case "notice":
+                        if(!this.usersMap[redata.data.uid]){
+                            this.$notify({
+                                title: "通知",
+                                message: "新客户访问",
+                                type: 'success',
+                                duration: 0,
+                            });
                         }
-                    }
-                    //发送给客户我在线
-                    let mes = {}
-                    mes.type = "kfConnect";
-                    kfConfig.guest_id=redata.data[0].uid;
-                    mes.data = kfConfig;
-                    this.socket.send(JSON.stringify(mes));
-
+                        this.getOnlineUsers();
+                        this.sendKefuOnline();
+                        break;
                 }
+                // if (redata.type == "notice") {
+                //     this.$notify({
+                //         title: "通知",
+                //         message: "新客户访问",
+                //         type: 'success',
+                //         duration: 0,
+                //     });
+                    //发送给客户我在线
+                    // let mes = {}
+                    // mes.type = "kfConnect";
+                    // kfConfig.guest_id=redata.data[0].uid;
+                    // mes.data = kfConfig;
+                    // this.socket.send(JSON.stringify(mes));
+                //}
 
                 if (redata.type == "chatMessage") {
                     let msg = redata.data
@@ -184,6 +210,7 @@
             //接手客户
             talkTo(guestId) {
                 this.currentGuest = guestId;
+                this.chatTitle=this.usersMap[guestId]+guestId+",正在处理中...";
                 this.msgList = [];
                 let buf = [];
                 var i = this.msgListUser[guestId].length;
@@ -192,7 +219,7 @@
                 }
                 this.msgList = buf;
 
-                //发送给客户我在线
+                //发送给客户
                 let mes = {}
                 mes.type = "kfConnect";
                 kfConfig.guest_id=guestId;
@@ -223,10 +250,22 @@
                     $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
                 });
             },
-        },
+            //处理当前在线用户列表
+            handleOnlineUsers:function (retData) {
+                this.users = retData;
+                if (this.currentGuest == "") {
+                    this.chatTitle = "连接成功,等待处理中...";
+                }
+                for(let i=0;i<retData.length;i++){
+                    this.usersMap[retData[i].uid]=retData[i].username;
+                    if (typeof (this.msgListUser[retData[i].uid]) == "undefined") {
+                        this.msgListUser[retData[i].uid] = [];
+                    }
+                }
+            },
+       },
         created: function () {
             this.initConn();
-            this.getOnlineUsers();
         }
     })
 
