@@ -158,16 +158,17 @@
                 switch (redata.type){
                     case "getOnlineUsers":
                         this.handleOnlineUsers(redata.data);
+                        this.sendKefuOnline();
                         break;
                     case "notice":
-                        if(!this.usersMap[redata.data.uid]){
-                            this.$notify({
-                                title: "通知",
-                                message: "新客户访问",
-                                type: 'success',
-                                duration: 0,
-                            });
-                        }
+                        // if(!this.usersMap[redata.data.uid]){
+                        //     this.$notify({
+                        //         title: "通知",
+                        //         message: "新客户访问",
+                        //         type: 'success',
+                        //         duration: 0,
+                        //     });
+                        // }
                         this.getOnlineUsers();
                         this.sendKefuOnline();
                         break;
@@ -228,6 +229,9 @@
             },
             //发送给客户
             chatToUser() {
+                if(this.messageContent==""||kfConfig.guest_id==""){
+                    return;
+                }
                 let mes = {};
                 mes.type = "kfChatMessage";
                 kfConfig.content = this.messageContent;

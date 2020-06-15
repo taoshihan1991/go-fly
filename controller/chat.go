@@ -62,9 +62,15 @@ type UserMessage struct {
 	Time     string `json:"time"`
 	Content     string `json:"content"`
 }
+//定时检测客户端是否在线
+func init() {
+	sendPingToClient()
+}
+
 //兼容之前的聊天服务
 func ChatServer(w *websocket.Conn) {
 	var error error
+
 	for {
 		//接受消息
 		var receive string
@@ -94,7 +100,7 @@ func ChatServer(w *websocket.Conn) {
 			//用户id对应的连接
 			clientList[userMsg.From_id] = w
 			clientNameList[userMsg.From_id]=userMsg.From_name
-			SendUserAllNotice(userMsg.From_id)
+			SendUserAllNotice()
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData,&kfMsg)
@@ -117,6 +123,9 @@ func ChatServer(w *websocket.Conn) {
 		case "kfChatMessage":
 			json.Unmarshal(msgData,&kfMsg)
 			conn:=clientList[kfMsg.Guest_id]
+			if kfMsg.Guest_id=="" ||conn==nil{
+				return
+			}
 			msg:=NoticeMessage{
 				Type: "kfChatMessage",
 				Data:KfMessage{
@@ -151,16 +160,12 @@ func ChatServer(w *websocket.Conn) {
 	}
 }
 //发送给所有客服客户上线
-func SendUserAllNotice(uid string){
+func SendUserAllNotice(){
 	if len(kefuList)!=0{
 		//发送给客服通知
 		for _, conn := range kefuList {
-			userInfo := make(map[string]string)
-			userInfo["uid"] = uid
-			userInfo["username"]=clientNameList[uid]
 			msg:=NoticeMessage{
 				Type: "notice",
-				Data:userInfo,
 			}
 			str,_:=json.Marshal(msg);sendStr:=string(str)
 			websocket.Message.Send(conn,sendStr)
@@ -215,8 +220,27 @@ func getOnlineUser(w *websocket.Conn){
 	str,_:=json.Marshal(msg);sendStr:=string(str)
 	websocket.Message.Send(w,sendStr)
 }
-func SendUserChat(){}
-func SendKefuChat(){}
+//定时给客户端发送消息判断客户端是否在线
+func sendPingToClient(){
+	msg:=NoticeMessage{
+		Type: "ping",
+	}
+	go func() {
+		for{
+			log.Println(2)
+			str,_:=json.Marshal(msg);sendStr:=string(str)
+			for uid, conn := range clientList {
+				err:=websocket.Message.Send(conn,sendStr)
+				if err!=nil{
+					delete(clientList,uid)
+					SendUserAllNotice()
+				}
+			}
+			time.Sleep(10*time.Second)
+		}
+
+	}()
+}
 var clientList = make(map[string]*websocket.Conn)
 var clientNameList = make(map[string]string)
 var kefuList = make(map[string]*websocket.Conn)
