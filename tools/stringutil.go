@@ -4,7 +4,7 @@ package tools
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/gobuffalo/packr"
+	"github.com/gobuffalo/packr/v2"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/unicode"
