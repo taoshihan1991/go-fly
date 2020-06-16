@@ -50,7 +50,7 @@ func DetermineEncoding(html string) (encoding.Encoding, string) {
 //获取文件内容，可以打包到二进制
 func FileGetContent(file string) string {
 	str := ""
-	box := packr.NewBox("../static")
+	box := packr.New("tmpl","../static")
 	content, err := box.FindString(file)
 	if err != nil {
 		return str
