@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/taoshihan1991/imaptool/controller"
+	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/tmpl"
 	"golang.org/x/net/websocket"
 	"log"
 	"net/http"
@@ -10,13 +12,22 @@ import (
 func main() {
 	baseServer:="127.0.0.1:8080"
 	log.Println("start server...\r\ngo：http://"+baseServer)
+	engine := gin.Default()
+	//登陆界面
+	engine.GET("/login",tmpl.PageLogin)
+	//咨询界面
+	engine.GET("/chat_page",tmpl.PageChat)
+	//登陆验证
+	engine.POST("/check",controller.LoginCheckPass)
+
+	//------------------old code-----------------------------
 	mux:=&http.ServeMux{}
 	//根路径
 	mux.HandleFunc("/", controller.ActionIndex)
 	//邮件夹
 	mux.HandleFunc("/list", controller.ActionFolder)
 	//登陆界面
-	mux.HandleFunc("/login", controller.ActionLogin)
+	//mux.HandleFunc("/login", controller.ActionLogin)
 	//验证接口
 	mux.HandleFunc("/check", controller.LoginCheck)
 	//邮件夹接口
@@ -48,7 +59,7 @@ func main() {
 	//获取在线用户
 	mux.HandleFunc("/chat_users", controller.ChatUsers)
 	//设置mysql
-	mux.HandleFunc("/setting_mysql",controller.ActionChatPage)
+	mux.HandleFunc("/setting_mysql",controller.ActionMysqlSet)
 	//后台任务
 	controller.TimerSessFile()
 	//监听端口
@@ -61,5 +72,8 @@ func main() {
 		WriteTimeout:   30 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
+	//---------------old code end------------------
+	engine.Run(":8080")
+
 	s.ListenAndServe()
 }

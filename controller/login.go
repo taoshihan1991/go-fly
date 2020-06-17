@@ -3,11 +3,14 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/tools"
 	"html/template"
 	"net/http"
 )
-//登陆界面
+//验证接口
+func LoginCheckPass(c *gin.Context) {
+}
 func ActionLogin(w http.ResponseWriter, r *http.Request){
 	html := tools.FileGetContent("html/login.html")
 	t, _ := template.New("login").Parse(html)

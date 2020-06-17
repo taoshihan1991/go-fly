@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
 	"golang.org/x/net/websocket"
@@ -19,6 +20,12 @@ func ActionChatMain(w http.ResponseWriter, r *http.Request) {
 func ActionChatPage(w http.ResponseWriter, r *http.Request){
 	render := tmpl.NewRender(w)
 	render.Display("chat_page", nil)
+}
+//咨询界面
+func PageChat(c *gin.Context){
+	html := tools.FileGetContent("html/chat_page.html")
+	c.Header("Content-Type", "text/html; charset=utf-8")
+	c.String(200, html)
 }
 //获取在线用户
 func ChatUsers(w http.ResponseWriter, r *http.Request) {
