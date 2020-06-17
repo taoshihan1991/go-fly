@@ -227,7 +227,7 @@ func sendPingToClient(){
 	}
 	go func() {
 		for{
-			log.Println(2)
+			log.Println("check online users...")
 			str,_:=json.Marshal(msg);sendStr:=string(str)
 			for uid, conn := range clientList {
 				err:=websocket.Message.Send(conn,sendStr)

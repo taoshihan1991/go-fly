@@ -47,6 +47,8 @@ func main() {
 	mux.Handle("/chat_server",websocket.Handler(controller.ChatServer))
 	//获取在线用户
 	mux.HandleFunc("/chat_users", controller.ChatUsers)
+	//设置mysql
+	mux.HandleFunc("/setting_mysql",controller.ActionChatPage)
 	//后台任务
 	controller.TimerSessFile()
 	//监听端口

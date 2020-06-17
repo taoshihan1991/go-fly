@@ -6,6 +6,13 @@ import (
 )
 func AuthLocal(username string,password string)string{
 	account:=config.GetAccount()
+	if account==nil{
+		account=make(map[string]string)
+	}
+	if account["Username"]=="" && account["Password"]==""{
+		account["Username"]="admin"
+		account["Password"]="admin123"
+	}
 	if username==account["Username"] && password==account["Password"]{
 
 		sessionId:=tools.Md5(username)
@@ -19,6 +26,7 @@ func AuthLocal(username string,password string)string{
 //验证是否已经登录
 func AuthCheck(uid string)map[string]string{
 	info:=config.GetUserInfo(uid)
+
 	return info
 }
 
