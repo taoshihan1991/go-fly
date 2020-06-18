@@ -1,3 +1,4 @@
+{{define "nav"}}
 <el-menu
         default-active="3"
         mode="horizontal">
@@ -8,3 +9,4 @@
     <el-menu-item index="4" v-on:click="openIframeUrl('/setting')">设置</el-menu-item>
     <el-menu-item index="10" v-on:click="openIframeUrl('/login')">退出</el-menu-item>
 </el-menu>
+{{end}}

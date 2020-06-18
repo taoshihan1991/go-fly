@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/controller"
+	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"golang.org/x/net/websocket"
 	"log"
@@ -15,6 +16,8 @@ func main() {
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
+	//首页
+	engine.GET("/", controller.Index)
 	//登陆界面
 	engine.GET("/login", tmpl.PageLogin)
 	//咨询界面
@@ -22,11 +25,11 @@ func main() {
 	//登陆验证
 	engine.POST("/check", controller.LoginCheckPass)
 	//框架界面
-	engine.GET("/main", tmpl.PageMain)
+	engine.GET("/main",middleware.JwtPageMiddleware,tmpl.PageMain)
 	//框架界面
-	engine.GET("/chat_main", tmpl.PageChatMain)
+	engine.GET("/chat_main",middleware.JwtPageMiddleware,tmpl.PageChatMain)
 	//验证权限
-	engine.GET("/check_auth", controller.MainCheckAuth)
+	engine.GET("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	//------------------old code-----------------------------
 	mux := &http.ServeMux{}
 	//根路径

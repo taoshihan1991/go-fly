@@ -18,17 +18,8 @@ func ActionMain(w http.ResponseWriter, r *http.Request) {
 	render.Display("main", render)
 }
 func MainCheckAuth(c *gin.Context) {
-	token := c.Query("token")
-	r := CheckAuth(token)
-	if !r {
-		c.JSON(200, gin.H{
-			"code": 400,
-			"msg":  "验证失败",
-		})
-	} else {
-		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "验证成功",
-		})
-	}
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "验证成功",
+	})
 }

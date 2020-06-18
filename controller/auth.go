@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/tools"
-	"log"
 )
 
 func CheckPass(username string, password string) string {
@@ -25,14 +24,7 @@ func CheckPass(username string, password string) string {
 	}
 	return ""
 }
-func CheckAuth(token string) bool {
-	userinfo := tools.ParseToken(token)
-	log.Println(userinfo)
-	if userinfo == nil {
-		return false
-	}
-	return true
-}
+
 func AuthLocal(username string, password string) string {
 	account := config.GetAccount()
 	if account == nil {

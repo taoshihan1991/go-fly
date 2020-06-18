@@ -195,7 +195,7 @@
                                     message: data.msg,
                                     type: 'success'
                                 });
-                                //window.location.href="/main";
+                                window.location.href="/main?token="+data.result.token;
                             }else{
                                 _this.$message({
                                     message: data.msg,

@@ -54,7 +54,7 @@
 <body class="text-center">
 <div id="app">
     <template>
-        {{.Nav}}
+        {{template "nav" }}
         <iframe  class="mainIframe"  v-bind:src="iframeUrl" frameborder="0"></iframe>
     </template>
 </div>
@@ -64,7 +64,7 @@
         el: '#app',
         delimiters:["<{","}>"],
         data: {
-            iframeUrl:"/chat_main",
+            iframeUrl:"",
             mailTotal:0,
         },
         methods: {
@@ -75,8 +75,14 @@
             openUrl(url){
                 window.location.href=url;
             },
+            GetQueryString(name){
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if(r!=null)return  unescape(r[2]); return null;
+            },
         },
         created: function () {
+            this.iframeUrl="/chat_main?token="+this.GetQueryString("token");
         }
     })
 

@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/tools"
 	"net/http"
 )
-
+func Index(c *gin.Context) {
+	c.Redirect(302,"/main")
+}
 //首页跳转
 func ActionIndex(w http.ResponseWriter, r *http.Request) {
 	if r.URL.RequestURI() == "/favicon.ico" {
