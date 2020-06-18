@@ -5,9 +5,9 @@ import "html/template"
 type MailServer struct {
 	Server, Email, Password string
 }
-type ViewHtml struct{
-	Header 			  template.HTML
-	Nav 			  template.HTML
+type ViewHtml struct {
+	Header template.HTML
+	Nav    template.HTML
 }
 type IndexData struct {
 	ViewHtml
@@ -44,11 +44,11 @@ type JsonListResult struct {
 	JsonResult
 	Result interface{} `json:"result"`
 }
-type SmtpBody struct{
-	Smtp string
-	From string
-	To []string
+type SmtpBody struct {
+	Smtp     string
+	From     string
+	To       []string
 	Password string
-	Subject string
-	Body string
+	Subject  string
+	Body     string
 }

@@ -1,27 +1,34 @@
 package main
 
 import (
-	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"golang.org/x/net/websocket"
 	"log"
 	"net/http"
 	"time"
 )
-func main() {
-	baseServer:="127.0.0.1:8080"
-	log.Println("start server...\r\ngo：http://"+baseServer)
-	engine := gin.Default()
-	//登陆界面
-	engine.GET("/login",tmpl.PageLogin)
-	//咨询界面
-	engine.GET("/chat_page",tmpl.PageChat)
-	//登陆验证
-	engine.POST("/check",controller.LoginCheckPass)
 
+func main() {
+	baseServer := "127.0.0.1:8080"
+	log.Println("start server...\r\ngo：http://" + baseServer)
+	engine := gin.Default()
+	engine.LoadHTMLGlob("static/html/*")
+	//登陆界面
+	engine.GET("/login", tmpl.PageLogin)
+	//咨询界面
+	engine.GET("/chat_page", tmpl.PageChat)
+	//登陆验证
+	engine.POST("/check", controller.LoginCheckPass)
+	//框架界面
+	engine.GET("/main", tmpl.PageMain)
+	//框架界面
+	engine.GET("/chat_main", tmpl.PageChatMain)
+	//验证权限
+	engine.GET("/check_auth", controller.MainCheckAuth)
 	//------------------old code-----------------------------
-	mux:=&http.ServeMux{}
+	mux := &http.ServeMux{}
 	//根路径
 	mux.HandleFunc("/", controller.ActionIndex)
 	//邮件夹
@@ -53,13 +60,13 @@ func main() {
 	//新邮件提醒服务
 	mux.HandleFunc("/push_mail", controller.PushMailServer)
 	//聊天界面
-	mux.HandleFunc("/chat_page",controller.ActionChatPage)
+	mux.HandleFunc("/chat_page", controller.ActionChatPage)
 	//聊天服务
-	mux.Handle("/chat_server",websocket.Handler(controller.ChatServer))
+	mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
 	//获取在线用户
 	mux.HandleFunc("/chat_users", controller.ChatUsers)
 	//设置mysql
-	mux.HandleFunc("/setting_mysql",controller.ActionMysqlSet)
+	mux.HandleFunc("/setting_mysql", controller.ActionMysqlSet)
 	//后台任务
 	controller.TimerSessFile()
 	//监听端口

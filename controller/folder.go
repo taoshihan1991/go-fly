@@ -9,11 +9,13 @@ import (
 	"strconv"
 	"sync"
 )
+
 const PageSize = 20
+
 //输出列表
-func ActionFolder(w http.ResponseWriter, r *http.Request){
-	fid:=tools.GetUrlArg(r,"fid")
-	currentPage, _ :=strconv.Atoi(tools.GetUrlArg(r,"page"))
+func ActionFolder(w http.ResponseWriter, r *http.Request) {
+	fid := tools.GetUrlArg(r, "fid")
+	currentPage, _ := strconv.Atoi(tools.GetUrlArg(r, "page"))
 	if fid == "" {
 		fid = "INBOX"
 	}
@@ -23,28 +25,31 @@ func ActionFolder(w http.ResponseWriter, r *http.Request){
 	render := tmpl.NewFolderHtml(w)
 	render.CurrentPage = currentPage
 	render.Fid = fid
-	render.Display("list",render)
+	render.Display("list", render)
 }
-//写信界面
-func ActionWrite(w http.ResponseWriter, r *http.Request){
-	render:=tmpl.NewRender(w)
-	render.SetLeft("mail_left")
-	render.Display("write",nil)
-}
-//读信界面
-func ActionDetail(w http.ResponseWriter, r *http.Request){
-	fid:=tools.GetUrlArg(r,"fid")
-	id, _ :=strconv.Atoi(tools.GetUrlArg(r,"id"))
 
-	render:=tmpl.NewDetailHtml(w)
+//写信界面
+func ActionWrite(w http.ResponseWriter, r *http.Request) {
+	render := tmpl.NewRender(w)
 	render.SetLeft("mail_left")
-	render.Fid=fid
-	render.Id=uint32(id)
-	render.Display("mail_detail",render)
+	render.Display("write", nil)
 }
+
+//读信界面
+func ActionDetail(w http.ResponseWriter, r *http.Request) {
+	fid := tools.GetUrlArg(r, "fid")
+	id, _ := strconv.Atoi(tools.GetUrlArg(r, "id"))
+
+	render := tmpl.NewDetailHtml(w)
+	render.SetLeft("mail_left")
+	render.Fid = fid
+	render.Id = uint32(id)
+	render.Display("mail_detail", render)
+}
+
 //获取邮件夹接口
-func FolderDir(w http.ResponseWriter, r *http.Request){
-	fid:=tools.GetUrlArg(r,"fid")
+func FolderDir(w http.ResponseWriter, r *http.Request) {
+	fid := tools.GetUrlArg(r, "fid")
 
 	if fid == "" {
 		fid = "INBOX"
@@ -69,10 +74,11 @@ func FolderDir(w http.ResponseWriter, r *http.Request){
 	})
 	w.Write(msg)
 }
+
 //邮件夹接口
 func FoldersList(w http.ResponseWriter, r *http.Request) {
-	fid:=tools.GetUrlArg(r,"fid")
-	currentPage, _ :=strconv.Atoi(tools.GetUrlArg(r,"page"))
+	fid := tools.GetUrlArg(r, "fid")
+	currentPage, _ := strconv.Atoi(tools.GetUrlArg(r, "page"))
 
 	if fid == "" {
 		fid = "INBOX"
@@ -89,7 +95,6 @@ func FoldersList(w http.ResponseWriter, r *http.Request) {
 		w.Write(msg)
 		return
 	}
-
 
 	var wg sync.WaitGroup
 	wg.Add(2)
@@ -115,10 +120,11 @@ func FoldersList(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Write(msg)
 }
+
 //邮件接口
 func FolderMail(w http.ResponseWriter, r *http.Request) {
-	fid:=tools.GetUrlArg(r,"fid")
-	id, _ :=strconv.Atoi(tools.GetUrlArg(r,"id"))
+	fid := tools.GetUrlArg(r, "fid")
+	id, _ := strconv.Atoi(tools.GetUrlArg(r, "id"))
 	mailServer := tools.GetMailServerFromCookie(r)
 	w.Header().Set("content-type", "text/json;charset=utf-8;")
 
@@ -154,8 +160,9 @@ func FolderMail(w http.ResponseWriter, r *http.Request) {
 	})
 	w.Write(msg)
 }
+
 //发送邮件接口
-func FolderSend(w http.ResponseWriter, r *http.Request){
+func FolderSend(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/json;charset=utf-8;")
 	mailServer := tools.GetMailServerFromCookie(r)
 
@@ -165,28 +172,28 @@ func FolderSend(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	bodyBytes,err:=ioutil.ReadAll(r.Body)
-	if err!=nil{
-		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "操作失败,"+err.Error()})
+	bodyBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "操作失败," + err.Error()})
 		w.Write(msg)
 		return
 	}
 	var sendData tools.SmtpBody
 	err = json.Unmarshal(bodyBytes, &sendData)
-	if err!=nil{
-		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "操作失败,"+err.Error()})
+	if err != nil {
+		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "操作失败," + err.Error()})
 		w.Write(msg)
 		return
 	}
 
-	smtpServer:=sendData.Smtp
-	smtpFrom:=mailServer.Email
-	smtpTo:=sendData.To
-	smtpBody:=sendData.Body
-	smtpPass:=mailServer.Password
-	smtpSubject:=sendData.Subject
-	err=tools.Send(smtpServer,smtpFrom,smtpPass,smtpTo,smtpSubject,smtpBody)
-	if err!=nil{
+	smtpServer := sendData.Smtp
+	smtpFrom := mailServer.Email
+	smtpTo := sendData.To
+	smtpBody := sendData.Body
+	smtpPass := mailServer.Password
+	smtpSubject := sendData.Subject
+	err = tools.Send(smtpServer, smtpFrom, smtpPass, smtpTo, smtpSubject, smtpBody)
+	if err != nil {
 		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: err.Error()})
 		w.Write(msg)
 		return

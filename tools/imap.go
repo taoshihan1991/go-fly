@@ -63,6 +63,7 @@ func connect(server string, email string, password string) *client.Client {
 	}
 	return c
 }
+
 //获取邮件总数
 func GetMailNum(server string, email string, password string) map[string]int {
 	var c *client.Client
@@ -90,6 +91,7 @@ func GetMailNum(server string, email string, password string) map[string]int {
 	}
 	return folders
 }
+
 //获取邮件夹
 func GetFolders(server string, email string, password string, folder string) map[string]int {
 	var c *client.Client
@@ -143,9 +145,9 @@ func GetFolderMail(server string, email string, password string, folder string, 
 
 	messages := make(chan *imap.Message, pagesize)
 	done := make(chan error, 1)
-	fetchItem:=imap.FetchItem(imap.FetchEnvelope)
-	items := make([]imap.FetchItem,0)
-	items=append(items,fetchItem)
+	fetchItem := imap.FetchItem(imap.FetchEnvelope)
+	items := make([]imap.FetchItem, 0)
+	items = append(items, fetchItem)
 	go func() {
 		done <- c.Fetch(seqset, items, messages)
 	}()
@@ -196,7 +198,7 @@ func GetMessage(server string, email string, password string, folder string, id 
 	seqSet.AddNum(id)
 
 	// Get the whole message body
-	section:= &imap.BodySectionName{}
+	section := &imap.BodySectionName{}
 	items := []imap.FetchItem{section.FetchItem()}
 
 	messages := make(chan *imap.Message, 1)
@@ -220,7 +222,6 @@ func GetMessage(server string, email string, password string, folder string, id 
 
 	// Create a new mail reader
 	mr, _ := mail.CreateReader(r)
-
 
 	// Print some info about the message
 	header := mr.Header

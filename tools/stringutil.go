@@ -13,13 +13,15 @@ import (
 	"net/http"
 	"strings"
 )
+
 //获取URL的GET参数
-func GetUrlArg(r *http.Request,name string)string{
+func GetUrlArg(r *http.Request, name string) string {
 	var arg string
 	values := r.URL.Query()
-	arg=values.Get(name)
+	arg = values.Get(name)
 	return arg
 }
+
 // Reverse 将其实参字符串以符文为单位左右反转。
 func Reverse(s string) string {
 	r := []rune(s)
@@ -47,20 +49,22 @@ func DetermineEncoding(html string) (encoding.Encoding, string) {
 	e, name, _ := charset.DetermineEncoding([]byte(html), "")
 	return e, name
 }
+
 //获取文件内容，可以打包到二进制
 func FileGetContent(file string) string {
 	str := ""
-	box := packr.New("tmpl","../static")
+	box := packr.New("tmpl", "../static")
 	content, err := box.FindString(file)
 	if err != nil {
 		return str
 	}
 	return content
 }
+
 //md5加密
-func Md5(src string)string{
-	m:=md5.New()
+func Md5(src string) string {
+	m := md5.New()
 	m.Write([]byte(src))
-	res:=hex.EncodeToString(m.Sum(nil))
+	res := hex.EncodeToString(m.Sum(nil))
 	return res
 }

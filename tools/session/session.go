@@ -1,8 +1,8 @@
 package session
 
-func Set(name string,value string){
+func Set(name string, value string) {
 
 }
-func Get(name string){
+func Get(name string) {
 
 }

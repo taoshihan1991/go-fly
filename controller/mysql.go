@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-func ActionMysqlSet(w http.ResponseWriter, r *http.Request){
-	render:=tmpl.NewSettingHtml(w)
+func ActionMysqlSet(w http.ResponseWriter, r *http.Request) {
+	render := tmpl.NewSettingHtml(w)
 	render.SetLeft("setting_left")
 	render.SetBottom("setting_bottom")
-	render.Display("mysql_setting",render)
+	render.Display("mysql_setting", render)
 }

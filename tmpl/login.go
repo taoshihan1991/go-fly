@@ -6,17 +6,15 @@ import (
 	"html/template"
 	"net/http"
 )
+
 //登陆界面
-func PageLogin(c *gin.Context){
-	html := tools.FileGetContent("html/login.html")
-	c.Header("Content-Type", "text/html; charset=utf-8")
-	c.String(200, html)
+func PageLogin(c *gin.Context) {
+	c.HTML(http.StatusOK, "login.html", nil)
 }
+
 //咨询界面
-func PageChat(c *gin.Context){
-	html := tools.FileGetContent("html/chat_page.html")
-	c.Header("Content-Type", "text/html; charset=utf-8")
-	c.String(200, html)
+func PageChat(c *gin.Context) {
+	c.HTML(http.StatusOK, "chat_page.html", nil)
 }
 func RenderLogin(w http.ResponseWriter, render interface{}) {
 	html := tools.FileGetContent("html/login.html")
