@@ -29,7 +29,7 @@ func main() {
 	//框架界面
 	engine.GET("/chat_main",middleware.JwtPageMiddleware,tmpl.PageChatMain)
 	//验证权限
-	engine.GET("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
+	engine.POST("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	//------------------old code-----------------------------
 	mux := &http.ServeMux{}
 	//根路径

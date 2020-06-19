@@ -80,9 +80,26 @@
                 var r = window.location.search.substr(1).match(reg);
                 if(r!=null)return  unescape(r[2]); return null;
             },
+            checkAuth(){
+                let _this=this;
+                $.ajax({
+                    type:"post",
+                    url:"/check_auth",
+                    headers:{
+                        "token":localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                        if (data.code != 200) {
+                            window.location.href="/login";
+                        } else {
+                            _this.iframeUrl = "/chat_main";
+                        }
+                    }
+                    });
+            }
         },
         created: function () {
-            this.iframeUrl="/chat_main?token="+this.GetQueryString("token");
+            this.checkAuth();
         }
     })
 

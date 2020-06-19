@@ -195,7 +195,10 @@
                                     message: data.msg,
                                     type: 'success'
                                 });
-                                window.location.href="/main?token="+data.result.token;
+                                localStorage.setItem("token",data.result.token);
+                                localStorage.setItem("ref_token",data.result.ref_token);
+                                localStorage.setItem("create_time",data.result.create_time);
+                                window.location.href="/main";
                             }else{
                                 _this.$message({
                                     message: data.msg,
