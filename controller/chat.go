@@ -3,9 +3,9 @@ package controller
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
-	"golang.org/x/net/websocket"
 	"log"
 	"net/http"
 	"time"
@@ -73,13 +73,113 @@ type UserMessage struct {
 	Time        string `json:"time"`
 	Content     string `json:"content"`
 }
-
 //定时检测客户端是否在线
 func init() {
+	upgrader=websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+	}
+
 	sendPingToClient()
 }
 
+func NewChatServer(c *gin.Context){
+	conn,err:=upgrader.Upgrade(c.Writer,c.Request,nil)
+	if err != nil {
+		log.Print("upgrade:", err)
+		return
+	}
+	for {
+		//接受消息
+		var receive []byte
+		var recevString string
+		messageType, receive, err := conn.ReadMessage()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		recevString=string(receive)
+		log.Println("客户端:", recevString,messageType)
+		var typeMsg TypeMessage
+		var kfMsg KfMessage
+		var userMsg UserMessage
+		json.Unmarshal(receive, &typeMsg)
+		if typeMsg.Type == nil || typeMsg.Data == nil {
+			break
+		}
+		msgType := typeMsg.Type.(string)
+		msgData, _ := json.Marshal(typeMsg.Data)
+		switch msgType {
+		//获取当前在线的所有用户
+		case "getOnlineUsers":
+			getOnlineUser(conn,messageType)
+		//用户上线
+		case "userInit":
+			json.Unmarshal(msgData, &userMsg)
+			//用户id对应的连接
+			clientList[userMsg.From_id] = conn
+			clientNameList[userMsg.From_id] = userMsg.From_name
+			SendUserAllNotice()
+		//客服上线
+		case "kfOnline":
+			json.Unmarshal(msgData, &kfMsg)
+			//客服id对应的连接
+			kefuList[kfMsg.Kf_id] = conn
+			//发送给客户
+			if len(clientList) == 0 {
+				break
+			}
+			//for _, conn := range clientList {
+			//	SendKefuOnline(kfMsg, conn)
+			//}
+			//发送给客服通知
+			//SendOnekfuAllNotice(w)
+		//客服接手
+		case "kfConnect":
+			json.Unmarshal(msgData, &kfMsg)
+			kefuList[kfMsg.Kf_id] = conn
+			SendKefuOnline(kfMsg, clientList[kfMsg.Guest_id])
+		case "kfChatMessage":
+			json.Unmarshal(msgData, &kfMsg)
+			conn := clientList[kfMsg.Guest_id]
+			if kfMsg.Guest_id == "" || conn == nil {
+				return
+			}
+			msg := NoticeMessage{
+				Type: "kfChatMessage",
+				Data: KfMessage{
+					Kf_name:  kfMsg.Kf_name,
+					Avatar:   kfMsg.Avatar,
+					Kf_id:    kfMsg.Kf_id,
+					Time:     time.Now().Format("2006-01-02 15:04:05"),
+					Guest_id: kfMsg.Guest_id,
+					Content:  kfMsg.Content,
+				},
+			}
+			str, _ := json.Marshal(msg)
+			conn.WriteMessage(messageType,str)
+		case "chatMessage":
+			json.Unmarshal(msgData, &userMsg)
+			conn := kefuList[userMsg.To_id]
+			msg := NoticeMessage{
+				Type: "chatMessage",
+				Data: UserMessage{
+					From_avatar: userMsg.From_avatar,
+					From_id:     userMsg.From_id,
+					From_name:   userMsg.From_name,
+					To_id:       userMsg.To_id,
+					To_name:     userMsg.To_name,
+					Content:     userMsg.Content,
+					Time:        time.Now().Format("2006-01-02 15:04:05"),
+				},
+			}
+			str, _ := json.Marshal(msg)
+			conn.WriteMessage(messageType,str)
+		}
+	}
+}
 //兼容之前的聊天服务
+/*
 func ChatServer(w *websocket.Conn) {
 	var error error
 
@@ -173,21 +273,7 @@ func ChatServer(w *websocket.Conn) {
 		}
 	}
 }
-
-//发送给所有客服客户上线
-func SendUserAllNotice() {
-	if len(kefuList) != 0 {
-		//发送给客服通知
-		for _, conn := range kefuList {
-			msg := NoticeMessage{
-				Type: "notice",
-			}
-			str, _ := json.Marshal(msg)
-			sendStr := string(str)
-			websocket.Message.Send(conn, sendStr)
-		}
-	}
-}
+*/
 
 //发送给客户客服上线
 func SendKefuOnline(kfMsg KfMessage, conn *websocket.Conn) {
@@ -203,7 +289,7 @@ func SendKefuOnline(kfMsg KfMessage, conn *websocket.Conn) {
 		},
 	}
 	jsonStrByte, _ := json.Marshal(sendMsg)
-	websocket.Message.Send(conn, string(jsonStrByte))
+	conn.WriteMessage(1,jsonStrByte)
 }
 
 //发送给所有客服客户上线
@@ -220,12 +306,45 @@ func SendOnekfuAllNotice(conn *websocket.Conn) {
 		Data: result,
 	}
 	str, _ := json.Marshal(msg)
-	sendStr := string(str)
-	websocket.Message.Send(conn, sendStr)
+	conn.WriteMessage(1,str)
+}
+
+//定时给客户端发送消息判断客户端是否在线
+func sendPingToClient() {
+	msg := TypeMessage{
+		Type: "ping",
+	}
+	go func() {
+		for {
+			log.Println("check online users...")
+			str, _ := json.Marshal(msg)
+			for uid, conn := range clientList {
+				err := conn.WriteMessage(1,str)
+				if err != nil {
+					delete(clientList, uid)
+					SendUserAllNotice()
+				}
+			}
+			time.Sleep(10 * time.Second)
+		}
+
+	}()
+}
+func SendUserAllNotice() {
+	if len(kefuList) != 0 {
+		//发送给客服通知
+		for _, conn := range kefuList {
+			msg := NoticeMessage{
+				Type: "notice",
+			}
+			str, _ := json.Marshal(msg)
+			conn.WriteMessage(1,str)
+		}
+	}
 }
 
 //获取当前的在线用户
-func getOnlineUser(w *websocket.Conn) {
+func getOnlineUser(w *websocket.Conn,messageType int) {
 	result := make([]map[string]string, 0)
 	for uid, _ := range clientList {
 		userInfo := make(map[string]string)
@@ -238,32 +357,10 @@ func getOnlineUser(w *websocket.Conn) {
 		Data: result,
 	}
 	str, _ := json.Marshal(msg)
-	sendStr := string(str)
-	websocket.Message.Send(w, sendStr)
+	w.WriteMessage(messageType,str)
 }
 
-//定时给客户端发送消息判断客户端是否在线
-func sendPingToClient() {
-	msg := NoticeMessage{
-		Type: "ping",
-	}
-	go func() {
-		for {
-			log.Println("check online users...")
-			str, _ := json.Marshal(msg)
-			sendStr := string(str)
-			for uid, conn := range clientList {
-				err := websocket.Message.Send(conn, sendStr)
-				if err != nil {
-					delete(clientList, uid)
-					SendUserAllNotice()
-				}
-			}
-			time.Sleep(10 * time.Second)
-		}
 
-	}()
-}
 
 var clientList = make(map[string]*websocket.Conn)
 var clientNameList = make(map[string]string)

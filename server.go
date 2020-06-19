@@ -5,7 +5,6 @@ import (
 	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/tmpl"
-	"golang.org/x/net/websocket"
 	"log"
 	"net/http"
 	"time"
@@ -30,6 +29,8 @@ func main() {
 	engine.GET("/chat_main",middleware.JwtPageMiddleware,tmpl.PageChatMain)
 	//验证权限
 	engine.POST("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
+	//前后聊天
+	engine.GET("/chat_server", controller.NewChatServer)
 	//------------------old code-----------------------------
 	mux := &http.ServeMux{}
 	//根路径
@@ -65,7 +66,7 @@ func main() {
 	//聊天界面
 	mux.HandleFunc("/chat_page", controller.ActionChatPage)
 	//聊天服务
-	mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
+	//mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
 	//获取在线用户
 	mux.HandleFunc("/chat_users", controller.ChatUsers)
 	//设置mysql
