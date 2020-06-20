@@ -7,8 +7,8 @@
             fullscreenLoading:true,
             openIndex:[1],
             account: {
-                username: Username,
-                password: Password,
+                username: "",
+                password: "",
             },
             mysql: {
                 server: "",
@@ -65,17 +65,26 @@
                 let _this=this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        $.post("/setting_mysql",_this.account,function(data){
-                            if(data.code==200){
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'success'
-                                });
-                            }else{
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'error'
-                                });
+                        let _this=this;
+                        $.ajax({
+                            type:"POST",
+                            url:"/mysql",
+                            data:this.mysql,
+                            headers:{
+                                "token":localStorage.getItem("token")
+                            },
+                            success: function(data) {
+                                if(data.code==200){
+                                    _this.$message({
+                                        message: data.msg,
+                                        type: 'success'
+                                    });
+                                }else{
+                                    _this.$message({
+                                        message: data.msg,
+                                        type: 'error'
+                                    });
+                                }
                             }
                         });
                     } else {
@@ -108,11 +117,18 @@
                 let _this=this;
                 $.ajax({
                     type:"get",
-                    url:"/get_setting_mysql",
+                    url:"/mysql",
                     headers:{
                         "token":localStorage.getItem("token")
                     },
                     success: function(data) {
+                        if(data.result!=null){
+                            _this.mysql.username=data.result.Username;
+                            _this.mysql.password=data.result.Password;
+                            _this.mysql.database=data.result.Database;
+                            _this.mysql.server=data.result.Server;
+                            _this.mysql.port=data.result.Port;
+                        }
                     }
                 });
 

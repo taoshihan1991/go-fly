@@ -35,7 +35,8 @@ func main() {
 	engine.GET("/setting", tmpl.PageSetting)
 	//设置mysql
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
-	engine.GET("/get_setting_mysql",middleware.JwtApiMiddleware,  controller.MysqlGetConf)
+	engine.GET("/mysql",middleware.JwtApiMiddleware,  controller.MysqlGetConf)
+	engine.POST("/mysql",middleware.JwtApiMiddleware,  controller.MysqlSetConf)
 	//------------------old code-----------------------------
 	mux := &http.ServeMux{}
 	//根路径
@@ -74,8 +75,6 @@ func main() {
 	//mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
 	//获取在线用户
 	mux.HandleFunc("/chat_users", controller.ChatUsers)
-	//设置mysql
-	mux.HandleFunc("/setting_mysql", controller.ActionMysqlSet)
 	//后台任务
 	controller.TimerSessFile()
 	//监听端口

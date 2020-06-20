@@ -10,7 +10,21 @@ import (
 
 const Dir = "config/"
 const AccountConf = Dir + "account.json"
+const MysqlConf = Dir + "mysql.json"
+func GetMysql() map[string]string {
+	var mysql map[string]string
+	isExist, _ := tools.IsFileExist(MysqlConf)
+	if !isExist {
+		return mysql
+	}
+	info, err := ioutil.ReadFile(MysqlConf)
+	if err != nil {
+		return mysql
+	}
 
+	err = json.Unmarshal(info, &mysql)
+	return mysql
+}
 func GetAccount() map[string]string {
 	var account map[string]string
 	isExist, _ := tools.IsFileExist(AccountConf)
