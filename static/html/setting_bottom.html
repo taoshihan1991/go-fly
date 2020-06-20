@@ -1,3 +1,4 @@
+{{define "setting_bottom"}}
 <script>
     var app=new Vue({
         el: '#app',
@@ -9,7 +10,23 @@
                 username: Username,
                 password: Password,
             },
+            mysql: {
+                server: "",
+                port: "",
+                database: "",
+                username: "",
+                password: "",
+            },
             rules: {
+                server: [
+                    { required: true, message: '请输入服务地址', trigger: 'blur' },
+                ],
+                port: [
+                    { required: true, message: '请输入端口号', trigger: 'blur' },
+                ],
+                database: [
+                    { required: true, message: '请输入数据库名', trigger: 'blur' },
+                ],
                 username: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
                 ],
@@ -26,6 +43,29 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         $.post("/setting_account",_this.account,function(data){
+                            if(data.code==200){
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'success'
+                                });
+                            }else{
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            //设置mysql
+            setMysql(formName){
+                let _this=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        $.post("/setting_mysql",_this.account,function(data){
                             if(data.code==200){
                                 _this.$message({
                                     message: data.msg,
@@ -61,12 +101,30 @@
                     duration:'8000',
                     showClose:true,
                 });
+            },
+            //初始化数据
+            initInfo(){
+                {{if eq .action  "setting_mysql"}}
+                let _this=this;
+                $.ajax({
+                    type:"get",
+                    url:"/get_setting_mysql",
+                    headers:{
+                        "token":localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                    }
+                });
+
+                {{end}}
             }
         },
         created: function () {
             this.showNotice();
+            this.initInfo();
         }
     })
 
 </script>
 </html>
+{{end}}

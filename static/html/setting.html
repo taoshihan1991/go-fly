@@ -1,9 +1,9 @@
-{{.Header}}
+{{template "header" }}
 <div id="app" style="width:100%">
     <template>
         <el-container v-loading.fullscreen.lock="fullscreenLoading">
             <el-aside>
-                {{.Left}}
+                {{template "setting_left" .}}
             </el-aside>
 
             <el-main class="mainMain">
@@ -30,4 +30,4 @@
     var Password="{{.Password}}";
     var Username="{{.Username}}";
 </script>
-{{.Bottom}}
+{{template "setting_bottom" .}}

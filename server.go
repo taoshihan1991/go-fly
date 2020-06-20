@@ -31,6 +31,11 @@ func main() {
 	engine.POST("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	//前后聊天
 	engine.GET("/chat_server", controller.NewChatServer)
+	//设置页
+	engine.GET("/setting", tmpl.PageSetting)
+	//设置mysql
+	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
+	engine.GET("/get_setting_mysql",middleware.JwtApiMiddleware,  controller.MysqlGetConf)
 	//------------------old code-----------------------------
 	mux := &http.ServeMux{}
 	//根路径
