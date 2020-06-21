@@ -65,11 +65,10 @@
                 let _this=this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        let _this=this;
                         $.ajax({
                             type:"POST",
                             url:"/mysql",
-                            data:this.mysql,
+                            data:_this.mysql,
                             headers:{
                                 "token":localStorage.getItem("token")
                             },
