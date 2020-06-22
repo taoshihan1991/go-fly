@@ -6,6 +6,7 @@ require github.com/emersion/go-imap v1.0.4
 
 require (
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
+	github.com/casbin/casbin/v2 v2.7.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/emersion/go-message v0.11.2
 	github.com/emersion/go-sasl v0.0.0-20200509203442-7bfe0ed36a21
