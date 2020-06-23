@@ -6,6 +6,8 @@ import (
 )
 
 func CheckPass(username string, password string) string {
+	//models.FindUsers()
+
 	account := config.GetAccount()
 	if account == nil {
 		account = make(map[string]string)

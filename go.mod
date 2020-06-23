@@ -15,6 +15,7 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gobuffalo/packr/v2 v2.5.1
 	github.com/gorilla/websocket v1.4.2
+	github.com/jinzhu/gorm v1.9.14
 	golang.org/x/net v0.0.0-20200513185701-a91f0712d120
 	golang.org/x/text v0.3.2
 )
