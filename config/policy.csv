@@ -1,0 +1,2 @@
+p, admin, /mysql, GET
+p, admin, /mysql, POST

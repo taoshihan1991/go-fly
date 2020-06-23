@@ -1,17 +1,17 @@
-# go-imap
-邮箱imap网页版客户端工具，基于GO语言实现。
+# go-fly
+基于GO语言实现的即时通讯与管理系统工具集。
 
-1.使用第三方类库go-imap解析imap协议
+1.使用gin http框架实现restful风格的API
 
-2.使用http包 ，template包，实现http服务下的网页展示
+2.使用jwt-go实现无状态的jwt登陆认证
 
-3.使用goroutine在主界面并发请求左右栏的数据
+3.使用casbin实现权限控制
 
-4.使用text/net包下的encoding和transform等配合解决乱码问题
+4.使用gin以及template包的模板语法进行展示界面
 
 5.使用go modoule解决依赖问题
 
-6.充分实践了struct，interface，map，slice，for range等基础知识
+6.充分实践了struct，interface，map，slice，for range,groutine等基础知识
 
 ### 项目预览
 
@@ -24,7 +24,7 @@
 
 ### 安装使用
 
-1.在$GOPATH的src/github.com下， git clone https://github.com/taoshihan1991/imaptool.git
+1.在go get github.com/taoshihan1991/go-fly ,进入$GOPATH/src/github.com/taoshihan1991/go-fly 目录
 
 2.源码运行 go run server.go
 

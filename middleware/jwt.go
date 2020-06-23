@@ -34,4 +34,5 @@ func JwtApiMiddleware(c *gin.Context){
 		})
 		c.Abort()
 	}
+	c.Set("user",userinfo["name"])
 }
