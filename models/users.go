@@ -1,4 +1,5 @@
 package models
+
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -9,7 +10,6 @@ type User struct {
 	Name string
 	Password string
 }
-
 func CreateUser(name string,password string){
 	user:=&User{
 		Name:name,

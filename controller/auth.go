@@ -2,11 +2,12 @@ package controller
 
 import (
 	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 )
 
 func CheckPass(username string, password string) string {
-	//models.FindUsers()
+	models.FindUsers()
 
 	account := config.GetAccount()
 	if account == nil {
