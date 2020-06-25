@@ -4,31 +4,15 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 	"net/http"
 	"time"
 )
 
-//聊天主界面
-func ActionChatMain(w http.ResponseWriter, r *http.Request) {
-	render := tmpl.NewRender(w)
-	render.Display("chat_main", nil)
-}
-
-//聊天客户端界面
-func ActionChatPage(w http.ResponseWriter, r *http.Request) {
-	render := tmpl.NewRender(w)
-	render.Display("chat_page", nil)
-}
-
-//咨询界面
-func PageChat(c *gin.Context) {
-	html := tools.FileGetContent("html/chat_page.html")
-	c.Header("Content-Type", "text/html; charset=utf-8")
-	c.String(200, html)
-}
+var clientList = make(map[string]*websocket.Conn)
+var clientNameList = make(map[string]string)
+var kefuList = make(map[string]*websocket.Conn)
 
 //获取在线用户
 func ChatUsers(w http.ResponseWriter, r *http.Request) {
@@ -362,6 +346,4 @@ func getOnlineUser(w *websocket.Conn,messageType int) {
 
 
 
-var clientList = make(map[string]*websocket.Conn)
-var clientNameList = make(map[string]string)
-var kefuList = make(map[string]*websocket.Conn)
+

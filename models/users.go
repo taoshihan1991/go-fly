@@ -6,9 +6,10 @@ import (
 )
 type User struct {
 	gorm.Model
-	Id int64
 	Name string
 	Password string
+	Nickname string
+	Avator string
 }
 func CreateUser(name string,password string){
 	user:=&User{
@@ -20,5 +21,10 @@ func CreateUser(name string,password string){
 func FindUser(username string)User{
 	var user User
 	DB.Where("name = ?", username).First(&user)
+	return user
+}
+func FindUserById(id interface{})User{
+	var user User
+	DB.Where("id = ?", id).First(&user)
 	return user
 }

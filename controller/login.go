@@ -45,8 +45,10 @@ func LoginCheckPass(c *gin.Context) {
 			return
 		}
 		userinfo["name"] = info.Name
+		userinfo["kefu_id"] = info.ID
 		userinfo["type"] = "kefu"
 		userinfo["create_time"] = time.Now().Unix()
+
 		token, _ := tools.MakeToken(userinfo)
 		userinfo["ref_token"]=true
 		refToken, _ := tools.MakeToken(userinfo)

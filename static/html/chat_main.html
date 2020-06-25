@@ -95,7 +95,7 @@
                         <el-menu class="chatLeft">
                             <el-menu-item>
                                 <i class="el-icon-s-tools"></i>
-                                <span slot="title">常用工具</span>
+                                <span slot="title">访客信息</span>
                             </el-menu-item>
 
                         </el-menu>
@@ -105,12 +105,7 @@
 </div>
 </body>
 <script>
-    var kfConfig={};
-    kfConfig.kf_id = "kf_1";
-    kfConfig.kf_name = "客服丽丽";
-    kfConfig.avatar = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4217138672,2588039002&fm=26&gp=0.jpg";
-    kfConfig.kf_group = "1";
-    kfConfig.guest_id = "";
+
 
     var app=new Vue({
         el: '#app',
@@ -126,6 +121,12 @@
             msgList:[],
             msgListUser:[],
             chatTitle:"暂时未处理咨询",
+            kfConfig:{
+                kf_id : "kf_1",
+                kf_name : "客服丽丽",
+                avatar : "",
+                guest_id : "",
+            }
         },
         methods: {
             //跳转
@@ -135,13 +136,13 @@
             getOnlineUsers() {
                 let mes = {}
                 mes.type = "getOnlineUsers";
-                mes.data = kfConfig;
+                mes.data = this.kfConfig;
                 this.socket.send(JSON.stringify(mes));
             },
             sendKefuOnline(){
                 let mes = {}
                 mes.type = "kfOnline";
-                mes.data = kfConfig;
+                mes.data = this.kfConfig;
                 this.socket.send(JSON.stringify(mes));
             },
             //初始化websocket
@@ -224,26 +225,26 @@
                 //发送给客户
                 let mes = {}
                 mes.type = "kfConnect";
-                kfConfig.guest_id=guestId;
-                mes.data = kfConfig;
+                this.kfConfig.guest_id=guestId;
+                mes.data = this.kfConfig;
                 this.socket.send(JSON.stringify(mes));
             },
             //发送给客户
             chatToUser() {
-                if(this.messageContent==""||kfConfig.guest_id==""){
+                if(this.messageContent==""||this.guest_id==""){
                     return;
                 }
                 let mes = {};
                 mes.type = "kfChatMessage";
-                kfConfig.content = this.messageContent;
-                mes.data = kfConfig;
+                this.kfConfig.content = this.messageContent;
+                mes.data = this.kfConfig;
                 this.socket.send(JSON.stringify(mes));
                 this.messageContent = "";
 
                 let content = {}
-                content.avatar = kfConfig.avatar;
-                content.name = kfConfig.kf_name;
-                content.content = kfConfig.content;
+                content.avatar = this.kfConfig.avatar;
+                content.name = this.kfConfig.kf_name;
+                content.content = this.kfConfig.content;
                 content.is_kefu = true;
                 content.time = '';
                 this.msgList.push(content);
@@ -268,9 +269,35 @@
                     }
                 }
             },
+            //获取客服信息
+            getKefuInfo(){
+                let _this=this;
+                $.ajax({
+                    type:"get",
+                    url:"/kefuinfo",
+                    headers:{
+                        "token":localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                        if(data.result!=null){
+                            _this.kfConfig.kf_id=data.result.kf_id;
+                            _this.kfConfig.kf_name=data.result.kf_name;
+                            _this.kfConfig.avatar=data.result.avator;
+                        }
+                        if(data.code!=200){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }
+                }).then(function(data){
+                    _this.initConn();
+                });
+            },
        },
         created: function () {
-            this.initConn();
+            this.getKefuInfo();
         }
     })
 

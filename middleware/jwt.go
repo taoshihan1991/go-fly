@@ -3,6 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/tools"
+	"log"
 	"time"
 )
 func JwtPageMiddleware(c *gin.Context){
@@ -17,6 +18,7 @@ func JwtPageMiddleware(c *gin.Context){
 func JwtApiMiddleware(c *gin.Context){
 	token := c.GetHeader("token")
 	userinfo := tools.ParseToken(token)
+	log.Println(userinfo)
 	if userinfo == nil||userinfo["name"]==nil {
 		c.JSON(200, gin.H{
 			"code": 400,
@@ -35,4 +37,7 @@ func JwtApiMiddleware(c *gin.Context){
 		c.Abort()
 	}
 	c.Set("user",userinfo["name"])
+	if userinfo["type"]=="kefu"{
+		c.Set("kefu_id",userinfo["kefu_id"])
+	}
 }

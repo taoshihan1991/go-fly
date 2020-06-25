@@ -31,6 +31,8 @@ func main() {
 	engine.POST("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	//前后聊天
 	engine.GET("/chat_server", controller.NewChatServer)
+	//获取客服信息
+	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
 	//设置页
 	engine.GET("/setting", tmpl.PageSetting)
 	//设置mysql
@@ -61,13 +63,8 @@ func main() {
 	mux.HandleFunc("/setting_account", controller.SettingAccount)
 	//发送邮件接口
 	mux.HandleFunc("/send", controller.FolderSend)
-	//聊天界面
-	mux.HandleFunc("/chat_main", controller.ActionChatMain)
 	//新邮件提醒服务
 	mux.HandleFunc("/push_mail", controller.PushMailServer)
-	//聊天界面
-	mux.HandleFunc("/chat_page", controller.ActionChatPage)
-	//聊天服务
 	//mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
 	//获取在线用户
 	mux.HandleFunc("/chat_users", controller.ChatUsers)
