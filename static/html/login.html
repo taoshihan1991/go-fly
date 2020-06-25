@@ -53,7 +53,7 @@
     <template>
         <h1 class="h3 mb-3 font-weight-normal">登录页</h1>
         <el-tabs v-model="activeName">
-            <el-tab-pane label="本地认证" name="first">
+            <el-tab-pane label="管理员登陆" name="first">
                 <el-form :model="localAuth" :rules="rules" ref="localAuth">
                     <el-form-item  prop="username">
                         <el-input v-model="localAuth.username" placeholder="用户名"></el-input>
@@ -66,35 +66,16 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane label="IMAP认证" name="second">
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-                    <el-form-item  prop="server">
-                        <el-input v-model="ruleForm.server" placeholder="IMAP服务器如imap.sina.net:143"></el-input>
-                    </el-form-item>
-                    <el-form-item  prop="email">
-                        <el-input v-model="ruleForm.email" placeholder="邮箱地址"></el-input>
+            <el-tab-pane label="客服登陆" name="second">
+                <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
+                    <el-form-item  prop="username">
+                        <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
                     </el-form-item>
                     <el-form-item  prop="password">
-                        <el-input v-model="ruleForm.password" placeholder="密码"></el-input>
+                        <el-input v-model="kefuForm.password" placeholder="密码"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">IMAP验证</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-tab-pane>
-            <el-tab-pane label="MYSQL认证" name="third">
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-                    <el-form-item  prop="server">
-                        <el-input v-model="ruleForm.server" placeholder="MYSQL服务地址"></el-input>
-                    </el-form-item>
-                    <el-form-item  prop="email">
-                        <el-input v-model="ruleForm.email" placeholder="MYSQL用户名"></el-input>
-                    </el-form-item>
-                    <el-form-item  prop="password">
-                        <el-input v-model="ruleForm.password" placeholder="MYSQL密码"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button :loading="loading" type="primary" @click="submitForm('ruleForm')">MYSQL验证</el-button>
+                        <el-button :loading="loading" type="primary" @click="kefuLogin('kefuForm')">客服登陆</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
@@ -128,6 +109,10 @@
                 email:'',
                 password:'',
             },
+            kefuForm:{
+                username:'',
+                password:'',
+            },
             rules: {
                 server: [
                     { required: true, message: 'IMAP服务器如"imap.sina.net:143"包含端口号', trigger: 'blur' },
@@ -145,33 +130,36 @@
 		},
 		methods: {
             //提交表单
-			submitForm(formName){
+            kefuLogin(formName){
                 let _this=this;
                 this.$refs[formName].validate((valid) => {
-                  if (valid) {
-                    var data={}
-                    data.server=_this.ruleForm.server;
-                    data.email=_this.ruleForm.email;
-                    data.password=_this.ruleForm.password;
-                    _this.loading=true;
-                    $.post("/check",data,function(data){
-                        if(data.code==200){
-                            _this.$message({
-                              message: data.msg,
-                              type: 'success'
-                            });
-                            //window.location.href="/";
-                        }else{
-                            _this.$message({
-                              message: data.msg,
-                              type: 'error'
-                            });
-                        }
-                        _this.loading=false;
-                    });
-                  } else {
-                    return false;
-                  }
+                    if (!valid) {
+                        return false;
+                    } else {
+                        let data = {};
+                        data.type="kefulogin";
+                        data.username = _this.kefuForm.username;
+                        data.password = _this.kefuForm.password;
+                        _this.loading = true;
+                        $.post("/check", data, function (data) {
+                            if (data.code == 200) {
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'success'
+                                });
+                                localStorage.setItem("token",data.result.token);
+                                localStorage.setItem("ref_token",data.result.ref_token);
+                                localStorage.setItem("create_time",data.result.create_time);
+                                window.location.href="/main";
+                            } else {
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'error'
+                                });
+                            }
+                            _this.loading = false;
+                        });
+                    }
                 });
 			},
             //重置表单

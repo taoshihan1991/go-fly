@@ -43,10 +43,6 @@ func main() {
 	mux.HandleFunc("/", controller.ActionIndex)
 	//邮件夹
 	mux.HandleFunc("/list", controller.ActionFolder)
-	//登陆界面
-	//mux.HandleFunc("/login", controller.ActionLogin)
-	//验证接口
-	mux.HandleFunc("/check", controller.LoginCheck)
 	//邮件夹接口
 	mux.HandleFunc("/folders", controller.FoldersList)
 	//新邮件夹接口

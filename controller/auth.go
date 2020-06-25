@@ -7,8 +7,6 @@ import (
 )
 
 func CheckPass(username string, password string) string {
-	models.FindUsers()
-
 	account := config.GetAccount()
 	if account == nil {
 		account = make(map[string]string)
@@ -27,7 +25,13 @@ func CheckPass(username string, password string) string {
 	}
 	return ""
 }
-
+func CheckKefuPass(username string, password string) (models.User,bool) {
+	info:=models.FindUser(username)
+	if info.Name==""||info.Password!=tools.Md5(password){
+		return info,false
+	}
+	return info,true
+}
 func AuthLocal(username string, password string) string {
 	account := config.GetAccount()
 	if account == nil {

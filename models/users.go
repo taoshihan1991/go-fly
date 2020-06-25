@@ -17,8 +17,8 @@ func CreateUser(name string,password string){
 	}
 	DB.Create(user)
 }
-func FindUsers()[]User{
-	var users []User
-	DB.Find(&users)
-	return users
+func FindUser(username string)User{
+	var user User
+	DB.Where("name = ?", username).First(&user)
+	return user
 }
