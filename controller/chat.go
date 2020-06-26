@@ -94,24 +94,6 @@ func SendKefuOnline(kfMsg KfMessage, conn *websocket.Conn) {
 	conn.WriteMessage(1,jsonStrByte)
 }
 
-//发送给所有客服客户上线
-func SendOnekfuAllNotice(conn *websocket.Conn) {
-	result := make([]map[string]string, 0)
-	for _, user := range clientList {
-		userInfo := make(map[string]string)
-		userInfo["uid"] = user.id
-		userInfo["username"] = user.name
-		userInfo["avator"] = user.avator
-		result = append(result, userInfo)
-	}
-	msg := TypeMessage{
-		Type: "notice",
-		Data: result,
-	}
-	str, _ := json.Marshal(msg)
-	conn.WriteMessage(1,str)
-}
-
 //定时给客户端发送消息判断客户端是否在线
 func sendPingToClient() {
 	msg := TypeMessage{
@@ -147,7 +129,7 @@ func SendNoticeToAllKefu() {
 }
 
 //获取当前的在线用户
-func getOnlineUser(w *websocket.Conn,messageType int) {
+func getOnlineUser(w *websocket.Conn) {
 	result := make([]map[string]string, 0)
 	for _, user := range clientList {
 		userInfo := make(map[string]string)
@@ -161,7 +143,7 @@ func getOnlineUser(w *websocket.Conn,messageType int) {
 		Data: result,
 	}
 	str, _ := json.Marshal(msg)
-	w.WriteMessage(messageType,str)
+	w.WriteMessage(websocket.TextMessage,str)
 }
 //后端广播发送消息
 func singleBroadcaster(){
@@ -180,7 +162,7 @@ func singleBroadcaster(){
 		switch msgType {
 		//获取当前在线的所有用户
 		case "getOnlineUsers":
-			getOnlineUser(conn,websocket.TextMessage)
+			getOnlineUser(conn)
 		//用户上线
 		case "userInit":
 			json.Unmarshal(msgData, &userMsg)
