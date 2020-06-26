@@ -13,8 +13,13 @@ type vistor struct{
 	id string
 	avator string
 }
+type Message struct{
+	conn *websocket.Conn
+	content []byte
+}
 var clientList = make(map[string]*vistor)
 var kefuList = make(map[string]*websocket.Conn)
+var message = make(chan *Message, 10)
 
 type TypeMessage struct {
 	Type interface{} `json:"type"`
@@ -44,7 +49,7 @@ func init() {
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-
+	go singleBroadcaster()
 	sendPingToClient()
 }
 
@@ -65,86 +70,9 @@ func NewChatServer(c *gin.Context){
 		}
 		recevString=string(receive)
 		log.Println("客户端:", recevString,messageType)
-		var typeMsg TypeMessage
-		var kfMsg KfMessage
-		var userMsg UserMessage
-		json.Unmarshal(receive, &typeMsg)
-		if typeMsg.Type == nil || typeMsg.Data == nil {
-			break
-		}
-		msgType := typeMsg.Type.(string)
-		msgData, _ := json.Marshal(typeMsg.Data)
-		switch msgType {
-		//获取当前在线的所有用户
-		case "getOnlineUsers":
-			getOnlineUser(conn,messageType)
-		//用户上线
-		case "userInit":
-			json.Unmarshal(msgData, &userMsg)
-			//用户id对应的连接
-			user:=&vistor{
-				conn:conn,
-				name: userMsg.From_name,
-				avator: userMsg.From_avatar,
-				id:userMsg.From_id,
-			}
-			clientList[userMsg.From_id] = user
-			SendNoticeToAllKefu()
-		//客服上线
-		case "kfOnline":
-			json.Unmarshal(msgData, &kfMsg)
-			//客服id对应的连接
-			kefuList[kfMsg.Kf_id] = conn
-			//发送给客户
-			if len(clientList) == 0 {
-				break
-			}
-			//for _, conn := range clientList {
-			//	SendKefuOnline(kfMsg, conn)
-			//}
-			//发送给客服通知
-			//SendOnekfuAllNotice(w)
-		//客服接手
-		case "kfConnect":
-			json.Unmarshal(msgData, &kfMsg)
-			kefuList[kfMsg.Kf_id] = conn
-			SendKefuOnline(kfMsg, clientList[kfMsg.Guest_id].conn)
-		case "kfChatMessage":
-			json.Unmarshal(msgData, &kfMsg)
-			conn := clientList[kfMsg.Guest_id].conn
-			if kfMsg.Guest_id == "" || conn == nil {
-				return
-			}
-			msg := TypeMessage{
-				Type: "kfChatMessage",
-				Data: KfMessage{
-					Kf_name:  kfMsg.Kf_name,
-					Avatar:   kfMsg.Avatar,
-					Kf_id:    kfMsg.Kf_id,
-					Time:     time.Now().Format("2006-01-02 15:04:05"),
-					Guest_id: kfMsg.Guest_id,
-					Content:  kfMsg.Content,
-				},
-			}
-			str, _ := json.Marshal(msg)
-			conn.WriteMessage(messageType,str)
-		case "chatMessage":
-			json.Unmarshal(msgData, &userMsg)
-			conn := kefuList[userMsg.To_id]
-			msg := TypeMessage{
-				Type: "chatMessage",
-				Data: UserMessage{
-					From_avatar: userMsg.From_avatar,
-					From_id:     userMsg.From_id,
-					From_name:   userMsg.From_name,
-					To_id:       userMsg.To_id,
-					To_name:     userMsg.To_name,
-					Content:     userMsg.Content,
-					Time:        time.Now().Format("2006-01-02 15:04:05"),
-				},
-			}
-			str, _ := json.Marshal(msg)
-			conn.WriteMessage(messageType,str)
+		message<-&Message{
+			conn:conn,
+			content: receive,
 		}
 	}
 }
@@ -194,7 +122,7 @@ func sendPingToClient() {
 			log.Println("check online users...")
 			str, _ := json.Marshal(msg)
 			for uid, user := range clientList {
-				err := user.conn.WriteMessage(1,str)
+				err := user.conn.WriteMessage(websocket.TextMessage,str)
 				if err != nil {
 					delete(clientList, uid)
 					SendNoticeToAllKefu()
@@ -235,7 +163,96 @@ func getOnlineUser(w *websocket.Conn,messageType int) {
 	str, _ := json.Marshal(msg)
 	w.WriteMessage(messageType,str)
 }
+//后端广播发送消息
+func singleBroadcaster(){
+	for {
+		message:=<-message
+		var typeMsg TypeMessage
+		var kfMsg KfMessage
+		var userMsg UserMessage
+		json.Unmarshal(message.content, &typeMsg)
+		conn:=message.conn
+		if typeMsg.Type == nil || typeMsg.Data == nil {
+			break
+		}
+		msgType := typeMsg.Type.(string)
+		msgData, _ := json.Marshal(typeMsg.Data)
+		switch msgType {
+		//获取当前在线的所有用户
+		case "getOnlineUsers":
+			getOnlineUser(conn,websocket.TextMessage)
+		//用户上线
+		case "userInit":
+			json.Unmarshal(msgData, &userMsg)
+			//用户id对应的连接
+			user:=&vistor{
+				conn:conn,
+				name: userMsg.From_name,
+				avator: userMsg.From_avatar,
+				id:userMsg.From_id,
+			}
+			clientList[userMsg.From_id] = user
+			SendNoticeToAllKefu()
+		//客服上线
+		case "kfOnline":
+			json.Unmarshal(msgData, &kfMsg)
+			//客服id对应的连接
+			kefuList[kfMsg.Kf_id] = conn
+			//发送给客户
+			if len(clientList) == 0 {
+				break
+			}
+			//for _, conn := range clientList {
+			//	SendKefuOnline(kfMsg, conn)
+			//}
+			//发送给客服通知
+			//SendOnekfuAllNotice(w)
+		//客服接手
+		case "kfConnect":
+			json.Unmarshal(msgData, &kfMsg)
+			kefuList[kfMsg.Kf_id] = conn
+			SendKefuOnline(kfMsg, clientList[kfMsg.Guest_id].conn)
+		case "kfChatMessage":
+			json.Unmarshal(msgData, &kfMsg)
+			guest,ok:=clientList[kfMsg.Guest_id]
+			if guest==nil||!ok{
+				return
+			}
+			conn := guest.conn
 
+			msg := TypeMessage{
+				Type: "kfChatMessage",
+				Data: KfMessage{
+					Kf_name:  kfMsg.Kf_name,
+					Avatar:   kfMsg.Avatar,
+					Kf_id:    kfMsg.Kf_id,
+					Time:     time.Now().Format("2006-01-02 15:04:05"),
+					Guest_id: kfMsg.Guest_id,
+					Content:  kfMsg.Content,
+				},
+			}
+			str, _ := json.Marshal(msg)
+			conn.WriteMessage(websocket.TextMessage,str)
+		case "chatMessage":
+			json.Unmarshal(msgData, &userMsg)
+			conn := kefuList[userMsg.To_id]
+			msg := TypeMessage{
+				Type: "chatMessage",
+				Data: UserMessage{
+					From_avatar: userMsg.From_avatar,
+					From_id:     userMsg.From_id,
+					From_name:   userMsg.From_name,
+					To_id:       userMsg.To_id,
+					To_name:     userMsg.To_name,
+					Content:     userMsg.Content,
+					Time:        time.Now().Format("2006-01-02 15:04:05"),
+				},
+			}
+			str, _ := json.Marshal(msg)
+			conn.WriteMessage(websocket.TextMessage,str)
+		}
+	}
+}
 
 
 
