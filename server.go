@@ -66,8 +66,6 @@ func main() {
 	//新邮件提醒服务
 	mux.HandleFunc("/push_mail", controller.PushMailServer)
 	//mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
-	//获取在线用户
-	mux.HandleFunc("/chat_users", controller.ChatUsers)
 	//后台任务
 	controller.TimerSessFile()
 	//监听端口
