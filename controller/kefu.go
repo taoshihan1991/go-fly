@@ -9,8 +9,8 @@ func GetKefuInfo(c *gin.Context){
 	 kefuId, _ := c.Get("kefu_id")
 	 user:=models.FindUserById(kefuId)
 	 info:=make(map[string]interface{})
-	 info["kf_name"]=user.Nickname
-	info["kf_id"]=user.Name
+	 info["name"]=user.Nickname
+	info["id"]=user.Name
 	info["avator"]=user.Avator
 	c.JSON(200, gin.H{
 		"code": 200,

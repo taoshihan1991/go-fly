@@ -122,10 +122,10 @@
             msgListUser:[],
             chatTitle:"暂时未处理咨询",
             kfConfig:{
-                kf_id : "kf_1",
-                kf_name : "客服丽丽",
+                id : "kf_1",
+                name : "客服丽丽",
                 avatar : "",
-                guest_id : "",
+                to_id : "",
             }
         },
         methods: {
@@ -225,13 +225,13 @@
                 //发送给客户
                 let mes = {}
                 mes.type = "kfConnect";
-                this.kfConfig.guest_id=guestId;
+                this.kfConfig.to_id=guestId;
                 mes.data = this.kfConfig;
                 this.socket.send(JSON.stringify(mes));
             },
             //发送给客户
             chatToUser() {
-                if(this.messageContent==""||this.guest_id==""){
+                if(this.messageContent==""||this.currentGuest==""){
                     return;
                 }
                 let mes = {};
@@ -243,7 +243,7 @@
 
                 let content = {}
                 content.avatar = this.kfConfig.avatar;
-                content.name = this.kfConfig.kf_name;
+                content.name = this.kfConfig.name;
                 content.content = this.kfConfig.content;
                 content.is_kefu = true;
                 content.time = '';
@@ -280,8 +280,8 @@
                     },
                     success: function(data) {
                         if(data.result!=null){
-                            _this.kfConfig.kf_id=data.result.kf_id;
-                            _this.kfConfig.kf_name=data.result.kf_name;
+                            _this.kfConfig.id=data.result.id;
+                            _this.kfConfig.name=data.result.name;
                             _this.kfConfig.avatar=data.result.avator;
                         }
                         if(data.code!=200){

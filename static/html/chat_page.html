@@ -101,10 +101,10 @@
 <script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
 <script>
     var guest={};
-    guest.from_id = "";
-    guest.from_name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+"-"+returnCitySN["cname"]:"小米";
-    guest.from_avatar = "https://dss2.bdstatic.com/6Ot1bjeh1BF3odCf/it/u=1539628792,3031847515&fm=85&app=92&f=JPEG?w=121&h=75&s=65F03DC608BA199ED70C5D3703009040";
-    guest.from_group = "1";
+    guest.id = "";
+    guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+"-"+returnCitySN["cname"]:"小米";
+    guest.avator = "https://dss2.bdstatic.com/6Ot1bjeh1BF3odCf/it/u=1539628792,3031847515&fm=85&app=92&f=JPEG?w=121&h=75&s=65F03DC608BA199ED70C5D3703009040";
+    guest.group = "1";
     guest.to_id="";
 
     new Vue({
@@ -140,12 +140,12 @@
                 const redata = JSON.parse(e.data);
                 if (redata.type == "kfOnline") {
                     let msg = redata.data
-                    guest.to_id=msg.kf_id;
-                    this.chatTitle=msg.kf_name+",正在与您沟通!"
+                    guest.to_id=msg.id;
+                    this.chatTitle=msg.name+",正在与您沟通!"
                 }
                 if (redata.type == "kfChatMessage") {
                     let msg = redata.data
-                    guest.to_id=msg.kf_id;
+                    guest.to_id=msg.id;
 
                     let content = {}
                     content.avatar = msg.avatar;
@@ -186,9 +186,9 @@
                 this.messageContent = "";
 
                 let content = {}
-                content.avatar=guest.from_avatar;
+                content.avatar=guest.avator;
                 content.content = guest.content;
-                content.name = guest.from_name;
+                content.name = guest.name;
                 content.is_kefu = true;
                 content.time = this.getNowDate();
                 this.msgList.push(content);
@@ -202,7 +202,7 @@
             getUserInfo(){
                 let obj=this.getCache("guest");
                 if(!obj){
-                    guest.from_id=this.generateUUID();
+                    guest.id=this.generateUUID();
                     this.setCache("guest",guest);
                     obj=this.getCache("guest");
                 }
