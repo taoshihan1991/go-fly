@@ -37,3 +37,8 @@ func FindVisitorByVistorId(visitorId string)Visitor{
 	DB.Where("visitor_id = ?", visitorId).First(&v)
 	return v
 }
+func FindVisitors()[]Visitor{
+	var visitors []Visitor
+	DB.Find(&visitors)
+	return visitors
+}

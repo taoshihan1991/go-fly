@@ -65,10 +65,10 @@
             <el-row :gutter="5">
                 <el-col :span="6">
                     <div class="chatLeft">
-                        <el-tabs v-model="leftTabActive">
+                        <el-tabs v-model="leftTabActive" @tab-click="handleTabClick">
                             <el-tab-pane label="在线用户" name="first">
                                 <el-row  v-for="item in users" :key="item.uid" class="">
-                                    <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': item.uid==currentGuest }" v-on:click="talkTo(item.uid)">
+                                    <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': item.uid==currentGuest }" v-on:click="talkTo(item.uid,item.username)">
                                         <el-col :span="4">
                                             <el-avatar :size="40" :src="item.avator"></el-avatar>
                                         </el-col>
@@ -79,6 +79,16 @@
                                 </el-row>
                             </el-tab-pane>
                             <el-tab-pane label="所有访客" name="second">
+                                <el-row  v-for="item in visitors" :key="item.uid" class="">
+                                    <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': item.visitor_id==currentGuest }" v-on:click="talkTo(item.visitor_id,item.name)">
+                                        <el-col :span="4">
+                                            <el-avatar :size="40" :src="item.avator"></el-avatar>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <{item.name}>
+                                        </el-col>
+                                    </div>
+                                </el-row>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
@@ -159,7 +169,8 @@
                 client_ip:"",
                 city:"",
                 status:"",
-            }
+            },
+            visitors:[],
         },
         methods: {
             //跳转
@@ -244,14 +255,16 @@
                 }
             },
             //接手客户
-            talkTo(guestId) {
+            talkTo(guestId,name) {
                 this.currentGuest = guestId;
-                this.chatTitle=this.usersMap[guestId]+guestId+",正在处理中...";
+                this.chatTitle=name+"|"+guestId+",正在处理中...";
                 this.msgList = [];
                 let buf = [];
-                var i = this.msgListUser[guestId].length;
-                while (i--) {
-                    buf[i] = this.msgListUser[guestId][i];
+                if(typeof this.msgListUser[guestId]!="undefined"){
+                    var i = this.msgListUser[guestId].length;
+                    while (i--) {
+                        buf[i] = this.msgListUser[guestId][i];
+                    }
                 }
                 this.msgList = buf;
 
@@ -357,6 +370,30 @@
                         }
                     }
                 });
+            },
+            //处理tab切换
+            handleTabClick(tab, event){
+                let _this=this;
+                if(tab.name=="second"){
+                    $.ajax({
+                        type:"get",
+                        url:"/visitors",
+                        headers:{
+                            "token":localStorage.getItem("token")
+                        },
+                        success: function(data) {
+                            if(data.result!=null){
+                                _this.visitors=data.result;
+                            }
+                            if(data.code!=200){
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }
+                    });
+                }
             },
        },
         created: function () {

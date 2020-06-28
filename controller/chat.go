@@ -127,6 +127,7 @@ func SendNoticeToAllKefu() {
 //获取当前的在线用户
 func getOnlineUser(w *websocket.Conn) {
 	result := make([]map[string]string, 0)
+	log.Println(clientList)
 	for _, user := range clientList {
 		userInfo := make(map[string]string)
 		userInfo["uid"] = user.id
@@ -190,7 +191,11 @@ func singleBroadcaster(){
 		case "kfConnect":
 			json.Unmarshal(msgData, &clientMsg)
 			kefuList[clientMsg.Id] = conn
-			SendKefuOnline(clientMsg, clientList[clientMsg.ToId].conn)
+			visitor,ok := clientList[clientMsg.ToId]
+			if visitor==nil||!ok{
+				return
+			}
+			SendKefuOnline(clientMsg, visitor.conn)
 		case "kfChatMessage":
 			json.Unmarshal(msgData, &clientMsg)
 			guest,ok:=clientList[clientMsg.ToId]
