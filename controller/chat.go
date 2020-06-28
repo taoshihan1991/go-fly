@@ -56,13 +56,13 @@ func NewChatServer(c *gin.Context){
 		//接受消息
 		var receive []byte
 		var recevString string
-		messageType, receive, err := conn.ReadMessage()
+		_, receive, err := conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
 			return
 		}
 		recevString=string(receive)
-		log.Println("客户端:", recevString,messageType)
+		log.Println("客户端:", recevString)
 		message<-&Message{
 			conn:conn,
 			content: receive,
@@ -117,7 +117,7 @@ func SendNoticeToAllKefu() {
 				Type: "notice",
 			}
 			str, _ := json.Marshal(msg)
-			conn.WriteMessage(1,str)
+			conn.WriteMessage(websocket.TextMessage,str)
 		}
 	}
 }

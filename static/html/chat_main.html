@@ -13,7 +13,8 @@
     <style>
         html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
         .el-row{width:100%}#app{margin-top: 10px;}
-        .chatLeft{min-height: 100%;border-bottom: solid 1px #e6e6e6;overflow: hidden;border-top: solid 1px #e6e6e6;}
+        .chatLeft{min-height: 100%;background: #fff;border: solid 1px #e6e6e6;overflow: hidden;}
+        .chatLeft .el-tabs__header{margin: 0;}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
         .chatContext .el-row{margin-bottom: 5px;}
         .chatUser{
@@ -28,7 +29,7 @@
             color: #000;
             border: 1px solid rgb(152, 199, 230);
             padding: 8px 15px;
-            min-height: 35px;
+            min-height: 26px;
             word-break: break-all;
             position: relative;
             border-radius: 5px;
@@ -54,6 +55,8 @@
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
         .chatArea{margin: 10px 0;}
         .chatBox{max-height: 350px;overflow-y: auto;overflow-x: hidden;}
+        .onlineUsers{padding: 5px;height: 40px;line-height: 40px;font-size: 14px;border-bottom: solid 1px #e6e6e6;}
+        .onlineUsers:hover,.onlineUsers.cur{background-color: #f0f9eb;color: #67C23A;}
     </style>
 </head>
 <body>
@@ -61,16 +64,24 @@
     <template>
             <el-row :gutter="5">
                 <el-col :span="6">
-                    <el-menu class="chatLeft" :default-active="currentGuest">
-                        <el-menu-item>
-                            <i class="el-icon-s-promotion"></i>
-                            <span slot="title">在线用户</span>
-                        </el-menu-item>
-                        <el-menu-item :index="v.uid" v-for="v in users" v-bind:key="v.uid"  v-on:click="talkTo(v.uid)">
-                            <i class="el-icon-user"></i>
-                            <span slot="title"><{v.username}></span>
-                        </el-menu-item>
-                    </el-menu>
+                    <div class="chatLeft">
+                        <el-tabs v-model="leftTabActive">
+                            <el-tab-pane label="在线用户" name="first">
+                                <el-row  v-for="item in users" :key="item.uid" class="">
+                                    <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': item.uid==currentGuest }" v-on:click="talkTo(item.uid)">
+                                        <el-col :span="4">
+                                            <el-avatar :size="40" :src="item.avator"></el-avatar>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <{item.username}>
+                                        </el-col>
+                                    </div>
+                                </el-row>
+                            </el-tab-pane>
+                            <el-tab-pane label="所有访客" name="second">
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
                 </el-col>
                 <el-col :span="12">
                     <div class="sw-bg chatContext">
@@ -112,6 +123,7 @@
         delimiters:["<{","}>"],
         data: {
             fullscreenLoading:true,
+            leftTabActive:"first",
             users:[],
             usersMap:[],
             server:"ws://127.0.0.1:8080/chat_server",
