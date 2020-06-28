@@ -39,6 +39,7 @@ func main() {
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
 	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlGetConf)
 	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlSetConf)
+	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	//------------------old code-----------------------------
 	mux := &http.ServeMux{}
 	//根路径

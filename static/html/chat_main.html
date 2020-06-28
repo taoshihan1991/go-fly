@@ -102,13 +102,28 @@
                         <el-button type="primary" v-on:click="chatToUser">发送</el-button>
                     </div>
                 </el-col>
-                <el-col :span="6">
-                        <el-menu class="chatLeft">
+                <el-col :span="6"  class="chatLeft">
+                        <el-menu>
                             <el-menu-item>
-                                <i class="el-icon-s-tools"></i>
+                                <i class="el-icon-user"></i>
                                 <span slot="title">访客信息</span>
                             </el-menu-item>
-
+                            <el-menu-item>
+                                <i class="el-icon-s-tools"></i>
+                                <span slot="title">来源：<{visitor.refer}></span>
+                            </el-menu-item>
+                            <el-menu-item>
+                                <i class="el-icon-s-tools"></i>
+                                <span slot="title">IP：<{visitor.client_ip}></span>
+                            </el-menu-item>
+                            <el-menu-item>
+                                <i class="el-icon-s-tools"></i>
+                                <span slot="title">城市：<{visitor.city}></span>
+                            </el-menu-item>
+                            <el-menu-item>
+                                <i class="el-icon-s-tools"></i>
+                                <span slot="title">状态：<{visitor.status}></span>
+                            </el-menu-item>
                         </el-menu>
                 </el-col>
             </el-row>
@@ -138,6 +153,12 @@
                 name : "客服丽丽",
                 avator : "",
                 to_id : "",
+            },
+            visitor:{
+                refer:"",
+                client_ip:"",
+                city:"",
+                status:"",
             }
         },
         methods: {
@@ -240,6 +261,9 @@
                 this.kfConfig.to_id=guestId;
                 mes.data = this.kfConfig;
                 this.socket.send(JSON.stringify(mes));
+
+                //获取当前访客信息
+                this.getVistorInfo(guestId);
             },
             //发送给客户
             chatToUser() {
@@ -305,6 +329,33 @@
                     }
                 }).then(function(data){
                     _this.initConn();
+                });
+            },
+            //获取客服信息
+            getVistorInfo(vid){
+                let _this=this;
+                $.ajax({
+                    type:"get",
+                    url:"/visitor",
+                    data:{visitorId:vid},
+                    headers:{
+                        "token":localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                        if(data.result!=null){
+                            let r=data.result;
+                            _this.visitor.refer=r.refer;
+                            _this.visitor.city=r.city;
+                            _this.visitor.client_ip=r.client_ip;
+                            _this.visitor.status=r.status;
+                        }
+                        if(data.code!=200){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }
                 });
             },
        },

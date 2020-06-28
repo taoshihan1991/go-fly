@@ -16,7 +16,7 @@ type vistor struct{
 }
 type Message struct{
 	conn *websocket.Conn
-	ip string
+	c *gin.Context
 	content []byte
 }
 var clientList = make(map[string]*vistor)
@@ -35,6 +35,8 @@ type ClientMessage struct {
 	Time     string `json:"time"`
 	ToId string `json:"to_id"`
 	Content  string `json:"content"`
+	City  string `json:"city"`
+	ClientIp  string `json:"client_ip"`
 }
 //定时检测客户端是否在线
 func init() {
@@ -66,7 +68,7 @@ func NewChatServer(c *gin.Context){
 		message<-&Message{
 			conn:conn,
 			content: receive,
-			ip:c.ClientIP(),
+			c:c,
 		}
 	}
 }
@@ -168,7 +170,7 @@ func singleBroadcaster(){
 			}
 			clientList[clientMsg.Id] = user
 			//插入数据表
-			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.ip,clientMsg.ToId,clientMsg.Id)
+			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.Id,message.c.Request.Referer(),clientMsg.City,clientMsg.ClientIp)
 			SendNoticeToAllKefu()
 		//客服上线
 		case "kfOnline":

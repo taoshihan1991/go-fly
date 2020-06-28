@@ -10,6 +10,7 @@ CREATE TABLE `user` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE `visitor` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` varchar(50) NOT NULL DEFAULT '',
@@ -20,6 +21,10 @@ CREATE TABLE `visitor` (
  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `deleted_at` timestamp NULL DEFAULT NULL,
  `visitor_id` varchar(100) NOT NULL DEFAULT '',
+ `status` tinyint(4) NOT NULL DEFAULT '0',
+ `refer` varchar(500) NOT NULL DEFAULT '',
+ `city` varchar(100) NOT NULL DEFAULT '',
+ `client_ip` varchar(100) NOT NULL,
  PRIMARY KEY (`id`),
  UNIQUE KEY `visitor_id` (`visitor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
