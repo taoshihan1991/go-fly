@@ -36,24 +36,6 @@ type ClientMessage struct {
 	ToId string `json:"to_id"`
 	Content  string `json:"content"`
 }
-type KfMessage struct {
-	Kf_name  string `json:"kf_name"`
-	Avatar   string `json:"avatar"`
-	Kf_id    string `json:"kf_id"`
-	Kf_group string `json:"kf_group"`
-	Time     string `json:"time"`
-	Guest_id string `json:"guest_id"`
-	Content  string `json:"content"`
-}
-type UserMessage struct {
-	From_avatar string `json:"from_avatar"`
-	From_id     string `json:"from_id"`
-	From_name   string `json:"from_name"`
-	To_id       string `json:"to_id"`
-	To_name     string `json:"to_name"`
-	Time        string `json:"time"`
-	Content     string `json:"content"`
-}
 //定时检测客户端是否在线
 func init() {
 	upgrader=websocket.Upgrader{

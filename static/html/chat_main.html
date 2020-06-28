@@ -80,7 +80,7 @@
                         </el-alert>
                         <div class="chatBox">
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
-                                <el-col :span="3"><el-avatar :size="60" :src="v.avatar"></el-avatar></el-col>
+                                <el-col :span="3"><el-avatar :size="60" :src="v.avator"></el-avatar></el-col>
                                 <el-col :span="21">
                                     <div class="chatUser"><{v.name}></div>
                                     <div class="chatContent"><{v.content}></div>
@@ -124,7 +124,7 @@
             kfConfig:{
                 id : "kf_1",
                 name : "客服丽丽",
-                avatar : "",
+                avator : "",
                 to_id : "",
             }
         },
@@ -193,18 +193,18 @@
                 if (redata.type == "chatMessage") {
                     let msg = redata.data
                     let content = {}
-                    content.avatar = msg.from_avatar;
-                    content.name = msg.from_name;
+                    content.avator = msg.avator;
+                    content.name = msg.name;
                     content.content = msg.content;
                     content.is_kefu = false;
                     content.time = msg.time;
-                    if (msg.from_id == this.currentGuest) {
+                    if (msg.id == this.currentGuest) {
                         this.msgList.push(content);
                     }
-                    if (typeof (this.msgListUser[msg.from_id]) == "undefined") {
-                        this.msgListUser[msg.from_id] = [];
+                    if (typeof (this.msgListUser[msg.id]) == "undefined") {
+                        this.msgListUser[msg.id] = [];
                     }
-                    this.msgListUser[msg.from_id].push(content);
+                    this.msgListUser[msg.id].push(content);
                     this.$nextTick(() => {
                         $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
                     });
@@ -242,7 +242,7 @@
                 this.messageContent = "";
 
                 let content = {}
-                content.avatar = this.kfConfig.avatar;
+                content.avator = this.kfConfig.avator;
                 content.name = this.kfConfig.name;
                 content.content = this.kfConfig.content;
                 content.is_kefu = true;
@@ -282,7 +282,7 @@
                         if(data.result!=null){
                             _this.kfConfig.id=data.result.id;
                             _this.kfConfig.name=data.result.name;
-                            _this.kfConfig.avatar=data.result.avator;
+                            _this.kfConfig.avator=data.result.avator;
                         }
                         if(data.code!=200){
                             _this.$message({
