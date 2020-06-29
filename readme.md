@@ -33,11 +33,13 @@
 ### 安装使用
 
 
-1. 先安装和运行mysql , 创建go-fly数据库，并导入*.sql创建表结构与数据，在config
+1. 先安装和运行mysql , 创建go-fly数据库，并导入*.sql创建表结构与数据.
 
-2. 在go get github.com/taoshihan1991/go-fly ,进入$GOPATH/src/github.com/taoshihan1991/go-fly 目录
+2. 在go get github.com/taoshihan1991/go-fly 
+    
+   进入$GOPATH/src/github.com/taoshihan1991/go-fly 目录
    
-   目录mysql.json中配置数据库
+   在config目录mysql.json中配置数据库
 ```php
 {
 	"Server":"127.0.0.1",

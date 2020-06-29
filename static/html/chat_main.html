@@ -57,6 +57,7 @@
         .chatBox{max-height: 350px;overflow-y: auto;overflow-x: hidden;}
         .onlineUsers{padding: 5px;height: 40px;line-height: 40px;font-size: 14px;border-bottom: solid 1px #e6e6e6;}
         .onlineUsers:hover,.onlineUsers.cur{background-color: #f0f9eb;color: #67C23A;}
+        .imgGray {-webkit-filter: grayscale(100%);-ms-filter: grayscale(100%);filter: grayscale(100%);filter: gray;color:#888;}
     </style>
 </head>
 <body>
@@ -82,9 +83,9 @@
                                 <el-row  v-for="item in visitors" :key="item.uid" class="">
                                     <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': item.visitor_id==currentGuest }" v-on:click="talkTo(item.visitor_id,item.name)">
                                         <el-col :span="4">
-                                            <el-avatar :size="40" :src="item.avator"></el-avatar>
+                                            <el-avatar v-bind:class="{'imgGray': item.status==0 }" :size="40" :src="item.avator"></el-avatar>
                                         </el-col>
-                                        <el-col :span="16">
+                                        <el-col :span="16" v-bind:class="{'imgGray': item.status==0 }">
                                             <{item.name}>
                                         </el-col>
                                     </div>

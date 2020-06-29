@@ -21,7 +21,7 @@ type Message struct{
 }
 var clientList = make(map[string]*vistor)
 var kefuList = make(map[string]*websocket.Conn)
-var message = make(chan *Message, 10)
+var message = make(chan *Message)
 
 type TypeMessage struct {
 	Type interface{} `json:"type"`
@@ -44,6 +44,7 @@ func init() {
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
+	go sendPingUpdateStatus()
 	go singleBroadcaster()
 	sendPingToClient()
 }
@@ -103,6 +104,7 @@ func sendPingToClient() {
 				err := user.conn.WriteMessage(websocket.TextMessage,str)
 				if err != nil {
 					delete(clientList, uid)
+					models.UpdateVisitorStatus(uid,0)
 					SendNoticeToAllKefu()
 				}
 			}
@@ -110,6 +112,19 @@ func sendPingToClient() {
 		}
 
 	}()
+}
+//定时给更新数据库状态
+func sendPingUpdateStatus() {
+	for {
+		visitors:=models.FindVisitorsOnline()
+		for _,visitor :=range visitors{
+			_,ok:=clientList[visitor.VisitorId]
+			if !ok{
+				models.UpdateVisitorStatus(visitor.VisitorId,0)
+			}
+		}
+		time.Sleep(10 * time.Second)
+	}
 }
 func SendNoticeToAllKefu() {
 	if len(kefuList) != 0 {
@@ -127,7 +142,6 @@ func SendNoticeToAllKefu() {
 //获取当前的在线用户
 func getOnlineUser(w *websocket.Conn) {
 	result := make([]map[string]string, 0)
-	log.Println(clientList)
 	for _, user := range clientList {
 		userInfo := make(map[string]string)
 		userInfo["uid"] = user.id
@@ -146,12 +160,14 @@ func getOnlineUser(w *websocket.Conn) {
 func singleBroadcaster(){
 	for {
 		message:=<-message
+		log.Println("debug:",message)
+
 		var typeMsg TypeMessage
 		var clientMsg ClientMessage
 		json.Unmarshal(message.content, &typeMsg)
 		conn:=message.conn
 		if typeMsg.Type == nil || typeMsg.Data == nil {
-			break
+			continue
 		}
 		msgType := typeMsg.Type.(string)
 		msgData, _ := json.Marshal(typeMsg.Data)
@@ -180,7 +196,7 @@ func singleBroadcaster(){
 			kefuList[clientMsg.Id] = conn
 			//发送给客户
 			if len(clientList) == 0 {
-				break
+				continue
 			}
 			//for _, conn := range clientList {
 			//	SendKefuOnline(kfMsg, conn)
