@@ -316,6 +316,8 @@
                     let vid=this.visitors[i].visitor_id;
                     if(typeof this.usersMap[vid]=="undefined"){
                         this.visitors[i].status=0;
+                    }else{
+                        this.visitors[i].status=1;
                     }
                 }
 
@@ -362,7 +364,7 @@
                             _this.visitor.refer=r.refer;
                             _this.visitor.city=r.city;
                             _this.visitor.client_ip=r.client_ip;
-                            _this.visitor.status=r.status;
+                            _this.visitor.status=r.status==1?"在线":"离线";
                         }
                         if(data.code!=200){
                             _this.$message({
