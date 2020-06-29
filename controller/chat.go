@@ -46,6 +46,7 @@ func init() {
 	}
 	go sendPingUpdateStatus()
 	go singleBroadcaster()
+	go sendPingOnlineUsers()
 	sendPingToClient()
 }
 
@@ -126,6 +127,28 @@ func sendPingUpdateStatus() {
 		time.Sleep(10 * time.Second)
 	}
 }
+//定时推送当前在线用户
+func sendPingOnlineUsers() {
+	for {
+		result := make([]map[string]string, 0)
+		for _, user := range clientList {
+			userInfo := make(map[string]string)
+			userInfo["uid"] = user.id
+			userInfo["username"] = user.name
+			userInfo["avator"] = user.avator
+			result = append(result, userInfo)
+		}
+		msg := TypeMessage{
+			Type: "getOnlineUsers",
+			Data: result,
+		}
+		str, _ := json.Marshal(msg)
+		for _, kfConn := range kefuList {
+			kfConn.WriteMessage(websocket.TextMessage,str)
+		}
+		time.Sleep(10 * time.Second)
+	}
+}
 func SendNoticeToAllKefu() {
 	if len(kefuList) != 0 {
 		//发送给客服通知
@@ -139,23 +162,7 @@ func SendNoticeToAllKefu() {
 	}
 }
 
-//获取当前的在线用户
-func getOnlineUser(w *websocket.Conn) {
-	result := make([]map[string]string, 0)
-	for _, user := range clientList {
-		userInfo := make(map[string]string)
-		userInfo["uid"] = user.id
-		userInfo["username"] = user.name
-		userInfo["avator"] = user.avator
-		result = append(result, userInfo)
-	}
-	msg := TypeMessage{
-		Type: "getOnlineUsers",
-		Data: result,
-	}
-	str, _ := json.Marshal(msg)
-	w.WriteMessage(websocket.TextMessage,str)
-}
+
 //后端广播发送消息
 func singleBroadcaster(){
 	for {
@@ -172,9 +179,6 @@ func singleBroadcaster(){
 		msgType := typeMsg.Type.(string)
 		msgData, _ := json.Marshal(typeMsg.Data)
 		switch msgType {
-		//获取当前在线的所有用户
-		case "getOnlineUsers":
-			getOnlineUser(conn)
 		//用户上线
 		case "userInit":
 			json.Unmarshal(msgData, &clientMsg)
@@ -209,14 +213,14 @@ func singleBroadcaster(){
 			kefuList[clientMsg.Id] = conn
 			visitor,ok := clientList[clientMsg.ToId]
 			if visitor==nil||!ok{
-				return
+				continue
 			}
 			SendKefuOnline(clientMsg, visitor.conn)
 		case "kfChatMessage":
 			json.Unmarshal(msgData, &clientMsg)
 			guest,ok:=clientList[clientMsg.ToId]
 			if guest==nil||!ok{
-				return
+				continue
 			}
 			conn := guest.conn
 
@@ -237,7 +241,7 @@ func singleBroadcaster(){
 			json.Unmarshal(msgData, &clientMsg)
 			conn,ok := kefuList[clientMsg.ToId]
 			if conn==nil||!ok{
-				return
+				continue
 			}
 			msg := TypeMessage{
 				Type: "chatMessage",

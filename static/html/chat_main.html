@@ -178,12 +178,6 @@
             openUrl(url) {
                 window.location.href = url;
             },
-            getOnlineUsers() {
-                let mes = {}
-                mes.type = "getOnlineUsers";
-                mes.data = this.kfConfig;
-                this.socket.send(JSON.stringify(mes));
-            },
             sendKefuOnline(){
                 let mes = {}
                 mes.type = "kfOnline";
@@ -198,7 +192,7 @@
                 this.socket.onopen = this.OnOpen;
             },
             OnOpen() {
-                this.getOnlineUsers();
+                this.sendKefuOnline();
             },
             OnMessage(e) {
                 const redata = JSON.parse(e.data);
@@ -216,7 +210,6 @@
                         //         duration: 0,
                         //     });
                         // }
-                        this.getOnlineUsers();
                         this.sendKefuOnline();
                         break;
                 }
@@ -312,12 +305,20 @@
                 if (this.currentGuest == "") {
                     this.chatTitle = "连接成功,等待处理中...";
                 }
+                this.usersMap=[];
                 for(let i=0;i<retData.length;i++){
                     this.usersMap[retData[i].uid]=retData[i].username;
                     if (typeof (this.msgListUser[retData[i].uid]) == "undefined") {
                         this.msgListUser[retData[i].uid] = [];
                     }
                 }
+                for(let i=0;i<this.visitors.length;i++){
+                    let vid=this.visitors[i].visitor_id;
+                    if(typeof this.usersMap[vid]=="undefined"){
+                        this.visitors[i].status=0;
+                    }
+                }
+
             },
             //获取客服信息
             getKefuInfo(){
