@@ -1,5 +1,8 @@
 {{define "setting_bottom"}}
 <script>
+    var ACTION="{{.action}}";
+</script>
+<script>
     var app=new Vue({
         el: '#app',
         delimiters:["<{","}>"],
@@ -112,36 +115,40 @@
             },
             //初始化数据
             initInfo(){
-                {{if eq .action  "setting_mysql"}}
                 let _this=this;
-                $.ajax({
-                    type:"get",
-                    url:"/mysql",
-                    headers:{
-                        "token":localStorage.getItem("token")
-                    },
-                    success: function(data) {
-                        if(data.result!=null){
-                            _this.mysql.username=data.result.Username;
-                            _this.mysql.password=data.result.Password;
-                            _this.mysql.database=data.result.Database;
-                            _this.mysql.server=data.result.Server;
-                            _this.mysql.port=data.result.Port;
+                if(ACTION=="setting_mysql"){
+                    $.ajax({
+                        type:"get",
+                        url:"/mysql",
+                        headers:{
+                            "token":localStorage.getItem("token")
+                        },
+                        success: function(data) {
+                            if(data.result!=null){
+                                _this.mysql.username=data.result.Username;
+                                _this.mysql.password=data.result.Password;
+                                _this.mysql.database=data.result.Database;
+                                _this.mysql.server=data.result.Server;
+                                _this.mysql.port=data.result.Port;
+                            }
+                            if(data.code!=200){
+                                _this.$message({
+                                    message: data.msg,
+                                    type: 'error'
+                                });
+                            }
+                            _this.fullscreenLoading=false;
                         }
-                        if(data.code!=200){
-                            _this.$message({
-                                message: data.msg,
-                                type: 'error'
-                            });
-                        }
-                    }
-                });
+                    });
+                }
 
-                {{end}}
+
             }
         },
         created: function () {
-            this.showNotice();
+            if(ACTION=="setting"){
+                this.showNotice();
+            }
             this.initInfo();
         }
     })

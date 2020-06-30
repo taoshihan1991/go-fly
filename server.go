@@ -51,6 +51,7 @@ func main() {
 	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlSetConf)
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors",middleware.JwtApiMiddleware, controller.GetVisitors)
+	engine.GET("/setting_kefu_list",tmpl.PageKefuList)
 	//------------------old code-----------------------------
 	mux := &http.ServeMux{}
 	//根路径
