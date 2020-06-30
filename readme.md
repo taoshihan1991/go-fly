@@ -35,9 +35,15 @@
 
 1. 先安装和运行mysql , 创建go-fly数据库，并导入*.sql创建表结构与数据.
 
-2. 在go get github.com/taoshihan1991/go-fly 
-    
-   进入$GOPATH/src/github.com/taoshihan1991/go-fly 目录
+2. 基于go module使用
+
+   go env -w GO111MODULE=on
+   
+   go env -w GOPROXY=https://goproxy.cn,direct
+   
+   在任意目录 git clone https://github.com/taoshihan1991/go-fly.git
+   
+   进入go-fly 目录
    
    在config目录mysql.json中配置数据库
 ```php
