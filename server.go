@@ -70,7 +70,6 @@ func main() {
 	mux.HandleFunc("/push_mail", controller.PushMailServer)
 	//mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
 	//后台任务
-	controller.TimerSessFile()
 	//监听端口
 	//http.ListenAndServe(":8080", nil)
 	//var myHandler http.Handler
