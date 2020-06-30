@@ -15,6 +15,7 @@ func main() {
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
+	engine.Static("/static", "./static")
 	//首页
 	engine.GET("/", controller.Index)
 	//登陆界面

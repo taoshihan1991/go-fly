@@ -109,7 +109,7 @@ func sendPingToClient() {
 					SendNoticeToAllKefu()
 				}
 			}
-			time.Sleep(10 * time.Second)
+			time.Sleep(3 * time.Second)
 		}
 
 	}()
@@ -124,7 +124,7 @@ func sendPingUpdateStatus() {
 				models.UpdateVisitorStatus(visitor.VisitorId,0)
 			}
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(20 * time.Second)
 	}
 }
 //定时推送当前在线用户
@@ -146,7 +146,7 @@ func sendPingOnlineUsers() {
 		for _, kfConn := range kefuList {
 			kfConn.WriteMessage(websocket.TextMessage,str)
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(3 * time.Second)
 	}
 }
 func SendNoticeToAllKefu() {
@@ -167,7 +167,7 @@ func SendNoticeToAllKefu() {
 func singleBroadcaster(){
 	for {
 		message:=<-message
-		log.Println("debug:",message)
+		//log.Println("debug:",message)
 
 		var typeMsg TypeMessage
 		var clientMsg ClientMessage

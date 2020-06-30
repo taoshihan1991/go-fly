@@ -13,8 +13,10 @@
     <style>
         html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
         .el-row{width:100%}#app{margin-top: 10px;}
-        .chatLeft{min-height: 100%;background: #fff;border: solid 1px #e6e6e6;overflow: hidden;}
+        .chatBg{min-height: 100%;background: #fff;border: solid 1px #e6e6e6;overflow: hidden;}
+        .chatLeft{    margin-left: 4px;}
         .chatLeft .el-tabs__header{margin: 0;}
+        .chatLeft .el-tabs__nav{margin-left: 20px;}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
         .chatContext .el-row{margin-bottom: 5px;}
         .chatUser{
@@ -63,9 +65,9 @@
 <body>
 <div id="app">
     <template>
-            <el-row :gutter="5">
+            <el-row :gutter="2">
                 <el-col :span="6">
-                    <div class="chatLeft">
+                    <div class="chatBg chatLeft">
                         <el-tabs v-model="leftTabActive" @tab-click="handleTabClick">
                             <el-tab-pane label="在线用户" name="first">
                                 <el-row  v-for="item in users" :key="item.uid" class="">
@@ -113,7 +115,8 @@
                         <el-button type="primary" v-on:click="chatToUser">发送</el-button>
                     </div>
                 </el-col>
-                <el-col :span="6"  class="chatLeft">
+                <el-col :span="6">
+                    <div   class="chatBg">
                         <el-menu>
                             <el-menu-item>
                                 <i class="el-icon-user"></i>
@@ -136,6 +139,7 @@
                                 <span slot="title">状态：<{visitor.status}></span>
                             </el-menu-item>
                         </el-menu>
+                    </div>
                 </el-col>
             </el-row>
     </template>
@@ -332,10 +336,11 @@
                         "token":localStorage.getItem("token")
                     },
                     success: function(data) {
-                        if(data.result!=null){
+                        if(data.code==200 && data.result!=null){
                             _this.kfConfig.id=data.result.id;
                             _this.kfConfig.name=data.result.name;
                             _this.kfConfig.avator=data.result.avator;
+                            _this.initConn();
                         }
                         if(data.code!=200){
                             _this.$message({
@@ -345,7 +350,7 @@
                         }
                     }
                 }).then(function(data){
-                    _this.initConn();
+
                 });
             },
             //获取客服信息
