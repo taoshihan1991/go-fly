@@ -112,7 +112,7 @@
         delimiters:["<{","}>"],
         data: {
             window:window,
-            server:"ws://127.0.0.1:8080/chat_server",
+            server:"ws://"+window.location.host+"/chat_server",
             socket:null,
             msgList:[],
             messageContent:"",

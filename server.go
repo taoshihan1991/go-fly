@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/middleware"
@@ -9,9 +10,17 @@ import (
 	"net/http"
 	"time"
 )
-
+var (
+	port string
+)
 func main() {
-	baseServer := "127.0.0.1:8080"
+	//获取参数中的数据
+	flag.StringVar(&port, "port", "8080", "监听端口号")
+	flag.Parse()
+	if flag.NFlag() < 1 {
+		flag.PrintDefaults()
+	}
+	baseServer := "0.0.0.0:"+port
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
@@ -81,7 +90,6 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	//---------------old code end------------------
-	engine.Run(":8080")
-
+	engine.Run(baseServer)
 	s.ListenAndServe()
 }
