@@ -65,7 +65,6 @@
 <body>
 <div id="app">
     <template>
-        <el-container v-loading.fullscreen.lock="fullscreenLoading">
             <el-row :gutter="2">
                 <el-col :span="6">
                     <div class="chatBg chatLeft">
@@ -143,7 +142,6 @@
                     </div>
                 </el-col>
             </el-row>
-        </el-container>
     </template>
 </div>
 </body>
@@ -350,7 +348,6 @@
                                 type: 'error'
                             });
                         }
-                        _this.fullscreenLoading=false;
                     }
                 }).then(function(data){
                 });
