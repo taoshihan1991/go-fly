@@ -43,6 +43,7 @@ func main() {
 	engine.GET("/chat_server", controller.NewChatServer)
 	//获取客服信息
 	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
+	engine.GET("/kefulist",middleware.JwtApiMiddleware, controller.GetKefuList)
 	//设置页
 	engine.GET("/setting", tmpl.PageSetting)
 	//设置mysql

@@ -18,3 +18,11 @@ func GetKefuInfo(c *gin.Context){
 		"result":info,
 	})
 }
+func GetKefuList(c *gin.Context){
+	users:=models.FindUsers()
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "获取成功",
+		"result":users,
+	})
+}

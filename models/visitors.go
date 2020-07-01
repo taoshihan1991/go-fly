@@ -1,9 +1,7 @@
 package models
 
-import "github.com/jinzhu/gorm"
-
 type Visitor struct {
-	gorm.Model
+	Model
 	Name string `json:"name"`
 	Avator string `json:"avator"`
 	SourceIp string `json:"source_ip"`

@@ -7,7 +7,33 @@
             </el-aside>
 
             <el-main class="mainMain">
-                ss
+                <el-table
+                        :data="kefuList"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            prop="img"
+                            label="客服头像">
+                        <template slot-scope="scope">
+                            <el-avatar :size="50"><img :src="scope.row.avator"/></el-avatar>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="客服账号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="created_at"
+                            label="添加时间">
+                    </el-table-column>
+                    <el-table-column
+                            prop="id"
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button @click="deleteMonitor(scope.row.id)" type="text" size="small">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </el-main>
 
         </el-container>

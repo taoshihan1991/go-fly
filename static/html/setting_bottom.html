@@ -37,7 +37,7 @@
                     { required: true, message: '请输入密码', trigger: 'blur' },
                 ],
             },
-
+            kefuList:[],
         },
         methods: {
             //提交表单
@@ -117,32 +117,42 @@
             initInfo(){
                 let _this=this;
                 if(ACTION=="setting_mysql"){
-                    $.ajax({
-                        type:"get",
-                        url:"/mysql",
-                        headers:{
-                            "token":localStorage.getItem("token")
-                        },
-                        success: function(data) {
-                            if(data.result!=null){
-                                _this.mysql.username=data.result.Username;
-                                _this.mysql.password=data.result.Password;
-                                _this.mysql.database=data.result.Database;
-                                _this.mysql.server=data.result.Server;
-                                _this.mysql.port=data.result.Port;
-                            }
-                            if(data.code!=200){
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'error'
-                                });
-                            }
-                            _this.fullscreenLoading=false;
-                        }
+                    this.getAjax("/mysql",{},function(result){
+                        _this.mysql.username=result.Username;
+                        _this.mysql.password=result.Password;
+                        _this.mysql.database=result.Database;
+                        _this.mysql.server=result.Server;
+                        _this.mysql.port=result.Port;
+                    });
+                }
+                if(ACTION=="setting_kefu_list"){
+                    this.getAjax("/kefulist",{},function(result){
+                        _this.kefuList=result;
                     });
                 }
 
+            },
+            getAjax(url,params,callback){
+                let _this=this;
+                $.ajax({
+                    type: "get",
+                    url: url,
+                    headers: {
+                        "token": localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                        if(data.code!=200){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }else if(data.result!=null){
+                            callback(data.result);
+                        }
+                        _this.fullscreenLoading=false
 
+                    }
+                });
             }
         },
         created: function () {
