@@ -38,6 +38,10 @@
                 ],
             },
             kefuList:[],
+            kefuDialog:false,
+            kefuForm:{
+
+            },
         },
         methods: {
             //提交表单
@@ -153,6 +157,10 @@
 
                     }
                 });
+            },
+            //添加客服的dialog
+            addKefu(){
+                this.kefuDialog=true;
             }
         },
         created: function () {
