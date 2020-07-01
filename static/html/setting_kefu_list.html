@@ -44,20 +44,20 @@
                 :visible.sync="kefuDialog"
                 width="30%"
                 >
-            <el-form ref="kefuForm" :model="kefuForm" label-width="70px">
-                <el-form-item label="用户名">
+            <el-form ref="kefuForm" :model="kefuForm" :rules="rules" label-width="70px">
+                <el-form-item label="用户名"  prop="name">
                     <el-input v-model="kefuForm.name"></el-input>
                 </el-form-item>
-                <el-form-item label="密码">
-                    <el-input v-model="kefuForm.name"></el-input>
+                <el-form-item label="密码"  prop="password">
+                    <el-input v-model="kefuForm.password"></el-input>
                 </el-form-item>
-                <el-form-item label="头像">
-                    <el-input v-model="kefuForm.name"></el-input>
+                <el-form-item label="头像"  prop="avator">
+                    <el-input v-model="kefuForm.avator"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="kefuDialog = false">取 消</el-button>
-                <el-button type="primary" @click="kefuDialog = false">确 定</el-button>
+                <el-button type="primary" @click="submitKefuForm('kefuForm')">确 定</el-button>
               </span>
         </el-dialog>
     </template>

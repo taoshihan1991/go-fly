@@ -33,6 +33,12 @@
                 username: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
                 ],
+                name: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                ],
+                avator: [
+                    { required: true, message: '请选择头像', trigger: 'blur' },
+                ],
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
                 ],
@@ -121,7 +127,7 @@
             initInfo(){
                 let _this=this;
                 if(ACTION=="setting_mysql"){
-                    this.getAjax("/mysql",{},function(result){
+                    this.sendAjax("/mysql","get",{},function(result){
                         _this.mysql.username=result.Username;
                         _this.mysql.password=result.Password;
                         _this.mysql.database=result.Database;
@@ -130,16 +136,16 @@
                     });
                 }
                 if(ACTION=="setting_kefu_list"){
-                    this.getAjax("/kefulist",{},function(result){
+                    this.sendAjax("/kefulist","get",{},function(result){
                         _this.kefuList=result;
                     });
                 }
 
             },
-            getAjax(url,params,callback){
+            sendAjax(url,method,params,callback){
                 let _this=this;
                 $.ajax({
-                    type: "get",
+                    type: method,
                     url: url,
                     headers: {
                         "token": localStorage.getItem("token")
@@ -161,6 +167,23 @@
             //添加客服的dialog
             addKefu(){
                 this.kefuDialog=true;
+            },
+            //提交客服表单
+            submitKefuForm(formName){
+                let _this=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.sendAjax("/kefuinfo","post",_this.kefuForm,function(result){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'success'
+                            });
+                            _this.kefuDialog=false;
+                        });
+                    } else {
+                        return false;
+                    }
+                });
             }
         },
         created: function () {

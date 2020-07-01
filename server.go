@@ -7,8 +7,6 @@ import (
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"log"
-	"net/http"
-	"time"
 )
 var (
 	port string
@@ -43,6 +41,7 @@ func main() {
 	engine.GET("/chat_server", controller.NewChatServer)
 	//获取客服信息
 	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
+	engine.POST("/kefuinfo",middleware.JwtApiMiddleware, controller.PostKefuInfo)
 	engine.GET("/kefulist",middleware.JwtApiMiddleware, controller.GetKefuList)
 	//设置页
 	engine.GET("/setting", tmpl.PageSetting)
@@ -53,45 +52,5 @@ func main() {
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors",middleware.JwtApiMiddleware, controller.GetVisitors)
 	engine.GET("/setting_kefu_list",tmpl.PageKefuList)
-	//------------------old code-----------------------------
-	mux := &http.ServeMux{}
-	//根路径
-	mux.HandleFunc("/", controller.ActionIndex)
-	//邮件夹
-	mux.HandleFunc("/list", controller.ActionFolder)
-	//邮件夹接口
-	mux.HandleFunc("/folders", controller.FoldersList)
-	//新邮件夹接口
-	mux.HandleFunc("/folder_dirs", controller.FolderDir)
-	//邮件接口
-	mux.HandleFunc("/mail", controller.FolderMail)
-	//详情界面
-	mux.HandleFunc("/view", controller.ActionDetail)
-	//写信界面
-	mux.HandleFunc("/write", controller.ActionWrite)
-	//框架界面
-	mux.HandleFunc("/main", controller.ActionMain)
-	//设置界面
-	mux.HandleFunc("/setting", controller.ActionSetting)
-	//设置账户接口
-	mux.HandleFunc("/setting_account", controller.SettingAccount)
-	//发送邮件接口
-	mux.HandleFunc("/send", controller.FolderSend)
-	//新邮件提醒服务
-	mux.HandleFunc("/push_mail", controller.PushMailServer)
-	//mux.Handle("/chat_server", websocket.Handler(controller.ChatServer))
-	//后台任务
-	//监听端口
-	//http.ListenAndServe(":8080", nil)
-	//var myHandler http.Handler
-	s := &http.Server{
-		Addr:           ":8080",
-		Handler:        mux,
-		ReadTimeout:    30 * time.Second,
-		WriteTimeout:   30 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
-	//---------------old code end------------------
 	engine.Run(baseServer)
-	s.ListenAndServe()
 }

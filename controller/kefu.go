@@ -14,8 +14,15 @@ func GetKefuInfo(c *gin.Context){
 	info["avator"]=user.Avator
 	c.JSON(200, gin.H{
 		"code": 200,
-		"msg":  "获取成功",
+		"msg":  "ok",
 		"result":info,
+	})
+}
+func PostKefuInfo(c *gin.Context){
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":"aaa",
 	})
 }
 func GetKefuList(c *gin.Context){
