@@ -41,6 +41,7 @@ func main() {
 	engine.GET("/chat_server", controller.NewChatServer)
 	//获取客服信息
 	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
+	engine.GET("/kefuinfo_setting",middleware.JwtApiMiddleware, controller.GetKefuInfoSetting)
 	engine.POST("/kefuinfo",middleware.JwtApiMiddleware, controller.PostKefuInfo)
 	engine.DELETE("/kefuinfo",middleware.JwtApiMiddleware, controller.DeleteKefuInfo)
 	engine.GET("/kefulist",middleware.JwtApiMiddleware, controller.GetKefuList)

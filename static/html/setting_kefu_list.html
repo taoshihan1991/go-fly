@@ -31,7 +31,7 @@
                             prop="id"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="" type="primary" size="small" plain>编辑</el-button>
+                            <el-button @click="getKefu(scope.row.id)" type="primary" size="small" plain>编辑</el-button>
                             <el-button @click="deleteKefu(scope.row.id)" type="danger" size="small" plain>删除</el-button>
                         </template>
                     </el-table-column>
@@ -52,7 +52,11 @@
                     <el-input v-model="kefuForm.password"></el-input>
                 </el-form-item>
                 <el-form-item label="头像"  prop="avator">
-                    <el-input v-model="kefuForm.avator"></el-input>
+                    <el-select v-model="kefuForm.avator" placeholder="请选择头像">
+                        <el-option :label="'头像'+item" :value="'/static/images/'+item+'.jpg'" v-for="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]" v-bind:key="item">
+                            <el-avatar :size="30" :src="'/static/images/'+item+'.jpg'"></el-avatar>
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">

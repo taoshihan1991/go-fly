@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
-	"log"
 )
 
 func GetKefuInfo(c *gin.Context){
@@ -18,6 +17,15 @@ func GetKefuInfo(c *gin.Context){
 		"code": 200,
 		"msg":  "ok",
 		"result":info,
+	})
+}
+func GetKefuInfoSetting(c *gin.Context){
+	kefuId := c.Query("kefu_id")
+	user:=models.FindUserById(kefuId)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":user,
 	})
 }
 func PostKefuInfo(c *gin.Context){
@@ -41,7 +49,6 @@ func GetKefuList(c *gin.Context){
 }
 func DeleteKefuInfo(c *gin.Context){
 	kefuId := c.Query("id")
-	log.Println(kefuId)
 	models.DeleteUserById(kefuId)
 	c.JSON(200, gin.H{
 		"code": 200,
