@@ -42,6 +42,7 @@ func main() {
 	//获取客服信息
 	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
 	engine.POST("/kefuinfo",middleware.JwtApiMiddleware, controller.PostKefuInfo)
+	engine.DELETE("/kefuinfo",middleware.JwtApiMiddleware, controller.DeleteKefuInfo)
 	engine.GET("/kefulist",middleware.JwtApiMiddleware, controller.GetKefuList)
 	//设置页
 	engine.GET("/setting", tmpl.PageSetting)

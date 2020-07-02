@@ -10,10 +10,11 @@ type User struct {
 	Nickname string `json:"nickname"`
 	Avator string `json:"avator"`
 }
-func CreateUser(name string,password string){
+func CreateUser(name string,password string,avator string){
 	user:=&User{
 		Name:name,
 		Password: password,
+		Avator:avator,
 	}
 	DB.Create(user)
 }
@@ -26,6 +27,9 @@ func FindUserById(id interface{})User{
 	var user User
 	DB.Where("id = ?", id).First(&user)
 	return user
+}
+func DeleteUserById(id string){
+	DB.Where("id = ?",id).Delete(User{})
 }
 func FindUsers()[]User{
 	var users []User

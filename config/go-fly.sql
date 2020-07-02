@@ -28,3 +28,17 @@ CREATE TABLE `visitor` (
  PRIMARY KEY (`id`),
  UNIQUE KEY `visitor_id` (`visitor_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
+
+CREATE TABLE `message` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `from_id` varchar(100) NOT NULL DEFAULT '',
+ `to_id` varchar(100) NOT NULL DEFAULT '',
+ `content` varchar(2048) NOT NULL DEFAULT '',
+ `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `deleted_at` timestamp NULL DEFAULT NULL,
+ `status` enum('read','unread') NOT NULL DEFAULT 'unread',
+ PRIMARY KEY (`id`),
+ KEY `from_id` (`from_id`),
+ KEY `to_id` (`to_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

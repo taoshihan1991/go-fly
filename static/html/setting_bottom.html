@@ -46,7 +46,9 @@
             kefuList:[],
             kefuDialog:false,
             kefuForm:{
-
+                name:"",
+                password:"",
+                avator:"",
             },
         },
         methods: {
@@ -147,6 +149,7 @@
                 $.ajax({
                     type: method,
                     url: url,
+                    data:params,
                     headers: {
                         "token": localStorage.getItem("token")
                     },
@@ -173,16 +176,24 @@
                 let _this=this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.sendAjax("/kefuinfo","post",_this.kefuForm,function(result){
-                            _this.$message({
-                                message: data.msg,
-                                type: 'success'
-                            });
+                        this.sendAjax("/kefuinfo","POST",_this.kefuForm,function(result){
                             _this.kefuDialog=false;
+                            _this.sendAjax("/kefulist","get",{},function(result){
+                                _this.kefuList=result;
+                            });
                         });
                     } else {
                         return false;
                     }
+                });
+            },
+            //删除客服
+            deleteKefu(kefuId){
+                this.sendAjax("/kefuinfo","DELETE",{id:kefuId},function(result){
+                    _this.kefuDialog=false;
+                    _this.sendAjax("/kefulist","get",{},function(result){
+                        _this.kefuList=result;
+                    });
                 });
             }
         },
