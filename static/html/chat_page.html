@@ -158,13 +158,13 @@
                     guest.to_id=msg.id;
                     this.chatTitle=msg.name+",正在与您沟通!"
                 }
-                if (redata.type == "kfChatMessage") {
+                if (redata.type == "message") {
                     let msg = redata.data
                     guest.to_id=msg.id;
 
                     let content = {}
                     content.avator = msg.avator;
-                    content.name = msg.kf_name;
+                    content.name = msg.name;
                     content.content = msg.content;
                     content.is_kefu = false;
                     content.time = msg.time;

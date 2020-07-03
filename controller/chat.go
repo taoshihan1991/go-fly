@@ -214,7 +214,7 @@ func singleBroadcaster(){
 			conn := guest.conn
 
 			msg := TypeMessage{
-				Type: "kfChatMessage",
+				Type: "message",
 				Data: ClientMessage{
 					Name:  clientMsg.Name,
 					Avator:   clientMsg.Avator,
@@ -233,7 +233,7 @@ func singleBroadcaster(){
 				continue
 			}
 			msg := TypeMessage{
-				Type: "chatMessage",
+				Type: "message",
 				Data: ClientMessage{
 					Avator: clientMsg.Avator,
 					Id:     clientMsg.Id,
