@@ -24,6 +24,10 @@
                             label="客服账号">
                     </el-table-column>
                     <el-table-column
+                            prop="nickname"
+                            label="客服昵称">
+                    </el-table-column>
+                    <el-table-column
                             prop="created_at"
                             label="添加时间">
                     </el-table-column>
@@ -50,6 +54,9 @@
                 </el-form-item>
                 <el-form-item label="密码"  prop="password">
                     <el-input v-model="kefuForm.password"></el-input>
+                </el-form-item>
+                <el-form-item label="昵称"  prop="nickname">
+                    <el-input v-model="kefuForm.nickname"></el-input>
                 </el-form-item>
                 <el-form-item label="头像"  prop="avator">
                     <el-select v-model="kefuForm.avator" placeholder="请选择头像">

@@ -106,7 +106,6 @@ func sendPingToClient() {
 				if err != nil {
 					delete(clientList, uid)
 					models.UpdateVisitorStatus(uid,0)
-					SendNoticeToAllKefu()
 				}
 			}
 			time.Sleep(3 * time.Second)
@@ -143,22 +142,13 @@ func sendPingOnlineUsers() {
 			Data: result,
 		}
 		str, _ := json.Marshal(msg)
-		for _, kfConn := range kefuList {
-			kfConn.WriteMessage(websocket.TextMessage,str)
+		for kefuId, kfConn := range kefuList {
+			err:=kfConn.WriteMessage(websocket.TextMessage,str)
+			if err != nil {
+				delete(kefuList, kefuId)
+			}
 		}
 		time.Sleep(3 * time.Second)
-	}
-}
-func SendNoticeToAllKefu() {
-	if len(kefuList) != 0 {
-		//发送给客服通知
-		for _, conn := range kefuList {
-			msg := TypeMessage{
-				Type: "notice",
-			}
-			str, _ := json.Marshal(msg)
-			conn.WriteMessage(websocket.TextMessage,str)
-		}
 	}
 }
 
@@ -192,7 +182,6 @@ func singleBroadcaster(){
 			clientList[clientMsg.Id] = user
 			//插入数据表
 			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.Id,message.c.Request.Referer(),clientMsg.City,clientMsg.ClientIp)
-			SendNoticeToAllKefu()
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData, &clientMsg)

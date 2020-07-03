@@ -10,13 +10,25 @@ type User struct {
 	Nickname string `json:"nickname"`
 	Avator string `json:"avator"`
 }
-func CreateUser(name string,password string,avator string){
+func CreateUser(name string,password string,avator string,nickname string){
 	user:=&User{
 		Name:name,
 		Password: password,
 		Avator:avator,
+		Nickname: nickname,
 	}
 	DB.Create(user)
+}
+func UpdateUser(id string,name string,password string,avator string,nickname string){
+	user:=&User{
+		Name:name,
+		Avator:avator,
+		Nickname: nickname,
+	}
+	if password!=""{
+		user.Password=password
+	}
+	DB.Model(&User{}).Where("id = ?",id).Update(user)
 }
 func FindUser(username string)User{
 	var user User

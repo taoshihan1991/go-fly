@@ -42,15 +42,19 @@
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
                 ],
+                nickname: [
+                    { required: true, message: '请输入昵称', trigger: 'blur' },
+                ],
             },
             kefuList:[],
             kefuDialog:false,
             kefuForm:{
+                id:"",
                 name:"",
                 password:"",
                 avator:"",
+                nickname:"",
             },
-            kefuSelectAvator:"/static/images/0.jpg",
         },
         methods: {
             //提交表单
@@ -170,6 +174,12 @@
             },
             //添加客服的dialog
             addKefu(){
+                this.kefuForm={
+                    id:"",
+                    name:"",
+                    password:"",
+                    avator:"",
+                };
                 this.kefuDialog=true;
             },
             //提交客服表单
@@ -207,6 +217,7 @@
                 this.sendAjax("/kefuinfo_setting","GET",{kefu_id:kefuId},function(result){
                     _this.kefuDialog=true;
                     _this.kefuForm=result;
+                    _this.kefuForm.password="";
                 });
             },
             //删除客服

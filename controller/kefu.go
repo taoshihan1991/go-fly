@@ -29,10 +29,22 @@ func GetKefuInfoSetting(c *gin.Context){
 	})
 }
 func PostKefuInfo(c *gin.Context){
+	id:=c.PostForm("id")
 	name:=c.PostForm("name")
 	password:=c.PostForm("password")
 	avator:=c.PostForm("avator")
-	models.CreateUser(name,tools.Md5(password),avator)
+	nickname:=c.PostForm("nickname")
+	//插入新用户
+	if id==""{
+		models.CreateUser(name,tools.Md5(password),avator,nickname)
+	}else{
+		//更新用户
+		if password!=""{
+			password=tools.Md5(password)
+		}
+		models.UpdateUser(id,name,password,avator,nickname)
+	}
+
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
