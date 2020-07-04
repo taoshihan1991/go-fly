@@ -54,5 +54,8 @@ func main() {
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors",middleware.JwtApiMiddleware, controller.GetVisitors)
 	engine.GET("/setting_kefu_list",tmpl.PageKefuList)
+
+	//前台接口
+	engine.GET("/notice", controller.GetNotice)
 	engine.Run(baseServer)
 }

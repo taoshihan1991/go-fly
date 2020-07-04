@@ -118,7 +118,7 @@
     guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+"-"+returnCitySN["cname"]:"小米";
     guest.avator = "/static/images/"+Math.floor(Math.random()*(14-0+1)+0)+".jpg";
     guest.group = "1";
-    guest.to_id="";
+    guest.to_id="kefu2";
 
     new Vue({
         el: '#app',
@@ -176,7 +176,6 @@
             },
             //发送给客户
             chatToUser() {
-
                 if(guest.to_id==""){
                     this.$message({
                         message: '暂时没有客服接手',
@@ -270,6 +269,27 @@
                 });
                 return uuid;
             },
+            //获取自动欢迎语句
+            getNotice : function (){
+                let _this=this;
+                    $.get("/notice?kefu_id="+guest.to_id,function(res) {
+                        console.log(res);
+                        if (res.result != null) {
+                            let msg = res.result;
+                            let content = {}
+                            content.avator = msg.avator;
+                            content.name = msg.nickname;
+                            content.content = msg.content;
+                            content.is_kefu = false;
+                            content.time = msg.time;
+                            setTimeout(function () {
+                                _this.msgList.push(content);
+                            }, 2000);
+                            ;
+                        }
+                    });
+            },
+
         },
         created: function () {
             this.initConn();
@@ -277,6 +297,8 @@
             this.msgList=this.getHistory();
             //滚动底部
             this.scrollBottom();
+            //获取欢迎
+            this.getNotice();
         }
     })
 
