@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/tmpl"
@@ -10,6 +11,7 @@ import (
 )
 var (
 	port string
+	GoflyConfig config.Config
 )
 func main() {
 	//获取参数中的数据
@@ -57,5 +59,6 @@ func main() {
 
 	//前台接口
 	engine.GET("/notice", controller.GetNotice)
+	//配置文件
 	engine.Run(baseServer)
 }

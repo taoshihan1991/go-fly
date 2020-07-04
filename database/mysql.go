@@ -11,8 +11,8 @@ type Mysql struct{
 	Dsn  string
 }
 func NewMysql()*Mysql{
-	mysqlInfo:=config.GetMysql()
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", mysqlInfo["Username"], mysqlInfo["Password"], mysqlInfo["Server"], mysqlInfo["Port"], mysqlInfo["Database"])
+	mysql:=config.CreateMysql()
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", mysql.Username, mysql.Password, mysql.Server, mysql.Port, mysql.Database)
 	return &Mysql{
 		Dsn:dsn,
 	}

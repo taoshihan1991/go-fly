@@ -14,8 +14,8 @@ type Model struct {
 	DeletedAt *time.Time `sql:"index" json:"deleted_at"`
 }
 func init(){
-	mysqlInfo:=config.GetMysql()
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", mysqlInfo["Username"], mysqlInfo["Password"], mysqlInfo["Server"], mysqlInfo["Port"], mysqlInfo["Database"])
+	mysql:=config.CreateMysql()
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", mysql.Username, mysql.Password, mysql.Server, mysql.Port, mysql.Database)
 	DB,_=gorm.Open("mysql",dsn)
 	DB.SingularTable(true)
 	DB.LogMode(true)

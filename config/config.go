@@ -7,10 +7,40 @@ import (
 	"io/ioutil"
 	"os"
 )
-
 const Dir = "config/"
 const AccountConf = Dir + "account.json"
 const MysqlConf = Dir + "mysql.json"
+type Mysql struct{
+	Server string
+	Port string
+	Database string
+	Username string
+	Password string
+}
+type Config struct {
+	Mysql *Mysql
+}
+func CreateConfig()*Config{
+	mysql :=CreateMysql()
+	c:=&Config{
+		Mysql: mysql,
+	}
+	return c
+}
+func CreateMysql() *Mysql {
+	var mysql Mysql
+	isExist, _ := tools.IsFileExist(MysqlConf)
+	if !isExist {
+		return &mysql
+	}
+	info, err := ioutil.ReadFile(MysqlConf)
+	if err != nil {
+		return &mysql
+	}
+
+	err = json.Unmarshal(info, &mysql)
+	return &mysql
+}
 func GetMysql() map[string]string {
 	var mysql map[string]string
 	isExist, _ := tools.IsFileExist(MysqlConf)
