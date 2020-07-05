@@ -226,6 +226,7 @@ func singleBroadcaster(){
 			}
 			str, _ := json.Marshal(msg)
 			conn.WriteMessage(websocket.TextMessage,str)
+			models.CreateMessage(clientMsg.Id,clientMsg.ToId,clientMsg.Content,"kefu")
 		case "chatMessage":
 			json.Unmarshal(msgData, &clientMsg)
 			conn,ok := kefuList[clientMsg.ToId]
@@ -245,6 +246,7 @@ func singleBroadcaster(){
 			}
 			str, _ := json.Marshal(msg)
 			conn.WriteMessage(websocket.TextMessage,str)
+			models.CreateMessage(clientMsg.ToId,clientMsg.Id,clientMsg.Content,"visitor")
 		}
 	}
 }

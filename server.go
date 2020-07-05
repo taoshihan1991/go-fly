@@ -41,11 +41,13 @@ func main() {
 	engine.POST("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	//前后聊天
 	engine.GET("/chat_server", controller.NewChatServer)
+	//获取消息
+	engine.GET("/messages",middleware.JwtApiMiddleware, controller.GetVisitorMessage)
 	//获取客服信息
 	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
 	engine.GET("/kefuinfo_setting",middleware.JwtApiMiddleware, controller.GetKefuInfoSetting)
-	engine.POST("/kefuinfo",middleware.JwtApiMiddleware, controller.PostKefuInfo)
-	engine.DELETE("/kefuinfo",middleware.JwtApiMiddleware, controller.DeleteKefuInfo)
+	engine.POST("/kefuinfo",middleware.JwtApiMiddleware,middleware.CasbinACL, controller.PostKefuInfo)
+	engine.DELETE("/kefuinfo",middleware.JwtApiMiddleware,middleware.CasbinACL, controller.DeleteKefuInfo)
 	engine.GET("/kefulist",middleware.JwtApiMiddleware, controller.GetKefuList)
 	//设置页
 	engine.GET("/setting", tmpl.PageSetting)

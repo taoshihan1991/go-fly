@@ -1,2 +1,4 @@
 p, admin, /mysql, GET
 p, admin, /mysql, POST
+p, admin, /kefuinfo,POST
+p, admin, /kefuinfo,DELETE
