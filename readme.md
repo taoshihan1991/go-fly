@@ -61,3 +61,22 @@
 
 4. 源码打包 go build server.go
 
+### nginx部署
+
+访问：http://gofly.sopans.com
+
+
+```php
+server {
+        listen          80; 
+        server_name  域名;
+        access_log  /var/log/nginx/xxx.access.log  main;
+        location / { 
+                proxy_pass http://127.0.0.1:端口;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade $http_upgrade;
+                    proxy_set_header Connection "upgrade";
+                    proxy_set_header Origin ""; 
+        }   
+}
+```
