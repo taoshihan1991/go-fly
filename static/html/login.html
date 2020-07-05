@@ -76,6 +76,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button :loading="loading" type="primary" @click="kefuLogin('kefuForm')">客服登陆</el-button>
+                        <el-button  type="primary" @click="showKefu">访客咨询</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
@@ -98,7 +99,7 @@
         delimiters:["<{","}>"],
 		data: {
             window:window,
-            activeName:"first",
+            activeName:"second",
 			loading:false,
             localAuth:{
                 username:'',
