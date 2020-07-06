@@ -93,6 +93,14 @@
                                         </el-col>
                                     </div>
                                 </el-row>
+                                <el-pagination
+                                        background
+                                        @current-change="visitorPage"
+                                        :current-page="visitorCurrentPage"
+                                        layout="prev,pager, next"
+                                        :page-size="visitorPageSize"
+                                        :total="visitorCount">
+                                </el-pagination>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
@@ -176,6 +184,9 @@
                 status:"",
             },
             visitors:[],
+            visitorCount:0,
+            visitorCurrentPage:1,
+            visitorPageSize:10,
         },
         methods: {
             //跳转
@@ -399,25 +410,37 @@
             handleTabClick(tab, event){
                 let _this=this;
                 if(tab.name=="second"){
-                    $.ajax({
-                        type:"get",
-                        url:"/visitors",
-                        headers:{
-                            "token":localStorage.getItem("token")
-                        },
-                        success: function(data) {
-                            if(data.result!=null){
-                                _this.visitors=data.result;
-                            }
-                            if(data.code!=200){
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'error'
-                                });
-                            }
-                        }
-                    });
+                    this.getVisitorPage(1);
                 }
+            },
+            //所有访客分页展示
+            visitorPage(page){
+                this.getVisitorPage(page);
+            },
+            //获取访客分页
+            getVisitorPage(page){
+                let _this=this;
+                $.ajax({
+                    type:"get",
+                    url:"/visitors",
+                    data:{page:page},
+                    headers:{
+                        "token":localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                        if(data.result.list!=null){
+                            _this.visitors=data.result.list;
+                            _this.visitorCount=data.result.count;
+                            _this.visitorPageSize=data.result.pagesize;
+                        }
+                        if(data.code!=200){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }
+                });
             },
             //滚到底部
             scrollBottom(){

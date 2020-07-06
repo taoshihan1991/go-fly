@@ -7,6 +7,9 @@ import (
 	"io/ioutil"
 	"os"
 )
+var(
+	PageSize uint=2
+)
 const Dir = "config/"
 const AccountConf = Dir + "account.json"
 const MysqlConf = Dir + "mysql.json"

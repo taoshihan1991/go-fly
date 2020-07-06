@@ -1,5 +1,7 @@
 package models
 
+import "github.com/taoshihan1991/imaptool/config"
+
 type Visitor struct {
 	Model
 	Name string `json:"name"`
@@ -37,9 +39,13 @@ func FindVisitorByVistorId(visitorId string)Visitor{
 	DB.Where("visitor_id = ?", visitorId).First(&v)
 	return v
 }
-func FindVisitors()[]Visitor{
+func FindVisitors(page uint)[]Visitor{
+	offset:=(page-1)*config.PageSize
+	if offset<0{
+		offset=0
+	}
 	var visitors []Visitor
-	DB.Order("status desc, updated_at desc").Find(&visitors)
+	DB.Offset(offset).Limit(config.PageSize).Order("status desc, updated_at desc").Find(&visitors)
 	return visitors
 }
 func FindVisitorsOnline()[]Visitor{
@@ -51,4 +57,10 @@ func UpdateVisitorStatus(visitorId string,status uint){
 	visitor:=Visitor{
 	}
 	DB.Model(&visitor).Where("visitor_id = ?",visitorId).Update("status", status)
+}
+//查询条数
+func CountVisitors()uint{
+	var count uint
+	DB.Model(&Visitor{}).Count(&count)
+	return count
 }

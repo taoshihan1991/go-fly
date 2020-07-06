@@ -2,7 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
+	"strconv"
 )
 
 func GetVisitor(c *gin.Context) {
@@ -15,11 +17,17 @@ func GetVisitor(c *gin.Context) {
 	})
 }
 func GetVisitors(c *gin.Context) {
-	vistors:=models.FindVisitors()
+	page,_:=strconv.Atoi(c.Query("page"))
+	vistors:=models.FindVisitors(uint(page))
+	count:=models.CountVisitors()
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
-		"result":vistors,
+		"result":gin.H{
+			"list":vistors,
+			"count":count,
+			"pagesize":config.PageSize,
+		},
 	})
 }
 func GetVisitorMessage(c *gin.Context) {
