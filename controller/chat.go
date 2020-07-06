@@ -207,6 +207,7 @@ func singleBroadcaster(){
 			SendKefuOnline(clientMsg, visitor.conn)
 		case "kfChatMessage":
 			json.Unmarshal(msgData, &clientMsg)
+			models.CreateMessage(clientMsg.Id,clientMsg.ToId,clientMsg.Content,"kefu")
 			guest,ok:=clientList[clientMsg.ToId]
 			if guest==nil||!ok{
 				continue
@@ -226,9 +227,10 @@ func singleBroadcaster(){
 			}
 			str, _ := json.Marshal(msg)
 			conn.WriteMessage(websocket.TextMessage,str)
-			models.CreateMessage(clientMsg.Id,clientMsg.ToId,clientMsg.Content,"kefu")
+
 		case "chatMessage":
 			json.Unmarshal(msgData, &clientMsg)
+			models.CreateMessage(clientMsg.ToId,clientMsg.Id,clientMsg.Content,"visitor")
 			conn,ok := kefuList[clientMsg.ToId]
 			if conn==nil||!ok{
 				continue
@@ -246,7 +248,6 @@ func singleBroadcaster(){
 			}
 			str, _ := json.Marshal(msg)
 			conn.WriteMessage(websocket.TextMessage,str)
-			models.CreateMessage(clientMsg.ToId,clientMsg.Id,clientMsg.Content,"visitor")
 		}
 	}
 }

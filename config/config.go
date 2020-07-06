@@ -8,7 +8,7 @@ import (
 	"os"
 )
 var(
-	PageSize uint=2
+	PageSize uint=10
 )
 const Dir = "config/"
 const AccountConf = Dir + "account.json"
