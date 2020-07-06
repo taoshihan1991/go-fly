@@ -73,6 +73,8 @@
         .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
         .chatBoxSend{position: fixed;bottom: 0;left: 0;width: 100%;height: 70px;}
         .chatBoxSendBtn{position: absolute;bottom: 1px;right: 2px;}
+        .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
+        .chatTimeHide{display: none;}
     </style>
 
 </head>
@@ -94,6 +96,7 @@
                         type="success">
                 </el-alert>
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                    <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><{v.time}></div>
                     <el-col :span="3"><el-avatar :size="60" :src="v.avator"></el-avatar></el-col>
                     <el-col :span="21">
                         <div class="chatUser"><{v.name}></div>
@@ -230,6 +233,18 @@
                 if(history==null){
                     history=[];
                 }
+                $.each(history,function(i,val){
+                    history[i]["show_time"]=false;
+
+                    let lastKey=(i+1)>=history.length?i:i+1;
+                    let lastTime=new Date(history[lastKey]["time"]).getTime();
+                    let curTime=new Date(val["time"]).getTime();
+                    let diffTime=lastTime-curTime
+                    if(diffTime>(1000*60*5)){
+                        history[i]["show_time"]=true;
+                    }
+                });
+                console.log(history);
                 return history;
             },
             //保存历史
