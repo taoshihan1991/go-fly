@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
 	"log"
+	"sort"
 	"time"
 )
 type vistor struct{
@@ -130,7 +131,13 @@ func sendPingUpdateStatus() {
 func sendPingOnlineUsers() {
 	for {
 		result := make([]map[string]string, 0)
-		for _, user := range clientList {
+		var visitorIds []string
+		for visitorId, _ := range clientList {
+			visitorIds=append(visitorIds,visitorId)
+		}
+		sort.Strings(visitorIds)
+		for _,visitorId:=range visitorIds{
+			user:=clientList[visitorId]
 			userInfo := make(map[string]string)
 			userInfo["uid"] = user.id
 			userInfo["username"] = user.name
