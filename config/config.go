@@ -9,6 +9,7 @@ import (
 )
 var(
 	PageSize uint=10
+	VisitorPageSize uint=8
 )
 const Dir = "config/"
 const AccountConf = Dir + "account.json"
