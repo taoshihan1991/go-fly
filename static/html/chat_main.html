@@ -61,6 +61,7 @@
         .onlineUsers{padding: 5px;height: 40px;line-height: 40px;font-size: 14px;border-bottom: solid 1px #e6e6e6;}
         .onlineUsers:hover,.onlineUsers.cur{background-color: #f0f9eb;color: #67C23A;}
         .imgGray {-webkit-filter: grayscale(100%);-ms-filter: grayscale(100%);filter: grayscale(100%);filter: gray;color:#888;}
+        .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
     </style>
 </head>
 <body>
@@ -113,6 +114,7 @@
                         </el-alert>
                         <div class="chatBox">
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                                <div class="chatTime"><{v.time}></div>
                                 <el-col :span="3"><el-avatar :size="60" :src="v.avator"></el-avatar></el-col>
                                 <el-col :span="21">
                                     <div class="chatUser"><{v.name}></div>
@@ -366,6 +368,7 @@
                                     content.name = visitorMes["visitor_name"];
                                 }
                                 content.content = visitorMes["content"];
+                                content.time = visitorMes["time"];
                                 _this.msgList.push(content);
                                 _this.scrollBottom();
                             }
