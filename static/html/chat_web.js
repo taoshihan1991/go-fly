@@ -38,7 +38,7 @@ loadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function(){
                     shade: false,
                     maxmin: true, //开启最大化最小化按钮
                     area: ['660px', '600px'],
-                    content: ['http://gofly.sopans.com/chat_page','no'],
+                    content: ['http://gofly.sopans.com/chat_page?kefu_id='+KEFU_ID,'no'],
                     end: function(){
                         $("#goflyKefu").show();
                     }

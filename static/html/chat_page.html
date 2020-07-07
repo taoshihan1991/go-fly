@@ -119,12 +119,13 @@
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
 <script>
+    var KEFU_ID="{{.KEFU_ID}}";
     var guest={};
     guest.id = "";
     guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cip"]+"-"+returnCitySN["cname"]:"小米";
     guest.avator = "/static/images/"+Math.floor(Math.random()*(14-0+1)+0)+".jpg";
     guest.group = "1";
-    guest.to_id="kefu2";
+    guest.to_id=KEFU_ID!=""? KEFU_ID:"kefu2";
 
     new Vue({
         el: '#app',
