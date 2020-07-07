@@ -61,6 +61,10 @@ func main() {
 
 	//前台接口
 	engine.GET("/notice", controller.GetNotice)
+	//前台引入js接口
+	engine.GET("/webjs", tmpl.PageWebJs)
+	//前台引入css接口
+	engine.GET("/webcss", tmpl.PageWebCss)
 	//配置文件
 	engine.Run(baseServer)
 }
