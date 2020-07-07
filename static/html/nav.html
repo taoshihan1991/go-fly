@@ -2,7 +2,7 @@
 <el-menu
         default-active="3"
         mode="horizontal">
-    <el-menu-item  class="mainLogo" v-on:click="openUrl('/login')">GO-FLY</el-menu-item>
+    <el-menu-item  class="mainLogo" v-on:click="openUrl('/login')">GO-FLY<span class="version">V0.0.3</span></el-menu-item>
     <el-menu-item style="display:none" index="2" v-on:click="openIframeUrl('/list')">邮箱<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
     </el-menu-item>
     <el-menu-item index="3" v-on:click="openIframeUrl('/chat_main')">聊天</el-menu-item>
