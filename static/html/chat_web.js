@@ -20,7 +20,7 @@ loadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function(){
     loadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js" ,function () {
         $(function () {
             var goflyKefuId="";
-            if(typedef(GOFLY_KEFU_ID)!="undefined"){
+            if(typeof GOFLY_KEFU_ID!="undefined"){
                 var goflyKefuId=GOFLY_KEFU_ID;
             }
 
