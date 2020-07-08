@@ -53,6 +53,9 @@ func main() {
 	engine.GET("/setting", tmpl.PageSetting)
 	//设置mysql
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
+	//网页部署
+	engine.GET("/setting_deploy", tmpl.PageSettingDeploy)
+
 	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlGetConf)
 	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlSetConf)
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)

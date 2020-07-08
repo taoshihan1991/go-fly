@@ -142,7 +142,7 @@
                         _this.mysql.port=result.Port;
                     });
                 }
-                if(ACTION=="setting_kefu_list"){
+                if(ACTION=="setting_kefu_list"||ACTION=="setting_deploy"){
                     this.sendAjax("/kefulist","get",{},function(result){
                         _this.kefuList=result;
                     });
@@ -229,6 +229,14 @@
                         _this.kefuList=result;
                     });
                 });
+            },
+            //生成部署js
+            createDeployJs(){
+                let domain=window.location.host;
+                this.$alert('    <script type="text/javascript">\n' +
+                    '    var GOFLY_KEFU_ID="'+this.kefuForm.name+'";\n' +
+                    '    <\/script>\n'+
+                    ' <script type="text/javascript" src="http://'+domain+'/webjs"><\/script>', '网页部署');
             }
         },
         created: function () {

@@ -18,6 +18,13 @@ func PageSettingMysql(c *gin.Context) {
 		"action":"setting_mysql",
 	})
 }
+//设置部署
+func PageSettingDeploy(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_deploy.html", gin.H{
+		"tab_index":"2-5",
+		"action":"setting_deploy",
+	})
+}
 //前台js部署
 func PageWebJs(c *gin.Context){
 	c.HTML(http.StatusOK, "chat_web.js",nil)

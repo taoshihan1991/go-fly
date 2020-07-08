@@ -1,0 +1,29 @@
+{{template "header" }}
+<div id="app" style="width:100%">
+    <template>
+        <el-container>
+            <el-aside>
+                {{template "setting_left" .}}
+            </el-aside>
+
+            <el-main class="mainMain">
+                <el-form :model="kefuForm" :rules="rules" ref="kefuForm"  label-width="120px">
+                    <el-form-item label="选择客服"  prop="name">
+                        <el-select v-model="kefuForm.name"  placeholder="请选择客服">
+                            <el-option :label="item.name" :value="item.name" v-for="item in kefuList" v-bind:key="item.name">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button type="primary" @click="createDeployJs">立即生成</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-main>
+
+        </el-container>
+    </template>
+
+</div>
+</body>
+{{template "setting_bottom" .}}
