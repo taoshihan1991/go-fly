@@ -1,7 +1,6 @@
 var loadJs=function(url,callback){
     var script = document.createElement('script'), fn = callback || function(){};
     script.type = 'text/javascript';
-    //IE
     if(script.readyState){
         script.onreadystatechange = function(){
             if( script.readyState == 'loaded' || script.readyState == 'complete' ){
@@ -10,7 +9,6 @@ var loadJs=function(url,callback){
             }
         };
     }else{
-        //其他浏览器
         script.onload = function(){
             fn();
         };
@@ -21,7 +19,11 @@ var loadJs=function(url,callback){
 loadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function(){
     loadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js" ,function () {
         $(function () {
-            //====================================================================
+            var goflyKefuId="";
+            if(typedef(GOFLY_KEFU_ID)!="undefined"){
+                var goflyKefuId=GOFLY_KEFU_ID;
+            }
+
             var div =document.createElement('div');
             div.id ='goflyKefu';
             div.className +='goflyKefu';
@@ -36,15 +38,15 @@ loadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function(){
                     title: '在线咨询',
                     shadeClose: true,
                     shade: false,
-                    maxmin: true, //开启最大化最小化按钮
+                    maxmin: true,
                     area: ['660px', '600px'],
-                    content: ['http://gofly.sopans.com/chat_page?kefu_id='+KEFU_ID,'no'],
+                    content: ['http://gofly.sopans.com/chat_page?kefu_id='+goflyKefuId,'no'],
                     end: function(){
                         $("#goflyKefu").show();
                     }
                 });
             });
-            //---------------------------------------------------------------
+            //END
         })
     });
 });

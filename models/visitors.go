@@ -46,6 +46,15 @@ func FindVisitors(page uint,pagesize uint)[]Visitor{
 	DB.Offset(offset).Limit(pagesize).Order("status desc, updated_at desc").Find(&visitors)
 	return visitors
 }
+func FindVisitorsByKefuId(page uint,pagesize uint,kefuId string)[]Visitor{
+	offset:=(page-1)*pagesize
+	if offset<0{
+		offset=0
+	}
+	var visitors []Visitor
+	DB.Where("to_id=?",kefuId).Offset(offset).Limit(pagesize).Order("status desc, updated_at desc").Find(&visitors)
+	return visitors
+}
 func FindVisitorsOnline()[]Visitor{
 	var visitors []Visitor
 	DB.Where("status = ?",1).Find(&visitors)

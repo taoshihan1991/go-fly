@@ -14,6 +14,7 @@ type vistor struct{
 	name string
 	id string
 	avator string
+	to_id string
 }
 type Message struct{
 	conn *websocket.Conn
@@ -130,26 +131,29 @@ func sendPingUpdateStatus() {
 //定时推送当前在线用户
 func sendPingOnlineUsers() {
 	for {
-		result := make([]map[string]string, 0)
 		var visitorIds []string
 		for visitorId, _ := range clientList {
 			visitorIds=append(visitorIds,visitorId)
 		}
 		sort.Strings(visitorIds)
-		for _,visitorId:=range visitorIds{
-			user:=clientList[visitorId]
-			userInfo := make(map[string]string)
-			userInfo["uid"] = user.id
-			userInfo["username"] = user.name
-			userInfo["avator"] = user.avator
-			result = append(result, userInfo)
-		}
-		msg := TypeMessage{
-			Type: "getOnlineUsers",
-			Data: result,
-		}
-		str, _ := json.Marshal(msg)
+
 		for kefuId, kfConn := range kefuList {
+			result := make([]map[string]string, 0)
+			for _,visitorId:=range visitorIds{
+				user:=clientList[visitorId]
+				userInfo := make(map[string]string)
+				userInfo["uid"] = user.id
+				userInfo["username"] = user.name
+				userInfo["avator"] = user.avator
+				if user.to_id==kefuId{
+					result = append(result, userInfo)
+				}
+			}
+			msg := TypeMessage{
+				Type: "getOnlineUsers",
+				Data: result,
+			}
+			str, _ := json.Marshal(msg)
 			err:=kfConn.WriteMessage(websocket.TextMessage,str)
 			if err != nil {
 				delete(kefuList, kefuId)
@@ -185,6 +189,7 @@ func singleBroadcaster(){
 				name: clientMsg.Name,
 				avator: clientMsg.Avator,
 				id:clientMsg.Id,
+				to_id:clientMsg.ToId,
 			}
 			clientList[clientMsg.Id] = user
 			//插入数据表

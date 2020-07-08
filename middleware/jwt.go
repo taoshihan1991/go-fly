@@ -39,5 +39,6 @@ func JwtApiMiddleware(c *gin.Context){
 	c.Set("user",userinfo["name"])
 	if userinfo["type"]=="kefu"{
 		c.Set("kefu_id",userinfo["kefu_id"])
+		c.Set("kefu_name",userinfo["name"])
 	}
 }
