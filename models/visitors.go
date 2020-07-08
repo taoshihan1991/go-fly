@@ -71,3 +71,9 @@ func CountVisitors()uint{
 	DB.Model(&Visitor{}).Count(&count)
 	return count
 }
+//查询条数
+func CountVisitorsByKefuId(kefuId string)uint{
+	var count uint
+	DB.Model(&Visitor{}).Where("to_id=?",kefuId).Count(&count)
+	return count
+}

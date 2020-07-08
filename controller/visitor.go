@@ -20,7 +20,7 @@ func GetVisitors(c *gin.Context) {
 	page,_:=strconv.Atoi(c.Query("page"))
 	kefuId,_:=c.Get("kefu_name")
 	vistors:=models.FindVisitorsByKefuId(uint(page),config.VisitorPageSize,kefuId.(string))
-	count:=models.CountVisitors()
+	count:=models.CountVisitorsByKefuId(kefuId.(string))
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
