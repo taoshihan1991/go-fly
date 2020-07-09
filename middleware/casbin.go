@@ -7,7 +7,8 @@ import (
 	"log"
 )
 func CasbinACL(c *gin.Context){
-	sub, _ :=c.Get("user")
+	roleId, _ :=c.Get("role_id")
+	sub:=fmt.Sprintf("%s_%d","role",int(roleId.(float64)))
 	obj:=c.Request.RequestURI
 	act:=c.Request.Method
 	e, err := casbin.NewEnforcer("config/model.conf", "config/policy.csv")
