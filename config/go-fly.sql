@@ -49,3 +49,11 @@ CREATE TABLE `message` (
  KEY `kefu_id` (`kefu_id`),
  KEY `visitor_id` (`visitor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL DEFAULT '0',
+ `role_id` int(11) NOT NULL DEFAULT '0',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8

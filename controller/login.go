@@ -35,7 +35,7 @@ func LoginCheckPass(c *gin.Context) {
 			return
 		}
 	case "kefulogin":
-		info,ok:=CheckKefuPass(username, password)
+		info,uRole,ok:=CheckKefuPass(username, password)
 		userinfo:= make(map[string]interface{})
 		if !ok{
 			c.JSON(200, gin.H{
@@ -47,6 +47,11 @@ func LoginCheckPass(c *gin.Context) {
 		userinfo["name"] = info.Name
 		userinfo["kefu_id"] = info.ID
 		userinfo["type"] = "kefu"
+		if uRole.RoleId!=0 {
+			userinfo["role_id"] =uRole.RoleId
+		}else{
+			userinfo["role_id"]=2
+		}
 		userinfo["create_time"] = time.Now().Unix()
 
 		token, _ := tools.MakeToken(userinfo)

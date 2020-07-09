@@ -25,12 +25,15 @@ func CheckPass(username string, password string) string {
 	}
 	return ""
 }
-func CheckKefuPass(username string, password string) (models.User,bool) {
+func CheckKefuPass(username string, password string) (models.User,models.User_role,bool) {
 	info:=models.FindUser(username)
+	var uRole models.User_role
 	if info.Name==""||info.Password!=tools.Md5(password){
-		return info,false
+		return info,uRole,false
 	}
-	return info,true
+	uRole=models.FindRoleByUserId(info.ID)
+
+	return info,uRole,true
 }
 func AuthLocal(username string, password string) string {
 	account := config.GetAccount()
