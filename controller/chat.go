@@ -47,7 +47,7 @@ func init() {
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	go sendPingUpdateStatus()
+	//go sendPingUpdateStatus()
 	go singleBroadcaster()
 	//go sendPingOnlineUsers()
 	sendPingToClient()
@@ -69,6 +69,7 @@ func NewChatServer(c *gin.Context){
 				if visitor.conn==conn{
 					log.Println("删除用户",uid)
 					delete(clientList,uid)
+					models.UpdateVisitorStatus(uid,0)
 					userInfo := make(map[string]string)
 					userInfo["uid"] = uid
 					userInfo["name"] = visitor.name

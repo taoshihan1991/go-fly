@@ -6,7 +6,13 @@ import (
 	"log"
 	"time"
 )
-
+// @Summary 登陆验证接口
+// @Produce  json
+// @Param username query string true "username"
+// @Param password query string true "password"
+// @Param type query string true "type"
+// @Success 200 {string} string "{"code":200,"result":{},"msg":"ok"}"
+// @Router /check [post]
 //验证接口
 func LoginCheckPass(c *gin.Context) {
 	authType := c.PostForm("type")

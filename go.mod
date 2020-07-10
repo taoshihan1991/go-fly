@@ -5,6 +5,7 @@ go 1.14
 require github.com/emersion/go-imap v1.0.4
 
 require (
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/casbin/casbin/v2 v2.7.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -16,6 +17,9 @@ require (
 	github.com/gobuffalo/packr/v2 v2.5.1
 	github.com/gorilla/websocket v1.4.2
 	github.com/jinzhu/gorm v1.9.14
+	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
+	github.com/swaggo/gin-swagger v1.2.0
+	github.com/swaggo/swag v1.5.1
 	golang.org/x/net v0.0.0-20200513185701-a91f0712d120
 	golang.org/x/text v0.3.2
 )

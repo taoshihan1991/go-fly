@@ -3,8 +3,11 @@ package main
 import (
 	"flag"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/controller"
+	"github.com/taoshihan1991/imaptool/docs"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"log"
@@ -68,6 +71,13 @@ func main() {
 	engine.GET("/webjs", tmpl.PageWebJs)
 	//前台引入css接口
 	engine.GET("/webcss", tmpl.PageWebCss)
-	//配置文件
+	//文档服务
+	docs.SwaggerInfo.Title = "GO-FLY接口文档"
+	docs.SwaggerInfo.Description = "go-fly即时通讯web客服管理系统"
+	docs.SwaggerInfo.Version = "0.0.5"
+	docs.SwaggerInfo.Host = "127.0.0.1:"+port
+	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Schemes = []string{"http"}
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	engine.Run(baseServer)
 }

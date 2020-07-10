@@ -219,7 +219,7 @@
                         //this.sendKefuOnline();
                         break;
                     case "userOnline":
-                        this.users.push(redata.data);
+                        this.addOnlineUser(redata.data);
                         break;
                     case "userOffline":
                         this.removeOfflineUser(redata.data);
@@ -305,14 +305,14 @@
                 this.scrollBottom();
             },
             //处理当前在线用户列表
-            handleOnlineUsers:function (retData) {
-                this.users = retData;
-                if (this.currentGuest == "") {
-                    this.chatTitle = "连接成功,等待处理中...";
-                }
-                this.usersMap=[];
-                for(let i=0;i<retData.length;i++){
-                    this.usersMap[retData[i].uid]=retData[i].username;
+            addOnlineUser:function (retData) {
+                let vid=retData.uid;
+                this.users.push(retData);
+                for(let i=0;i<this.visitors.length;i++){
+                    if(this.visitors[i].visitor_id==vid){
+                        this.visitors[i].status=1;
+                        break;
+                    }
                 }
             },
             //处理当前在线用户列表
@@ -336,18 +336,18 @@
                 if (this.currentGuest == "") {
                     this.chatTitle = "连接成功,等待处理中...";
                 }
-                this.usersMap=[];
-                for(let i=0;i<retData.length;i++){
-                    this.usersMap[retData[i].uid]=retData[i].username;
-                }
-                for(let i=0;i<this.visitors.length;i++){
-                    let vid=this.visitors[i].visitor_id;
-                    if(typeof this.usersMap[vid]=="undefined"){
-                        this.visitors[i].status=0;
-                    }else{
-                        this.visitors[i].status=1;
-                    }
-                }
+                // this.usersMap=[];
+                // for(let i=0;i<retData.length;i++){
+                //     this.usersMap[retData[i].uid]=retData[i].username;
+                // }
+                // for(let i=0;i<this.visitors.length;i++){
+                //     let vid=this.visitors[i].visitor_id;
+                //     if(typeof this.usersMap[vid]=="undefined"){
+                //         this.visitors[i].status=0;
+                //     }else{
+                //         this.visitors[i].status=1;
+                //     }
+                // }
 
             },
             //获取客服信息

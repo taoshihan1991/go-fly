@@ -1,0 +1,31 @@
+info:
+  contact: {}
+  license: {}
+paths:
+  /check:
+    post:
+      parameters:
+      - description: username
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: type
+        in: query
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"result":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 登陆验证接口
+swagger: "2.0"
