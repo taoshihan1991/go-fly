@@ -20,6 +20,7 @@ type Message struct{
 	conn *websocket.Conn
 	c *gin.Context
 	content []byte
+	messageType int
 }
 var clientList = make(map[string]*vistor)
 var kefuList = make(map[string]*websocket.Conn)
@@ -48,7 +49,7 @@ func init() {
 	}
 	go sendPingUpdateStatus()
 	go singleBroadcaster()
-	go sendPingOnlineUsers()
+	//go sendPingOnlineUsers()
 	sendPingToClient()
 }
 
@@ -62,8 +63,26 @@ func NewChatServer(c *gin.Context){
 		//接受消息
 		var receive []byte
 		var recevString string
-		_, receive, err := conn.ReadMessage()
+		messageType, receive, err := conn.ReadMessage()
 		if err != nil {
+			for uid,visitor :=range clientList{
+				if visitor.conn==conn{
+					log.Println("删除用户",uid)
+					delete(clientList,uid)
+					userInfo := make(map[string]string)
+					userInfo["uid"] = uid
+					userInfo["name"] = visitor.name
+					msg := TypeMessage{
+						Type: "userOffline",
+						Data: userInfo,
+					}
+					str, _ := json.Marshal(msg)
+					kefuConn,ok:=kefuList[visitor.to_id]
+					if ok && kefuConn!=nil{
+						kefuConn.WriteMessage(websocket.TextMessage,str)
+					}
+				}
+			}
 			log.Println(err)
 			return
 		}
@@ -73,6 +92,7 @@ func NewChatServer(c *gin.Context){
 			conn:conn,
 			content: receive,
 			c:c,
+			messageType:messageType,
 		}
 	}
 }
@@ -129,39 +149,35 @@ func sendPingUpdateStatus() {
 }
 //定时推送当前在线用户
 func sendPingOnlineUsers() {
-	for {
-		var visitorIds []string
-		for visitorId, _ := range clientList {
-			visitorIds=append(visitorIds,visitorId)
-		}
-		sort.Strings(visitorIds)
+	var visitorIds []string
+	for visitorId, _ := range clientList {
+		visitorIds=append(visitorIds,visitorId)
+	}
+	sort.Strings(visitorIds)
 
-		for kefuId, kfConn := range kefuList {
-			result := make([]map[string]string, 0)
-			for _,visitorId:=range visitorIds{
-				user:=clientList[visitorId]
-				userInfo := make(map[string]string)
-				userInfo["uid"] = user.id
-				userInfo["username"] = user.name
-				userInfo["avator"] = user.avator
-				if user.to_id==kefuId{
-					result = append(result, userInfo)
-				}
-			}
-			msg := TypeMessage{
-				Type: "getOnlineUsers",
-				Data: result,
-			}
-			str, _ := json.Marshal(msg)
-			err:=kfConn.WriteMessage(websocket.TextMessage,str)
-			if err != nil {
-				delete(kefuList, kefuId)
+	for kefuId, kfConn := range kefuList {
+		result := make([]map[string]string, 0)
+		for _,visitorId:=range visitorIds{
+			user:=clientList[visitorId]
+			userInfo := make(map[string]string)
+			userInfo["uid"] = user.id
+			userInfo["username"] = user.name
+			userInfo["avator"] = user.avator
+			if user.to_id==kefuId{
+				result = append(result, userInfo)
 			}
 		}
-		time.Sleep(3 * time.Second)
+		msg := TypeMessage{
+			Type: "getOnlineUsers",
+			Data: result,
+		}
+		str, _ := json.Marshal(msg)
+		err:=kfConn.WriteMessage(websocket.TextMessage,str)
+		if err != nil {
+			delete(kefuList, kefuId)
+		}
 	}
 }
-
 
 //后端广播发送消息
 func singleBroadcaster(){
@@ -193,6 +209,19 @@ func singleBroadcaster(){
 			clientList[clientMsg.Id] = user
 			//插入数据表
 			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.Id,message.c.Request.Referer(),clientMsg.City,clientMsg.ClientIp)
+			userInfo := make(map[string]string)
+			userInfo["uid"] = user.id
+			userInfo["username"] = user.name
+			userInfo["avator"] = user.avator
+			msg := TypeMessage{
+				Type: "userOnline",
+				Data: userInfo,
+			}
+			str, _ := json.Marshal(msg)
+			kefuConn,ok:=kefuList[user.to_id]
+			if ok && kefuConn!=nil{
+				kefuConn.WriteMessage(websocket.TextMessage,str)
+			}
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData, &clientMsg)
@@ -202,11 +231,7 @@ func singleBroadcaster(){
 			if len(clientList) == 0 {
 				continue
 			}
-			//for _, conn := range clientList {
-			//	SendKefuOnline(kfMsg, conn)
-			//}
-			//发送给客服通知
-			//SendOnekfuAllNotice(w)
+			sendPingOnlineUsers()
 		//客服接手
 		case "kfConnect":
 			json.Unmarshal(msgData, &clientMsg)

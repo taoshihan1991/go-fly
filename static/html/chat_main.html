@@ -218,6 +218,13 @@
                         this.handleOnlineUsers(redata.data);
                         //this.sendKefuOnline();
                         break;
+                    case "userOnline":
+                        this.users.push(redata.data);
+                        break;
+                    case "userOffline":
+                        this.removeOfflineUser(redata.data);
+                        //this.sendKefuOnline();
+                        break;
                     case "notice":
                         // if(!this.usersMap[redata.data.uid]){
                         //     this.$notify({
@@ -296,6 +303,32 @@
                 content.time = '';
                 this.msgList.push(content);
                 this.scrollBottom();
+            },
+            //处理当前在线用户列表
+            handleOnlineUsers:function (retData) {
+                this.users = retData;
+                if (this.currentGuest == "") {
+                    this.chatTitle = "连接成功,等待处理中...";
+                }
+                this.usersMap=[];
+                for(let i=0;i<retData.length;i++){
+                    this.usersMap[retData[i].uid]=retData[i].username;
+                }
+            },
+            //处理当前在线用户列表
+            removeOfflineUser:function (retData) {
+                for(let i=0;i<this.users.length;i++){
+                    if(this.users[i].uid==retData.uid){
+                        this.users.splice(i,1);
+                    }
+                }
+                let vid=retData.uid;
+                for(let i=0;i<this.visitors.length;i++){
+                    if(this.visitors[i].visitor_id==vid){
+                        this.visitors[i].status=0;
+                        break;
+                    }
+                }
             },
             //处理当前在线用户列表
             handleOnlineUsers:function (retData) {
