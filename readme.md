@@ -57,9 +57,9 @@
 ```
 
 
-3. 源码运行 go run server.go
+3. 源码运行 go run main.go
 
-4. 源码打包 go build server.go
+4. 源码打包 go build main.go
 
 ### nginx部署
 
@@ -80,3 +80,8 @@ server {
         }   
 }
 ```
+
+### 生成文档
+
+1. 需要先安装swag
+2. 在根目录swag init

@@ -8,9 +8,10 @@ import (
 )
 // @Summary 登陆验证接口
 // @Produce  json
-// @Param username query string true "username"
-// @Param password query string true "password"
-// @Param type query string true "type"
+// @Accept multipart/form-data
+// @Param username formData   string true "username"
+// @Param password formData   string true "password"
+// @Param type formData   string true "type"
 // @Success 200 {string} string "{"code":200,"result":{},"msg":"ok"}"
 // @Router /check [post]
 //验证接口

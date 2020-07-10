@@ -7,6 +7,9 @@
     "paths": {
         "/check": {
             "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -16,21 +19,21 @@
                         "type": "string",
                         "description": "username",
                         "name": "username",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "password",
                         "name": "password",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "type",
                         "name": "type",
-                        "in": "query",
+                        "in": "formData",
                         "required": true
                     }
                 ],

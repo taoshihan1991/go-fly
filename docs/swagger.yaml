@@ -4,19 +4,21 @@ info:
 paths:
   /check:
     post:
+      consumes:
+      - multipart/form-data
       parameters:
       - description: username
-        in: query
+        in: formData
         name: username
         required: true
         type: string
       - description: password
-        in: query
+        in: formData
         name: password
         required: true
         type: string
       - description: type
-        in: query
+        in: formData
         name: type
         required: true
         type: string
