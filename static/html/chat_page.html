@@ -25,7 +25,7 @@
             position: relative;
         }
         .chatBox{
-            max-height: 500px;
+            max-height: 600px;
             overflow-y: auto;
             overflow-x: hidden;
             margin-bottom: 80px;
@@ -48,6 +48,7 @@
             position: relative;
             border-radius: 5px;
             display: inline-block;
+            margin-left: 6px;
         }
         .chatContent:after {
             content: '';
@@ -97,7 +98,7 @@
                         type="success">
                 </el-alert>
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
-                    <el-col :span="3"><el-avatar :size="60" :src="v.avator"></el-avatar></el-col>
+                    <el-col :span="3"><el-avatar :src="v.avator"></el-avatar></el-col>
                     <el-col :span="21">
                         <div class="chatUser"><{v.name}></div>
                         <div class="chatContent"><{v.content}></div>
@@ -106,10 +107,10 @@
                     <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><{v.time}></div>
                 </el-row>
             </div>
-            <div class="chatBoxSend">
-                <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
-                <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">发送</el-button>
-            </div>
+        </div>
+        <div class="chatBoxSend">
+            <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
+            <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">发送</el-button>
         </div>
         <!--//客服代码-->
 
@@ -309,9 +310,15 @@
                         }
                     });
             },
+            initCss(){
+                $(function () {
+                    $(".chatBox").css("max-height",$(window).height());
+                });
+            },
 
         },
         created: function () {
+            this.initCss();
             this.initConn();
             //加载历史记录
             this.msgList=this.getHistory();
