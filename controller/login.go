@@ -9,10 +9,11 @@ import (
 // @Summary 登陆验证接口
 // @Produce  json
 // @Accept multipart/form-data
-// @Param username formData   string true "username"
-// @Param password formData   string true "password"
-// @Param type formData   string true "type"
-// @Success 200 {string} string "{"code":200,"result":{},"msg":"ok"}"
+// @Param username formData   string true "用户名"
+// @Param password formData   string true "密码"
+// @Param type formData   string true "类型"
+// @Success 200 {object} controller.Response
+// @Failure 200 {object} controller.Response
 // @Router /check [post]
 //验证接口
 func LoginCheckPass(c *gin.Context) {

@@ -16,6 +16,14 @@ func GetVisitor(c *gin.Context) {
 		"result":vistor,
 	})
 }
+// @Summary 获取访客列表接口
+// @Produce  json
+// @Accept multipart/form-data
+// @Param page query   string true "分页"
+// @Param token header string true "认证token"
+// @Success 200 {object} controller.Response
+// @Failure 200 {object} controller.Response
+// @Router /visitors [get]
 func GetVisitors(c *gin.Context) {
 	page,_:=strconv.Atoi(c.Query("page"))
 	kefuId,_:=c.Get("kefu_name")

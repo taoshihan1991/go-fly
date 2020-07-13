@@ -1,9 +1,14 @@
 {
     "swagger": "2.0",
     "info": {
+        "description": "{{.Description}}",
+        "title": "{{.Title}}",
         "contact": {},
-        "license": {}
+        "license": {},
+        "version": "{{.Version}}"
     },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
     "paths": {
         "/check": {
             "post": {
@@ -17,21 +22,21 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "username",
+                        "description": "用户名",
                         "name": "username",
                         "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "password",
+                        "description": "密码",
                         "name": "password",
                         "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "type",
+                        "description": "类型",
                         "name": "type",
                         "in": "formData",
                         "required": true
@@ -39,11 +44,64 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{\"code\":200,\"result\":{},\"msg\":\"ok\"}",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "$ref": "#/definitions/controller.Response"
                         }
                     }
+                }
+            }
+        },
+        "/visitors": {
+            "get": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取访客列表接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "分页",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "认证token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/controller.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "object"
                 }
             }
         }

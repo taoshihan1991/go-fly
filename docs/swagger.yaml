@@ -1,23 +1,38 @@
+basePath: '{{.BasePath}}'
+definitions:
+  controller.Response:
+    properties:
+      code:
+        type: integer
+      msg:
+        type: string
+      result:
+        type: object
+    type: object
+host: '{{.Host}}'
 info:
   contact: {}
+  description: '{{.Description}}'
   license: {}
+  title: '{{.Title}}'
+  version: '{{.Version}}'
 paths:
   /check:
     post:
       consumes:
       - multipart/form-data
       parameters:
-      - description: username
+      - description: 用户名
         in: formData
         name: username
         required: true
         type: string
-      - description: password
+      - description: 密码
         in: formData
         name: password
         required: true
         type: string
-      - description: type
+      - description: 类型
         in: formData
         name: type
         required: true
@@ -26,8 +41,33 @@ paths:
       - application/json
       responses:
         "200":
-          description: '{"code":200,"result":{},"msg":"ok"}'
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/controller.Response'
+            type: object
       summary: 登陆验证接口
+  /visitors:
+    get:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: 分页
+        in: query
+        name: page
+        required: true
+        type: string
+      - description: 认证token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response'
+            type: object
+      summary: 获取访客列表接口
 swagger: "2.0"
