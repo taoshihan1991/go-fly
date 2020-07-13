@@ -18,7 +18,7 @@ func GetNotice(c *gin.Context) {
 	info["avator"]=user.Avator
 	info["name"]=user.Name
 	info["content"]="欢迎您！有什么我能帮助您的？"
-	info["time"]=time.Now().String()
+	info["time"]=time.Now().Format("2006-01-02 15:04:05")
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",

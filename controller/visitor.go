@@ -59,7 +59,7 @@ func GetVisitorMessage(c *gin.Context) {
 			kefu=models.FindUser(message.KefuId)
 			visitor=models.FindVisitorByVistorId(message.VisitorId)
 		}
-		item["time"]=message.CreatedAt
+		item["time"]=message.CreatedAt.Format("2006-01-02 15:04:05")
 		item["content"]=message.Content
 		item["mes_type"]=message.MesType
 		item["visitor_name"]=visitor.Name
