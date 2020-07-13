@@ -46,6 +46,30 @@ paths:
             $ref: '#/definitions/controller.Response'
             type: object
       summary: 登陆验证接口
+  /messages:
+    get:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: 访客ID
+        in: query
+        name: visitorId
+        required: true
+        type: string
+      - description: 认证token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response'
+            type: object
+      summary: 获取访客聊天信息接口
   /visitors:
     get:
       consumes:

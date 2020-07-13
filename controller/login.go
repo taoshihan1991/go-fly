@@ -42,7 +42,7 @@ func LoginCheckPass(c *gin.Context) {
 			})
 			return
 		}
-	case "kefulogin":
+	case "kefu":
 		info,uRole,ok:=CheckKefuPass(username, password)
 		userinfo:= make(map[string]interface{})
 		if !ok{

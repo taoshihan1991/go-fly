@@ -73,9 +73,10 @@ func main() {
 	engine.GET("/webcss", tmpl.PageWebCss)
 	//文档服务
 	docs.SwaggerInfo.Title = "GO-FLY接口文档"
-	docs.SwaggerInfo.Description = "go-fly即时通讯web客服管理系统"
+	docs.SwaggerInfo.Description = "go-fly即时通讯web客服管理系统 , 测试账户:kefu2 测试密码:123 类型:kefu"
 	docs.SwaggerInfo.Version = "0.0.6"
-	docs.SwaggerInfo.Host = "127.0.0.1:"+port
+	//docs.SwaggerInfo.Host = "127.0.0.1:"+port
+	docs.SwaggerInfo.Host = "gofly.sopans.com"
 	docs.SwaggerInfo.BasePath = "/"
 	//docs.SwaggerInfo.Schemes = []string{"http"}
 	engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

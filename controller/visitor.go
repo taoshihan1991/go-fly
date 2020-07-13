@@ -39,6 +39,14 @@ func GetVisitors(c *gin.Context) {
 		},
 	})
 }
+// @Summary 获取访客聊天信息接口
+// @Produce  json
+// @Accept multipart/form-data
+// @Param visitorId query   string true "访客ID"
+// @Param token header string true "认证token"
+// @Success 200 {object} controller.Response
+// @Failure 200 {object} controller.Response
+// @Router /messages [get]
 func GetVisitorMessage(c *gin.Context) {
 	visitorId:=c.Query("visitorId")
 	messages:=models.FindMessageByVisitorId(visitorId)

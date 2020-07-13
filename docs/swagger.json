@@ -53,6 +53,42 @@
                 }
             }
         },
+        "/messages": {
+            "get": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取访客聊天信息接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "访客ID",
+                        "name": "visitorId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "认证token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/controller.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/visitors": {
             "get": {
                 "consumes": [
