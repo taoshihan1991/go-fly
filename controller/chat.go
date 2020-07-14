@@ -130,7 +130,13 @@ func sendPingToClient() {
 					models.UpdateVisitorStatus(uid,0)
 				}
 			}
-			time.Sleep(3 * time.Second)
+			for kefuId, kfConn := range kefuList {
+				err:=kfConn.WriteMessage(websocket.TextMessage,str)
+				if err != nil {
+					delete(kefuList, kefuId)
+				}
+			}
+			time.Sleep(5 * time.Second)
 		}
 
 	}()
