@@ -14,12 +14,16 @@ var(
 const Dir = "config/"
 const AccountConf = Dir + "account.json"
 const MysqlConf = Dir + "mysql.json"
+const MailConf = Dir + "mail.json"
 type Mysql struct{
 	Server string
 	Port string
 	Database string
 	Username string
 	Password string
+}
+type MailServer struct {
+	Server, Email, Password string
 }
 type Config struct {
 	Mysql *Mysql
@@ -30,6 +34,20 @@ func CreateConfig()*Config{
 		Mysql: mysql,
 	}
 	return c
+}
+func CreateMailServer() *MailServer {
+	var imap MailServer
+	isExist, _ := tools.IsFileExist(MailConf)
+	if !isExist {
+		return &imap
+	}
+	info, err := ioutil.ReadFile(MailConf)
+	if err != nil {
+		return &imap
+	}
+
+	err = json.Unmarshal(info, &imap)
+	return &imap
 }
 func CreateMysql() *Mysql {
 	var mysql Mysql

@@ -58,6 +58,10 @@ func main() {
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
 	//网页部署
 	engine.GET("/setting_deploy", tmpl.PageSettingDeploy)
+	//邮箱列表
+	engine.GET("/mail_list", tmpl.PageMailList)
+	//邮件夹列表
+	engine.GET("/folders", controller.GetFolders)
 
 	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlGetConf)
 	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlSetConf)

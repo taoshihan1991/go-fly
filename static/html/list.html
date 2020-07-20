@@ -1,4 +1,4 @@
-{{.Header}}
+{{template "header" }}
 <div id="app" style="width:100%">
     <template>
         <el-container  v-loading.fullscreen.lock="fullscreenLoading">
@@ -92,7 +92,7 @@
             },
 		},
         created: function () {
-            this.getFolders({{.CurrentPage}},{{.Fid}});
+            this.getFolders(1,"INBOX");
         }
 	})
 

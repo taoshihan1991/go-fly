@@ -2,6 +2,8 @@ package controller
 
 import (
 	"encoding/json"
+	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
 	"io/ioutil"
@@ -11,7 +13,62 @@ import (
 )
 
 const PageSize = 20
+func GetFolders(c *gin.Context) {
+	fid := c.Query("fid")
+	currentPage, _ := strconv.Atoi(c.Query("page"))
+	if fid == "" {
+		fid = "INBOX"
+	}
+	if currentPage == 0 {
+		currentPage = 1
+	}
 
+	mailServer := config.CreateMailServer()
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+	result := make(map[string]interface{})
+	go func() {
+		defer wg.Done()
+		folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
+		result["folders"] = folders
+		result["total"] = folders[fid]
+	}()
+	go func() {
+		defer wg.Done()
+		mails := tools.GetFolderMail(mailServer.Server, mailServer.Email, mailServer.Password, fid, currentPage, PageSize)
+		result["mails"] = mails
+	}()
+	wg.Wait()
+	result["pagesize"] = PageSize
+	result["fid"] = fid
+
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":result,
+	})
+}
+func GetFolderList(c *gin.Context) {
+	fid := c.Query("fid")
+	if fid == "" {
+		fid = "INBOX"
+	}
+
+	mailServer := config.CreateMailServer()
+
+	result := make(map[string]interface{})
+	folders := tools.GetFolders(mailServer.Server, mailServer.Email, mailServer.Password, fid)
+	result["folders"] = folders
+	result["total"] = folders[fid]
+	result["fid"] = fid
+
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":result,
+	})
+}
 //输出列表
 func ActionFolder(w http.ResponseWriter, r *http.Request) {
 	fid := tools.GetUrlArg(r, "fid")
