@@ -9,6 +9,7 @@ type User struct {
 	Password string `json:"password"`
 	Nickname string `json:"nickname"`
 	Avator string `json:"avator"`
+	RoleName string `json:"role_name"`
 }
 func CreateUser(name string,password string,avator string,nickname string){
 	user:=&User{
@@ -47,4 +48,9 @@ func FindUsers()[]User{
 	var users []User
 	DB.Order("id desc").Find(&users)
 	return users
+}
+func FindUserRole(query interface{},id interface{})User{
+	var user User
+	DB.Select(query).Where("user.id = ?", id).Joins("join user_role on user.id=user_role.user_id").Joins("join role on user_role.role_id=role.id").First(&user)
+	return user
 }

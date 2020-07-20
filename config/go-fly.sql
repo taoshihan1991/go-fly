@@ -57,3 +57,10 @@ CREATE TABLE `user_role` (
  `role_id` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `name` varchar(100) NOT NULL DEFAULT '',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8
