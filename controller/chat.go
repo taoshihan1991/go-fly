@@ -23,7 +23,7 @@ type Message struct{
 	messageType int
 }
 var clientList = make(map[string]*vistor)
-var kefuList = make(map[string]*websocket.Conn)
+var kefuList = make(map[string][]*websocket.Conn)
 var message = make(chan *Message)
 
 type TypeMessage struct {
@@ -78,9 +78,11 @@ func NewChatServer(c *gin.Context){
 						Data: userInfo,
 					}
 					str, _ := json.Marshal(msg)
-					kefuConn,ok:=kefuList[visitor.to_id]
-					if ok && kefuConn!=nil{
-						kefuConn.WriteMessage(websocket.TextMessage,str)
+					kefuConns:=kefuList[visitor.to_id]
+					if kefuConns!=nil{
+						for _,kefuConn:=range kefuConns{
+							kefuConn.WriteMessage(websocket.TextMessage,str)
+						}
 					}
 				}
 			}
@@ -130,10 +132,22 @@ func sendPingToClient() {
 					models.UpdateVisitorStatus(uid,0)
 				}
 			}
-			for kefuId, kfConn := range kefuList {
-				err:=kfConn.WriteMessage(websocket.TextMessage,str)
-				if err != nil {
+			for kefuId, kfConns := range kefuList {
+
+				var newkfConns =make([]*websocket.Conn,0)
+				for _,kefuConn:=range kfConns{
+					if(kefuConn==nil){
+						continue
+					}
+					err:=kefuConn.WriteMessage(websocket.TextMessage,str)
+					if err == nil {
+						newkfConns=append(newkfConns,kefuConn)
+					}
+				}
+				if newkfConns == nil {
 					delete(kefuList, kefuId)
+				}else{
+					kefuList[kefuId]=newkfConns
 				}
 			}
 			time.Sleep(15 * time.Second)
@@ -162,7 +176,8 @@ func sendPingOnlineUsers() {
 	}
 	sort.Strings(visitorIds)
 
-	for kefuId, kfConn := range kefuList {
+	for kefuId, kfConns := range kefuList {
+
 		result := make([]map[string]string, 0)
 		for _,visitorId:=range visitorIds{
 			user:=clientList[visitorId]
@@ -179,9 +194,17 @@ func sendPingOnlineUsers() {
 			Data: result,
 		}
 		str, _ := json.Marshal(msg)
-		err:=kfConn.WriteMessage(websocket.TextMessage,str)
-		if err != nil {
+		var newkfConns =make([]*websocket.Conn,0)
+		for _,kefuConn:=range kfConns{
+			err:=kefuConn.WriteMessage(websocket.TextMessage,str)
+			if err == nil {
+				newkfConns=append(newkfConns,kefuConn)
+			}
+		}
+		if len(newkfConns) == 0 {
 			delete(kefuList, kefuId)
+		}else{
+			kefuList[kefuId]=newkfConns
 		}
 	}
 }
@@ -225,15 +248,24 @@ func singleBroadcaster(){
 				Data: userInfo,
 			}
 			str, _ := json.Marshal(msg)
-			kefuConn,ok:=kefuList[user.to_id]
-			if ok && kefuConn!=nil{
-				kefuConn.WriteMessage(websocket.TextMessage,str)
+			kefuConns:=kefuList[user.to_id]
+			if kefuConns!=nil{
+				for k,kefuConn:=range kefuConns{
+					log.Println(k,"xxxxxxxx")
+					kefuConn.WriteMessage(websocket.TextMessage,str)
+				}
 			}
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData, &clientMsg)
 			//客服id对应的连接
-			kefuList[clientMsg.Id] = conn
+			var newKefuConns =[]*websocket.Conn{conn}
+			kefuConns:=kefuList[clientMsg.Id]
+			if kefuConns!=nil{
+				newKefuConns=append(newKefuConns,kefuConns...)
+			}
+			log.Println(newKefuConns)
+			kefuList[clientMsg.Id] = newKefuConns
 			//发送给客户
 			if len(clientList) == 0 {
 				continue
@@ -242,7 +274,6 @@ func singleBroadcaster(){
 		//客服接手
 		case "kfConnect":
 			json.Unmarshal(msgData, &clientMsg)
-			kefuList[clientMsg.Id] = conn
 			visitor,ok := clientList[clientMsg.ToId]
 			if visitor==nil||!ok{
 				continue
@@ -270,12 +301,19 @@ func singleBroadcaster(){
 			}
 			str, _ := json.Marshal(msg)
 			conn.WriteMessage(websocket.TextMessage,str)
+			//kefuConns,ok := kefuList[clientMsg.Id]
+			//if kefuConns==nil||!ok{
+			//	continue
+			//}
+			//for _,kefuConn:=range kefuConns{
+			//	kefuConn.WriteMessage(websocket.TextMessage,str)
+			//}
 
 		case "chatMessage":
 			json.Unmarshal(msgData, &clientMsg)
 			models.CreateMessage(clientMsg.ToId,clientMsg.Id,clientMsg.Content,"visitor")
-			conn,ok := kefuList[clientMsg.ToId]
-			if conn==nil||!ok{
+			kefuConns,ok := kefuList[clientMsg.ToId]
+			if kefuConns==nil||!ok{
 				continue
 			}
 			msg := TypeMessage{
@@ -290,7 +328,9 @@ func singleBroadcaster(){
 				},
 			}
 			str, _ := json.Marshal(msg)
-			conn.WriteMessage(websocket.TextMessage,str)
+			for _,kefuConn:=range kefuConns{
+				kefuConn.WriteMessage(websocket.TextMessage,str)
+			}
 		//心跳
 		case "ping":
 			msg := TypeMessage{
