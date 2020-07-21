@@ -147,7 +147,11 @@
                         _this.kefuList=result;
                     });
                 }
-
+                if(ACTION=="roles_list"){
+                    this.sendAjax("/roles","get",{},function(result){
+                        _this.roleList=result;
+                    });
+                }
             },
             sendAjax(url,method,params,callback){
                 let _this=this;

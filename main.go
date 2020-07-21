@@ -58,6 +58,7 @@ func main() {
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
 	//角色列表
 	engine.GET("/roles", controller.GetRoleList)
+	engine.GET("/roles_list", tmpl.PageRoleList)
 
 	//网页部署
 	engine.GET("/setting_deploy", tmpl.PageSettingDeploy)

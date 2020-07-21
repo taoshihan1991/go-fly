@@ -39,6 +39,13 @@ func PageKefuList(c *gin.Context) {
 		"action":"setting_kefu_list",
 	})
 }
+//角色列表
+func PageRoleList(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_role_list.html", gin.H{
+		"tab_index":"3-1",
+		"action":"roles_list",
+	})
+}
 type SettingHtml struct {
 	*CommonHtml
 	Username, Password string
