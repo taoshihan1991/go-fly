@@ -71,6 +71,8 @@
         data: {
             iframeUrl:"",
             mailTotal:0,
+            adminAvator:"",
+            adminRole:"",
         },
         methods: {
             openIframeUrl(url){
@@ -97,6 +99,8 @@
                         if (data.code != 200) {
                             window.location.href="/login";
                         } else {
+                            _this.adminAvator=data.result.avator;
+                            _this.adminRole=data.result.role_name;
                             _this.iframeUrl = "/chat_main";
                         }
                     }

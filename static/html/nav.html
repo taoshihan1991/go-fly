@@ -7,6 +7,14 @@
     </el-menu-item>
     <el-menu-item index="3" v-on:click="openIframeUrl('/chat_main')">聊天</el-menu-item>
     <el-menu-item index="4" v-on:click="openIframeUrl('/setting')">设置</el-menu-item>
-    <el-menu-item index="10" v-on:click="openIframeUrl('/login')">退出</el-menu-item>
+    <el-submenu style="float: right" index="10">
+        <template slot="title">
+            <el-avatar :size="30" :src="adminAvator"></el-avatar>
+            <span v-html="adminRole"></span>
+        </template>
+        <el-menu-item  v-on:click="openIframeUrl('/login')">
+            退出
+        </el-menu-item>
+    </el-submenu>
 </el-menu>
 {{end}}
