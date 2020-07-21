@@ -57,7 +57,7 @@ func main() {
 	//设置mysql
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
 	//角色列表
-	engine.GET("/roles", controller.GetRoleList)
+	engine.GET("/roles",middleware.JwtApiMiddleware, controller.GetRoleList)
 	engine.GET("/roles_list", tmpl.PageRoleList)
 
 	//网页部署
@@ -82,7 +82,7 @@ func main() {
 	//文档服务
 	docs.SwaggerInfo.Title = "GO-FLY接口文档"
 	docs.SwaggerInfo.Description = "go-fly即时通讯web客服管理系统 , 测试账户:kefu2 测试密码:123 类型:kefu"
-	docs.SwaggerInfo.Version = "0.0.6"
+	docs.SwaggerInfo.Version = "0.0.7"
 	//docs.SwaggerInfo.Host = "127.0.0.1:"+port
 	docs.SwaggerInfo.Host = "gofly.sopans.com"
 	docs.SwaggerInfo.BasePath = "/"

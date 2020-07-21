@@ -201,6 +201,18 @@
                 mes.data = this.kfConfig;
                 this.socket.send(JSON.stringify(mes));
             },
+            //心跳
+            ping(){
+                let _this=this;
+                let mes = {}
+                mes.type = "ping";
+                mes.data = "";
+                setInterval(function () {
+                    if(_this.socket!=null){
+                        _this.socket.send(JSON.stringify(mes));
+                    }
+                },5000)
+            },
             //初始化websocket
             initConn() {
                 let socket = new ReconnectingWebSocket(this.server);//创建Socket实例
@@ -487,6 +499,8 @@
        },
         created: function () {
             this.getKefuInfo();
+            //心跳
+            this.ping();
         }
     })
 

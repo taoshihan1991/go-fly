@@ -319,6 +319,18 @@
                     $(".chatBox").css("max-height",$(window).height());
                 });
             },
+            //心跳
+            ping(){
+                let _this=this;
+                let mes = {}
+                mes.type = "ping";
+                mes.data = "";
+                setInterval(function () {
+                    if(_this.socket!=null){
+                        _this.socket.send(JSON.stringify(mes));
+                    }
+                },5000);
+            },
 
         },
         created: function () {
@@ -330,6 +342,8 @@
             this.scrollBottom();
             //获取欢迎
             this.getNotice();
+            //心跳
+            this.ping();
         }
     })
 

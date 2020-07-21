@@ -136,7 +136,7 @@ func sendPingToClient() {
 					delete(kefuList, kefuId)
 				}
 			}
-			time.Sleep(5 * time.Second)
+			time.Sleep(15 * time.Second)
 		}
 
 	}()
@@ -291,7 +291,15 @@ func singleBroadcaster(){
 			}
 			str, _ := json.Marshal(msg)
 			conn.WriteMessage(websocket.TextMessage,str)
+		//心跳
+		case "ping":
+			msg := TypeMessage{
+				Type: "pong",
+			}
+			str, _ := json.Marshal(msg)
+			conn.WriteMessage(websocket.TextMessage,str)
 		}
+
 	}
 }
 
