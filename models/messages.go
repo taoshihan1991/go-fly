@@ -22,3 +22,16 @@ func FindMessageByVisitorId(visitor_id string)[]Message{
 	DB.Where("visitor_id=?",visitor_id).Order("id asc").Find(&messages)
 	return messages
 }
+//修改消息状态
+func ReadMessageByVisitorId(visitor_id string){
+	message:=&Message{
+		Status:"read",
+	}
+	DB.Model(&message).Where("visitor_id=?",visitor_id).Update(message)
+}
+//获取未读数
+func FindUnreadMessageNumByVisitorId(visitor_id string)uint{
+	var count uint
+	DB.Where("visitor_id=? and status=?",visitor_id,"unread").Count(&count)
+	return count
+}

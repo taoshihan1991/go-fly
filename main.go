@@ -46,6 +46,13 @@ func main() {
 	engine.GET("/chat_server", controller.NewChatServer)
 	//获取消息
 	engine.GET("/messages",middleware.JwtApiMiddleware, controller.GetVisitorMessage)
+	//发送单条消息
+	engine.POST("/message",controller.GetVisitorMessage)
+	//获取未读消息数
+	engine.GET("/message_status",controller.GetVisitorMessage)
+	//设置消息已读
+	engine.POST("/message_status",controller.GetVisitorMessage)
+
 	//获取客服信息
 	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
 	engine.GET("/kefuinfo_setting",middleware.JwtApiMiddleware, controller.GetKefuInfoSetting)

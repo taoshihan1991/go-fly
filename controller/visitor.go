@@ -69,6 +69,7 @@ func GetVisitorMessage(c *gin.Context) {
 		result=append(result,item)
 
 	}
+	models.ReadMessageByVisitorId(visitorId)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
