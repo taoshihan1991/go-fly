@@ -15,11 +15,10 @@
         html,
         body {
             height: 100%;
-        }
-        body {
+            background: rgb(245,245,245);
         }
         .chatContext{
-            background: #fff;padding:0 10px;
+            padding:0 10px;
             width: 100%;
             text-align: left;
             position: relative;
@@ -69,10 +68,9 @@
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
-        .chatArea{margin: 10px 0;}
         .chatArea .el-textarea__inner{height: 100%;}
         .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
-        .chatBoxSend{position: fixed;bottom: 0;left: 0;width: 100%;height: 70px;}
+        .chatBoxSend{background: #fff;position: fixed;bottom: 0;left: 0;width: 100%;height: 67px;}
         .chatBoxSendBtn{position: absolute;bottom: 1px;right: 2px;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
         .chatTimeHide{display: none;}
@@ -317,6 +315,9 @@
             initCss(){
                 $(function () {
                     $(".chatBox").css("max-height",$(window).height());
+                    if (top.location != location){
+                        $(".chatBox").css("max-height",$(window).height()-65);
+                    }
                 });
             },
             //心跳
