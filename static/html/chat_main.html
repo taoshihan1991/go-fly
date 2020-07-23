@@ -300,17 +300,21 @@
                 if(this.messageContent==""||this.currentGuest==""){
                     return;
                 }
+                let _this=this;
                 let mes = {};
-                mes.type = "kfChatMessage";
-                this.kfConfig.content = this.messageContent;
-                mes.data = this.kfConfig;
-                this.socket.send(JSON.stringify(mes));
-                this.messageContent = "";
+                mes.type = "kefu";
+                mes.content = this.messageContent;
+                mes.from_id = this.kfConfig.id;
+                mes.to_id = this.currentGuest;
+                mes.content = this.messageContent;
+                $.post("/message",mes,function(){
+                    _this.messageContent = "";
+                });
 
                 let content = {}
                 content.avator = this.kfConfig.avator;
                 content.name = this.kfConfig.name;
-                content.content = this.kfConfig.content;
+                content.content = this.messageContent;
                 content.is_kefu = true;
                 content.time = '';
                 this.msgList.push(content);

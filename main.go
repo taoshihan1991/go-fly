@@ -47,7 +47,7 @@ func main() {
 	//获取消息
 	engine.GET("/messages",middleware.JwtApiMiddleware, controller.GetVisitorMessage)
 	//发送单条消息
-	engine.POST("/message",controller.GetVisitorMessage)
+	engine.POST("/message",controller.SendMessage)
 	//获取未读消息数
 	engine.GET("/message_status",controller.GetVisitorMessage)
 	//设置消息已读

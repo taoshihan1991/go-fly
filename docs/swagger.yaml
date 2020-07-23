@@ -46,6 +46,40 @@ paths:
             $ref: '#/definitions/controller.Response'
             type: object
       summary: 登陆验证接口
+  /message:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: 来源uid
+        in: formData
+        name: from_id
+        required: true
+        type: string
+      - description: 目标uid
+        in: formData
+        name: to_id
+        required: true
+        type: string
+      - description: 内容
+        in: formData
+        name: content
+        required: true
+        type: string
+      - description: 类型|kefu,visitor
+        in: formData
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response'
+            type: object
+      summary: 发送消息接口
   /messages:
     get:
       consumes:
