@@ -198,17 +198,20 @@
                     return;
                 }
 
+                let _this=this;
                 let mes = {};
-                mes.type = "chatMessage";
-
-                guest.content = this.messageContent;
-                mes.data = guest;
-                this.socket.send(JSON.stringify(mes));
-                this.messageContent = "";
+                mes.type = "visitor";
+                mes.content = this.messageContent;
+                mes.from_id = guest.id;
+                mes.to_id = guest.to_id;
+                mes.content = this.messageContent;
+                $.post("/message",mes,function(){
+                    _this.messageContent = "";
+                });
 
                 let content = {}
                 content.avator=guest.avator;
-                content.content = guest.content;
+                content.content = this.messageContent;
                 content.name = guest.name;
                 content.is_kefu = true;
                 content.time = this.getNowDate();

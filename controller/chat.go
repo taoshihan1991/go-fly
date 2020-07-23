@@ -279,58 +279,6 @@ func singleBroadcaster(){
 				continue
 			}
 			SendKefuOnline(clientMsg, visitor.conn)
-		case "kfChatMessage":
-			json.Unmarshal(msgData, &clientMsg)
-			models.CreateMessage(clientMsg.Id,clientMsg.ToId,clientMsg.Content,"kefu")
-			guest,ok:=clientList[clientMsg.ToId]
-			if guest==nil||!ok{
-				continue
-			}
-			conn := guest.conn
-
-			msg := TypeMessage{
-				Type: "message",
-				Data: ClientMessage{
-					Name:  clientMsg.Name,
-					Avator:   clientMsg.Avator,
-					Id:    clientMsg.Id,
-					Time:     time.Now().Format("2006-01-02 15:04:05"),
-					ToId: clientMsg.ToId,
-					Content:  clientMsg.Content,
-				},
-			}
-			str, _ := json.Marshal(msg)
-			conn.WriteMessage(websocket.TextMessage,str)
-			//kefuConns,ok := kefuList[clientMsg.Id]
-			//if kefuConns==nil||!ok{
-			//	continue
-			//}
-			//for _,kefuConn:=range kefuConns{
-			//	kefuConn.WriteMessage(websocket.TextMessage,str)
-			//}
-
-		case "chatMessage":
-			json.Unmarshal(msgData, &clientMsg)
-			models.CreateMessage(clientMsg.ToId,clientMsg.Id,clientMsg.Content,"visitor")
-			kefuConns,ok := kefuList[clientMsg.ToId]
-			if kefuConns==nil||!ok{
-				continue
-			}
-			msg := TypeMessage{
-				Type: "message",
-				Data: ClientMessage{
-					Avator: clientMsg.Avator,
-					Id:     clientMsg.Id,
-					Name:   clientMsg.Name,
-					ToId:       clientMsg.ToId,
-					Content:     clientMsg.Content,
-					Time:        time.Now().Format("2006-01-02 15:04:05"),
-				},
-			}
-			str, _ := json.Marshal(msg)
-			for _,kefuConn:=range kefuConns{
-				kefuConn.WriteMessage(websocket.TextMessage,str)
-			}
 		//心跳
 		case "ping":
 			msg := TypeMessage{
