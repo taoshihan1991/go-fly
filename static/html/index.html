@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>GO-FLY - 极简强大的Golang在线客服系统</title>
     <meta name="description" content="GO-FLY，一套为PHP工程师、Golang工程师准备的基于 Vue CDN的在线客服即时通讯系统" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
     <style>
@@ -58,6 +55,7 @@
             margin: 0;
             line-height: 48px;
             color: #555;
+            font-weight: 500;
             font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
         }
         .banner p{
@@ -76,7 +74,26 @@
             width: 100%;
             padding: 40px 150px;
             box-sizing: border-box;
-            height: 340px;
+        }
+        .try{
+            display: inline-block;
+            padding: 10px 20px;
+            background: #519eff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+        .try:hover {
+            transform: translateY(-1px);
+            background: #318cff;
+            box-shadow: 0 7px 14px rgba(50,50,50,.1), 0 3px 6px rgba(0,0,0,.1);
+        }
+        .copyright{
+            color: #6c757d;
+            text-align: center;
+            margin: 60px 0;
         }
     </style>
 </head>
@@ -92,9 +109,31 @@
 <div class="jumbotron">
 <img src="/static/images/intro1.jpg"/>
 </div>
-<div class="try">
-</div>
-<footer class="footer">
 
+<footer class="footer">
+    <div class="container">
+        <a class="try" href="/docs/index.html" target="_blank">接口文档</a>
+        <a class="try" id="visitorBtn">访客入口</a>
+        <a class="try" href="/login" target="_blank">客服入口</a>
+    </div>
+    <div class="copyright">
+        陶士涵的菜地版权所有&copy; 2020
+    </div>
 </footer>
+<script>
+$("#visitorBtn").click(function(){
+    layer.open({
+        type: 2,
+        title: '在线咨询',
+        shadeClose: true,
+        shade: false,
+        maxmin: true, //开启最大化最小化按钮
+        area: ['550px', '520px'],
+        content: ['/chat_page','no'],
+        end: function(){
+            $(".chatBtn").show();
+        }
+    });
+});
+</script>
 </html>

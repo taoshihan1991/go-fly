@@ -40,6 +40,10 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 	t, _ := template.New(file).Parse(main)
 	t.Execute(obj.Rw, data)
 }
+//客服界面
+func PageIndex(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", nil)
+}
 
 //登陆界面
 func PageMain(c *gin.Context) {

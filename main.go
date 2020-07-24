@@ -30,6 +30,7 @@ func main() {
 	engine.Static("/static", "./static")
 	//首页
 	engine.GET("/", controller.Index)
+	engine.GET("/index", tmpl.PageIndex)
 	//登陆界面
 	engine.GET("/login", tmpl.PageLogin)
 	//咨询界面

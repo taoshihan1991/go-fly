@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 func Index(c *gin.Context) {
-	c.Redirect(302,"/main")
+	c.Redirect(302,"/index")
 }
 //首页跳转
 func ActionIndex(w http.ResponseWriter, r *http.Request) {
