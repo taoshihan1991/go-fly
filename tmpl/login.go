@@ -2,6 +2,7 @@ package tmpl
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/config"
 	"net/http"
 )
 
@@ -13,8 +14,12 @@ func PageLogin(c *gin.Context) {
 //咨询界面
 func PageChat(c *gin.Context) {
 	kefuId := c.Query("kefu_id")
+	lang,_ := c.Get("lang")
+	language:=config.CreateLanguage(lang.(string))
 	c.HTML(http.StatusOK, "chat_page.html", gin.H{
 		"KEFU_ID":kefuId,
+		"SendBtn":language.Send,
+		"Lang":lang.(string),
 	})
 }
 

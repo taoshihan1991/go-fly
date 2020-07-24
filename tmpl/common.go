@@ -55,6 +55,8 @@ func PageIndex(c *gin.Context) {
 		"Document":language.IndexDocument,
 		"VisitorBtn":language.IndexVisitors,
 		"AgentBtn":language.IndexAgent,
+		"OnlineChat":language.IndexOnlineChat,
+		"IndexSend":language.Send,
 		"Lang":lang,
 	})
 }

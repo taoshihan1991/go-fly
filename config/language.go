@@ -1,11 +1,16 @@
 package config
+
 type Language struct {
 	WebCopyRight string
 	MainIntro string
-	IndexSubIntro,IndexVisitors,IndexAgent,IndexDocument string
+	Send string
+	Notice string
+	IndexSubIntro,IndexVisitors,IndexAgent,IndexDocument,IndexOnlineChat string
 }
+
 func CreateLanguage(lang string)*Language{
 	var language *Language
+
 	if lang=="en"{
 		language=&Language{
 			WebCopyRight: "TaoShihan",
@@ -14,6 +19,9 @@ func CreateLanguage(lang string)*Language{
 			IndexDocument:"API Documents",
 			IndexVisitors:"Visitors Here",
 			IndexAgent:"Agents Here",
+			IndexOnlineChat:"Let’s chat. - We're online",
+			Send:"Send",
+			Notice:"Hello and welcome to go-fly - how can we help?",
 		}
 	}
 	if lang=="cn"{
@@ -24,6 +32,9 @@ func CreateLanguage(lang string)*Language{
 			IndexVisitors:"访客入口",
 			IndexAgent:"客服入口",
 			IndexDocument:"接口文档",
+			IndexOnlineChat:"在线咨询",
+			Send:"发送",
+			Notice:"欢迎您访问go-fly！有什么我能帮助您的？",
 		}
 	}
 	return language

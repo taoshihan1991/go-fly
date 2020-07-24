@@ -15,6 +15,7 @@ const Dir = "config/"
 const AccountConf = Dir + "account.json"
 const MysqlConf = Dir + "mysql.json"
 const MailConf = Dir + "mail.json"
+const LangConf=Dir+"language.json"
 type Mysql struct{
 	Server string
 	Port string

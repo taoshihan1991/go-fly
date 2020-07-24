@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
@@ -12,12 +13,15 @@ import (
 )
 func GetNotice(c *gin.Context) {
 	kefuId:=c.Query("kefu_id")
+	lang,_:=c.Get("lang")
+	language:=config.CreateLanguage(lang.(string))
+
 	user:=models.FindUser(kefuId)
 	info:=make(map[string]interface{})
 	info["nickname"]=user.Nickname
 	info["avator"]=user.Avator
 	info["name"]=user.Name
-	info["content"]="欢迎您！有什么我能帮助您的？"
+	info["content"]=language.Notice
 	info["time"]=time.Now().Format("2006-01-02 15:04:05")
 	c.JSON(200, gin.H{
 		"code": 200,

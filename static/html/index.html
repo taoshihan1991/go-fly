@@ -115,7 +115,11 @@
     <p>{{.SubIntro}}</p>
 </div>
 <div class="jumbotron">
+    {{if eq .Lang "en"}}
+    <img src="/static/images/intro3.png"/>
+    {{else}}
 <img src="/static/images/intro1.jpg"/>
+    {{end}}
 </div>
 
 <footer class="footer">
@@ -132,12 +136,12 @@
 $("#visitorBtn").click(function(){
     layer.open({
         type: 2,
-        title: '在线咨询',
+        title: '{{.OnlineChat}}',
         shadeClose: true,
         shade: false,
         maxmin: true, //开启最大化最小化按钮
         area: ['550px', '520px'],
-        content: ['/chat_page','no'],
+        content: ['/chat_page?lang={{.Lang}}','no'],
         end: function(){
             $(".chatBtn").show();
         }

@@ -34,7 +34,7 @@ func main() {
 	//登陆界面
 	engine.GET("/login", tmpl.PageLogin)
 	//咨询界面
-	engine.GET("/chat_page", tmpl.PageChat)
+	engine.GET("/chat_page",middleware.SetLanguage, tmpl.PageChat)
 	//登陆验证
 	engine.POST("/check", controller.LoginCheckPass)
 	//框架界面
@@ -82,7 +82,7 @@ func main() {
 	engine.GET("/setting_kefu_list",tmpl.PageKefuList)
 
 	//前台接口
-	engine.GET("/notice", controller.GetNotice)
+	engine.GET("/notice",middleware.SetLanguage, controller.GetNotice)
 	//前台引入js接口
 	engine.GET("/webjs", tmpl.PageWebJs)
 	//前台引入css接口

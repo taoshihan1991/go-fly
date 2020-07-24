@@ -109,7 +109,7 @@
         </div>
         <div class="chatBoxSend">
             <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
-            <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">发送</el-button>
+            <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
         </div>
         <!--//客服代码-->
 
@@ -294,7 +294,7 @@
             //获取自动欢迎语句
             getNotice : function (){
                 let _this=this;
-                    $.get("/notice?kefu_id="+guest.to_id,function(res) {
+                    $.get("/notice?kefu_id="+guest.to_id+"&lang={{.Lang}}",function(res) {
                         console.log(res);
                         if (res.result != null) {
                             let msg = res.result;
