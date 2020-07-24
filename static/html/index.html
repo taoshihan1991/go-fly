@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>GO-FLY - 极简强大的Golang在线客服系统</title>
-    <meta name="description" content="GO-FLY，一套为PHP工程师、Golang工程师准备的基于 Vue CDN的在线客服即时通讯系统" />
+    <title>GO-FLY - {{.WebDesc}}</title>
+    <meta name="description" content="GO-FLY，{{.SubIntro}}" />
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
     <style>
@@ -39,12 +39,18 @@
             font-size: 32px;
             font-weight: 400;
         }
-        .header h1 a{
+        .header a{
             color: #519eff;
-            font-size: 30px;
             font-family: "Microsoft JhengHei";
-            font-weight: bold;
             text-decoration: none;
+        }
+        .header h1 a{
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .header .navBtn{
+            float: right;
+            margin-left: 20px;
         }
         .banner{
             padding-top: 20px;
@@ -99,12 +105,14 @@
 </head>
 <header class="header">
     <div class="container">
-        <h1><a href="">GO-FLY</a></h1>
+        <h1><a href="/index">GO-FLY</a></h1>
+        <a class="navBtn" href="/index?lang=en">English (United States)</a>
+        <a class="navBtn" href="/index?lang=cn">中文版 (简体)</a>
     </div>
 </header>
 <div class="banner">
-    <h1>极简强大的Go语言在线客服系统</h1>
-    <p>GO-FLY，一套为PHP工程师、Golang工程师准备的基于 Vue 2.0的在线客服即时通讯系统</p>
+    <h1>{{.WebDesc}}</h1>
+    <p>{{.SubIntro}}</p>
 </div>
 <div class="jumbotron">
 <img src="/static/images/intro1.jpg"/>
@@ -112,12 +120,12 @@
 
 <footer class="footer">
     <div class="container">
-        <a class="try" href="/docs/index.html" target="_blank">接口文档</a>
-        <a class="try" id="visitorBtn">访客入口</a>
-        <a class="try" href="/login" target="_blank">客服入口</a>
+        <a class="try" href="/docs/index.html" target="_blank">{{.Document}}</a>
+        <a class="try" id="visitorBtn">{{.VisitorBtn}}</a>
+        <a class="try" href="/login" target="_blank">{{.AgentBtn}}</a>
     </div>
     <div class="copyright">
-        陶士涵的菜地版权所有&copy; 2020
+        {{.Copyright}}&copy; 2020
     </div>
 </footer>
 <script>

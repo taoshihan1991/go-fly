@@ -2,6 +2,7 @@ package tmpl
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/tools"
 	"html/template"
 	"net/http"
@@ -40,9 +41,22 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 	t, _ := template.New(file).Parse(main)
 	t.Execute(obj.Rw, data)
 }
-//客服界面
+//首页
 func PageIndex(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", nil)
+	lang := c.Query("lang")
+	if lang == "" ||lang!="cn"{
+		lang = "en"
+	}
+	language:=config.CreateLanguage(lang)
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"Copyright":language.WebCopyRight,
+		"WebDesc":language.MainIntro,
+		"SubIntro":language.IndexSubIntro,
+		"Document":language.IndexDocument,
+		"VisitorBtn":language.IndexVisitors,
+		"AgentBtn":language.IndexAgent,
+		"Lang":lang,
+	})
 }
 
 //登陆界面
