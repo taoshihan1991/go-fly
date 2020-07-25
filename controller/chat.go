@@ -84,6 +84,7 @@ func NewChatServer(c *gin.Context){
 							kefuConn.WriteMessage(websocket.TextMessage,str)
 						}
 					}
+					sendPingOnlineUsers()
 				}
 			}
 			log.Println(err)
@@ -190,7 +191,7 @@ func sendPingOnlineUsers() {
 			}
 		}
 		msg := TypeMessage{
-			Type: "getOnlineUsers",
+			Type: "allUsers",
 			Data: result,
 		}
 		str, _ := json.Marshal(msg)
@@ -255,6 +256,7 @@ func singleBroadcaster(){
 					kefuConn.WriteMessage(websocket.TextMessage,str)
 				}
 			}
+			sendPingOnlineUsers()
 		//客服上线
 		case "kfOnline":
 			json.Unmarshal(msgData, &clientMsg)

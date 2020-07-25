@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/push.js"></script>
     <script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
     <style>
         html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
@@ -226,12 +227,27 @@
             OnMessage(e) {
                 const redata = JSON.parse(e.data);
                 switch (redata.type){
-                    case "getOnlineUsers":
+                    case "allUsers":
                         this.handleOnlineUsers(redata.data);
                         //this.sendKefuOnline();
                         break;
                     case "userOnline":
                         this.addOnlineUser(redata.data);
+                        //发送通知
+                        let _this=this;
+                        Push.create(redata.data.username, {
+                            // body 选项是通知的内容
+                            body: "来了",
+                            // icon 选项是通知的图片
+                            icon: redata.data.avator,
+                            // timeout 选项是通知停留时间
+                            timeout: 4000,
+                            onClick: function () {
+                                window.focus();
+                                this.close();
+                                _this.talkTo(redata.data.uid,redata.data.username);
+                            }
+                        });
                         break;
                     case "userOffline":
                         this.removeOfflineUser(redata.data);
@@ -275,6 +291,20 @@
                     if (msg.id == this.currentGuest) {
                         this.msgList.push(content);
                     }
+                    //发送通知
+                    Push.create(msg.name, {
+                        // body 选项是通知的内容
+                        body: msg.content,
+                        // icon 选项是通知的图片
+                        icon: msg.avator,
+                        // timeout 选项是通知停留时间
+                        timeout: 4000,
+                        onClick: function () {
+                            window.focus();
+                            this.close();
+                            _this.talkTo(msg.id,msg.name);
+                        }
+                    });
                     this.scrollBottom();
                 }
             },
@@ -352,18 +382,18 @@
                 if (this.currentGuest == "") {
                     this.chatTitle = "连接成功,等待处理中...";
                 }
-                // this.usersMap=[];
-                // for(let i=0;i<retData.length;i++){
-                //     this.usersMap[retData[i].uid]=retData[i].username;
-                // }
-                // for(let i=0;i<this.visitors.length;i++){
-                //     let vid=this.visitors[i].visitor_id;
-                //     if(typeof this.usersMap[vid]=="undefined"){
-                //         this.visitors[i].status=0;
-                //     }else{
-                //         this.visitors[i].status=1;
-                //     }
-                // }
+                this.usersMap=[];
+                for(let i=0;i<retData.length;i++){
+                    this.usersMap[retData[i].uid]=retData[i].username;
+                }
+                for(let i=0;i<this.visitors.length;i++){
+                    let vid=this.visitors[i].visitor_id;
+                    if(typeof this.usersMap[vid]=="undefined"){
+                        this.visitors[i].status=0;
+                    }else{
+                        this.visitors[i].status=1;
+                    }
+                }
 
             },
             //获取客服信息
@@ -502,6 +532,8 @@
             }
        },
         created: function () {
+            //push通知
+            Push.Permission.request();
             this.getKefuInfo();
             //心跳
             this.ping();

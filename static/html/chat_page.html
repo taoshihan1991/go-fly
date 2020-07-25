@@ -97,13 +97,13 @@
                         type="success">
                 </el-alert>
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                    <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><{v.time}></div>
                     <el-col :span="3"><el-avatar :src="v.avator"></el-avatar></el-col>
                     <el-col :span="21">
                         <div class="chatUser"><{v.name}></div>
                         <div class="chatContent"><{v.content}></div>
                     </el-col>
                     <div class="clear"></div>
-                    <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><{v.time}></div>
                 </el-row>
             </div>
         </div>
@@ -137,6 +137,7 @@
             msgList:[],
             messageContent:"",
             chatTitle:"正在连接...",
+            visitor:{},
         },
         methods: {
             //初始化websocket
@@ -231,6 +232,7 @@
                     obj=this.getCache("guest");
                 }
                 guest=obj;
+                this.visitor=obj;
                 return obj;
             },
             //加载历史
@@ -258,6 +260,43 @@
                 let history=this.getHistory("history");
                 history.push(row);
                 this.setCache("history",history);
+            },
+            //获取信息列表
+            getMesssagesByVisitorId(){
+                let _this=this;
+                $.ajax({
+                    type:"get",
+                    url:"/messages?visitorId="+this.visitor.id,
+                    success: function(data) {
+                        if(data.code==200 && data.result!=null){
+                            let msgList=data.result;
+                            _this.msgList=[];
+                            for(let i=0;i<msgList.length;i++){
+                                let visitorMes=msgList[i];
+                                let content = {}
+                                if(visitorMes["mes_type"]=="kefu"){
+                                    content.is_kefu = false;
+                                    content.avator = visitorMes["kefu_avator"];
+                                    content.name = visitorMes["kefu_name"];
+                                }else{
+                                    content.is_kefu = true;
+                                    content.avator = visitorMes["visitor_avator"];
+                                    content.name = visitorMes["visitor_name"];
+                                }
+                                content.content = visitorMes["content"];
+                                content.time = visitorMes["time"];
+                                _this.msgList.push(content);
+                                _this.scrollBottom();
+                            }
+                        }
+                        if(data.code!=200){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }
+                });
             },
             //滚动到底部
             scrollBottom:function(){
@@ -341,8 +380,10 @@
         created: function () {
             this.initCss();
             this.initConn();
+            this.getUserInfo();
             //加载历史记录
-            this.msgList=this.getHistory();
+            this.getMesssagesByVisitorId();
+            //this.msgList=this.getHistory();
             //滚动底部
             this.scrollBottom();
             //获取欢迎

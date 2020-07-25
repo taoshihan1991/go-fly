@@ -46,7 +46,7 @@ func main() {
 	//前后聊天
 	engine.GET("/chat_server", controller.NewChatServer)
 	//获取消息
-	engine.GET("/messages",middleware.JwtApiMiddleware, controller.GetVisitorMessage)
+	engine.GET("/messages", controller.GetVisitorMessage)
 	//发送单条消息
 	engine.POST("/message",controller.SendMessage)
 	//获取未读消息数
