@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/push.js"></script>
     <script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
     <style>
         html, body {height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
@@ -235,19 +234,16 @@
                         this.addOnlineUser(redata.data);
                         //发送通知
                         let _this=this;
-                        Push.create(redata.data.username, {
-                            // body 选项是通知的内容
+                        this.notify(redata.data.username, {
                             body: "来了",
-                            // icon 选项是通知的图片
-                            icon: redata.data.avator,
-                            // timeout 选项是通知停留时间
-                            timeout: 4000,
-                            onClick: function () {
-                                window.focus();
-                                this.close();
-                                _this.talkTo(redata.data.uid,redata.data.username);
-                            }
+                            icon: redata.data.avator
+                        }, function(notification) {
+                            //可直接打开通知notification相关联的tab窗口
+                            window.focus();
+                            notification.close();
+                            _this.talkTo(redata.data.uid,redata.data.username);
                         });
+
                         break;
                     case "userOffline":
                         this.removeOfflineUser(redata.data);
@@ -283,6 +279,7 @@
                 if (redata.type == "message") {
                     let msg = redata.data
                     let content = {}
+                    let _this=this;
                     content.avator = msg.avator;
                     content.name = msg.name;
                     content.content = msg.content;
@@ -292,19 +289,16 @@
                         this.msgList.push(content);
                     }
                     //发送通知
-                    Push.create(msg.name, {
-                        // body 选项是通知的内容
+                    this.notify(msg.name, {
                         body: msg.content,
-                        // icon 选项是通知的图片
-                        icon: msg.avator,
-                        // timeout 选项是通知停留时间
-                        timeout: 4000,
-                        onClick: function () {
-                            window.focus();
-                            this.close();
-                            _this.talkTo(msg.id,msg.name);
-                        }
+                        icon: msg.avator
+                    }, function(notification) {
+                        //可直接打开通知notification相关联的tab窗口
+                        window.focus();
+                        notification.close();
+                        _this.talkTo(msg.id,msg.name);
                     });
+
                     this.scrollBottom();
                 }
             },
@@ -529,7 +523,27 @@
                 this.$nextTick(() => {
                     $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
                 });
-            }
+            },
+             notify(title, options, callback) {
+                    // 先检查浏览器是否支持
+                    if (!window.Notification || document.visibilityState != 'hidden') {
+                        return;
+                    }
+                    var notification;
+                    // 检查用户曾经是否同意接受通知
+                    if (Notification.permission === 'granted') {
+                        notification = new Notification(title, options); // 显示通知
+
+                    } else if (Notification.permission === 'default') {
+                        var promise = Notification.requestPermission();
+                    }
+
+                    if (notification && callback) {
+                        notification.onclick = function(event) {
+                            callback(notification, event);
+                        }
+                    }
+             },
        },
         created: function () {
             //push通知
