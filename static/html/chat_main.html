@@ -526,7 +526,7 @@
             },
              notify(title, options, callback) {
                     // 先检查浏览器是否支持
-                    if (!window.Notification || document.visibilityState != 'hidden') {
+                    if (!window.Notification) {
                         return;
                     }
                     var notification;
