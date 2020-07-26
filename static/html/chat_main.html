@@ -243,6 +243,7 @@
                         }, function(notification) {
                             //可直接打开通知notification相关联的tab窗口
                             window.focus();
+                            $('#tab-first').trigger('click');
                             notification.close();
                             _this.talkTo(redata.data.uid,redata.data.username);
                         });
