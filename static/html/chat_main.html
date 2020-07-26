@@ -5,7 +5,9 @@
     <meta name="description" content="">
     <meta name="author" content="陶士涵">
     <title>聊天界面</title>
+    <link rel="stylesheet" href="/static/css/common.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="/static/js/functions.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
@@ -122,8 +124,9 @@
                                 </el-col>
                             </el-row>
                         </div>
-                        <el-input type="textarea" class="chatArea" v-model="messageContent"></el-input>
-                        <el-button type="primary" v-on:click="chatToUser">发送</el-button>
+                        <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"></el-input>
+                        <el-button class="floatRight" type="primary" v-on:click="chatToUser">发送</el-button>
+                        <div class="clear"></div>
                     </div>
                 </el-col>
                 <el-col :span="6">
@@ -167,7 +170,7 @@
             leftTabActive:"first",
             users:[],
             usersMap:[],
-            server:"wss://"+window.location.host+"/chat_server",
+            server:getWsBaseUrl()+"/chat_server",
             socket:null,
             messageContent:"",
             currentGuest:"",

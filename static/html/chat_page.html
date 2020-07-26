@@ -6,6 +6,7 @@
     <meta name="author" content="陶士涵">
     <title>GO-FLY咨询页</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="/static/js/functions.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
@@ -132,7 +133,7 @@
         delimiters:["<{","}>"],
         data: {
             window:window,
-            server:"wss://"+window.location.host+"/chat_server",
+            server:getWsBaseUrl()+"/chat_server",
             socket:null,
             msgList:[],
             messageContent:"",
