@@ -534,7 +534,7 @@
                     if (Notification.permission === 'granted') {
                         notification = new Notification(title, options); // 显示通知
 
-                    } else if (Notification.permission === 'default') {
+                    } else {
                         var promise = Notification.requestPermission();
                     }
 
