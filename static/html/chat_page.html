@@ -165,7 +165,8 @@
                 if (redata.type == "kfOnline") {
                     let msg = redata.data
                     guest.to_id=msg.id;
-                    this.chatTitle=msg.name+",正在与您沟通!"
+                    this.chatTitle=msg.name+",为您服务!"
+                    $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 }
                 if (redata.type == "message") {
                     let msg = redata.data
