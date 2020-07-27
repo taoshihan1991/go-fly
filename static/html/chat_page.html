@@ -167,6 +167,7 @@
                     guest.to_id=msg.id;
                     this.chatTitle=msg.name+",为您服务!"
                     $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+                    this.scrollBottom();
                 }
                 if (redata.type == "message") {
                     let msg = redata.data
