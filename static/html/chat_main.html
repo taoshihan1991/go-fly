@@ -141,6 +141,10 @@
                             </el-menu-item>
                             <el-menu-item>
                                 <i class="el-icon-s-tools"></i>
+                                <span slot="title">ClientIP：<{visitor.source_ip}></span>
+                            </el-menu-item>
+                            <el-menu-item>
+                                <i class="el-icon-s-tools"></i>
                                 <span slot="title">IP：<{visitor.client_ip}></span>
                             </el-menu-item>
                             <el-menu-item>
@@ -186,6 +190,7 @@
                 client_ip:"",
                 city:"",
                 status:"",
+                source_ip:"",
             },
             visitors:[],
             visitorCount:0,
@@ -474,6 +479,7 @@
                             _this.visitor.refer=r.refer;
                             _this.visitor.city=r.city;
                             _this.visitor.client_ip=r.client_ip;
+                            _this.visitor.source_ip=r.source_ip;
                             _this.visitor.status=r.status==1?"在线":"离线";
                         }
                         if(data.code!=200){

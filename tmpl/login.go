@@ -16,10 +16,12 @@ func PageChat(c *gin.Context) {
 	kefuId := c.Query("kefu_id")
 	lang,_ := c.Get("lang")
 	language:=config.CreateLanguage(lang.(string))
+	refer:=c.Request.Referer()
 	c.HTML(http.StatusOK, "chat_page.html", gin.H{
 		"KEFU_ID":kefuId,
 		"SendBtn":language.Send,
 		"Lang":lang.(string),
+		"Refer":refer,
 	})
 }
 

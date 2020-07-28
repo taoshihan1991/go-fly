@@ -40,6 +40,7 @@ type ClientMessage struct {
 	Content  string `json:"content"`
 	City  string `json:"city"`
 	ClientIp  string `json:"client_ip"`
+	Refer string `json:"refer"`
 }
 //定时检测客户端是否在线
 func init() {
@@ -239,7 +240,7 @@ func singleBroadcaster(){
 			}
 			clientList[clientMsg.Id] = user
 			//插入数据表
-			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.Id,message.c.Request.Referer(),clientMsg.City,clientMsg.ClientIp)
+			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.Id,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
 			userInfo := make(map[string]string)
 			userInfo["uid"] = user.id
 			userInfo["username"] = user.name

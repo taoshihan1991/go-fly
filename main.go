@@ -77,6 +77,7 @@ func main() {
 
 	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlGetConf)
 	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlSetConf)
+	engine.POST("/visitor",controller.PostVisitor)
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors",middleware.JwtApiMiddleware, controller.GetVisitors)
 	engine.GET("/setting_kefu_list",tmpl.PageKefuList)

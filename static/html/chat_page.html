@@ -157,6 +157,7 @@
                 mes.type = "userInit";
                 userinfo.client_ip=returnCitySN["cip"];
                 userinfo.city=returnCitySN["cname"];
+                userinfo.refer="{{.Refer}}";
                 mes.data = userinfo;
                 this.socket.send(JSON.stringify(mes));
             },
