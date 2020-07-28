@@ -11,18 +11,39 @@ import (
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
 )
 var (
 	port string
+	daemon bool
 	GoflyConfig config.Config
 )
-func main() {
+func init(){
 	//获取参数中的数据
 	flag.StringVar(&port, "port", "8080", "监听端口号")
+	flag.BoolVar(&daemon, "d", false, "是否为守护进程模式")
 	flag.Parse()
 	if flag.NFlag() < 1 {
 		flag.PrintDefaults()
 	}
+	if daemon==true{
+		if os.Getppid() != 1{
+			// 将命令行参数中执行文件路径转换成可用路径
+			filePath, _ := filepath.Abs(os.Args[0])
+			cmd := exec.Command(filePath, os.Args[1:]...)
+			// 将其他命令传入生成出的进程
+			cmd.Stdin = os.Stdin // 给新进程设置文件描述符，可以重定向到文件中
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			cmd.Start() // 开始执行新进程，不等待新进程退出
+			os.Exit(0)
+		}
+	}
+}
+func main() {
+
 	baseServer := "0.0.0.0:"+port
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()
