@@ -183,7 +183,9 @@
 
                     this.saveHistory(content);
                     this.scrollBottom();
+                    flashTitle();//标题闪烁
                 }
+                window.parent.postMessage(redata);
             },
             //发送给客户
             chatToUser() {
@@ -378,11 +380,19 @@
                     }
                 },5000);
             },
+            //初始化
+            init(){
+                this.initCss();
+                this.initConn();
+                window.onfocus = function () {
+                    clearTimeout(titleTimer);
+                    document.title = originTitle;
+                };
+            },
 
         },
         created: function () {
-            this.initCss();
-            this.initConn();
+            this.init();
             this.getUserInfo();
             //加载历史记录
             this.getMesssagesByVisitorId();

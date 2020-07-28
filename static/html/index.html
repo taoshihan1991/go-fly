@@ -8,6 +8,7 @@
     <meta name="description" content="GO-FLY，{{.SubIntro}}" />
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+    <script src="/static/js/functions.js"></script>
     <style>
         *{
             margin: 0;padding: 0;
@@ -148,5 +149,15 @@ $("#visitorBtn").click(function(){
         }
     });
 });
+window.addEventListener('message',function(e){
+    var msg=e.data;
+    if(msg.type=="message"){
+        flashTitle();//标题闪烁
+    }
+});
+window.onfocus = function () {
+    clearTimeout(titleTimer);
+    document.title = originTitle;
+};
 </script>
 </html>

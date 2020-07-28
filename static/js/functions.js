@@ -38,3 +38,18 @@ function notify(title, options, callback) {
         }
     }
 }
+var titleTimer,titleNum=0;
+var originTitle = document.title;
+function flashTitle() {
+    titleNum++;
+    if (titleNum == 3) {
+        titleNum = 1;
+    }
+    if (titleNum == 1) {
+        document.title = '【】' + originTitle;
+    }
+    if (titleNum == 2) {
+        document.title = '【你有一条消息】' + originTitle;
+    }
+    titleTimer = setTimeout("flashTitle()", 500);
+}
