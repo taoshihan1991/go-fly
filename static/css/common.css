@@ -1,2 +1,72 @@
 .floatRight{float: right;}
 .clear{clear: both;}
+.faceBtn, .faceBtn:after, .faceBtn {
+    border: 1px solid;
+}
+.faceBtn {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    height: 28px;
+    width: 28px;
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    font-style: normal;
+    color: #9da0a0;
+    text-align: left;
+    text-indent: -9999px;
+    direction: ltr;
+    margin-bottom: -14px;
+    right: 70px;
+    bottom: 50%;
+    cursor: pointer;
+}
+.faceBtn:before {
+    content: '';
+    pointer-events: none;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    box-shadow: 8px 0 0 0, 0 0 0 2px inset;
+    height: 4px;
+    width: 4px;
+    left: 7px;
+    position: absolute;
+    top: 29%;
+}
+.faceBtn:after {
+    content: '';
+    pointer-events: none;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    height: 15px;
+    left: 50%;
+    position: absolute;
+    top: 10%;
+    width: 15px;
+}
+.faceBox{
+    width: 100%;
+    background: #fff;
+    position: absolute;
+    z-index: 99999999;
+    bottom: 70px;
+    padding: 2px;
+    display: none;
+}
+.faceBoxList{
+
+}

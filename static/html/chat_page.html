@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/common.css" />
     <style>
         html,
         body {
@@ -70,7 +71,7 @@
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
         .chatArea{margin: 5px 0 0 5px;}
-        .chatArea .el-textarea__inner{width: 85%;}
+        .chatArea .el-textarea__inner{width: 80%;}
         .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
         .chatBoxSend{background: #fff;position: fixed;bottom: 0;left: 0;width: 100%;height: 67px;}
         .chatBoxSendBtn{position: absolute;right: 5px;bottom:50%;margin-bottom: -16px;}
@@ -110,6 +111,12 @@
         </div>
         <div class="chatBoxSend">
             <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
+            <div class="faceBox">
+                <ul class="faceBoxList">
+                    <li title="[微笑]"><img src="/static/images/face/0.gif"></li>
+                </ul>
+            </div>
+            <div class="faceBtn"></div>
             <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
         </div>
         <!--//客服代码-->
