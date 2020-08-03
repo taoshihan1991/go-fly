@@ -197,7 +197,8 @@
                     });
                     return;
                 }
-                if(this.messageContent==""){
+                this.messageContent=this.messageContent.trim("\r\n");
+                if(this.messageContent==""||this.messageContent=="\r\n"){
                     this.$message({
                         message: '不能发送空白信息',
                         type: 'warning'
