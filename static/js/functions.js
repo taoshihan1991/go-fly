@@ -53,3 +53,7 @@ function flashTitle() {
     }
     titleTimer = setTimeout("flashTitle()", 500);
 }
+
+function replaceContent (content) {// 转义聊天内容中的特殊字符
+
+}

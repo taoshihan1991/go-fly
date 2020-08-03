@@ -68,5 +68,17 @@
     display: none;
 }
 .faceBoxList{
-
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.faceBoxList li{
+    cursor: pointer;
+    float: left;
+    border: 1px solid #e8e8e8;
+    width: 28px;
+    overflow: hidden;
+    margin: -1px 0 0 -1px;
+    padding: 4px 2px;
+    text-align: center;
 }
