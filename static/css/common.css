@@ -3,6 +3,20 @@
 .faceBtn, .faceBtn:after, .faceBtn {
     border: 1px solid;
 }
+.visitorFaceBtn{
+    right: 70px;
+    bottom: 50%;
+    position: absolute!important;
+}
+.visitorFaceBox{
+    position: absolute;
+    bottom: 70px;
+}
+.kefuFaceBox{
+    position: absolute;
+    bottom: 110px;
+    z-index: 999;
+}
 .faceBtn {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -12,15 +26,13 @@
     width: 28px;
     display: inline-block;
     vertical-align: middle;
-    position: absolute;
     font-style: normal;
     color: #9da0a0;
     text-align: left;
     text-indent: -9999px;
     direction: ltr;
     margin-bottom: -14px;
-    right: 70px;
-    bottom: 50%;
+    position: relative;
     cursor: pointer;
 }
 .faceBtn:before {
@@ -61,9 +73,7 @@
 .faceBox{
     width: 100%;
     background: #fff;
-    position: absolute;
     z-index: 99999999;
-    bottom: 70px;
     padding: 2px;
     display: none;
 }

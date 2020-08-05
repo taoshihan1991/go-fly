@@ -103,7 +103,7 @@
                     <el-col :span="3"><el-avatar :src="v.avator"></el-avatar></el-col>
                     <el-col :span="21">
                         <div class="chatUser"><{v.name}></div>
-                        <div class="chatContent"><{v.content}></div>
+                        <div class="chatContent" v-html="v.content"></div>
                     </el-col>
                     <div class="clear"></div>
                 </el-row>
@@ -111,13 +111,13 @@
         </div>
         <div class="chatBoxSend">
             <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
-            <div class="faceBox">
+            <div class="faceBox visitorFaceBox">
                 <ul class="faceBoxList">
-                    <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src="'/static/images/face/'+v.path"></li>
+                    <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
                 </ul>
                 <div class="clear"></div>
             </div>
-            <div class="faceBtn"></div>
+            <div class="faceBtn visitorFaceBtn"></div>
             <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
         </div>
         <!--//客服代码-->
@@ -186,7 +186,7 @@
                     let content = {}
                     content.avator = msg.avator;
                     content.name = msg.name;
-                    content.content = msg.content;
+                    content.content =replaceContent(msg.content);
                     content.is_kefu = false;
                     content.time = msg.time;
                     this.msgList.push(content);
@@ -228,7 +228,7 @@
 
                 let content = {}
                 content.avator=guest.avator;
-                content.content = this.messageContent;
+                content.content = replaceContent(this.messageContent);
                 content.name = guest.name;
                 content.is_kefu = true;
                 content.time = this.getNowDate();
@@ -299,7 +299,7 @@
                                     content.avator = visitorMes["visitor_avator"];
                                     content.name = visitorMes["visitor_name"];
                                 }
-                                content.content = visitorMes["content"];
+                                content.content = replaceContent(visitorMes["content"]);
                                 content.time = visitorMes["time"];
                                 _this.msgList.push(content);
                                 _this.scrollBottom();
@@ -379,9 +379,9 @@
                         $(".chatBox").css("max-height",$(window).height()-65);
                     }
                     //展示表情
-                    var alt = ["[微笑]", "[嘻嘻]", "[哈哈]", "[可爱]", "[可怜]", "[挖鼻]", "[吃惊]", "[害羞]", "[挤眼]", "[闭嘴]", "[鄙视]", "[爱你]", "[泪]", "[偷笑]", "[亲亲]", "[生病]", "[太开心]", "[白眼]", "[右哼哼]", "[左哼哼]", "[嘘]", "[衰]", "[委屈]", "[吐]", "[哈欠]", "[抱抱]", "[怒]", "[疑问]", "[馋嘴]", "[拜拜]", "[思考]", "[汗]", "[困]", "[睡]", "[钱]", "[失望]", "[酷]", "[色]", "[哼]", "[鼓掌]", "[晕]", "[悲伤]", "[抓狂]", "[黑线]", "[阴险]", "[怒骂]", "[互粉]", "[心]", "[伤心]", "[猪头]", "[熊猫]", "[兔子]", "[ok]", "[耶]", "[good]", "[NO]", "[赞]", "[来]", "[弱]", "[草泥马]", "[神马]", "[囧]", "[浮云]", "[给力]", "[围观]", "[威武]", "[奥特曼]", "[礼物]", "[钟]", "[话筒]", "[蜡烛]", "[蛋糕]"], arr = {};
-                    $.each(alt, function (index, item) {
-                        _this.face.push({"name":item,"path":index + '.gif'});
+                    var faces=placeFace();
+                    $.each(faceTitles, function (index, item) {
+                        _this.face.push({"name":item,"path":faces[item]});
                     });
                     $(".faceBtn").click(function(){
                         var status=$('.faceBox').css("display");
@@ -418,7 +418,7 @@
             faceIconClick(index){
                 $('.faceBox').hide();
                 this.messageContent+="face"+this.face[index].name;
-            }
+            },
         },
         created: function () {
             this.init();

@@ -20,6 +20,7 @@
         .chatLeft .el-tabs__nav{margin-left: 20px;}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
         .chatContext .el-row{margin-bottom: 5px;}
+        .chatContext{position: relative;}
         .chatUser{
             line-height: 24px;
             font-size: 12px;
@@ -119,11 +120,18 @@
                                 <el-col :span="3"><el-avatar :size="60" :src="v.avator"></el-avatar></el-col>
                                 <el-col :span="21">
                                     <div class="chatUser"><{v.name}></div>
-                                    <div class="chatContent"><{v.content}></div>
+                                    <div class="chatContent" v-html="v.content"></div>
                                 </el-col>
                             </el-row>
                         </div>
+                        <div class="faceBox kefuFaceBox">
+                            <ul class="faceBoxList">
+                                <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
                         <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"></el-input>
+                        <div class="faceBtn"></div>
                         <el-button class="floatRight" type="primary" v-on:click="chatToUser">发送</el-button>
                         <div class="clear"></div>
                     </div>
@@ -196,6 +204,7 @@
             visitorCount:0,
             visitorCurrentPage:1,
             visitorPageSize:10,
+            face:[],
         },
         methods: {
             //跳转
@@ -290,7 +299,7 @@
                     let _this=this;
                     content.avator = msg.avator;
                     content.name = msg.name;
-                    content.content = msg.content;
+                    content.content = replaceContent(msg.content);
                     content.is_kefu = false;
                     content.time = msg.time;
                     if (msg.id == this.currentGuest) {
@@ -329,7 +338,8 @@
             },
             //发送给客户
             chatToUser() {
-                if(this.messageContent==""||this.currentGuest==""){
+                this.messageContent=this.messageContent.trim("\r\n");
+                if(this.messageContent==""||this.messageContent=="\r\n"||this.currentGuest==""){
                     return;
                 }
                 let _this=this;
@@ -346,7 +356,7 @@
                 let content = {}
                 content.avator = this.kfConfig.avator;
                 content.name = this.kfConfig.name;
-                content.content = this.messageContent;
+                content.content = replaceContent(this.messageContent);
                 content.is_kefu = true;
                 content.time = '';
                 this.msgList.push(content);
@@ -448,7 +458,7 @@
                                     content.avator = visitorMes["visitor_avator"];
                                     content.name = visitorMes["visitor_name"];
                                 }
-                                content.content = visitorMes["content"];
+                                content.content = replaceContent(visitorMes["content"]);
                                 content.time = visitorMes["time"];
                                 _this.msgList.push(content);
                                 _this.scrollBottom();
@@ -533,8 +543,36 @@
                     $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
                 });
             },
+            //jquery
+            initJquery(){
+                this.$nextTick(() => {
+                    var _this=this;
+                    $(function () {
+                        //展示表情
+                        var faces=placeFace();
+                        $.each(faceTitles, function (index, item) {
+                            _this.face.push({"name":item,"path":faces[item]});
+                        });
+                        $(".faceBtn").click(function(){
+                            var status=$('.faceBox').css("display");
+                            if(status=="block"){
+                                $('.faceBox').hide();
+                            }else{
+                                $('.faceBox').show();
+                            }
+                        });
+                    });
+                });
+            },
+            //表情点击事件
+            faceIconClick(index){
+                $('.faceBox').hide();
+                this.messageContent+="face"+this.face[index].name;
+            },
        },
         created: function () {
+            //jquery
+            this.initJquery();
             this.getKefuInfo();
             //心跳
             this.ping();
