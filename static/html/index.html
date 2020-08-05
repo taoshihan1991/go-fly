@@ -135,7 +135,9 @@
     </div>
 </footer>
 <script>
+    var flag=false;
 $("#visitorBtn").click(function(){
+    if(flag) return;
     layer.open({
         type: 2,
         title: '{{.OnlineChat}}',
@@ -145,10 +147,26 @@ $("#visitorBtn").click(function(){
         area: ['550px', '520px'],
         content: ['/chat_page?lang={{.Lang}}','no'],
         end: function(){
-            $(".chatBtn").show();
+            flag=false;
         }
     });
+    flag=true;
 });
+setTimeout(function(){
+    if(flag) return;
+    layer.open({
+        type: 2,
+        title: '{{.OnlineChat}}',
+        shadeClose: true,
+        shade: false,
+        maxmin: true, //开启最大化最小化按钮
+        area: ['550px', '520px'],
+        content: ['/chat_page?lang={{.Lang}}','no'],
+        end: function(){
+            flag=false;
+        }
+    });
+},5000);
 window.addEventListener('message',function(e){
     var msg=e.data;
     if(msg.type=="message"){
