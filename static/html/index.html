@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>GO-FLY - {{.WebDesc}}</title>
     <meta name="description" content="GO-FLY，{{.SubIntro}}" />
-    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
-    <script src="/static/js/functions.js"></script>
+
     <style>
         *{
             margin: 0;padding: 0;
@@ -102,6 +100,16 @@
             text-align: center;
             margin: 60px 0;
         }
+        .codeDeploy{
+            color: #fff;
+            width: 1000px;
+            margin: 0 auto;
+            background: #555555;
+            padding: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 24px;
+        }
     </style>
 </head>
 <header class="header">
@@ -122,11 +130,25 @@
 <img src="/static/images/intro1.jpg"/>
     {{end}}
 </div>
+<pre class="codeDeploy">
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;https://gofly.sopans.com/static/css/gofly-front.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
+    &lt;div id=&quot;launchButton&quot; class=&quot;launchButton&quot;&gt;
+    &lt;svg x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 27 21.9&quot; aria-labelledby=&quot;title desc&quot; role=&quot;img&quot; class=&quot;xhl-launch-button-svg&quot;&gt;&lt;title&gt;Chat Icon &lt;/title&gt;&lt;desc&gt;three small dots to indicate that an agent is available to chat&lt;/desc&gt;&lt;path fill=&quot;#ffffff&quot; d=&quot;M23.2,0L2.6,1.7C1,1.9,0,3.2,0,4.9v8c0,1.6,0.8,3,2.4,3.1l5.3,0.5c0,0,1,1.6,0.3,3.2C7.2,21.3,6,21.9,6,21.9 c4.2,0,6.6-3.1,7.8-4.9l9.4,0.7c1.8,0.2,3.8-1.3,3.8-3.1V3.1C27,1.3,25-0.1,23.2,0z M6.4,10.1c-0.9,0-1.7-0.7-1.7-1.7 c0-0.9,0.7-1.7,1.7-1.7C7.3,6.8,8,7.5,8,8.5C8,9.4,7.3,10.1,6.4,10.1z M13.2,10.1c-0.9,0-1.7-0.7-1.7-1.7c0-0.9,0.7-1.7,1.7-1.7 c0.9,0,1.7,0.7,1.7,1.7C14.8,9.4,14.1,10.1,13.2,10.1z M19.9,10.1c-0.9,0-1.7-0.7-1.7-1.7c0-0.9,0.7-1.7,1.7-1.7 c0.9,0,1.7,0.7,1.7,1.7C21.6,9.4,20.9,10.1,19.9,10.1z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+    &lt;div class=&quot;launchButtonText&quot;&gt;
+    Chat with us
+    &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+    var GOFLY_URL=&quot;https://gofly.sopans.com&quot;;
+    &lt;/script&gt;
+    &lt;script src=&quot;https://gofly.sopans.com/static/js/gofly-front.js&quot;&gt;&lt;/script&gt;
+</pre>
 
 <footer class="footer">
     <div class="container">
         <a class="try" href="/docs/index.html" target="_blank">{{.Document}}</a>
-        <a class="try" id="visitorBtn">{{.VisitorBtn}}</a>
         <a class="try" href="/login?lang={{.Lang}}" target="_blank">{{.AgentBtn}}</a>
         <a class="try" href="https://github.com/taoshihan1991/go-fly" target="_blank">Github</a>
     </div>
@@ -134,49 +156,44 @@
         {{.Copyright}}&copy; 2020
     </div>
 </footer>
+
+<!--对接客服代码-->
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+<link href="/static/css/gofly-front.css" rel="stylesheet" type="text/css"/>
+<div id="launchButton" class="launchButton">
+    <svg x="0px" y="0px" viewBox="0 0 27 21.9" aria-labelledby="title desc" role="img" class="xhl-launch-button-svg"><title>Chat Icon </title><desc>three small dots to indicate that an agent is available to chat</desc><path fill="#ffffff" d="M23.2,0L2.6,1.7C1,1.9,0,3.2,0,4.9v8c0,1.6,0.8,3,2.4,3.1l5.3,0.5c0,0,1,1.6,0.3,3.2C7.2,21.3,6,21.9,6,21.9 c4.2,0,6.6-3.1,7.8-4.9l9.4,0.7c1.8,0.2,3.8-1.3,3.8-3.1V3.1C27,1.3,25-0.1,23.2,0z M6.4,10.1c-0.9,0-1.7-0.7-1.7-1.7 c0-0.9,0.7-1.7,1.7-1.7C7.3,6.8,8,7.5,8,8.5C8,9.4,7.3,10.1,6.4,10.1z M13.2,10.1c-0.9,0-1.7-0.7-1.7-1.7c0-0.9,0.7-1.7,1.7-1.7 c0.9,0,1.7,0.7,1.7,1.7C14.8,9.4,14.1,10.1,13.2,10.1z M19.9,10.1c-0.9,0-1.7-0.7-1.7-1.7c0-0.9,0.7-1.7,1.7-1.7 c0.9,0,1.7,0.7,1.7,1.7C21.6,9.4,20.9,10.1,19.9,10.1z"></path></svg>
+    <div class="launchButtonText">
+        Chat with us
+    </div>
+</div>
 <script>
-    var flag=false;
-$("#visitorBtn").click(function(){
-    if(flag) return;
-    layer.open({
-        type: 2,
-        title: '{{.OnlineChat}}',
-        shadeClose: true,
-        shade: false,
-        maxmin: true, //开启最大化最小化按钮
-        area: ['550px', '520px'],
-        content: ['/chat_page?lang={{.Lang}}','no'],
-        end: function(){
-            flag=false;
-        }
-    });
-    flag=true;
-});
-setTimeout(function(){
-    if(flag) return;
-    layer.open({
-        type: 2,
-        title: '{{.OnlineChat}}',
-        shadeClose: true,
-        shade: false,
-        maxmin: true, //开启最大化最小化按钮
-        area: ['550px', '520px'],
-        content: ['/chat_page?lang={{.Lang}}','no'],
-        end: function(){
-            flag=false;
-        }
-    });
-    flag=true;
-},5000);
-window.addEventListener('message',function(e){
-    var msg=e.data;
-    if(msg.type=="message"){
-        flashTitle();//标题闪烁
-    }
-});
-window.onfocus = function () {
-    clearTimeout(titleTimer);
-    document.title = originTitle;
-};
+    var GOFLY_URL="";
 </script>
+<script src="/static/js/gofly-front.js"></script>
+<!--//对接客服代码-->
+
+<script>
+setTimeout(function(){
+    if (launchButtonFlag) return;
+    layer.open({
+        type: 2,
+        title: "Chat with us",
+        closeBtn: 1, //不显示关闭按钮
+        shade: [0],
+        area: ['510px', '520px'],
+        offset: 'rb', //右下角弹出
+        anim: 2,
+        content: ['/chat_page?lang=en', 'no'], //iframe的url，no代表不显示滚动条
+        end: function(){
+            launchButtonFlag=false;
+            $(".launchButton").show();
+        }
+    });
+    launchButtonFlag=true;
+    $(".launchButton").hide();
+},8000);
+
+</script>
+
 </html>
