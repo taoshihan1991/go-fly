@@ -161,6 +161,10 @@
                             </el-menu-item>
                             <el-menu-item>
                                 <i class="el-icon-s-tools"></i>
+                                <span slot="title">时间：<{visitor.created_at}></span>
+                            </el-menu-item>
+                            <el-menu-item>
+                                <i class="el-icon-s-tools"></i>
                                 <span slot="title">状态：<{visitor.status}></span>
                             </el-menu-item>
                         </el-menu>
@@ -199,6 +203,7 @@
                 city:"",
                 status:"",
                 source_ip:"",
+                created_at:"",
             },
             visitors:[],
             visitorCount:0,
@@ -486,6 +491,7 @@
                     success: function(data) {
                         if(data.result!=null){
                             let r=data.result;
+                            _this.visitor.created_at=r.created_at;
                             _this.visitor.refer=r.refer;
                             _this.visitor.city=r.city;
                             _this.visitor.client_ip=r.client_ip;
