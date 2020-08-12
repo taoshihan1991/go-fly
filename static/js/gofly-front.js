@@ -9,7 +9,7 @@ $("#launchButton").click(function() {
         area: ['520px', '530px'],
         offset: 'rb', //右下角弹出
         anim: 2,
-        content: [GOFLY_URL+'/chat_page', 'no'], //iframe的url，no代表不显示滚动条
+        content: [GOFLY_URL+'/chat_page?refer='+window.location.host, 'no'], //iframe的url，no代表不显示滚动条
         end: function(){
             launchButtonFlag=false;
             $(".launchButton").show();

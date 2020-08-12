@@ -26,7 +26,7 @@ func JwtApiMiddleware(c *gin.Context){
 		return
 	}
 	createTime:=int64(userinfo["create_time"].(float64))
-	var expire int64=2*60*60
+	var expire int64=24*60*60
 	nowTime:=time.Now().Unix();
 	if (nowTime-createTime) >=expire{
 		c.JSON(200, gin.H{
