@@ -10,3 +10,8 @@ func FindRoles()[]Role{
 	DB.Order("id desc").Find(&roles)
 	return roles
 }
+func FindRole(id interface{})Role{
+	var role Role
+	DB.Where("id = ?", id).First(&role)
+	return role
+}

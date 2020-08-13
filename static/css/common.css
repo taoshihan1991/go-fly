@@ -14,7 +14,7 @@
 }
 .kefuFaceBox{
     position: absolute;
-    bottom: 110px;
+    bottom: 0px;
     z-index: 999;
 }
 .faceBtn {

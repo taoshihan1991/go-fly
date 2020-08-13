@@ -78,8 +78,8 @@ func main() {
 	//获取客服信息
 	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
 	engine.GET("/kefuinfo_setting",middleware.JwtApiMiddleware, controller.GetKefuInfoSetting)
-	engine.POST("/kefuinfo",middleware.JwtApiMiddleware,middleware.CasbinACL, controller.PostKefuInfo)
-	engine.DELETE("/kefuinfo",middleware.JwtApiMiddleware,middleware.CasbinACL, controller.DeleteKefuInfo)
+	engine.POST("/kefuinfo",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.PostKefuInfo)
+	engine.DELETE("/kefuinfo",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.DeleteKefuInfo)
 	engine.GET("/kefulist",middleware.JwtApiMiddleware, controller.GetKefuList)
 	//设置页
 	engine.GET("/setting", tmpl.PageSetting)
@@ -96,8 +96,8 @@ func main() {
 	//邮件夹列表
 	engine.GET("/folders", controller.GetFolders)
 
-	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlGetConf)
-	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.CasbinACL,  controller.MysqlSetConf)
+	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.RbacAuth,  controller.MysqlGetConf)
+	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.RbacAuth,  controller.MysqlSetConf)
 	engine.POST("/visitor",controller.PostVisitor)
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors",middleware.JwtApiMiddleware, controller.GetVisitors)
