@@ -10,6 +10,7 @@ import (
 	"github.com/taoshihan1991/imaptool/docs"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/tmpl"
+	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 	"os"
 	"os/exec"
@@ -118,5 +119,8 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/"
 	//docs.SwaggerInfo.Schemes = []string{"http"}
 	engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	logFile, _ := os.OpenFile("./fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
+	tools.RedirectStderr(logFile)
 	engine.Run(baseServer)
 }
