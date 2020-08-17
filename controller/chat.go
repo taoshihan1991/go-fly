@@ -51,7 +51,7 @@ func init() {
 	//go sendPingUpdateStatus()
 	go singleBroadcaster()
 	//go sendPingOnlineUsers()
-	sendPingToClient()
+	//sendPingToClient()
 }
 
 func NewChatServer(c *gin.Context){
