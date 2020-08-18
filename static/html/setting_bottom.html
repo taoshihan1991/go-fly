@@ -156,7 +156,7 @@
                         _this.mysql.port=result.Port;
                     });
                 }
-                if(ACTION=="setting_kefu_list"||ACTION=="setting_deploy"){
+                if(ACTION=="setting_kefu_list"){
                     this.sendAjax("/kefulist","get",{},function(result){
                         _this.kefuList=result;
                     });
