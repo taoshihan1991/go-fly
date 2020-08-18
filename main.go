@@ -77,18 +77,19 @@ func main() {
 	engine.POST("/message_status",controller.GetVisitorMessage)
 
 	//获取客服信息
-	engine.GET("/kefuinfo",middleware.JwtApiMiddleware, controller.GetKefuInfo)
-	engine.GET("/kefuinfo_setting",middleware.JwtApiMiddleware, controller.GetKefuInfoSetting)
+	engine.GET("/kefuinfo",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.GetKefuInfo)
+	engine.GET("/kefuinfo_setting",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.GetKefuInfoSetting)
 	engine.POST("/kefuinfo",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.PostKefuInfo)
 	engine.DELETE("/kefuinfo",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.DeleteKefuInfo)
-	engine.GET("/kefulist",middleware.JwtApiMiddleware, controller.GetKefuList)
+	engine.GET("/kefulist",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.GetKefuList)
 	//设置页
 	engine.GET("/setting", tmpl.PageSetting)
 	//设置mysql
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
 	//角色列表
-	engine.GET("/roles",middleware.JwtApiMiddleware, controller.GetRoleList)
+	engine.GET("/roles",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.GetRoleList)
 	engine.GET("/roles_list", tmpl.PageRoleList)
+	engine.POST("/role",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.PostRole)
 
 	//网页部署
 	engine.GET("/setting_deploy", tmpl.PageSettingDeploy)

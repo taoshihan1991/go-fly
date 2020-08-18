@@ -21,10 +21,14 @@
                             label="允许方法">
                     </el-table-column>
                     <el-table-column
+                            prop="path"
+                            label="路径">
+                    </el-table-column>
+                    <el-table-column
                             prop="id"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="" type="primary" size="small" plain>配置权限</el-button>
+                            <el-button @click="showAuthDialog(scope.row.role_id,scope.row.role_name,scope.row.method,scope.row.path)" type="primary" size="small" plain>配置权限</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -32,31 +36,24 @@
 
         </el-container>
         <el-dialog
-                title="客服"
-                :visible.sync="kefuDialog"
+                    title="配置权限"
+                :visible.sync="roleDialog"
                 width="30%"
         >
-            <el-form ref="kefuForm" :model="kefuForm" :rules="rules" label-width="70px">
-                <el-form-item label="用户名"  prop="name">
-                    <el-input v-model="kefuForm.name"></el-input>
+            <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="70px">
+                <el-form-item label="角色名"  prop="name">
+                    <el-input v-model="roleForm.name"></el-input>
                 </el-form-item>
-                <el-form-item label="密码"  prop="password">
-                    <el-input v-model="kefuForm.password"></el-input>
+                <el-form-item label="方法"  prop="method">
+                    <el-input v-model="roleForm.method"></el-input>
                 </el-form-item>
-                <el-form-item label="昵称"  prop="nickname">
-                    <el-input v-model="kefuForm.nickname"></el-input>
-                </el-form-item>
-                <el-form-item label="头像"  prop="avator">
-                    <el-select v-model="kefuForm.avator" placeholder="请选择头像">
-                        <el-option :label="'头像'+item" :value="'/static/images/'+item+'.jpg'" v-for="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]" v-bind:key="item">
-                            <el-avatar :size="30" :src="'/static/images/'+item+'.jpg'"></el-avatar>
-                        </el-option>
-                    </el-select>
+                <el-form-item label="路径"  prop="path">
+                    <el-input type="textarea" v-model="roleForm.path"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="kefuDialog = false">取 消</el-button>
-                <el-button type="primary" @click="submitKefuForm('kefuForm')">确 定</el-button>
+                <el-button @click="roleDialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitRoleForm('roleForm')">确 定</el-button>
               </span>
         </el-dialog>
     </template>

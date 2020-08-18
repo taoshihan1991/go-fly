@@ -45,6 +45,12 @@
                 nickname: [
                     { required: true, message: '请输入昵称', trigger: 'blur' },
                 ],
+                method: [
+                    { required: true, message: '请输入允许的方法', trigger: 'blur' },
+                ],
+                path: [
+                    { required: true, message: '请输入允许的路径', trigger: 'blur' },
+                ],
             },
             kefuList:[],
             kefuDialog:false,
@@ -54,6 +60,14 @@
                 password:"",
                 avator:"",
                 nickname:"",
+            },
+            roleList:[],
+            roleDialog:false,
+            roleForm:{
+                id:"",
+                name:"",
+                method:"",
+                path:"",
             },
         },
         methods: {
@@ -170,6 +184,8 @@
                             });
                         }else if(data.result!=null){
                             callback(data.result);
+                        }else{
+                            callback(data);
                         }
                         _this.fullscreenLoading=false
 
@@ -232,6 +248,34 @@
                     _this.sendAjax("/kefulist","get",{},function(result){
                         _this.kefuList=result;
                     });
+                });
+            },
+            //配置角色权限
+            showAuthDialog(id,name,method,path){
+                this.roleForm.id=id
+                this.roleForm.name=name
+                this.roleForm.method=method
+                this.roleForm.path=path
+                this.roleDialog=true;
+            },
+            //提交角色表单
+            submitRoleForm(formName){
+                let _this=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.sendAjax("/role","POST",_this.roleForm,function(result){
+                            _this.roleDialog=false;
+                            _this.sendAjax("/roles","get",{},function(result){
+                                _this.roleList=result;
+                            });
+                            _this.$message({
+                                message: result.msg,
+                                type: 'success'
+                            });
+                        });
+                    } else {
+                        return false;
+                    }
                 });
             },
             //生成部署js
