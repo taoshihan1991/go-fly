@@ -4,9 +4,8 @@
     border: 1px solid;
 }
 .visitorFaceBtn{
-    right: 70px;
-    bottom: 50%;
-    position: absolute!important;
+    float: right;
+    margin: 6px 4px 0 0;
 }
 .visitorFaceBox{
     position: absolute;
@@ -31,7 +30,6 @@
     text-align: left;
     text-indent: -9999px;
     direction: ltr;
-    margin-bottom: -14px;
     position: relative;
     cursor: pointer;
 }
