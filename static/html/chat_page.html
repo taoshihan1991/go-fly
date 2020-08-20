@@ -25,12 +25,13 @@
             width: 100%;
             text-align: left;
             position: relative;
+            margin-bottom: 69px;
         }
         .chatBox{
-            max-height: 600px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            margin-bottom: 80px;
+            /*max-height: 600px;*/
+            /*overflow-y: auto;*/
+            /*overflow-x: hidden;*/
+            /*margin-bottom: 80px;*/
         }
         .chatBox .el-col{margin:10px 0;}
         .chatUser{
@@ -71,8 +72,8 @@
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
-        .chatArea{float: left;width: 80%;margin: 4px 0 0 4px;}
-        .btnArea{width: 18%;float: right;}
+        .chatArea{float: left;width: 76%;margin: 4px 0 0 4px;}
+        .btnArea{width: 20%;float: right;}
         .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
         .chatBoxSend{background: #fff;position: fixed;bottom: 0;width: 100%;height: 67px;max-width: 800px;}
         .chatBoxSendBtn{float: right;margin: 12px 4px 0 0;}
@@ -322,7 +323,8 @@
             //滚动到底部
             scrollBottom:function(){
                 this.$nextTick(() => {
-                    $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                    //debugger;
+                    $('body').scrollTop($("body")[0].scrollHeight);
                 });
             },
             //获取日期
@@ -379,10 +381,10 @@
             initCss(){
                 var _this=this;
                 $(function () {
-                    $(".chatBox").css("max-height",$(window).height());
-                    if (top.location != location){
-                        $(".chatBox").css("max-height",$(window).height()-65);
-                    }
+                    //$(".chatContext").css("max-height",$(window).height());
+                    // if (top.location != location){
+                    //     $(".chatContext").css("max-height",$(window).height()-65);
+                    // }
                     //展示表情
                     var faces=placeFace();
                     $.each(faceTitles, function (index, item) {
