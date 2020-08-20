@@ -425,6 +425,10 @@
                     clearTimeout(titleTimer);
                     document.title = originTitle;
                 };
+                $('body').click(function(){
+                    clearTimeout(titleTimer);
+                    document.title = originTitle;
+                });
             },
             //表情点击事件
             faceIconClick(index){
