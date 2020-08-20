@@ -124,3 +124,18 @@ func GetVisitorMessage(c *gin.Context) {
 		"result":result,
 	})
 }
+func GetVisitorOnlines(c *gin.Context) {
+	users:=make([]map[string]string,0)
+	for uid,visitor :=range clientList{
+		userInfo := make(map[string]string)
+		userInfo["uid"] = uid
+		userInfo["name"] = visitor.name
+		userInfo["avator"] = visitor.avator
+		users=append(users,userInfo)
+	}
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":users,
+	})
+}

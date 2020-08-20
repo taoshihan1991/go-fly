@@ -72,6 +72,7 @@ func SendMessage(c *gin.Context) {
 			},
 		}
 		str, _ := json.Marshal(msg)
+		PushServerTcp(str)
 		conn.WriteMessage(websocket.TextMessage,str)
 	}
 	if cType=="visitor"{
@@ -95,6 +96,7 @@ func SendMessage(c *gin.Context) {
 			},
 		}
 		str, _ := json.Marshal(msg)
+		PushServerTcp(str)
 		for _,kefuConn:=range kefuConns{
 			kefuConn.WriteMessage(websocket.TextMessage,str)
 		}

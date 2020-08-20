@@ -18,12 +18,14 @@ import (
 )
 var (
 	port string
+	tcpport string
 	daemon bool
 	GoflyConfig config.Config
 )
 func init(){
 	//获取参数中的数据
-	flag.StringVar(&port, "port", "8080", "监听端口号")
+	flag.StringVar(&port, "port", "8081", "监听端口号")
+	flag.StringVar(&tcpport, "tcpport", "8082", "监听tcp端口号")
 	flag.BoolVar(&daemon, "d", false, "是否为守护进程模式")
 	flag.Parse()
 	if flag.NFlag() < 1 {
@@ -46,6 +48,7 @@ func init(){
 func main() {
 
 	baseServer := "0.0.0.0:"+port
+	tcpBaseServer := "0.0.0.0:"+tcpport
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
@@ -100,6 +103,7 @@ func main() {
 
 	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.RbacAuth,  controller.MysqlGetConf)
 	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.RbacAuth,  controller.MysqlSetConf)
+	engine.GET("/visitors_online", controller.GetVisitorOnlines)
 	engine.POST("/visitor",controller.PostVisitor)
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors",middleware.JwtApiMiddleware, controller.GetVisitors)
@@ -123,5 +127,8 @@ func main() {
 
 	logFile, _ := os.OpenFile("./fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
 	tools.RedirectStderr(logFile)
+
+	//tcp服务
+	go controller.NewTcpServer(tcpBaseServer)
 	engine.Run(baseServer)
 }
