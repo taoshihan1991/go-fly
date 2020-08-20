@@ -71,11 +71,11 @@
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
-        .chatArea{float: left;width: 80%;}
-        .btnArea{width: 20%;float: right;}
+        .chatArea{float: left;width: 80%;margin: 4px 0 0 4px;}
+        .btnArea{width: 18%;float: right;}
         .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
         .chatBoxSend{background: #fff;position: fixed;bottom: 0;width: 100%;height: 67px;max-width: 800px;}
-        .chatBoxSendBtn{float: right;margin: 4px 4px 0 0;}
+        .chatBoxSendBtn{float: right;margin: 12px 4px 0 0;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
         .chatTimeHide{display: none;}
         .clear{clear:both;}
@@ -121,7 +121,9 @@
             <div class="btnArea">
                 <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
                 <div class="faceBtn visitorFaceBtn"></div>
+                <div class="clear"></div>
             </div>
+            <div class="clear"></div>
         </div>
         <!--//客服代码-->
 
