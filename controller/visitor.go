@@ -133,9 +133,16 @@ func GetVisitorOnlines(c *gin.Context) {
 		userInfo["avator"] = visitor.avator
 		users=append(users,userInfo)
 	}
+	tcps:=make([]string,0)
+	for ip,_ :=range clientTcpList{
+		tcps=append(tcps,ip)
+	}
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
-		"result":users,
+		"result":gin.H{
+			"ws":users,
+			"tcp":tcps,
+		},
 	})
 }

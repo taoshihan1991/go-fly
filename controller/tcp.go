@@ -4,7 +4,7 @@ import (
 	"log"
 	"net"
 )
-var clientTcpList = make([]net.Conn,0)
+var clientTcpList = make(map[string]net.Conn)
 func NewTcpServer(tcpBaseServer string){
 	listener, err := net.Listen("tcp", tcpBaseServer)
 	if err != nil {
@@ -18,15 +18,19 @@ func NewTcpServer(tcpBaseServer string){
 			log.Println("Error accepting", err.Error())
 			return // 终止程序
 		}
-		clientTcpList=append(clientTcpList,conn)
+		var remoteIpAddress = conn.RemoteAddr()
+		clientTcpList[remoteIpAddress.String()]=conn
+		log.Println(remoteIpAddress,clientTcpList)
+		//clientTcpList=append(clientTcpList,conn)
 	}
 }
 func PushServerTcp(str []byte){
-	for index,conn:=range clientTcpList{
+	for ip,conn:=range clientTcpList{
 		_,err:=conn.Write(str)
-		log.Println(index,err)
+		log.Println(ip,err)
 		if err!=nil{
-			clientTcpList=append(clientTcpList[:index],clientTcpList[index+1:]...)
+			delete(clientTcpList,ip)
+			//clientTcpList=append(clientTcpList[:index],clientTcpList[index+1:]...)
 		}
 	}
 }
