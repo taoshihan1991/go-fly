@@ -104,6 +104,7 @@ func main() {
 	engine.GET("/mysql",middleware.JwtApiMiddleware,middleware.RbacAuth,  controller.MysqlGetConf)
 	engine.POST("/mysql",middleware.JwtApiMiddleware,middleware.RbacAuth,  controller.MysqlSetConf)
 	engine.GET("/visitors_online", controller.GetVisitorOnlines)
+	engine.GET("/clear_online_tcp", controller.DeleteOnlineTcp)
 	engine.POST("/visitor",controller.PostVisitor)
 	engine.GET("/visitor",middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors",middleware.JwtApiMiddleware, controller.GetVisitors)

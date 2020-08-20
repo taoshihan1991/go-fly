@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"log"
 	"net"
 )
@@ -29,8 +30,22 @@ func PushServerTcp(str []byte){
 		_,err:=conn.Write(str)
 		log.Println(ip,err)
 		if err!=nil{
+			conn.Close()
 			delete(clientTcpList,ip)
 			//clientTcpList=append(clientTcpList[:index],clientTcpList[index+1:]...)
 		}
 	}
+}
+func DeleteOnlineTcp(c *gin.Context) {
+	ip:=c.Query("ip")
+	for ipkey,conn :=range clientTcpList{
+		if ip==ipkey{
+			conn.Close()
+			delete(clientTcpList,ip)
+		}
+	}
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+	})
 }
