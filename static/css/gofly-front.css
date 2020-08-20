@@ -47,3 +47,16 @@
     padding: 0!important;
     transition: .6s ease-in-out!important;
 }
+
+@-webkit-keyframes bounce-up {
+    25% {-webkit-transform: translateY(6px);}
+    50%, 100% {-webkit-transform: translateY(0);}
+    75% {-webkit-transform: translateY(-6px);}
+}
+
+@keyframes bounce-up {
+    25% {transform: translateY(6px);}
+    50%, 100% {transform: translateY(0);}
+    75% {transform: translateY(-6px);}
+}
+.animateUpDown{ -webkit-animation: bounce-up 1.4s linear infinite;animation: bounce-up 1.4s linear infinite;}

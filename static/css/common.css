@@ -90,3 +90,16 @@
     padding: 4px 2px;
     text-align: center;
 }
+
+@-webkit-keyframes bounce-up {
+    25% {-webkit-transform: translateY(10px);}
+    50%, 100% {-webkit-transform: translateY(0);}
+    75% {-webkit-transform: translateY(-10px);}
+}
+
+@keyframes bounce-up {
+    25% {transform: translateY(10px);}
+    50%, 100% {transform: translateY(0);}
+    75% {transform: translateY(-10px);}
+}
+.animate-bounce-up{ -webkit-animation: bounce-up 1.4s linear infinite;animation: bounce-up 1.4s linear infinite;}
