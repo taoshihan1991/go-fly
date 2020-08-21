@@ -25,3 +25,28 @@ func QuickSort(arr *[]int,left int,right int){
 	QuickSort(arr,left,privot-1)
 	QuickSort(arr,privot+1,right)
 }
+//快速排序2
+func QuickSort2(arr *[]int,left int,right int){
+	if left>= right{
+		return
+	}
+	privot:=(*arr)[left]
+	i:=left
+	j:=right
+	for i<j{
+		for i<j && (*arr)[j]>privot{
+			j--
+		}
+		for i<j && (*arr)[i]<=privot{
+			i++
+		}
+		temp:=(*arr)[i]
+		(*arr)[i]=(*arr)[j]
+		(*arr)[j]=temp
+	}
+	(*arr)[left]=(*arr)[i]
+	(*arr)[i]=privot
+
+	QuickSort(arr,left,i-1)
+	QuickSort(arr,i+1,right)
+}
