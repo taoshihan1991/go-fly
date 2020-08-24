@@ -186,7 +186,7 @@
                 if (redata.type == "kfOnline") {
                     let msg = redata.data
                     guest.to_id=msg.id;
-                    this.chatTitle=msg.name+",为您服务!"
+                    this.chatTitle=msg.name+",正在与您沟通!"
                     $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                     this.scrollBottom();
                 }
@@ -374,7 +374,7 @@
                             setTimeout(function () {
                                 _this.msgList.push(content);
                                 _this.scrollBottom();
-                            }, 2000);
+                            }, 4000);
                             ;
                         }
                     });

@@ -60,6 +60,7 @@ func main() {
 	engine.GET("/login", tmpl.PageLogin)
 	//咨询界面
 	engine.GET("/chat_page",middleware.SetLanguage, tmpl.PageChat)
+	engine.GET("/chatIndex",middleware.SetLanguage, tmpl.PageChat)
 	//登陆验证
 	engine.POST("/check", controller.LoginCheckPass)
 	//框架界面
