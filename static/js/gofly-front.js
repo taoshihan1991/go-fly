@@ -1,6 +1,11 @@
 var launchButtonFlag=false;
 $("#launchButton").click(function() {
     if (launchButtonFlag) return;
+    var width=$(window).width();
+    if(width<768){
+        window.open(GOFLY_URL+'/chatIndex?refer='+window.location.host);
+        return;
+    }
     layer.open({
         type: 2,
         title: "Chat with us",
