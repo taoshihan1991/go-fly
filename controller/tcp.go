@@ -27,7 +27,8 @@ func NewTcpServer(tcpBaseServer string){
 }
 func PushServerTcp(str []byte){
 	for ip,conn:=range clientTcpList{
-		_,err:=conn.Write(str)
+		line:=append(str,[]byte("\r\n")...)
+		_,err:=conn.Write(line)
 		log.Println(ip,err)
 		if err!=nil{
 			conn.Close()
@@ -42,6 +43,10 @@ func DeleteOnlineTcp(c *gin.Context) {
 		if ip==ipkey{
 			conn.Close()
 			delete(clientTcpList,ip)
+		}
+		if ip=="all"{
+			conn.Close()
+			delete(clientTcpList,ipkey)
 		}
 	}
 	c.JSON(200, gin.H{

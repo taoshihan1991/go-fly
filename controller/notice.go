@@ -15,18 +15,25 @@ func GetNotice(c *gin.Context) {
 	kefuId:=c.Query("kefu_id")
 	lang,_:=c.Get("lang")
 	language:=config.CreateLanguage(lang.(string))
-
+	welcome:=models.FindWelcomeByUserId(kefuId)
 	user:=models.FindUser(kefuId)
-	info:=make(map[string]interface{})
-	info["nickname"]=user.Nickname
-	info["avator"]=user.Avator
-	info["name"]=user.Name
-	info["content"]=language.Notice
-	info["time"]=time.Now().Format("2006-01-02 15:04:05")
+	var content string
+	log.Println(welcome)
+	if welcome.Content!=""{
+		content=welcome.Content
+	}else {
+		content=language.Notice
+	}
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
-		"result":info,
+		"result":gin.H{
+			"nickname":user.Nickname,
+			"avator":user.Avator,
+			"name":user.Name,
+			"content":content,
+			"time":time.Now().Format("2006-01-02 15:04:05"),
+		},
 	})
 }
 var upgrader = websocket.Upgrader{}

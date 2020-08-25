@@ -1,97 +1,77 @@
 <html lang="cn">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="陶士涵">
-    <title>GO-FLY登录页</title>
+    <title>GO-FLY客服系统登录页</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
-	<!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-        html,
         body {
-            height: 100%;
-        }
-        body {
-            display: -ms-flexbox;
-            display: flex;
-            -ms-flex-align: center;
-            align-items: center;
-            padding-top: 40px;
-            padding-bottom: 40px;
             background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
         }
         .signin {
-            width: 100%;
-            max-width: 400px;
+            width: 350px;
             padding: 20px;
-            margin:0 auto;
+            margin:100px auto;
             background: #fff;
             -webkit-box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
             box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
         }
-        .chatBtn{
-            position: fixed;
-            right: 10px;
-            bottom: 10px;
+        .signin h1,.signin h2,.signin .copyright{
+            font-weight: normal;
+            color: #4d627b;
+            text-align: center;
+        }
+        .signin .loginTitle{
+            font-size: 24px;
+        }
+        .signin .loginDesc{
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .signin .loginDesc a{
+            color: #409EFF;
+            text-decoration: none;
+        }
+        .signin .copyright{
+            font-size: 12px;
+        }
+        @media (max-width: 768px) {
+            .signin{
+                width: 90%;
+                margin:40px auto;
+                background-color: #f5f5f5;
+                box-shadow:none;
+            }
         }
     </style>
 
 </head>
-<body class="text-center">
+<body>
 <div id="app" class="signin">
     <template>
-        <h1 class="h3 mb-3 font-weight-normal">登录页</h1>
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="管理员登陆" name="first">
-                <el-form :model="localAuth" :rules="rules" ref="localAuth">
-                    <el-form-item  prop="username">
-                        <el-input v-model="localAuth.username" placeholder="用户名"></el-input>
-                    </el-form-item>
-                    <el-form-item  prop="password">
-                        <el-input v-model="localAuth.password" placeholder="密码"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button :loading="loading" type="primary" @click="checkLocal('localAuth')">本地验证</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-tab-pane>
-            <el-tab-pane label="客服登陆" name="second">
-                <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
-                    <el-form-item  prop="username">
-                        <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
-                    </el-form-item>
-                    <el-form-item  prop="password">
-                        <el-input v-model="kefuForm.password" placeholder="密码"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button :loading="loading" type="primary" @click="kefuLogin('kefuForm')">客服登陆</el-button>
-                        <el-button  type="primary" @click="showKefu">访客咨询</el-button>
-                        <el-button  type="primary" @click="window.location.href='/docs/index.html'">接口文档</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-tab-pane>
-        </el-tabs>
-
-        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-
-        <!--客服代码-->
-        <div class="chatBtn">
-            <el-button  type="primary" @click="showKefu">在线咨询</el-button>
-        </div>
-        <!--//客服代码-->
-
-</template>           
+        <h1 class="loginTitle">账户登录</h1>
+        <h2 class="loginDesc">请联系<a href="/chatIndex?kefu_id=kefu2">开发者</a>获取登录账号</h2>
+        <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
+            <el-form-item  prop="username">
+                <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
+            </el-form-item>
+            <el-form-item  prop="password">
+                <el-input v-model="kefuForm.password" placeholder="密码"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button style="width: 100%" :loading="loading" type="primary" @click="kefuLogin('kefuForm')">登录</el-button>
+            </el-form-item>
+        </el-form>
+        <p class="copyright">陶士涵版权所有 &copy; 2020 </p>
+</template>
 </div>
 </body>
 <script>
@@ -168,55 +148,6 @@
             resetForm(formName) {
                 this.loading=false;
                 this.$refs[formName].resetFields();
-            },
-            //本地验证
-            checkLocal(formName){
-                let _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        var data={}
-                        data.type="local";
-                        data.username=_this.localAuth.username;
-                        data.password=_this.localAuth.password;
-                        _this.loading=true;
-                        $.post("/check",data,function(data){
-                            if(data.code==200){
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'success'
-                                });
-                                localStorage.setItem("token",data.result.token);
-                                localStorage.setItem("ref_token",data.result.ref_token);
-                                localStorage.setItem("create_time",data.result.create_time);
-                                window.location.href="/main";
-                            }else{
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'error'
-                                });
-                            }
-                            _this.loading=false;
-                        });
-                    } else {
-                        return false;
-                    }
-                });
-            },
-            //展示客服弹窗
-            showKefu:function () {
-			    $(".chatBtn").hide();
-                layer.open({
-                    type: 2,
-                    title: '在线咨询',
-                    shadeClose: true,
-                    shade: false,
-                    maxmin: true, //开启最大化最小化按钮
-                    area: ['550px', '520px'],
-                    content: ['/chat_page','no'],
-                    end: function(){
-                        $(".chatBtn").show();
-                    }
-                });
             },
 		},
         created: function () {

@@ -132,6 +132,7 @@
                         </div>
                         <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"></el-input>
                         <div class="faceBtn"></div>
+                        <div class="imageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
                         <el-button class="floatRight" type="primary" v-on:click="chatToUser">发送</el-button>
                         <div class="clear"></div>
                     </div>
@@ -574,6 +575,40 @@
             faceIconClick(index){
                 $('.faceBox').hide();
                 this.messageContent+="face"+this.face[index].name;
+            },
+            //上传图片
+            uploadImg (url){
+                let _this=this;
+                $('#uploadImg').after('<input type="file" id="uploadImgFile" name="file" style="display:none" >');
+                $("#uploadImgFile").click();
+                $("#uploadImgFile").change(function (e) {
+                    var formData = new FormData();
+                    var file = $("#uploadImgFile")[0].files[0];
+                    formData.append("imgfile",file); //传给后台的file的key值是可以自己定义的
+                    filter(file) && $.ajax({
+                        url: url || '',
+                        type: "post",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'JSON',
+                        mimeType: "multipart/form-data",
+                        success: function (res) {
+                            if(res.code!=200){
+                                _this.$message({
+                                    message: res.msg,
+                                    type: 'error'
+                                });
+                            }else{
+                                _this.messageContent+='img[/' + res.result.path + ']';
+                                _this.chatToUser();
+                            }
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+                });
             },
        },
         created: function () {

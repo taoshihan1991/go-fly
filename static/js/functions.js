@@ -73,8 +73,24 @@ function replaceContent (content) {// 转义聊天内容中的特殊字符
             var alt = face.replace(/^face/g, '');
             return '<img alt="' + alt + '" title="' + alt + '" src="' + faces[alt] + '">';
         })
+        .replace(/img\[([^\s\[\]]+?)\]/g, function (face) {  // 转义图片
+            var src = face.replace(/^img\[/g, '').replace(/\]/g, '');;
+            return '<img  src="' + src + '" style="max-width: 100%"/>';
+        })
         .replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') // 转移HTML代码
         .replace(/\n/g, '<br>') // 转义换行
 
     return content;
+}
+
+function filter (obj){
+    var imgType = ["image/jpeg","image/png","image/jpg"];
+    var filetypes = imgType;
+    var isnext = false;
+    for (var i = 0; i < filetypes.length; i++) {
+        if (filetypes[i] == obj.type) {
+            return true;
+        }
+    }
+    return false;
 }

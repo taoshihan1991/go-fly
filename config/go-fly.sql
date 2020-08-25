@@ -64,3 +64,13 @@ CREATE TABLE `role` (
  `name` varchar(100) NOT NULL DEFAULT '',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+DROP TABLE IF EXISTS `welcome`;
+CREATE TABLE `welcome` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+ `user_id` varchar(100) NOT NULL DEFAULT '',
+ `content` varchar(500) NOT NULL DEFAULT '',
+ `is_default` tinyint(3) unsigned NOT NULL DEFAULT '0',
+ `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
