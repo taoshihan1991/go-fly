@@ -53,6 +53,7 @@ func main() {
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
 	engine.Static("/static", "./static")
+
 	//首页
 	engine.GET("/", controller.Index)
 	engine.GET("/index", tmpl.PageIndex)
@@ -75,6 +76,8 @@ func main() {
 	engine.GET("/messages", controller.GetVisitorMessage)
 	//发送单条消息
 	engine.POST("/message",controller.SendMessage)
+	//上传文件
+	engine.POST("/uploadimg",controller.UploadImg)
 	//获取未读消息数
 	engine.GET("/message_status",controller.GetVisitorMessage)
 	//设置消息已读
