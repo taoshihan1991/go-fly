@@ -2,9 +2,7 @@
 <div id="app" style="width:100%">
     <template>
         <el-container v-loading.fullscreen.lock="fullscreenLoading">
-            <el-aside>
                 {{template "setting_left" .}}
-            </el-aside>
 
             <el-main class="mainMain">
                 <el-button style="margin-bottom: 10px;" @click="addKefu" type="primary" size="small">添加客服</el-button>

@@ -155,3 +155,22 @@
     75% {transform: translateY(-10px);}
 }
 .animate-bounce-up{ -webkit-animation: bounce-up 1.4s linear infinite;animation: bounce-up 1.4s linear infinite;}
+.mainLogo{
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+.mainVersion{
+    margin-left: 5px;
+    font-size: 12px;
+}
+.el-submenu__title i{
+    color: #fff;
+}
+.el-container{
+    height: 100%;
+}
+.el-aside{
+    height: 100%;
+    background: #222d32;
+}

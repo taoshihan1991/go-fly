@@ -1,5 +1,10 @@
 {{define "setting_left"}}
-<el-menu default-active="{{.tab_index}}" :default-openeds="openIndex">
+<el-aside width="230px">
+<el-menu
+        background-color="#222d32"
+        text-color="#b8c7ce"
+        active-text-color="#fff"
+        default-active="{{.tab_index}}" :default-openeds="openIndex">
     <el-submenu index="1">
         <template slot="title">
             <i class="el-icon-s-custom"></i>
@@ -34,4 +39,5 @@
         </el-menu-item-group>
     </el-submenu>
 </el-menu>
+</el-aside>
 {{end}}
