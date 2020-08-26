@@ -579,7 +579,7 @@
             //上传图片
             uploadImg (url){
                 let _this=this;
-                $('#uploadImg').after('<input type="file" id="uploadImgFile" name="file" style="display:none" >');
+                $('#uploadImg').after('<input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" id="uploadImgFile" name="file" style="display:none" >');
                 $("#uploadImgFile").click();
                 $("#uploadImgFile").change(function (e) {
                     var formData = new FormData();
