@@ -1,2 +1,0 @@
-INSERT INTO `user` (`id`, `name`, `password`, `nickname`, `created_at`, `updated_at`, `deleted_at`, `avator`) VALUES
-(null, 'kefu2', '202cb962ac59075b964b07152d234b70', '小白菜', '2020-06-28 03:32:41', '2020-06-28 03:32:41', NULL, 'https://www.wolive.cc/assets/upload/3.jpg');

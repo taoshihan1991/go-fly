@@ -8,7 +8,8 @@ CREATE TABLE `user` (
  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `deleted_at` timestamp NULL DEFAULT NULL,
  `avator` varchar(100) NOT NULL DEFAULT '',
- PRIMARY KEY (`id`)
+ PRIMARY KEY (`id`),
+ KEY `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 TRUNCATE TABLE `user`;
 INSERT INTO `user` (`id`, `name`, `password`, `nickname`, `created_at`, `updated_at`, `deleted_at`, `avator`) VALUES
@@ -48,7 +49,7 @@ CREATE TABLE `message` (
  PRIMARY KEY (`id`),
  KEY `kefu_id` (`kefu_id`),
  KEY `visitor_id` (`visitor_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
@@ -56,14 +57,24 @@ CREATE TABLE `user_role` (
  `user_id` int(11) NOT NULL DEFAULT '0',
  `role_id` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 1);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
- `name` varchar(100) NOT NULL DEFAULT '',
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `method` varchar(100) NOT NULL DEFAULT '',
+  `path` varchar(2048) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
+(1, '普通客服', 'GET,POST', '/kefuinfo,/kefulist'),
+(2, '管理员', '*', '*');
+
+
 DROP TABLE IF EXISTS `welcome`;
 CREATE TABLE `welcome` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -73,4 +84,6 @@ CREATE TABLE `welcome` (
  `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`),
  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`) VALUES
+(1, 'kefu2', '本客服代码开源,欢迎star,开源地址:https://github.com/taoshihan1991/go-fly', 1, '2020-08-24 02:57:49');
