@@ -14,3 +14,8 @@ func FindWelcomeByUserId(userId interface{})Welcome{
 	DB.Where("user_id = ? and is_default=?", userId,1).First(&w)
 	return w
 }
+func FindWelcomesByUserId(userId interface{})[]Welcome{
+	var w []Welcome
+	DB.Where("user_id = ?", userId).Find(&w)
+	return w
+}

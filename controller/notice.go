@@ -36,6 +36,15 @@ func GetNotice(c *gin.Context) {
 		},
 	})
 }
+func GetNotices(c *gin.Context) {
+	kefuId,_:=c.Get("kefu_name")
+	welcomes:=models.FindWelcomesByUserId(kefuId)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":welcomes,
+	})
+}
 var upgrader = websocket.Upgrader{}
 var oldFolders map[string]int
 

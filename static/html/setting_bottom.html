@@ -63,6 +63,7 @@
             },
             roleList:[],
             roleDialog:false,
+            noticeList:[],
             roleForm:{
                 id:"",
                 name:"",
@@ -164,6 +165,11 @@
                 if(ACTION=="roles_list"){
                     this.sendAjax("/roles","get",{},function(result){
                         _this.roleList=result;
+                    });
+                }
+                if(ACTION=="setting_welcome"){
+                    this.sendAjax("/notices","get",{},function(result){
+                        _this.noticeList=result;
                     });
                 }
             },
