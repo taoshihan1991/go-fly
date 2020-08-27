@@ -1,5 +1,5 @@
 {{define "setting_left"}}
-<el-aside width="230px">
+<el-aside width="200px">
 <el-menu
         background-color="#222d32"
         text-color="#b8c7ce"
@@ -11,8 +11,8 @@
             <span>账户设置</span>
         </template>
         <el-menu-item-group>
-            <el-menu-item style="display:none" index="1-1" v-on:click="">智能回复</el-menu-item>
-
+            <el-menu-item index="1-1" v-on:click="openUrl('/setting')">主板</el-menu-item>
+            <el-menu-item index="1-2" v-on:click="openUrl('/setting_welcome')">问候语</el-menu-item>
         </el-menu-item-group>
     </el-submenu>
     <el-submenu index="3">
@@ -34,7 +34,7 @@
             <el-menu-item style="display:none" index="2-1">设置smtp</el-menu-item>
             <el-menu-item style="display:none" index="2-2">设置imap</el-menu-item>
             <el-menu-item style="display:none" index="2-3" v-on:click="openUrl('/setting')">设置登陆账号</el-menu-item>
-            <el-menu-item index="2-4"  v-on:click="openUrl('/setting_mysql')">设置mysql</el-menu-item>
+            <el-menu-item style="display:none" index="2-4"  v-on:click="openUrl('/setting_mysql')">设置mysql</el-menu-item>
             <el-menu-item index="2-5"  v-on:click="openUrl('/setting_deploy')">设置网页部署</el-menu-item>
         </el-menu-item-group>
     </el-submenu>

@@ -11,6 +11,13 @@ func PageSetting(c *gin.Context) {
 		"action":"setting",
 	})
 }
+//设置欢迎
+func PageSettingWelcome(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_welcome.html", gin.H{
+		"tab_index":"1-1",
+		"action":"setting_welcome",
+	})
+}
 //设置mysql
 func PageSettingMysql(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting_mysql.html", gin.H{

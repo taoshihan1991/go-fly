@@ -98,6 +98,8 @@ func main() {
 	engine.GET("/roles_list", tmpl.PageRoleList)
 	engine.POST("/role",middleware.JwtApiMiddleware,middleware.RbacAuth, controller.PostRole)
 
+	//欢迎语
+	engine.GET("/setting_welcome", tmpl.PageSettingWelcome)
 	//网页部署
 	engine.GET("/setting_deploy", tmpl.PageSettingDeploy)
 	//邮箱列表

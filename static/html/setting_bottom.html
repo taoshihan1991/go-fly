@@ -7,7 +7,7 @@
         el: '#app',
         delimiters:["<{","}>"],
         data: {
-            fullscreenLoading:true,
+            fullscreenLoading:false,
             openIndex:[1],
             account: {
                 username: "",
@@ -288,9 +288,9 @@
             }
         },
         created: function () {
-            if(ACTION=="setting"){
-                this.showNotice();
-            }
+            // if(ACTION=="setting"){
+            //     this.showNotice();
+            // }
             this.initInfo();
         }
     })

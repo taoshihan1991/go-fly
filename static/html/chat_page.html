@@ -372,7 +372,7 @@
                             let content = {}
                             content.avator = msg.avator;
                             content.name = msg.nickname;
-                            content.content = msg.content;
+                            content.content = replaceContent(msg.content);
                             content.is_kefu = false;
                             content.time = msg.time;
                             setTimeout(function () {

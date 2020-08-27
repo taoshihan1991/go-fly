@@ -5,19 +5,28 @@
 
             {{template "setting_left" .}}
 
-            <el-main class="mainMain">
-                <el-form :model="account" :rules="rules" ref="account"  label-width="120px">
-                    <el-form-item label="用户名" prop="username">
-                        <el-input v-model="account.username"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码" prop="password">
-                        <el-input v-model="account.password"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="setAccount('account')">立即创建</el-button>
-                        <el-button @click="resetForm('account')">取消</el-button>
-                    </el-form-item>
-                </el-form>
+            <el-main class="mainMain settingMain">
+                <h2 class="textDark">数据总览</h2>
+                <el-row :gutter="10">
+                    <el-col :span="8">
+                        <div class="smallBox bgInfo">
+                            <h3>15000</h3>
+                            <p>总访客数</p>
+                        </div>
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="smallBox bgSuccess">
+                            <h3>15000</h3>
+                            <p>总消息数</p>
+                        </div>
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="smallBox bgDanger">
+                            <h3>15000</h3>
+                            <p>当前会话数</p>
+                        </div>
+                    </el-col>
+                </el-row>
             </el-main>
 
         </el-container>
