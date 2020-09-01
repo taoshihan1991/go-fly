@@ -118,6 +118,7 @@ func main() {
 	engine.GET("/statistics",middleware.JwtApiMiddleware, controller.GetStatistics)
 	//前台接口
 	engine.GET("/notice",middleware.SetLanguage, controller.GetNotice)
+	engine.GET("/notices",middleware.JwtApiMiddleware, controller.GetNotices)
 	//前台引入js接口
 	engine.GET("/webjs", tmpl.PageWebJs)
 	//前台引入css接口
