@@ -63,6 +63,7 @@
             },
             roleList:[],
             roleDialog:false,
+            noticeList:[],
             roleForm:{
                 id:"",
                 name:"",
@@ -168,8 +169,13 @@
                     });
                 }
                 if(ACTION=="setting"){
-                    this.sendAjax("/statistics","get",{},function(result){
-                        _this.statistics=result;
+                    this.sendAjax("/statistics","get",{},function(result) {
+                        _this.statistics = result;
+                    });
+                }
+                if(ACTION=="setting_welcome"){
+                    this.sendAjax("/notices","get",{},function(result){
+                        _this.noticeList=result;
                     });
                 }
             },
