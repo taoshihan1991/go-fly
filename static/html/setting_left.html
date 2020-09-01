@@ -11,8 +11,8 @@
             <span>账户设置</span>
         </template>
         <el-menu-item-group>
-            <el-menu-item index="1-1" v-on:click="openUrl('/setting')">主板</el-menu-item>
-            <el-menu-item index="1-2" v-on:click="openUrl('/setting_welcome')">问候语</el-menu-item>
+            <el-menu-item index="1-1" v-on:click="openUrl('/setting')">统计信息</el-menu-item>
+            <el-menu-item index="1-2" v-on:click="openUrl('/setting_welcome')">欢迎语</el-menu-item>
         </el-menu-item-group>
     </el-submenu>
     <el-submenu index="3">
@@ -21,7 +21,7 @@
             <span>权限设置</span>
         </template>
         <el-menu-item-group>
-            <el-menu-item index="1-2"  v-on:click="openUrl('/setting_kefu_list')">用户管理</el-menu-item>
+            <el-menu-item index="3-2"  v-on:click="openUrl('/setting_kefu_list')">用户管理</el-menu-item>
             <el-menu-item index="3-1"  v-on:click="openUrl('/roles_list')">角色管理</el-menu-item>
         </el-menu-item-group>
     </el-submenu>

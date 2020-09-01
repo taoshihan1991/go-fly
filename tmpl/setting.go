@@ -7,14 +7,14 @@ import (
 //设置界面
 func PageSetting(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting.html", gin.H{
-		"tab_index":"2-3",
+		"tab_index":"1-1",
 		"action":"setting",
 	})
 }
 //设置欢迎
 func PageSettingWelcome(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting_welcome.html", gin.H{
-		"tab_index":"1-1",
+		"tab_index":"1-2",
 		"action":"setting_welcome",
 	})
 }
@@ -42,7 +42,7 @@ func PageWebCss(c *gin.Context){
 }
 func PageKefuList(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting_kefu_list.html", gin.H{
-		"tab_index":"1-2",
+		"tab_index":"3-2",
 		"action":"setting_kefu_list",
 	})
 }

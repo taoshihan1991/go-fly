@@ -69,6 +69,7 @@
                 method:"",
                 path:"",
             },
+            statistics:{},
         },
         methods: {
             //提交表单
@@ -164,6 +165,11 @@
                 if(ACTION=="roles_list"){
                     this.sendAjax("/roles","get",{},function(result){
                         _this.roleList=result;
+                    });
+                }
+                if(ACTION=="setting"){
+                    this.sendAjax("/statistics","get",{},function(result){
+                        _this.statistics=result;
                     });
                 }
             },

@@ -31,3 +31,17 @@ func MainCheckAuth(c *gin.Context) {
 		},
 	})
 }
+func GetStatistics(c *gin.Context) {
+	visitors:=models.CountVisitors()
+	message:=models.CountMessage()
+	session:=len(clientList)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":gin.H{
+			"visitors":visitors,
+			"message":message,
+			"session":session,
+		},
+	})
+}

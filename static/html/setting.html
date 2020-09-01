@@ -10,19 +10,19 @@
                 <el-row :gutter="10">
                     <el-col :span="8">
                         <div class="smallBox bgInfo">
-                            <h3>15000</h3>
+                            <h3  v-html="statistics.visitors"></h3>
                             <p>总访客数</p>
                         </div>
                     </el-col>
                     <el-col :span="8">
                         <div class="smallBox bgSuccess">
-                            <h3>15000</h3>
+                            <h3  v-html="statistics.message"></h3>
                             <p>总消息数</p>
                         </div>
                     </el-col>
                     <el-col :span="8">
                         <div class="smallBox bgDanger">
-                            <h3>15000</h3>
+                            <h3 v-html="statistics.session"></h3>
                             <p>当前会话数</p>
                         </div>
                     </el-col>

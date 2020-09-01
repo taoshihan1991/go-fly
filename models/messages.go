@@ -35,3 +35,9 @@ func FindUnreadMessageNumByVisitorId(visitor_id string)uint{
 	DB.Where("visitor_id=? and status=?",visitor_id,"unread").Count(&count)
 	return count
 }
+//查询条数
+func CountMessage()uint{
+	var count uint
+	DB.Model(&Message{}).Count(&count)
+	return count
+}
