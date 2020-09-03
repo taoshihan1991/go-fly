@@ -60,10 +60,15 @@
                 password:"",
                 avator:"",
                 nickname:"",
+                role_name:"",
             },
             roleList:[],
             roleDialog:false,
             noticeList:[],
+            welcomeDialog:false,
+            welcomeForm: {
+                content: "",
+            },
             roleForm:{
                 id:"",
                 name:"",
@@ -146,6 +151,10 @@
                     showClose:true,
                 });
             },
+            addWelcome(){
+                this.welcomeForm.content="";
+                this.welcomeDialog=true;
+            },
             //初始化数据
             initInfo(){
                 let _this=this;
@@ -161,6 +170,9 @@
                 if(ACTION=="setting_kefu_list"){
                     this.sendAjax("/kefulist","get",{},function(result){
                         _this.kefuList=result;
+                    });
+                    this.sendAjax("/roles","get",{},function(result){
+                        _this.roleList=result;
                     });
                 }
                 if(ACTION=="roles_list"){

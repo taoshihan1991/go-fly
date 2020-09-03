@@ -11,14 +11,14 @@ type User struct {
 	Avator string `json:"avator"`
 	RoleName string `json:"role_name"`
 }
-func CreateUser(name string,password string,avator string,nickname string){
+func CreateUser(name string,password string,avator string,nickname string)uint{
 	user:=&User{
 		Name:name,
 		Password: password,
 		Avator:avator,
 		Nickname: nickname,
 	}
-	DB.Create(user)
+	return DB.Create(user).Value.(*User).ID
 }
 func UpdateUser(id string,name string,password string,avator string,nickname string){
 	user:=&User{
@@ -46,7 +46,7 @@ func DeleteUserById(id string){
 }
 func FindUsers()[]User{
 	var users []User
-	DB.Order("id desc").Find(&users)
+	DB.Select("user.*,role.name role_name").Joins("join user_role on user.id=user_role.user_id").Joins("join role on user_role.role_id=role.id").Order("user.id desc").Find(&users)
 	return users
 }
 func FindUserRole(query interface{},id interface{})User{

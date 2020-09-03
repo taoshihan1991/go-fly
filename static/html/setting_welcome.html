@@ -7,7 +7,7 @@
             <el-main class="mainMain">
                 <el-button style="margin-bottom: 10px;" @click="addWelcome" type="primary" size="small">添加欢迎</el-button>
                 <el-table
-                        :data="notices"
+                        :data="noticeList"
                         border
                         style="width: 100%">
                     <el-table-column
@@ -30,6 +30,21 @@
             </el-main>
 
         </el-container>
+        <el-dialog
+                title="欢迎"
+                :visible.sync="welcomeDialog"
+                width="30%"
+        >
+            <el-form ref="welcomeForm" :model="welcomeForm" :rules="rules" label-width="70px">
+                <el-form-item label="内容"  prop="content">
+                    <el-input v-model="welcomeForm.content"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="welcomeDialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitWelcomeForm('welcomeForm')">确 定</el-button>
+              </span>
+        </el-dialog>
     </template>
 
 </div>

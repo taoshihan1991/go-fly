@@ -26,6 +26,10 @@
                             label="客服昵称">
                     </el-table-column>
                     <el-table-column
+                            prop="role_name"
+                            label="角色">
+                    </el-table-column>
+                    <el-table-column
                             prop="created_at"
                             label="添加时间">
                     </el-table-column>
@@ -60,6 +64,12 @@
                     <el-select v-model="kefuForm.avator" placeholder="请选择头像">
                         <el-option :label="'头像'+item" :value="'/static/images/'+item+'.jpg'" v-for="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]" v-bind:key="item">
                             <el-avatar :size="30" :src="'/static/images/'+item+'.jpg'"></el-avatar>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="角色"  prop="avator">
+                    <el-select v-model="kefuForm.role_id" placeholder="请选择角色">
+                        <el-option :label="item.role_name" :value="item.role_id" v-for="item in roleList" v-bind:key="item.role_id">
                         </el-option>
                     </el-select>
                 </el-form-item>
