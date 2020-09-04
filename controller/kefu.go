@@ -62,6 +62,10 @@ func PostKefuInfo(c *gin.Context){
 			password=tools.Md5(password)
 		}
 		models.UpdateUser(id,name,password,avator,nickname)
+		roleIdInt,_:=strconv.Atoi(roleId)
+		uid,_:=strconv.Atoi(id)
+		models.DeleteRoleByUserId(uid)
+		models.CreateUserRole(uint(uid),uint(roleIdInt))
 	}
 
 	c.JSON(200, gin.H{
@@ -81,6 +85,7 @@ func GetKefuList(c *gin.Context){
 func DeleteKefuInfo(c *gin.Context){
 	kefuId := c.Query("id")
 	models.DeleteUserById(kefuId)
+	models.DeleteRoleByUserId(kefuId)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "删除成功",

@@ -20,3 +20,6 @@ func CreateUserRole(userId uint,roleId uint){
 	}
 	DB.Create(uRole)
 }
+func DeleteRoleByUserId(userId interface{}){
+	DB.Where("user_id = ?", userId).Delete(User_role{})
+}

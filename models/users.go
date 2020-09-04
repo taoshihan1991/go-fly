@@ -40,7 +40,7 @@ func FindUser(username string)User{
 }
 func FindUserById(id interface{})User{
 	var user User
-	DB.Select("user.*,role.name role_name").Joins("join user_role on user.id=user_role.user_id").Joins("join role on user_role.role_id=role.id").Where("user.id = ?", id).First(&user)
+	DB.Select("user.*,role.name role_name,role.id role_id").Joins("join user_role on user.id=user_role.user_id").Joins("join role on user_role.role_id=role.id").Where("user.id = ?", id).First(&user)
 	return user
 }
 func DeleteUserById(id string){
