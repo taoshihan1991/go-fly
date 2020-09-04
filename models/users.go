@@ -9,7 +9,8 @@ type User struct {
 	Password string `json:"password"`
 	Nickname string `json:"nickname"`
 	Avator string `json:"avator"`
-	RoleName string `json:"role_name"`
+	RoleName string `json:"role_name" sql:"-"`
+	RoleId string `json:"role_id" sql:"-"`
 }
 func CreateUser(name string,password string,avator string,nickname string)uint{
 	user:=&User{
@@ -18,7 +19,8 @@ func CreateUser(name string,password string,avator string,nickname string)uint{
 		Avator:avator,
 		Nickname: nickname,
 	}
-	return DB.Create(user).Value.(*User).ID
+	DB.Create(user)
+	return user.ID
 }
 func UpdateUser(id string,name string,password string,avator string,nickname string){
 	user:=&User{
@@ -38,7 +40,7 @@ func FindUser(username string)User{
 }
 func FindUserById(id interface{})User{
 	var user User
-	DB.Where("id = ?", id).First(&user)
+	DB.Select("user.*,role.name role_name").Joins("join user_role on user.id=user_role.user_id").Joins("join role on user_role.role_id=role.id").Where("user.id = ?", id).First(&user)
 	return user
 }
 func DeleteUserById(id string){

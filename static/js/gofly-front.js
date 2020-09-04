@@ -3,7 +3,7 @@ $("#launchButton").click(function() {
     if (launchButtonFlag) return;
     var width=$(window).width();
     if(width<768){
-        window.open(GOFLY_URL+'/chatIndex?refer='+window.location.host);
+        window.open(GOFLY_URL+'/chatIndex?refer='+window.document.title);
         return;
     }
     layer.open({
@@ -14,7 +14,7 @@ $("#launchButton").click(function() {
         area: ['520px', '530px'],
         offset: 'rb', //右下角弹出
         anim: 2,
-        content: [GOFLY_URL+'/chat_page?refer='+window.location.host, 'yes'], //iframe的url，no代表不显示滚动条
+        content: [GOFLY_URL+'/chatIndex?refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
         end: function(){
             launchButtonFlag=false;
             $(".launchButton").show();

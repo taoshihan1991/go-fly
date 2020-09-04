@@ -49,6 +49,7 @@
                 title="客服"
                 :visible.sync="kefuDialog"
                 width="30%"
+                top="0"
                 >
             <el-form ref="kefuForm" :model="kefuForm" :rules="rules" label-width="70px">
                 <el-form-item label="用户名"  prop="name">
@@ -67,7 +68,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="角色"  prop="avator">
+                <el-form-item label="角色"  prop="role_id">
                     <el-select v-model="kefuForm.role_id" placeholder="请选择角色">
                         <el-option :label="item.role_name" :value="item.role_id" v-for="item in roleList" v-bind:key="item.role_id">
                         </el-option>

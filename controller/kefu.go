@@ -46,6 +46,14 @@ func PostKefuInfo(c *gin.Context){
 	//插入新用户
 	if id==""{
 		uid:=models.CreateUser(name,tools.Md5(password),avator,nickname)
+		if uid==0{
+			c.JSON(200, gin.H{
+				"code": 400,
+				"msg":  "增加用户失败",
+				"result":"",
+			})
+			return
+		}
 		roleIdInt,_:=strconv.Atoi(roleId)
 		models.CreateUserRole(uid,uint(roleIdInt))
 	}else{

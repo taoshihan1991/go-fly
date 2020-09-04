@@ -184,7 +184,7 @@ setTimeout(function(){
         area: ['510px', '520px'],
         offset: 'rb', //右下角弹出
         anim: 2,
-        content: ['/chat_page?lang=en', 'no'], //iframe的url，no代表不显示滚动条
+        content: ['/chatIndex?lang=en&refer='+window.document.title, 'no'], //iframe的url，no代表不显示滚动条
         end: function(){
             launchButtonFlag=false;
             $(".launchButton").show();
