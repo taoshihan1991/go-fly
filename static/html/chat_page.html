@@ -366,20 +366,17 @@
             getNotice : function (){
                 let _this=this;
                     $.get("/notice?kefu_id="+guest.to_id+"&lang={{.Lang}}",function(res) {
-                        console.log(res);
+                        //debugger;
                         if (res.result != null) {
                             let msg = res.result;
-                            let content = {}
-                            content.avator = msg.avator;
-                            content.name = msg.nickname;
-                            content.content = replaceContent(msg.content);
-                            content.is_kefu = false;
-                            content.time = msg.time;
-                            setTimeout(function () {
-                                _this.msgList.push(content);
-                                _this.scrollBottom();
-                            }, 4000);
-                            ;
+                            for(let i=0;i<msg.length;i++){
+                                let content = msg[i];
+                                content.content = replaceContent(content.content);
+                                setTimeout(function () {
+                                    _this.msgList.push(content);
+                                    _this.scrollBottom();
+                                }, 5000*(i+1));
+                            }
                         }
                     });
             },

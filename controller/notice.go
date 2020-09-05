@@ -2,9 +2,9 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
@@ -13,27 +13,23 @@ import (
 )
 func GetNotice(c *gin.Context) {
 	kefuId:=c.Query("kefu_id")
-	lang,_:=c.Get("lang")
-	language:=config.CreateLanguage(lang.(string))
-	welcome:=models.FindWelcomeByUserId(kefuId)
+	welcomes:=models.FindWelcomesByUserId(kefuId)
 	user:=models.FindUser(kefuId)
-	var content string
-	log.Println(welcome)
-	if welcome.Content!=""{
-		content=welcome.Content
-	}else {
-		content=language.Notice
+	result:=make([]gin.H,0)
+	for _,welcome:=range welcomes{
+		h:=gin.H{
+			"name":user.Nickname,
+			"avator":user.Avator,
+			"is_kefu":false,
+			"content":welcome.Content,
+			"time":time.Now().Format("2006-01-02 15:04:05"),
+		}
+		result=append(result,h)
 	}
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
-		"result":gin.H{
-			"nickname":user.Nickname,
-			"avator":user.Avator,
-			"name":user.Name,
-			"content":content,
-			"time":time.Now().Format("2006-01-02 15:04:05"),
-		},
+		"result":result,
 	})
 }
 func GetNotices(c *gin.Context) {
@@ -43,6 +39,26 @@ func GetNotices(c *gin.Context) {
 		"code": 200,
 		"msg":  "ok",
 		"result":welcomes,
+	})
+}
+func PostNotice(c *gin.Context) {
+	kefuId,_:=c.Get("kefu_name")
+	content:=c.PostForm("content")
+	models.CreateWelcome(fmt.Sprintf("%s",kefuId),content)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":"",
+	})
+}
+func DelNotice(c *gin.Context) {
+	kefuId,_:=c.Get("kefu_name")
+	id:=c.Query("id")
+	models.DeleteWelcome(kefuId,id)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":"",
 	})
 }
 var upgrader = websocket.Upgrader{}

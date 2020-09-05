@@ -246,6 +246,22 @@
                     }
                 });
             },
+            //提交欢迎表单
+            submitWelcomeForm(formName){
+                let _this=this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.sendAjax("/notice","POST",_this.welcomeForm,function(result){
+                            _this.welcomeDialog=false;
+                            _this.sendAjax("/notices","get",{},function(result){
+                                _this.noticeList=result;
+                            });
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            },
             //编辑客服表单
             editKefuForm(formName){
                 let _this=this;
@@ -275,6 +291,16 @@
                     _this.kefuDialog=false;
                     _this.sendAjax("/kefulist","get",{},function(result){
                         _this.kefuList=result;
+                    });
+                });
+            },
+            //删除欢迎
+            deleteWelcome(id){
+                let _this=this;
+                this.sendAjax("/notice?id="+id,"DELETE",{id:id},function(result){
+                    _this.kefuDialog=false;
+                    _this.sendAjax("/notices","get",{},function(result){
+                        _this.noticeList=result;
                     });
                 });
             },

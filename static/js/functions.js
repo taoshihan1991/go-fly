@@ -94,3 +94,7 @@ function filter (obj){
     }
     return false;
 }
+function sleep(time) {
+    var startTime = new Date().getTime() + parseInt(time, 10);
+    while(new Date().getTime() < startTime) {}
+};
