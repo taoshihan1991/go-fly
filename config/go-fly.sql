@@ -53,25 +53,25 @@ CREATE TABLE `message` (
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` int(11) NOT  NULL AUTO_INCREMENT,
  `user_id` int(11) NOT NULL DEFAULT '0',
  `role_id` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUES
 (1, 1, 1),
-(2, 2, 2),
-(3, 3, 1);
+(2, 2, 2)
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `id` int(11) NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '',
   `method` varchar(100) NOT NULL DEFAULT '',
-  `path` varchar(2048) NOT NULL DEFAULT ''
+  `path` varchar(2048) NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
-(1, '普通客服', 'GET,POST', '/kefuinfo,/kefulist'),
+(1, '普通客服', 'GET', '/kefuinfo,/kefulist,/roles'),
 (2, '管理员', '*', '*');
 
 

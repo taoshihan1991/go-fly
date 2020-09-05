@@ -5,6 +5,7 @@ import (
 )
 
 type User_role struct{
+	ID     uint `gorm:"primary_key" json:"id"`
 	UserId string `json:"user_id"`
 	RoleId uint `json:"role_id"`
 }

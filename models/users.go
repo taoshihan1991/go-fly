@@ -48,7 +48,7 @@ func DeleteUserById(id string){
 }
 func FindUsers()[]User{
 	var users []User
-	DB.Select("user.*,role.name role_name").Joins("join user_role on user.id=user_role.user_id").Joins("join role on user_role.role_id=role.id").Order("user.id desc").Find(&users)
+	DB.Select("user.*,role.name role_name").Joins("left join user_role on user.id=user_role.user_id").Joins("left join role on user_role.role_id=role.id").Order("user.id desc").Find(&users)
 	return users
 }
 func FindUserRole(query interface{},id interface{})User{
