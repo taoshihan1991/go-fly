@@ -144,11 +144,16 @@
                                 <i class="el-icon-user"></i>
                                 <span slot="title">访客信息</span>
                             </el-menu-item>
-                            <el-menu-item>
-                                <i class="el-icon-s-tools"></i>
-                                <span slot="title">来源：<{visitor.refer}></span>
-                            </el-menu-item>
-                            <el-menu-item>
+
+                            <el-popover
+                                    ref="popover1"
+                                    placement="top"
+                                    title="加入黑名单"
+                                    width="300"
+                                    trigger="click"
+                                    :content="visitor.refer">
+                            </el-popover>
+                            <el-menu-item v-popover:popover1>
                                 <i class="el-icon-s-tools"></i>
                                 <span slot="title">ClientIP：<{visitor.source_ip}></span>
                             </el-menu-item>
@@ -159,6 +164,18 @@
                             <el-menu-item>
                                 <i class="el-icon-s-tools"></i>
                                 <span slot="title">城市：<{visitor.city}></span>
+                            </el-menu-item>
+                            <el-popover
+                                    ref="popover"
+                                    placement="top"
+                                    title="来源"
+                                    width="300"
+                                    trigger="hover"
+                                    :content="visitor.refer">
+                            </el-popover>
+                            <el-menu-item v-popover:popover>
+                                <i class="el-icon-s-tools"></i>
+                                <span slot="title" >来源：<{visitor.refer}></span>
                             </el-menu-item>
                             <el-menu-item>
                                 <i class="el-icon-s-tools"></i>
