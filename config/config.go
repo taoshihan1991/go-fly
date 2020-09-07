@@ -10,6 +10,7 @@ import (
 var(
 	PageSize uint=10
 	VisitorPageSize uint=8
+	Version = "0.1.2"
 )
 const Dir = "config/"
 const AccountConf = Dir + "account.json"

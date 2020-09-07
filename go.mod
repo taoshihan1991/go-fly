@@ -17,6 +17,7 @@ require (
 	github.com/gobuffalo/packr/v2 v2.5.1
 	github.com/gorilla/websocket v1.4.2
 	github.com/jinzhu/gorm v1.9.14
+	github.com/spf13/cobra v0.0.5
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.5.1

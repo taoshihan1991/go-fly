@@ -61,9 +61,9 @@
 ```
 
 
-3. 源码运行 go run main.go
+3. 源码运行 go run go-fly.go port 8081
 
-4. 源码打包 go build main.go
+4. 源码打包 go build go-fly.go
 
 ### nginx部署
 

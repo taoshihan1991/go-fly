@@ -1,10 +1,10 @@
-package main
+package cmd
 
 import (
-	"flag"
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/files"
-	"github.com/swaggo/gin-swagger"
+	"github.com/spf13/cobra"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/docs"
@@ -16,21 +16,26 @@ import (
 	"os/exec"
 	"path/filepath"
 )
-var (
+var(
 	port string
 	tcpport string
 	daemon bool
 	GoflyConfig config.Config
 )
-func init(){
-	//获取参数中的数据
-	flag.StringVar(&port, "port", "8081", "监听端口号")
-	flag.StringVar(&tcpport, "tcpport", "8082", "监听tcp端口号")
-	flag.BoolVar(&daemon, "d", false, "是否为守护进程模式")
-	flag.Parse()
-	if flag.NFlag() < 1 {
-		flag.PrintDefaults()
-	}
+var serverCmd = &cobra.Command{
+	Use:   "server",
+	Short: "example:go-fly server port 8081",
+	Example: "go-fly server -c config/",
+	Run: func(cmd *cobra.Command, args []string) {
+		run()
+	},
+}
+func init() {
+	serverCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "监听端口号")
+	serverCmd.PersistentFlags().StringVarP(&tcpport, "tcpport", "t", "8082", "监听tcp端口号")
+	serverCmd.PersistentFlags().BoolVarP(&daemon, "daemon", "d", false, "是否为守护进程模式")
+}
+func run(){
 	if daemon==true{
 		if os.Getppid() != 1{
 			// 将命令行参数中执行文件路径转换成可用路径
@@ -44,8 +49,6 @@ func init(){
 			os.Exit(0)
 		}
 	}
-}
-func main() {
 
 	baseServer := "0.0.0.0:"+port
 	tcpBaseServer := "0.0.0.0:"+tcpport
