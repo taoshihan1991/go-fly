@@ -65,6 +65,8 @@
 
 4. 源码打包 go build go-fly.go
 
+5. 导入数据库(会删除表清空数据) go run go-fly.go install
+
 ### nginx部署
 
 访问：https://gofly.sopans.com

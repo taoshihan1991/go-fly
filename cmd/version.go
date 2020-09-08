@@ -8,7 +8,7 @@ import (
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version number of go-fly",
+	Short: "example:go-fly version",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("go-fly "+config.Version)
 	},

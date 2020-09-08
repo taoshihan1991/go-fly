@@ -22,6 +22,9 @@ func init(){
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
 }
+func Execute(sql string){
+	DB.Exec(sql)
+}
 func CloseDB() {
 	defer DB.Close()
 }
