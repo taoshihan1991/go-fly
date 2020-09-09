@@ -201,3 +201,7 @@
     font-size: 24px;
     margin-bottom: 10px;
 }
+/*客服聊天主板*/
+.chatLeft .el-tabs__nav,.chatRight .el-tabs__nav {
+    margin-left: 20px;
+}

@@ -17,7 +17,6 @@
         .chatBg{min-height: 100%;background: #fff;border: solid 1px #e6e6e6;overflow: hidden;}
         .chatLeft{    margin-left: 4px;}
         .chatLeft .el-tabs__header{margin: 0;}
-        .chatLeft .el-tabs__nav{margin-left: 20px;}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
         .chatContext .el-row{margin-bottom: 5px;}
         .chatContext{position: relative;}
@@ -138,54 +137,53 @@
                     </div>
                 </el-col>
                 <el-col :span="6">
-                    <div   class="chatBg">
-                        <el-menu>
-                            <el-menu-item>
-                                <i class="el-icon-user"></i>
-                                <span slot="title">访客信息</span>
-                            </el-menu-item>
+                    <div   class="chatBg chatRight">
+                        <el-tabs v-model="rightTabActive">
+                            <el-tab-pane label="访客信息" name="visitorInfo">
+                                <el-menu>
+                                    <el-tooltip content="点击加入黑名单" placement="left">
+                                        <el-menu-item title="点击加入黑名单" style="padding-left:2px;">
+                                            <i class="el-icon-s-tools"></i>
+                                            <span slot="title">ClientIP：<{visitor.source_ip}></span>
+                                        </el-menu-item>
+                                    </el-tooltip>
+                                    <el-tooltip content="点击加入黑名单" placement="left">
+                                        <el-menu-item title="点击加入黑名单"  style="padding-left:2px;">
+                                            <i class="el-icon-s-tools"></i>
+                                            <span slot="title">IP：<{visitor.client_ip}></span>
+                                        </el-menu-item>
+                                    </el-tooltip>
+                                    <el-menu-item style="padding-left:2px;">
+                                        <i class="el-icon-s-tools"></i>
+                                        <span slot="title">城市：<{visitor.city}></span>
+                                    </el-menu-item>
+                                    <el-popover
+                                            ref="popover"
+                                            placement="top"
+                                            title="来源"
+                                            width="300"
+                                            trigger="hover"
+                                            :content="visitor.refer">
+                                    </el-popover>
+                                    <el-menu-item v-popover:popover style="padding-left:2px;">
+                                        <i class="el-icon-s-tools"></i>
+                                        <span slot="title" >来源：<{visitor.refer}></span>
+                                    </el-menu-item>
+                                    <el-menu-item style="padding-left:2px;">
+                                        <i class="el-icon-s-tools"></i>
+                                        <span slot="title">时间：<{visitor.created_at}></span>
+                                    </el-menu-item>
+                                    <el-menu-item style="padding-left:2px;">
+                                        <i class="el-icon-s-tools"></i>
+                                        <span slot="title">状态：<{visitor.status}></span>
+                                    </el-menu-item>
+                                </el-menu>
+                            </el-tab-pane>
+                            <el-tab-pane label="黑名单" name="blackList">
+                                待开发
+                            </el-tab-pane>
+                        </el-tabs>
 
-                            <el-popover
-                                    ref="popover1"
-                                    placement="top"
-                                    title="加入黑名单"
-                                    width="300"
-                                    trigger="click"
-                                    :content="visitor.refer">
-                            </el-popover>
-                            <el-menu-item v-popover:popover1>
-                                <i class="el-icon-s-tools"></i>
-                                <span slot="title">ClientIP：<{visitor.source_ip}></span>
-                            </el-menu-item>
-                            <el-menu-item>
-                                <i class="el-icon-s-tools"></i>
-                                <span slot="title">IP：<{visitor.client_ip}></span>
-                            </el-menu-item>
-                            <el-menu-item>
-                                <i class="el-icon-s-tools"></i>
-                                <span slot="title">城市：<{visitor.city}></span>
-                            </el-menu-item>
-                            <el-popover
-                                    ref="popover"
-                                    placement="top"
-                                    title="来源"
-                                    width="300"
-                                    trigger="hover"
-                                    :content="visitor.refer">
-                            </el-popover>
-                            <el-menu-item v-popover:popover>
-                                <i class="el-icon-s-tools"></i>
-                                <span slot="title" >来源：<{visitor.refer}></span>
-                            </el-menu-item>
-                            <el-menu-item>
-                                <i class="el-icon-s-tools"></i>
-                                <span slot="title">时间：<{visitor.created_at}></span>
-                            </el-menu-item>
-                            <el-menu-item>
-                                <i class="el-icon-s-tools"></i>
-                                <span slot="title">状态：<{visitor.status}></span>
-                            </el-menu-item>
-                        </el-menu>
                     </div>
                 </el-col>
             </el-row>
@@ -201,6 +199,7 @@
         data: {
             fullscreenLoading:true,
             leftTabActive:"first",
+            rightTabActive:"visitorInfo",
             users:[],
             usersMap:[],
             server:getWsBaseUrl()+"/chat_server",
