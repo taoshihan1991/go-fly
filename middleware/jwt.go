@@ -36,9 +36,10 @@ func JwtApiMiddleware(c *gin.Context){
 		c.Abort()
 	}
 	c.Set("user",userinfo["name"])
-	if userinfo["type"]=="kefu"{
+	//log.Println(userinfo)
+	//if userinfo["type"]=="kefu"{
 		c.Set("kefu_id",userinfo["kefu_id"])
 		c.Set("kefu_name",userinfo["name"])
 		c.Set("role_id",userinfo["role_id"])
-	}
+	//}
 }

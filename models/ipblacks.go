@@ -8,7 +8,7 @@ type Ipblack struct{
 	KefuId string `json:"kefu_id"`
 	CreateAt time.Time `json:"create_at"`
 }
-func CreateIpblack(ip string,kefuId interface{})uint{
+func CreateIpblack(ip string,kefuId string)uint{
 	black:=&Ipblack{
 		IP:ip,
 		KefuId: kefuId,
