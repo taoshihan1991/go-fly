@@ -142,13 +142,13 @@
                             <el-tab-pane label="访客信息" name="visitorInfo">
                                 <el-menu>
                                     <el-tooltip content="点击加入黑名单" placement="left">
-                                        <el-menu-item title="点击加入黑名单" style="padding-left:2px;">
+                                        <el-menu-item v-on:click="addIpblack(visitor.source_ip)" title="点击加入黑名单" style="padding-left:2px;">
                                             <i class="el-icon-s-tools"></i>
                                             <span slot="title">ClientIP：<{visitor.source_ip}></span>
                                         </el-menu-item>
                                     </el-tooltip>
                                     <el-tooltip content="点击加入黑名单" placement="left">
-                                        <el-menu-item title="点击加入黑名单"  style="padding-left:2px;">
+                                        <el-menu-item v-on:click="addIpblack(visitor.client_ip)" title="点击加入黑名单"  style="padding-left:2px;">
                                             <i class="el-icon-s-tools"></i>
                                             <span slot="title">IP：<{visitor.client_ip}></span>
                                         </el-menu-item>
@@ -624,6 +624,30 @@
                             console.log(data);
                         }
                     });
+                });
+            },
+            addIpblack(ip){
+                let _this=this;
+                $.ajax({
+                    type:"post",
+                    url:"/ipblack",
+                    data:{ip:ip},
+                    headers:{
+                        "token":localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                        if(data.code!=200){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }else{
+                            _this.$message({
+                                message: data.msg,
+                                type: 'success'
+                            });
+                        }
+                    }
                 });
             },
        },

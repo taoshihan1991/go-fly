@@ -49,4 +49,5 @@ func InitApiRouter(engine *gin.Engine){
 	engine.POST("/notice",middleware.JwtApiMiddleware, controller.PostNotice)
 	engine.DELETE("/notice",middleware.JwtApiMiddleware, controller.DelNotice)
 	engine.GET("/notices",middleware.JwtApiMiddleware, controller.GetNotices)
+	engine.POST("/ipblack",controller.PostIpblack)
 }
