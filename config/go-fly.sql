@@ -60,7 +60,7 @@ CREATE TABLE `user_role` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUES
 (1, 1, 1),
-(2, 2, 2)
+(2, 2, 2);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -74,7 +74,6 @@ INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
 (1, '普通客服', 'GET', '/kefuinfo,/kefulist,/roles'),
 (2, '管理员', '*', '*');
 
-
 DROP TABLE IF EXISTS `welcome`;
 CREATE TABLE `welcome` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -87,3 +86,12 @@ CREATE TABLE `welcome` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`) VALUES
 (1, 'kefu2', '本客服代码开源,欢迎star,开源地址:https://github.com/taoshihan1991/go-fly', 1, '2020-08-24 02:57:49');
+
+DROP TABLE IF EXISTS `ipblack`;
+CREATE TABLE `ipblack` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `ip` varchar(100) NOT NULL DEFAULT '',
+ `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `kefu_id` varchar(100) NOT NULL DEFAULT '',
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
