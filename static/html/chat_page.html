@@ -246,7 +246,6 @@
                         });
                         return;
                     }
-                    _this.messageContent = "";
                     let content = {}
                     content.avator=guest.avator;
                     content.content = replaceContent(_this.messageContent);
@@ -256,6 +255,7 @@
                     _this.msgList.push(content);
                     _this.saveHistory(content);
                     _this.scrollBottom();
+                    _this.messageContent = "";
                 });
 
             },
