@@ -17,3 +17,8 @@ func CreateIpblack(ip string,kefuId string)uint{
 	DB.Create(black)
 	return black.ID
 }
+func FindIp(ip string)Ipblack{
+	var ipblack Ipblack
+	DB.Where("ip = ?", ip).First(&ipblack)
+	return ipblack
+}

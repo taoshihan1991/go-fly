@@ -53,6 +53,13 @@ func PageRoleList(c *gin.Context) {
 		"action":"roles_list",
 	})
 }
+//角色列表
+func PageIpblack(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_ipblack.html", gin.H{
+		"tab_index":"4-5",
+		"action":"setting_ipblack",
+	})
+}
 type SettingHtml struct {
 	*CommonHtml
 	Username, Password string

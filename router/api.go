@@ -16,9 +16,9 @@ func InitApiRouter(engine *gin.Engine){
 	//获取消息
 	engine.GET("/messages", controller.GetVisitorMessage)
 	//发送单条消息
-	engine.POST("/message",controller.SendMessage)
+	engine.POST("/message",middleware.Ipblack,controller.SendMessage)
 	//上传文件
-	engine.POST("/uploadimg",controller.UploadImg)
+	engine.POST("/uploadimg",middleware.Ipblack,controller.UploadImg)
 	//获取未读消息数
 	engine.GET("/message_status",controller.GetVisitorMessage)
 	//设置消息已读

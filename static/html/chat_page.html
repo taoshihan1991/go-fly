@@ -237,19 +237,27 @@
                 mes.from_id = guest.id;
                 mes.to_id = guest.to_id;
                 mes.content = this.messageContent;
-                $.post("/message",mes,function(){
+                //发送消息
+                $.post("/message",mes,function(res){
+                    if(res.code!=200){
+                        _this.$message({
+                            message: res.msg,
+                            type: 'error'
+                        });
+                        return;
+                    }
                     _this.messageContent = "";
+                    let content = {}
+                    content.avator=guest.avator;
+                    content.content = replaceContent(this.messageContent);
+                    content.name = guest.name;
+                    content.is_kefu = true;
+                    content.time = this.getNowDate();
+                    this.msgList.push(content);
+                    this.saveHistory(content);
+                    this.scrollBottom();
                 });
 
-                let content = {}
-                content.avator=guest.avator;
-                content.content = replaceContent(this.messageContent);
-                content.name = guest.name;
-                content.is_kefu = true;
-                content.time = this.getNowDate();
-                this.msgList.push(content);
-                this.saveHistory(content);
-                this.scrollBottom();
             },
             OnClose() {
                 this.chatTitle="连接关闭!"

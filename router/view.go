@@ -18,6 +18,7 @@ func InitViewRouter(engine *gin.Engine){
 	engine.GET("/setting_welcome", tmpl.PageSettingWelcome)
 	engine.GET("/setting_deploy", tmpl.PageSettingDeploy)
 	engine.GET("/setting_kefu_list",tmpl.PageKefuList)
+	engine.GET("/setting_ipblack",tmpl.PageIpblack)
 	engine.GET("/mail_list", tmpl.PageMailList)
 	engine.GET("/roles_list", tmpl.PageRoleList)
 	engine.GET("/webjs", tmpl.PageWebJs)
