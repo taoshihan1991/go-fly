@@ -249,10 +249,10 @@
                     _this.messageContent = "";
                     let content = {}
                     content.avator=guest.avator;
-                    content.content = replaceContent(this.messageContent);
+                    content.content = replaceContent(_this.messageContent);
                     content.name = guest.name;
                     content.is_kefu = true;
-                    content.time = this.getNowDate();
+                    content.time = _this.getNowDate();
                     _this.msgList.push(content);
                     _this.saveHistory(content);
                     _this.scrollBottom();
