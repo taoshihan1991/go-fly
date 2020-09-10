@@ -22,3 +22,26 @@ func FindIp(ip string)Ipblack{
 	DB.Where("ip = ?", ip).First(&ipblack)
 	return ipblack
 }
+func FindIps(query interface{},args []interface{},page uint,pagesize uint)[]Ipblack{
+	offset:=(page-1)*pagesize
+	if offset<0{
+		offset=0
+	}
+	var ipblacks []Ipblack
+	if query!=nil{
+		DB.Where(query, args...).Offset(offset).Limit(pagesize).Find(&ipblacks)
+	}else{
+		DB.Offset(offset).Limit(pagesize).Find(&ipblacks)
+	}
+	return ipblacks
+}
+//查询条数
+func CountIps(query interface{},args []interface{})uint{
+	var count uint
+	if query!=nil{
+		DB.Model(&Visitor{}).Where(query,args...).Count(&count)
+	}else{
+		DB.Model(&Visitor{}).Count(&count)
+	}
+	return count
+}
