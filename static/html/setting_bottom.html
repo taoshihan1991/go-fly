@@ -310,6 +310,15 @@
                     });
                 });
             },
+            //删除ip
+            deleteIpblack(ip){
+                let _this=this;
+                this.sendAjax("/ipblack?ip="+ip,"DELETE",{ip:ip},function(result){
+                    _this.sendAjax("/ipblacks_all","get",{},function(result){
+                        _this.ipblackList=result.list;
+                    });
+                });
+            },
             //配置角色权限
             showAuthDialog(id,name,method,path){
                 this.roleForm.id=id

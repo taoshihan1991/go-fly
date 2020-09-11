@@ -32,7 +32,7 @@ func DelIpblack(c *gin.Context) {
 		})
 		return
 	}
-	models.DeleteIpblackById(ip)
+	models.DeleteIpblackByIp(ip)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "删除黑名单成功!",
