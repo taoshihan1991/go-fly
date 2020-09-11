@@ -40,6 +40,9 @@ func DelIpblack(c *gin.Context) {
 }
 func GetIpblacks(c *gin.Context) {
 	page,_:=strconv.Atoi(c.Query("page"))
+	if page==0{
+		page=1
+	}
 	count:=models.CountIps(nil,nil)
 	list:=models.FindIps(nil,nil,uint(page),config.VisitorPageSize)
 	c.JSON(200, gin.H{

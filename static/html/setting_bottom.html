@@ -70,6 +70,7 @@
             roleDialog:false,
             noticeList:[],
             welcomeDialog:false,
+            ipblackList:[],
             welcomeForm: {
                 content: "",
             },
@@ -192,6 +193,11 @@
                 if(ACTION=="setting_welcome"){
                     this.sendAjax("/notices","get",{},function(result){
                         _this.noticeList=result;
+                    });
+                }
+                if(ACTION=="setting_ipblack"){
+                    this.sendAjax("/ipblacks_all","get",{},function(result){
+                        _this.ipblackList=result.list;
                     });
                 }
             },
