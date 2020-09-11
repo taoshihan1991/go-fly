@@ -17,6 +17,9 @@ func CreateIpblack(ip string,kefuId string)uint{
 	DB.Create(black)
 	return black.ID
 }
+func DeleteIpblackById(id string){
+	DB.Where("id = ?",id).Delete(Ipblack{})
+}
 func FindIp(ip string)Ipblack{
 	var ipblack Ipblack
 	DB.Where("ip = ?", ip).First(&ipblack)

@@ -23,6 +23,21 @@ func PostIpblack(c *gin.Context) {
 		"msg":  "添加黑名单成功!",
 	})
 }
+func DelIpblack(c *gin.Context) {
+	ip := c.Query("ip")
+	if ip==""{
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "请输入IP!",
+		})
+		return
+	}
+	models.DeleteIpblackById(ip)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "删除黑名单成功!",
+	})
+}
 func GetIpblacks(c *gin.Context) {
 	page,_:=strconv.Atoi(c.Query("page"))
 	count:=models.CountIps(nil,nil)

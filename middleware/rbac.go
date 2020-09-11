@@ -10,6 +10,7 @@ func RbacAuth(c *gin.Context){
 	roleId, _ :=c.Get("role_id")
 	role:=models.FindRole(roleId)
 	var methodFlag bool
+	rPaths:=strings.Split(c.Request.RequestURI,"?")
 	if role.Method!="*"{
 		methods:=strings.Split(role.Method,",")
 		for _,m:=range methods{
@@ -21,7 +22,7 @@ func RbacAuth(c *gin.Context){
 		if !methodFlag{
 			c.JSON(200, gin.H{
 				"code": 403,
-				"msg":  "没有权限:"+c.Request.Method+","+c.Request.RequestURI,
+				"msg":  "没有权限:"+c.Request.Method+","+rPaths[0],
 			})
 			c.Abort()
 			return
@@ -31,7 +32,7 @@ func RbacAuth(c *gin.Context){
 	if role.Path!="*"{
 		paths:=strings.Split(role.Path,",")
 		for _,p:=range paths{
-			if c.Request.RequestURI==p{
+			if rPaths[0]==p{
 				flag=true
 				break
 			}
@@ -39,7 +40,7 @@ func RbacAuth(c *gin.Context){
 		if !flag{
 			c.JSON(200, gin.H{
 				"code": 403,
-				"msg":  "没有权限:"+c.Request.Method+","+c.Request.RequestURI,
+				"msg":  "没有权限:"+rPaths[0],
 			})
 			c.Abort()
 			return
