@@ -209,6 +209,17 @@
     font-size: 24px;
     margin-bottom: 10px;
 }
+.bigPic{
+    background: #ccc;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: none;
+    text-align: center;
+}
 /*客服聊天主板*/
 .chatLeft .el-tabs__nav,.chatRight .el-tabs__nav {
     margin-left: 20px;

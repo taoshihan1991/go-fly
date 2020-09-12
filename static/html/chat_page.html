@@ -136,7 +136,6 @@
             <div class="clear"></div>
         </div>
         <!--//客服代码-->
-
     </template>
 </div>
 </body>
@@ -206,7 +205,7 @@
                     let content = {}
                     content.avator = msg.avator;
                     content.name = msg.name;
-                    content.content =replaceContent(msg.content);
+                    content.content =replaceContent(msg.content,true);
                     content.is_kefu = false;
                     content.time = msg.time;
                     this.msgList.push(content);

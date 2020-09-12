@@ -75,14 +75,24 @@ function replaceContent (content) {// 转义聊天内容中的特殊字符
         })
         .replace(/img\[([^\s\[\]]+?)\]/g, function (face) {  // 转义图片
             var src = face.replace(/^img\[/g, '').replace(/\]/g, '');;
-            return '<img  src="' + src + '" style="max-width: 100%"/>';
+            return '<img onclick="bigPic(src,true)" src="' + src + '" style="max-width: 100%"/></div>';
         })
         .replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') // 转移HTML代码
         .replace(/\n/g, '<br>') // 转义换行
 
     return content;
 }
-
+function bigPic(src,isVisitor){
+    if (isVisitor) {
+        window.open(src);
+        return;
+    }
+    // $("#bigPic img").attr("src",src);
+    // $("#bigPic").show();
+    // $("#bigPic img").click(function(){
+    //     $("#bigPic").hide();
+    // });
+}
 function filter (obj){
     var imgType = ["image/jpeg","image/png","image/jpg","image/gif"];
     var filetypes = imgType;
