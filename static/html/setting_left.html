@@ -12,7 +12,7 @@
         </template>
         <el-menu-item-group>
             <el-menu-item index="1-1" v-on:click="openUrl('/setting')">统计信息</el-menu-item>
-            <el-menu-item index="1-2" v-on:click="openUrl('/setting_welcome')">欢迎语</el-menu-item>
+            <el-menu-item index="1-2" v-on:click="openUrl('/setting_welcome')">自动欢迎</el-menu-item>
         </el-menu-item-group>
     </el-submenu>
     <el-submenu index="3">
@@ -35,8 +35,8 @@
             <el-menu-item style="display:none" index="2-2">设置imap</el-menu-item>
             <el-menu-item style="display:none" index="2-3" v-on:click="openUrl('/setting')">设置登陆账号</el-menu-item>
             <el-menu-item style="display:none" index="2-4"  v-on:click="openUrl('/setting_mysql')">设置mysql</el-menu-item>
-            <el-menu-item index="2-5"  v-on:click="openUrl('/setting_deploy')">设置网页部署</el-menu-item>
             <el-menu-item index="4-5"  v-on:click="openUrl('/setting_ipblack')">IP黑名单</el-menu-item>
+            <el-menu-item index="2-5"  v-on:click="openUrl('/setting_deploy')">设置网页部署</el-menu-item>
         </el-menu-item-group>
     </el-submenu>
 </el-menu>

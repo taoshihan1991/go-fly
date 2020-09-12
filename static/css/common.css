@@ -7,6 +7,13 @@
     line-height: 1.2;
     color: inherit;
 }
+.el-menu.el-menu--horizontal{
+    border-bottom: none;
+    padding-bottom: 4px;
+}
+.el-menu--horizontal>.el-menu-item.is-active{
+    border-bottom: 3px solid #409EFF;
+}
 .faceBtn, .faceBtn:after, .faceBtn {
     border: 1px solid;
 }
