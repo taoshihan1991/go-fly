@@ -153,7 +153,7 @@
                                             <span slot="title">IP：<{visitor.client_ip}></span>
                                         </el-menu-item>
                                     </el-tooltip>
-                                    <el-menu-item style="padding-left:2px;">
+                                    <el-menu-item v-on:click="openUrl('https://www.baidu.com/s?wd='+visitor.client_ip)" style="padding-left:2px;">
                                         <i class="el-icon-s-tools"></i>
                                         <span slot="title">城市：<{visitor.city}></span>
                                     </el-menu-item>
@@ -649,6 +649,9 @@
                         }
                     }
                 });
+            },
+            openUrl(url){
+                window.open(url);
             },
        },
         created: function () {

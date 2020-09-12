@@ -16,7 +16,7 @@ func CreateVisitor(name string,avator string,sourceIp string,toId string,visitor
 	old:=FindVisitorByVistorId(visitorId)
 	if old.Name!=""{
 		//更新状态上线
-		UpdateVisitorStatus(visitorId,1)
+		UpdateVisitor(visitorId,1,clientIp,sourceIp,refer)
 		return
 	}
 	v:=&Visitor{
@@ -64,6 +64,16 @@ func UpdateVisitorStatus(visitorId string,status uint){
 	visitor:=Visitor{
 	}
 	DB.Model(&visitor).Where("visitor_id = ?",visitorId).Update("status", status)
+}
+func UpdateVisitor(visitorId string,status uint,clientIp string,sourceIp string,refer string){
+	visitor:=&Visitor{
+		Status: status,
+		ClientIp: clientIp,
+		SourceIp: sourceIp,
+		Refer: refer,
+
+	}
+	DB.Model(visitor).Where("visitor_id = ?",visitorId).Update(visitor)
 }
 //查询条数
 func CountVisitors()uint{
