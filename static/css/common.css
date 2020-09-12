@@ -14,6 +14,7 @@
 .el-menu--horizontal>.el-menu-item.is-active{
     border-bottom: 3px solid #409EFF;
 }
+.chatBg .el-tabs__header{margin: 0;}
 .faceBtn, .faceBtn:after, .faceBtn {
     border: 1px solid;
 }

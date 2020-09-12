@@ -16,7 +16,6 @@
         .el-row{width:100%}#app{margin-top: 10px;}
         .chatBg{min-height: 100%;background: #fff;border: solid 1px #e6e6e6;overflow: hidden;}
         .chatLeft{    margin-left: 4px;}
-        .chatLeft .el-tabs__header{margin: 0;}
         .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;padding:5px 10px;}
         .chatContext .el-row{margin-bottom: 5px;}
         .chatContext{position: relative;}
@@ -138,7 +137,7 @@
                 </el-col>
                 <el-col :span="6">
                     <div   class="chatBg chatRight">
-                        <el-tabs v-model="rightTabActive">
+                        <el-tabs v-model="rightTabActive" @tab-click="handleTabClick">
                             <el-tab-pane label="访客信息" name="visitorInfo">
                                 <el-menu>
                                     <el-tooltip content="点击加入黑名单" placement="left">
@@ -180,7 +179,11 @@
                                 </el-menu>
                             </el-tab-pane>
                             <el-tab-pane label="黑名单" name="blackList">
-                                待开发
+                                <el-row  v-for="item in visitors" :key="item.uid" class="">
+                                    <div style="cursor:pointer" class="onlineUsers imgGray">
+                                            待开发
+                                    </div>
+                                </el-row>
                             </el-tab-pane>
                         </el-tabs>
 
@@ -529,6 +532,8 @@
                 let _this=this;
                 if(tab.name=="second"){
                     this.getVisitorPage(1);
+                }
+                if(tab.name=="blackList"){
                 }
             },
             //所有访客分页展示

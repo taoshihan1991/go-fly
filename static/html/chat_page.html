@@ -163,6 +163,7 @@
             chatTitle:"正在连接...",
             visitor:{},
             face:[],
+            showKfonline:false,
         },
         methods: {
             //初始化websocket
@@ -189,10 +190,14 @@
                 const redata = JSON.parse(e.data);
                 if (redata.type == "kfOnline") {
                     let msg = redata.data
+                    if(this.showKfonline && guest.to_id==msg.id){
+                        return;
+                    }
                     guest.to_id=msg.id;
                     this.chatTitle=msg.name+",正在与您沟通!"
                     $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                     this.scrollBottom();
+                    this.showKfonline=true;
                 }
                 if (redata.type == "message") {
                     let msg = redata.data

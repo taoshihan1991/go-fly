@@ -12,7 +12,7 @@ func InitApiRouter(engine *gin.Engine){
 	engine.POST("/check", controller.LoginCheckPass)
 	engine.POST("/check_auth",middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	//前后聊天
-	engine.GET("/chat_server", controller.NewChatServer)
+	engine.GET("/chat_server",middleware.Ipblack, controller.NewChatServer)
 	//获取消息
 	engine.GET("/messages", controller.GetVisitorMessage)
 	//发送单条消息
