@@ -11,6 +11,7 @@ func InitViewRouter(engine *gin.Engine){
 	engine.GET("/login", tmpl.PageLogin)
 	engine.GET("/chat_page",middleware.SetLanguage, tmpl.PageChat)
 	engine.GET("/chatIndex",middleware.SetLanguage, tmpl.PageChat)
+	engine.GET("/chatKfIndex",tmpl.PageKfChat)
 	engine.GET("/main",middleware.JwtPageMiddleware,tmpl.PageMain)
 	engine.GET("/chat_main",middleware.JwtPageMiddleware,tmpl.PageChatMain)
 	engine.GET("/setting", tmpl.PageSetting)

@@ -1,0 +1,168 @@
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="陶士涵">
+    <title>GO-FLY客服页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="/static/js/functions.js?v=0.1.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/common.css?v=0.1.1" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #fff;
+        }
+        .chatCenter{background: #fff;max-width: 800px;margin: 0 auto;}
+        .chatContext{
+            padding:0 10px;
+            width: 100%;
+            text-align: left;
+            position: relative;
+            margin-bottom: 86px;
+        }
+        .chatBox{
+            /*max-height: 600px;*/
+            /*overflow-y: auto;*/
+            /*overflow-x: hidden;*/
+            /*margin-bottom: 80px;*/
+        }
+        .chatBox .el-col{margin:10px 0;}
+        .chatUser{
+            line-height: 24px;
+            font-size: 12px;
+            white-space: nowrap;
+            color: #999;
+            text-align: left;
+        }
+        .chatContent{
+            background-color: rgb(166,212,242);
+            color: #000;
+            border: 1px solid rgb(152, 199, 230);
+            padding: 8px 15px;
+            min-height: 35px;
+            word-break: break-all;
+            position: relative;
+            border-radius: 5px;
+            display: inline-block;
+            margin-left: 6px;
+        }
+        .chatContent:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 13px;
+            width: 0;
+            height: 0;
+            border-style: dashed;
+            border-color: transparent;
+            overflow: hidden;
+            border-width: 10px;
+            border-top-style: solid;
+            border-top-color: rgb(166,212,242);
+        }
+        .chatBoxMe .chatContent{float: right;background-color: rgb(152,225,101);border: 1px solid rgb(145, 215, 96);}
+        .chatBoxMe .chatContent:after{border-top-color: rgb(152,225,101);}
+        .chatBoxMe .el-col-3{float: right;text-align: right;}
+        .chatBoxMe .chatUser{text-align: right}
+        .chatBoxMe .chatContent:after{left:auto;right: -10px;}
+        .chatArea{float: left;width: 85%;margin: 4px 0 0 4px;}
+        .btnArea{width: 10%;float: right;}
+        @media screen and (max-width: 500px) {
+            body{background: #fff}
+            .chatArea {width: 70%;}
+            .btnArea{width: 20%;}
+        }
+
+        .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
+        .chatBoxSend{background: #f5f5f5;position: fixed;bottom: 0;width: 100%;height: 86px;max-width: 800px;}
+        .chatBoxSendBtn{float: right;margin: 12px 4px 0 0;}
+        .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
+        .chatTimeHide{display: none;}
+        .clear{clear:both;}
+    </style>
+
+</head>
+<body>
+<div id="app"  class="chatCenter">
+    <template>
+        <!--客服代码-->
+        <div class="chatContext">
+            <div class="chatBox">
+                <el-alert
+                        style="margin-bottom: 10px;"
+                        :title="chatTitle"
+                        :closable="false"
+                        type="success">
+                </el-alert>
+                <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                    <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><{v.time}></div>
+                    <el-col :span="3"><el-avatar :src="v.avator"></el-avatar></el-col>
+                    <el-col :span="21">
+                        <div class="chatUser"><{v.name}></div>
+                        <div class="chatContent" v-html="v.content"></div>
+                    </el-col>
+                    <div class="clear"></div>
+                </el-row>
+            </div>
+        </div>
+        <div class="chatBoxSend">
+            <div class="iconBtns">
+                <div class="faceBtn visitorFaceBtn"></div>
+                <div class="imageBtn visitorImageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
+                <div class="clear"></div>
+            </div>
+            <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
+            <div class="faceBox visitorFaceBox">
+                <ul class="faceBoxList">
+                    <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="btnArea">
+                <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">发送</el-button>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!--//客服代码-->
+    </template>
+</div>
+</body>
+<script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            window:window,
+            server:getWsBaseUrl()+"/chat_server",
+            socket:null,
+            msgList:[],
+            messageContent:"",
+            chatTitle:"正在连接...",
+            visitor:{},
+            face:[],
+            showKfonline:false,
+            kfConfig:{
+                id : "",
+                name : "",
+                avator : "",
+                to_id : "",
+            },
+        },
+        methods: {
+
+        },
+        created: function () {
+
+        }
+    })
+
+</script>
+</html>

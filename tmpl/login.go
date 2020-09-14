@@ -27,4 +27,14 @@ func PageChat(c *gin.Context) {
 		"Refer":refer,
 	})
 }
+func PageKfChat(c *gin.Context) {
+	kefuId := c.Query("kefu_id")
+	visitorId:=c.Query("visitor_id")
+	token:=c.Query("token")
+	c.HTML(http.StatusOK, "chat_kf_page.html", gin.H{
+		"KefuId":kefuId,
+		"VisitorId":visitorId,
+		"Token":token,
+	})
+}
 
