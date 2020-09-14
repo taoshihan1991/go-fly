@@ -9,12 +9,12 @@ import (
 	"sort"
 )
 
-func PostCheckWeixinSign(c *gin.Context){
+func GetCheckWeixinSign(c *gin.Context){
 	token:=config.WeixinToken
-	signature:=c.PostForm("signature")
-	timestamp:=c.PostForm("timestamp")
-	nonce:=c.PostForm("nonce")
-	echostr:=c.PostForm("echostr")
+	signature:=c.Query("signature")
+	timestamp:=c.Query("timestamp")
+	nonce:=c.Query("nonce")
+	echostr:=c.Query("echostr")
 	//将token、timestamp、nonce三个参数进行字典序排序
 	var tempArray  = []string{token, timestamp, nonce}
 	sort.Strings(tempArray)

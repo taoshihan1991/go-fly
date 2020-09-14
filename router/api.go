@@ -53,5 +53,5 @@ func InitApiRouter(engine *gin.Engine){
 	engine.DELETE("/ipblack",middleware.JwtApiMiddleware,controller.DelIpblack)
 	engine.GET("/ipblacks_all",middleware.JwtApiMiddleware,controller.GetIpblacks)
 	//微信接口
-	engine.GET("/micro_program",controller.PostCheckWeixinSign)
+	engine.GET("/micro_program",controller.GetCheckWeixinSign)
 }
