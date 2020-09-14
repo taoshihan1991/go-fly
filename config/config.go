@@ -18,6 +18,8 @@ const MysqlConf = Dir + "mysql.json"
 const MailConf = Dir + "mail.json"
 const LangConf=Dir+"language.json"
 const MainConf = Dir + "config.json"
+const WeixinToken="taoshihan1"
+
 type Mysql struct{
 	Server string
 	Port string
