@@ -257,6 +257,8 @@ func singleBroadcaster(){
 					kefuConn.WriteMessage(websocket.TextMessage,str)
 				}
 			}
+			//客户上线发微信通知
+			go SendServerJiang(userInfo["username"])
 			sendPingOnlineUsers()
 		//客服上线
 		case "kfOnline":

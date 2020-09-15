@@ -19,7 +19,7 @@ var(
 	port string
 	tcpport string
 	daemon bool
-	GoflyConfig config.Config
+	GoflyConfig *config.Config
 )
 var serverCmd = &cobra.Command{
 	Use:   "server",

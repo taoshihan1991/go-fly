@@ -11,6 +11,7 @@ var(
 	PageSize uint=10
 	VisitorPageSize uint=8
 	Version = "0.1.2"
+	GoflyConfig *Config
 )
 const Dir = "config/"
 const AccountConf = Dir + "account.json"
@@ -19,7 +20,11 @@ const MailConf = Dir + "mail.json"
 const LangConf=Dir+"language.json"
 const MainConf = Dir + "config.json"
 const WeixinToken="taoshihan1"
-
+const ServerJiang=""
+func init(){
+	//配置文件
+	GoflyConfig=CreateConfig()
+}
 type Mysql struct{
 	Server string
 	Port string
@@ -32,11 +37,13 @@ type MailServer struct {
 }
 type Config struct {
 	Upload string
+	NoticeServerJiang bool
 }
 func CreateConfig()*Config{
 	var configObj Config
 	c:=&Config{
 		Upload: "static/upload/",
+		NoticeServerJiang:false,
 	}
 	isExist, _ := tools.IsFileExist(MainConf)
 	if !isExist {
