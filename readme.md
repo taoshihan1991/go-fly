@@ -65,11 +65,17 @@
 ```
 
 
-3. 源码运行 go run go-fly.go port 8081
+3. 源码运行 go run go-fly.go server port 8081
 
-4. 源码打包 go build go-fly.go
+4. 源码打包 go build go-fly.go 会生成go-fly可以执行文件
 
-5. 导入数据库(会删除表清空数据) go run go-fly.go install
+5. 导入数据库(会删除表清空数据) ./go-fly install
+
+6. 二进制文件运行
+ 
+   linux:   ./go-fly server port 8081
+   
+   windows: go-fly.exe server port 8081 
 
 ### nginx部署
 
