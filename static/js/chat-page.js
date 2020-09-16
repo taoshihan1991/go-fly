@@ -37,7 +37,7 @@ new Vue({
             mes.type = "userInit";
             userinfo.client_ip=returnCitySN["cip"];
             userinfo.city=returnCitySN["cname"];
-            userinfo.refer="{{.Refer}}";
+            userinfo.refer=REFER;
             mes.data = userinfo;
             this.socket.send(JSON.stringify(mes));
         },
@@ -233,7 +233,7 @@ new Vue({
         //获取自动欢迎语句
         getNotice : function (){
             let _this=this;
-            $.get("/notice?kefu_id="+guest.to_id+"&lang={{.Lang}}",function(res) {
+            $.get("/notice?kefu_id="+guest.to_id,function(res) {
                 //debugger;
                 if (res.result != null) {
                     let msg = res.result;
