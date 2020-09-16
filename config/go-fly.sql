@@ -96,3 +96,16 @@ CREATE TABLE `ipblack` (
  PRIMARY KEY (`id`),
  UNIQUE KEY `ip` (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `config`;
+CREATE TABLE `config` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+ `conf_name` varchar(255) NOT NULL DEFAULT '',
+ `conf_key` varchar(255) NOT NULL DEFAULT '',
+ `conf_value` varchar(255) NOT NULL DEFAULT '',
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `conf_key` (`conf_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '是否开启Server酱微信提醒', 'NoticeServerJiang', 'false');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'Server酱API', 'ServerJiangAPI', '');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '微信小程序Token', 'WeixinToken', '');
