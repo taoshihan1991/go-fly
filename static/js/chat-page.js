@@ -1,7 +1,6 @@
-var KEFU_ID="{{.KEFU_ID}}";
 var guest={};
 guest.id = "";
-guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cname"]+"网友":"小米";
+guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cname"]+"网友":"匿名";
 guest.avator = "/static/images/"+Math.floor(Math.random()*(14-0+1)+0)+".jpg";
 guest.group = "1";
 guest.to_id=KEFU_ID!=""? KEFU_ID:"kefu2";
@@ -30,7 +29,7 @@ new Vue({
             this.socket.onclose = this.OnClose;
         },
         OnOpen() {
-            this.chatTitle="连接成功! 等待客服接入"
+            this.chatTitle="连接成功!"
             //从缓存中取出用户
             let userinfo=this.getUserInfo();
             let mes = {}
