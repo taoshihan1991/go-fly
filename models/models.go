@@ -21,6 +21,8 @@ func init(){
 	DB.LogMode(true)
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
+
+	InitConfig()
 }
 func Execute(sql string){
 	DB.Exec(sql)

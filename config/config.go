@@ -19,7 +19,7 @@ const MysqlConf = Dir + "mysql.json"
 const MailConf = Dir + "mail.json"
 const LangConf=Dir+"language.json"
 const MainConf = Dir + "config.json"
-const WeixinToken="taoshihan1"
+const WeixinToken=""
 const ServerJiang=""
 func init(){
 	//配置文件

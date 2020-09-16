@@ -4,13 +4,13 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/models"
 	"log"
 	"sort"
 )
 
 func GetCheckWeixinSign(c *gin.Context){
-	token:=config.WeixinToken
+	token:=models.FindConfig("WeixinToken")
 	signature:=c.Query("signature")
 	timestamp:=c.Query("timestamp")
 	nonce:=c.Query("nonce")
