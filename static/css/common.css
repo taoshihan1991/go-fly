@@ -243,7 +243,6 @@
 }
 .chatCenter{background: #fff;max-width: 800px;margin: 0 auto;}
 .chatContext{
-    padding:0 10px;
     width: 100%;
     text-align: left;
     position: relative;

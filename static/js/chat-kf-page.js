@@ -158,10 +158,49 @@ var chatKfBox = {
             this.msgList.push(content);
             this.scrollBottom();
         },
+        //上传图片
+        uploadImg (url){
+            let _this=this;
+            $('#uploadImg').after('<input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" id="uploadImgFile" name="file" style="display:none" >');
+            $("#uploadImgFile").click();
+            $("#uploadImgFile").change(function (e) {
+                var formData = new FormData();
+                var file = $("#uploadImgFile")[0].files[0];
+                formData.append("imgfile",file); //传给后台的file的key值是可以自己定义的
+                filter(file) && $.ajax({
+                    url: url || '',
+                    type: "post",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'JSON',
+                    mimeType: "multipart/form-data",
+                    success: function (res) {
+                        if(res.code!=200){
+                            _this.$message({
+                                message: res.msg,
+                                type: 'error'
+                            });
+                        }else{
+                            _this.messageContent+='img[/' + res.result.path + ']';
+                            _this.chatToUser();
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        },
+        //表情点击事件
+        faceIconClick(index){
+            $('.faceBox').hide();
+            this.messageContent+="face"+this.face[index].name;
+        },
         //滚到底部
         scrollBottom(){
             this.$nextTick(() => {
-                $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
+                $('body').scrollTop($("body")[0].scrollHeight);
             });
         },
     },
