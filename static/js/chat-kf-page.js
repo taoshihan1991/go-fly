@@ -161,7 +161,6 @@ var chatKfBox = {
         //滚到底部
         scrollBottom(){
             this.$nextTick(() => {
-                debugger;
                 $('.chatBox').scrollTop($(".chatBox")[0].scrollHeight);
             });
         },
