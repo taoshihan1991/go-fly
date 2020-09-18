@@ -81,7 +81,7 @@
                                     </div>
                                 </el-row>
                             </el-tab-pane>
-                            <el-tab-pane label="所有访客" name="second">
+                            <el-tab-pane label="已接访客" name="second">
                                 <el-row  v-for="item in visitors" :key="item.uid" class="">
                                     <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': item.visitor_id==currentGuest }" v-on:click="talkTo(item.visitor_id,item.name)">
                                         <el-col :span="4">

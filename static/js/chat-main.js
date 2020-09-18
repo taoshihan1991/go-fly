@@ -195,15 +195,25 @@ var app=new Vue({
         },
         //处理当前在线用户列表
         addOnlineUser:function (retData) {
+            var flag=false;
             retData.last_message="新访客";
-            let vid=retData.uid;
-            this.users.push(retData);
+            retData.status=1;
+            retData.name=retData.username;
+            for(let i=0;i<this.users.length;i++){
+                if(this.users[i].uid==retData.uid){
+                    flag=true;
+                }
+            }
+            if(!flag){
+                this.users.unshift(retData);
+            }
             for(let i=0;i<this.visitors.length;i++){
-                if(this.visitors[i].visitor_id==vid){
+                if(this.visitors[i].visitor_id==retData.uid){
                     this.visitors[i].status=1;
                     break;
                 }
             }
+
         },
         //处理当前在线用户列表
         removeOfflineUser:function (retData) {
