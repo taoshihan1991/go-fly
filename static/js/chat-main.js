@@ -142,7 +142,11 @@ var app=new Vue({
                     notification.close();
                     _this.talkTo(msg.id,msg.name);
                 });
-
+                for(let i=0;i<this.users.length;i++){
+                    if(this.users[i].uid==msg.id){
+                        this.$set(this.users[i],'last_message',msg.content);
+                    }
+                }
                 this.scrollBottom();
             }
         },
@@ -191,6 +195,7 @@ var app=new Vue({
         },
         //处理当前在线用户列表
         addOnlineUser:function (retData) {
+            retData.last_message="新访客";
             let vid=retData.uid;
             this.users.push(retData);
             for(let i=0;i<this.visitors.length;i++){
@@ -217,13 +222,16 @@ var app=new Vue({
         },
         //处理当前在线用户列表
         handleOnlineUsers:function (retData) {
-            this.users = retData;
             if (this.currentGuest == "") {
                 this.chatTitle = "连接成功,等待处理中...";
             }
             this.usersMap=[];
             for(let i=0;i<retData.length;i++){
                 this.usersMap[retData[i].uid]=retData[i].username;
+                retData[i].last_message="新访客";
+            }
+            if(this.users.length==0){
+                this.users = retData;
             }
             for(let i=0;i<this.visitors.length;i++){
                 let vid=this.visitors[i].visitor_id;

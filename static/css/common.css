@@ -236,6 +236,8 @@
 }
 .onlineUsers:hover,.onlineUsers.cur{background-color: #f0f9eb;color: #67C23A;}
 .imgGray {-webkit-filter: grayscale(100%);-ms-filter: grayscale(100%);filter: grayscale(100%);filter: gray;color:#888;}
+.hasLastMsg{line-height: normal;}
+.lastNewMsg{font-size: 12px;color: #7f7f7f;margin-top: 4px;}
 /*客服页*/
 .chatKfPageApp{
     max-width: 800px;
