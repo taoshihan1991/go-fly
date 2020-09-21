@@ -70,7 +70,7 @@
                         <el-tabs v-model="leftTabActive" @tab-click="handleTabClick">
                             <el-tab-pane label="在线用户" name="first">
                                 <el-row  v-for="item in users" :key="item.uid" class="">
-                                    <div style="cursor:pointer" class="onlineUsers hasLastMsg" v-bind:class="{'cur': item.uid==currentGuest }" v-on:click="talkTo(item.uid,item.username)">
+                                    <div :title="item.last_message" style="cursor:pointer" class="onlineUsers hasLastMsg" v-bind:class="{'cur': item.uid==currentGuest }" v-on:click="talkTo(item.uid,item.username)">
                                         <el-col :span="4">
                                             <el-avatar :size="40" :src="item.avator"></el-avatar>
                                         </el-col>
