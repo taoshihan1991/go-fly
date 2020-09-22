@@ -6,10 +6,8 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/taoshihan1991/imaptool/config"
-	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/docs"
 	"github.com/taoshihan1991/imaptool/router"
-	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 	"os"
 	"os/exec"
@@ -50,7 +48,7 @@ func run(){
 	}
 
 	baseServer := "0.0.0.0:"+port
-	tcpBaseServer := "0.0.0.0:"+tcpport
+	//tcpBaseServer := "0.0.0.0:"+tcpport
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
@@ -69,10 +67,10 @@ func run(){
 	//docs.SwaggerInfo.Schemes = []string{"http"}
 	engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	logFile, _ := os.OpenFile("./fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
-	tools.RedirectStderr(logFile)
+	//logFile, _ := os.OpenFile("./fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
+	//tools.RedirectStderr(logFile)
 
 	//tcp服务
-	go controller.NewTcpServer(tcpBaseServer)
+	//go controller.NewTcpServer(tcpBaseServer)
 	engine.Run(baseServer)
 }
