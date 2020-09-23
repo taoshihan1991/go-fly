@@ -2,11 +2,14 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
+	"github.com/taoshihan1991/imaptool/tools"
 	"log"
+	"math/rand"
 	"strconv"
 )
 func PostVisitor(c *gin.Context) {
@@ -50,6 +53,38 @@ func PostVisitor(c *gin.Context) {
 			kefuConn.WriteMessage(websocket.TextMessage,str)
 		}
 	}
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+	})
+}
+func PostVisitorLogin(c *gin.Context) {
+	ipcity:=tools.ParseIp(c.ClientIP())
+	avator := fmt.Sprintf("/static/images/%d.jpg",rand.Intn(14))
+	toId := c.PostForm("to_id")
+	id := c.PostForm("id")
+	refer := c.PostForm("refer")
+	var (
+		city string
+		name string
+	)
+	if ipcity!=nil{
+		city = ipcity.CountryName+ipcity.RegionName+ipcity.CityName
+		name=ipcity.CountryName+ipcity.RegionName+ipcity.CityName+"网友"
+	}else{
+		city="未识别地区"
+		name="匿名网友"
+	}
+	client_ip := c.PostForm("client_ip")
+	log.Println(name,avator,c.ClientIP(),toId,id,refer,city,client_ip)
+	if name==""||avator==""||toId==""||id==""||refer==""||city==""||client_ip==""{
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "error",
+		})
+		return
+	}
+	models.CreateVisitor(name,avator,c.ClientIP(),toId,id,refer,city,client_ip)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
