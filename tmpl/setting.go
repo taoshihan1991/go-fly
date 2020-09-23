@@ -60,6 +60,13 @@ func PageIpblack(c *gin.Context) {
 		"action":"setting_ipblack",
 	})
 }
+//配置项列表
+func PageConfig(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_config.html", gin.H{
+		"tab_index":"4-6",
+		"action":"setting_config",
+	})
+}
 type SettingHtml struct {
 	*CommonHtml
 	Username, Password string
