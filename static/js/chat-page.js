@@ -337,6 +337,51 @@ new Vue({
                 });
             });
         },
+        //粘贴上传图片
+        onPasteUpload(event){
+            let items = event.clipboardData && event.clipboardData.items;
+            let file = null
+            if (items && items.length) {
+                // 检索剪切板items
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        file = items[i].getAsFile()
+                    }
+                }
+            }
+            if (!file) {
+                return;
+            }
+            let _this=this;
+            var formData = new FormData();
+            formData.append('imgfile', file);
+            $.ajax({
+                url: '/uploadimg',
+                type: "post",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'JSON',
+                mimeType: "multipart/form-data",
+                success: function (res) {
+                    if(res.code!=200){
+                        _this.$message({
+                            message: res.msg,
+                            type: 'error'
+                        });
+                    }else{
+                        _this.messageContent+='img[/' + res.result.path + ']';
+                        _this.chatToUser();
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+    },
+    mounted() {
+        document.addEventListener('paste', this.onPasteUpload)
     },
     created: function () {
         this.init();
