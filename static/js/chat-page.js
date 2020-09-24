@@ -1,9 +1,3 @@
-// var guest={};
-// guest.id = "";
-// guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cname"]+"网友":"匿名";
-// guest.avator = "/static/images/"+Math.floor(Math.random()*(14-0+1)+0)+".jpg";
-// guest.group = "1";
-// guest.to_id=KEFU_ID!=""? KEFU_ID:"kefu2";
 KEFU_ID=KEFU_ID!=""? KEFU_ID:"kefu2";
 new Vue({
     el: '#app',
@@ -73,13 +67,6 @@ new Vue({
         },
         //发送给客户
         chatToUser() {
-            // if(guest.to_id==""){
-            //     this.$message({
-            //         message: '暂时没有客服接手',
-            //         type: 'warning'
-            //     });
-            //     return;
-            // }
             this.messageContent=this.messageContent.trim("\r\n");
             if(this.messageContent==""||this.messageContent=="\r\n"){
                 this.$message({
@@ -123,7 +110,7 @@ new Vue({
         },
         //获取当前用户信息
         getUserInfo(){
-            let obj=this.getCache("guest");
+            let obj=this.getCache("visitor");
             if(!obj){
                 let _this=this;
                 //发送消息
@@ -136,7 +123,7 @@ new Vue({
                         return;
                     }
                     _this.visitor=res.result;
-                    _this.setCache("guest",res.result);
+                    _this.setCache("visitor",res.result);
                     _this.initConn();
                 });
             }else{
@@ -264,7 +251,7 @@ new Vue({
                 if(_this.socket!=null){
                     _this.socket.send(JSON.stringify(mes));
                 }
-            },5000);
+            },30000);
         },
         //初始化
         init(){
