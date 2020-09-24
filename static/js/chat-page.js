@@ -261,10 +261,10 @@ new Vue({
         //初始化
         init(){
             this.initCss();
-            window.onfocus = function () {
+            $("#app").click(function(){
                 clearTimeout(titleTimer);
                 document.title = originTitle;
-            };
+            });
             $('body').click(function(){
                 clearTimeout(titleTimer);
                 document.title = originTitle;
