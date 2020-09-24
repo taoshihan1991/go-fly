@@ -34,6 +34,7 @@ type ClientMessage struct {
 	Name  string `json:"name"`
 	Avator   string `json:"avator"`
 	Id    string `json:"id"`
+	VisitorId   string `json:"visitor_id"`
 	Group string `json:"group"`
 	Time     string `json:"time"`
 	ToId string `json:"to_id"`
@@ -235,10 +236,10 @@ func singleBroadcaster(){
 				conn:conn,
 				name: clientMsg.Name,
 				avator: clientMsg.Avator,
-				id:clientMsg.Id,
+				id:clientMsg.VisitorId,
 				to_id:clientMsg.ToId,
 			}
-			clientList[clientMsg.Id] = user
+			clientList[clientMsg.VisitorId] = user
 			//插入数据表
 			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.Id,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
 			userInfo := make(map[string]string)

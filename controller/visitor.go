@@ -63,6 +63,9 @@ func PostVisitorLogin(c *gin.Context) {
 	avator := fmt.Sprintf("/static/images/%d.jpg",rand.Intn(14))
 	toId := c.PostForm("to_id")
 	id := c.PostForm("id")
+	if id==""{
+		id = tools.Uuid()
+	}
 	refer := c.PostForm("refer")
 	var (
 		city string
@@ -76,11 +79,19 @@ func PostVisitorLogin(c *gin.Context) {
 		name="匿名网友"
 	}
 	client_ip := c.PostForm("client_ip")
-	log.Println(name,avator,c.ClientIP(),toId,id,refer,city,client_ip)
+	//log.Println(name,avator,c.ClientIP(),toId,id,refer,city,client_ip)
 	if name==""||avator==""||toId==""||id==""||refer==""||city==""||client_ip==""{
 		c.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "error",
+		})
+		return
+	}
+	kefuInfo:=models.FindUser(toId)
+	if kefuInfo.ID==0{
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "客服不存在",
 		})
 		return
 	}

@@ -1,10 +1,10 @@
-var guest={};
-guest.id = "";
-guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cname"]+"网友":"匿名";
-guest.avator = "/static/images/"+Math.floor(Math.random()*(14-0+1)+0)+".jpg";
-guest.group = "1";
-guest.to_id=KEFU_ID!=""? KEFU_ID:"kefu2";
-
+// var guest={};
+// guest.id = "";
+// guest.name = typeof(returnCitySN)!="undefined" ?returnCitySN["cname"]+"网友":"匿名";
+// guest.avator = "/static/images/"+Math.floor(Math.random()*(14-0+1)+0)+".jpg";
+// guest.group = "1";
+// guest.to_id=KEFU_ID!=""? KEFU_ID:"kefu2";
+KEFU_ID=KEFU_ID!=""? KEFU_ID:"kefu2";
 new Vue({
     el: '#app',
     delimiters:["<{","}>"],
@@ -31,23 +31,23 @@ new Vue({
         OnOpen() {
             this.chatTitle="连接成功!"
             //从缓存中取出用户
-            let userinfo=this.getUserInfo();
+            // let userinfo=this.getUserInfo();
             let mes = {}
             mes.type = "userInit";
-            userinfo.client_ip=returnCitySN["cip"];
-            userinfo.city=returnCitySN["cname"];
-            userinfo.refer=REFER;
-            mes.data = userinfo;
+            // userinfo.client_ip=returnCitySN["cip"];
+            // userinfo.city=returnCitySN["cname"];
+            // userinfo.refer=REFER;
+            mes.data = this.visitor;
             this.socket.send(JSON.stringify(mes));
         },
         OnMessage(e) {
             const redata = JSON.parse(e.data);
             if (redata.type == "kfOnline") {
                 let msg = redata.data
-                if(this.showKfonline && guest.to_id==msg.id){
+                if(this.showKfonline && this.visitor.to_id==msg.id){
                     return;
                 }
-                guest.to_id=msg.id;
+                this.visitor.to_id=msg.id;
                 this.chatTitle=msg.name+",正在与您沟通!"
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
@@ -55,7 +55,7 @@ new Vue({
             }
             if (redata.type == "message") {
                 let msg = redata.data
-                guest.to_id=msg.id;
+                this.visitor.to_id=msg.id;
 
                 let content = {}
                 content.avator = msg.avator;
@@ -65,7 +65,7 @@ new Vue({
                 content.time = msg.time;
                 this.msgList.push(content);
 
-                this.saveHistory(content);
+                //this.saveHistory(content);
                 this.scrollBottom();
                 flashTitle();//标题闪烁
             }
@@ -73,13 +73,13 @@ new Vue({
         },
         //发送给客户
         chatToUser() {
-            if(guest.to_id==""){
-                this.$message({
-                    message: '暂时没有客服接手',
-                    type: 'warning'
-                });
-                return;
-            }
+            // if(guest.to_id==""){
+            //     this.$message({
+            //         message: '暂时没有客服接手',
+            //         type: 'warning'
+            //     });
+            //     return;
+            // }
             this.messageContent=this.messageContent.trim("\r\n");
             if(this.messageContent==""||this.messageContent=="\r\n"){
                 this.$message({
@@ -93,8 +93,8 @@ new Vue({
             let mes = {};
             mes.type = "visitor";
             mes.content = this.messageContent;
-            mes.from_id = guest.id;
-            mes.to_id = guest.to_id;
+            mes.from_id = this.visitor.visitor_id;
+            mes.to_id = this.visitor.to_id;
             mes.content = this.messageContent;
             //发送消息
             $.post("/message",mes,function(res){
@@ -106,13 +106,13 @@ new Vue({
                     return;
                 }
                 let content = {}
-                content.avator=guest.avator;
+                content.avator=_this.visitor.avator;
                 content.content = replaceContent(_this.messageContent);
-                content.name = guest.name;
+                content.name = _this.visitor.name;
                 content.is_kefu = true;
                 content.time = _this.getNowDate();
                 _this.msgList.push(content);
-                _this.saveHistory(content);
+                //_this.saveHistory(content);
                 _this.scrollBottom();
                 _this.messageContent = "";
             });
@@ -125,46 +125,31 @@ new Vue({
         getUserInfo(){
             let obj=this.getCache("guest");
             if(!obj){
-                guest.id=this.generateUUID();
-                this.setCache("guest",guest);
-                obj=this.getCache("guest");
+                let _this=this;
+                //发送消息
+                $.post("/visitor_login",{refer:REFER,to_id:KEFU_ID,client_ip:returnCitySN["cip"],},function(res){
+                    if(res.code!=200){
+                        _this.$message({
+                            message: res.msg,
+                            type: 'error'
+                        });
+                        return;
+                    }
+                    _this.visitor=res.result;
+                    _this.setCache("guest",res.result);
+                    _this.initConn();
+                });
+            }else{
+                this.visitor=obj;
+                this.initConn();
             }
-            guest=obj;
-            this.visitor=obj;
-            return obj;
-        },
-        //加载历史
-        getHistory:function(){
-            let history=this.getCache("history");
-            if(history==null){
-                history=[];
-            }
-            $.each(history,function(i,val){
-                history[i]["show_time"]=false;
-
-                let lastKey=(i+1)>=history.length?i:i+1;
-                let lastTime=new Date(history[lastKey]["time"]).getTime();
-                let curTime=new Date(val["time"]).getTime();
-                let diffTime=lastTime-curTime
-                if(diffTime>(1000*60*5)){
-                    history[i]["show_time"]=true;
-                }
-            });
-            console.log(history);
-            return history;
-        },
-        //保存历史
-        saveHistory:function(row){
-            let history=this.getHistory("history");
-            history.push(row);
-            this.setCache("history",history);
         },
         //获取信息列表
         getMesssagesByVisitorId(){
             let _this=this;
             $.ajax({
                 type:"get",
-                url:"/messages?visitorId="+this.visitor.id,
+                url:"/messages?visitorId="+this.visitor.visitor_id,
                 success: function(data) {
                     if(data.code==200 && data.result!=null){
                         let msgList=data.result;
@@ -232,7 +217,7 @@ new Vue({
         //获取自动欢迎语句
         getNotice : function (){
             let _this=this;
-            $.get("/notice?kefu_id="+guest.to_id,function(res) {
+            $.get("/notice?kefu_id="+KEFU_ID,function(res) {
                 //debugger;
                 if (res.result != null) {
                     let msg = res.result;
@@ -246,10 +231,6 @@ new Vue({
                     }
                 }
             });
-        },
-        //获取聊天记录
-        getHistoryByApi(){
-
         },
         initCss(){
             var _this=this;
@@ -288,7 +269,6 @@ new Vue({
         //初始化
         init(){
             this.initCss();
-            this.initConn();
             window.onfocus = function () {
                 clearTimeout(titleTimer);
                 document.title = originTitle;
