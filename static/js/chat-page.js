@@ -29,8 +29,7 @@ new Vue({
             let mes = {}
             mes.type = "userInit";
             // userinfo.client_ip=returnCitySN["cip"];
-            // userinfo.city=returnCitySN["cname"];
-            // userinfo.refer=REFER;
+            this.visitor.refer=REFER;
             mes.data = this.visitor;
             this.socket.send(JSON.stringify(mes));
         },
