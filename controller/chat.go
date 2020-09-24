@@ -241,7 +241,7 @@ func singleBroadcaster(){
 			}
 			clientList[clientMsg.VisitorId] = user
 			//插入数据表
-			//models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.Id,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
+			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.VisitorId,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
 			userInfo := make(map[string]string)
 			userInfo["uid"] = user.id
 			userInfo["username"] = user.name
