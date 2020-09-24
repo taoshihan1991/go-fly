@@ -43,6 +43,15 @@ new Vue({
                 this.scrollBottom();
                 this.showKfonline=true;
             }
+            if (redata.type == "notice") {
+                let msg = redata.data
+                if(!msg){
+                    return;
+                }
+                this.chatTitle=msg
+                $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+                this.scrollBottom();
+            }
             if (redata.type == "message") {
                 let msg = redata.data
                 this.visitor.to_id=msg.id;

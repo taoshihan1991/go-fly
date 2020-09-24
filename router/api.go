@@ -15,6 +15,7 @@ func InitApiRouter(engine *gin.Engine){
 	engine.GET("/chat_server",middleware.Ipblack, controller.NewChatServer)
 	//获取消息
 	engine.GET("/messages", controller.GetVisitorMessage)
+	engine.GET("/message_notice", controller.SendVisitorNotice)
 	//发送单条消息
 	engine.POST("/message",middleware.Ipblack,controller.SendMessage)
 	//上传文件

@@ -119,6 +119,15 @@ func SendKefuOnline(clientMsg ClientMessage, conn *websocket.Conn) {
 	jsonStrByte, _ := json.Marshal(sendMsg)
 	conn.WriteMessage(websocket.TextMessage,jsonStrByte)
 }
+//发送通知
+func SendNotice(msg string, conn *websocket.Conn) {
+	sendMsg := TypeMessage{
+		Type: "notice",
+		Data: msg,
+	}
+	jsonStrByte, _ := json.Marshal(sendMsg)
+	conn.WriteMessage(websocket.TextMessage,jsonStrByte)
+}
 
 //定时给客户端发送消息判断客户端是否在线
 func sendPingToClient() {
@@ -231,6 +240,10 @@ func singleBroadcaster(){
 		//用户上线
 		case "userInit":
 			json.Unmarshal(msgData, &clientMsg)
+			vistorInfo:=models.FindVisitorByVistorId(clientMsg.VisitorId)
+			if vistorInfo.VisitorId==""{
+				SendNotice("访客数据不存在",conn)
+			}
 			//用户id对应的连接
 			user:=&vistor{
 				conn:conn,
@@ -241,7 +254,8 @@ func singleBroadcaster(){
 			}
 			clientList[clientMsg.VisitorId] = user
 			//插入数据表
-			models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.VisitorId,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
+			models.UpdateVisitor(clientMsg.VisitorId,1,clientMsg.ClientIp,message.c.ClientIP(),clientMsg.Refer)
+			//models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.VisitorId,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
 			userInfo := make(map[string]string)
 			userInfo["uid"] = user.id
 			userInfo["username"] = user.name

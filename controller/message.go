@@ -112,6 +112,28 @@ func SendMessage(c *gin.Context) {
 		"msg":  "ok",
 	})
 }
+func SendVisitorNotice(c *gin.Context) {
+	notice := c.Query("msg")
+	if notice==""{
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "msg不能为空",
+		})
+		return
+	}
+	msg := TypeMessage{
+		Type: "notice",
+		Data: notice,
+	}
+	str, _ := json.Marshal(msg)
+	for _,visitor :=range clientList{
+		visitor.conn.WriteMessage(websocket.TextMessage,str)
+	}
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+	})
+}
 func UploadImg(c *gin.Context){
 	config:=config.CreateConfig()
 	f, err := c.FormFile("imgfile")
