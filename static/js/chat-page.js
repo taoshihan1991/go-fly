@@ -24,11 +24,8 @@ new Vue({
         },
         OnOpen() {
             this.chatTitle="连接成功!"
-            //从缓存中取出用户
-            // let userinfo=this.getUserInfo();
             let mes = {}
             mes.type = "userInit";
-            // userinfo.client_ip=returnCitySN["cip"];
             this.visitor.refer=REFER;
             mes.data = this.visitor;
             this.socket.send(JSON.stringify(mes));
