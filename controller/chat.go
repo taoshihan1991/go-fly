@@ -243,6 +243,7 @@ func singleBroadcaster(){
 			vistorInfo:=models.FindVisitorByVistorId(clientMsg.VisitorId)
 			if vistorInfo.VisitorId==""{
 				SendNotice("访客数据不存在",conn)
+				continue
 			}
 			//用户id对应的连接
 			user:=&vistor{
