@@ -16,7 +16,11 @@ type Model struct {
 func init(){
 	mysql:=config.CreateMysql()
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", mysql.Username, mysql.Password, mysql.Server, mysql.Port, mysql.Database)
-	DB,_=gorm.Open("mysql",dsn)
+	var err error
+	DB,err=gorm.Open("mysql",dsn)
+	if err!=nil{
+		panic("数据库连接失败!")
+	}
 	DB.SingularTable(true)
 	DB.LogMode(true)
 	DB.DB().SetMaxIdleConns(10)
