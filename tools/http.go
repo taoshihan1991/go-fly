@@ -5,8 +5,8 @@ import (
 	"net/http"
 )
 
-func Get(url string)string{
-	res, err :=http.Get(url)
+func Get(url string) string {
+	res, err := http.Get(url)
 	if err != nil {
 		return ""
 	}

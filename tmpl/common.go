@@ -41,23 +41,24 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 	t, _ := template.New(file).Parse(main)
 	t.Execute(obj.Rw, data)
 }
+
 //首页
 func PageIndex(c *gin.Context) {
 	lang := c.Query("lang")
-	if lang == "" ||lang!="cn"{
+	if lang == "" || lang != "cn" {
 		lang = "en"
 	}
-	language:=config.CreateLanguage(lang)
+	language := config.CreateLanguage(lang)
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"Copyright":language.WebCopyRight,
-		"WebDesc":language.MainIntro,
-		"SubIntro":language.IndexSubIntro,
-		"Document":language.IndexDocument,
-		"VisitorBtn":language.IndexVisitors,
-		"AgentBtn":language.IndexAgent,
-		"OnlineChat":language.IndexOnlineChat,
-		"IndexSend":language.Send,
-		"Lang":lang,
+		"Copyright":  language.WebCopyRight,
+		"WebDesc":    language.MainIntro,
+		"SubIntro":   language.IndexSubIntro,
+		"Document":   language.IndexDocument,
+		"VisitorBtn": language.IndexVisitors,
+		"AgentBtn":   language.IndexAgent,
+		"OnlineChat": language.IndexOnlineChat,
+		"IndexSend":  language.Send,
+		"Lang":       lang,
 	})
 }
 

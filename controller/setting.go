@@ -6,28 +6,28 @@ import (
 )
 
 func GetConfigs(c *gin.Context) {
-	configs:=models.FindConfigs()
+	configs := models.FindConfigs()
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-		"result":configs,
+		"code":   200,
+		"msg":    "ok",
+		"result": configs,
 	})
 }
-func PostConfig(c *gin.Context){
-	key:=c.PostForm("key")
-	value:=c.PostForm("value")
-	if key==""||value==""{
+func PostConfig(c *gin.Context) {
+	key := c.PostForm("key")
+	value := c.PostForm("value")
+	if key == "" || value == "" {
 		c.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "error",
 		})
 		return
 	}
-	models.UpdateConfig(key,value)
+	models.UpdateConfig(key, value)
 
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-		"result":"",
+		"code":   200,
+		"msg":    "ok",
+		"result": "",
 	})
 }

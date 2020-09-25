@@ -9,6 +9,3 @@ import (
 func PageLogin(c *gin.Context) {
 	c.HTML(http.StatusOK, "login.html", nil)
 }
-
-
-

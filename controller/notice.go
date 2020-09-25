@@ -11,56 +11,58 @@ import (
 	"net/http"
 	"time"
 )
+
 func GetNotice(c *gin.Context) {
-	kefuId:=c.Query("kefu_id")
-	welcomes:=models.FindWelcomesByUserId(kefuId)
-	user:=models.FindUser(kefuId)
-	result:=make([]gin.H,0)
-	for _,welcome:=range welcomes{
-		h:=gin.H{
-			"name":user.Nickname,
-			"avator":user.Avator,
-			"is_kefu":false,
-			"content":welcome.Content,
-			"time":time.Now().Format("2006-01-02 15:04:05"),
+	kefuId := c.Query("kefu_id")
+	welcomes := models.FindWelcomesByUserId(kefuId)
+	user := models.FindUser(kefuId)
+	result := make([]gin.H, 0)
+	for _, welcome := range welcomes {
+		h := gin.H{
+			"name":    user.Nickname,
+			"avator":  user.Avator,
+			"is_kefu": false,
+			"content": welcome.Content,
+			"time":    time.Now().Format("2006-01-02 15:04:05"),
 		}
-		result=append(result,h)
+		result = append(result, h)
 	}
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-		"result":result,
+		"code":   200,
+		"msg":    "ok",
+		"result": result,
 	})
 }
 func GetNotices(c *gin.Context) {
-	kefuId,_:=c.Get("kefu_name")
-	welcomes:=models.FindWelcomesByUserId(kefuId)
+	kefuId, _ := c.Get("kefu_name")
+	welcomes := models.FindWelcomesByUserId(kefuId)
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-		"result":welcomes,
+		"code":   200,
+		"msg":    "ok",
+		"result": welcomes,
 	})
 }
 func PostNotice(c *gin.Context) {
-	kefuId,_:=c.Get("kefu_name")
-	content:=c.PostForm("content")
-	models.CreateWelcome(fmt.Sprintf("%s",kefuId),content)
+	kefuId, _ := c.Get("kefu_name")
+	content := c.PostForm("content")
+	models.CreateWelcome(fmt.Sprintf("%s", kefuId), content)
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-		"result":"",
+		"code":   200,
+		"msg":    "ok",
+		"result": "",
 	})
 }
 func DelNotice(c *gin.Context) {
-	kefuId,_:=c.Get("kefu_name")
-	id:=c.Query("id")
-	models.DeleteWelcome(kefuId,id)
+	kefuId, _ := c.Get("kefu_name")
+	id := c.Query("id")
+	models.DeleteWelcome(kefuId, id)
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-		"result":"",
+		"code":   200,
+		"msg":    "ok",
+		"result": "",
 	})
 }
+
 var upgrader = websocket.Upgrader{}
 var oldFolders map[string]int
 

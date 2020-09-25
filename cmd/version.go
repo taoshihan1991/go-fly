@@ -10,6 +10,6 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "example:go-fly version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("go-fly "+config.Version)
+		fmt.Println("go-fly " + config.Version)
 	},
 }

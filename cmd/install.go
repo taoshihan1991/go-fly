@@ -18,18 +18,19 @@ var installCmd = &cobra.Command{
 		install()
 	},
 }
-func install(){
-	sqlFile:=config.Dir+"go-fly.sql"
-	isExit,_:=tools.IsFileExist(config.MysqlConf)
-	dataExit,_:=tools.IsFileExist(sqlFile)
-	if !isExit||!dataExit{
+
+func install() {
+	sqlFile := config.Dir + "go-fly.sql"
+	isExit, _ := tools.IsFileExist(config.MysqlConf)
+	dataExit, _ := tools.IsFileExist(sqlFile)
+	if !isExit || !dataExit {
 		fmt.Println("config/mysql.json 数据库配置文件或者数据库文件go-fly.sql不存在")
 		os.Exit(1)
 	}
-	sqls,_:=ioutil.ReadFile(sqlFile)
-	sqlArr:=strings.Split(string(sqls),";")
-	for _,sql:=range sqlArr{
-		if sql==""{
+	sqls, _ := ioutil.ReadFile(sqlFile)
+	sqlArr := strings.Split(string(sqls), ";")
+	for _, sql := range sqlArr {
+		if sql == "" {
 			continue
 		}
 		models.Execute(sql)

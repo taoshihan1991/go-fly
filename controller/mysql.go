@@ -8,29 +8,30 @@ import (
 	"github.com/taoshihan1991/imaptool/tools"
 	"os"
 )
+
 func MysqlGetConf(c *gin.Context) {
-	mysqlInfo:=config.GetMysql()
+	mysqlInfo := config.GetMysql()
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "验证成功",
-		"result":mysqlInfo,
+		"code":   200,
+		"msg":    "验证成功",
+		"result": mysqlInfo,
 	})
 }
 func MysqlSetConf(c *gin.Context) {
 
-	mysqlServer:=c.PostForm("server")
-	mysqlPort:=c.PostForm("port")
-	mysqlDb:=c.PostForm("database")
-	mysqlUsername:=c.PostForm("username")
-	mysqlPassword:=c.PostForm("password")
-	dsn:=fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", mysqlUsername,mysqlPassword, mysqlServer, mysqlPort, mysqlDb)
-	mysql:=database.NewMysql()
-	mysql.Dsn=dsn
-	err:=mysql.Ping()
-	if err!=nil{
+	mysqlServer := c.PostForm("server")
+	mysqlPort := c.PostForm("port")
+	mysqlDb := c.PostForm("database")
+	mysqlUsername := c.PostForm("username")
+	mysqlPassword := c.PostForm("password")
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", mysqlUsername, mysqlPassword, mysqlServer, mysqlPort, mysqlDb)
+	mysql := database.NewMysql()
+	mysql.Dsn = dsn
+	err := mysql.Ping()
+	if err != nil {
 		c.JSON(200, gin.H{
 			"code": 403,
-			"msg":  "数据库连接失败："+err.Error(),
+			"msg":  "数据库连接失败：" + err.Error(),
 		})
 		return
 	}
@@ -49,7 +50,7 @@ func MysqlSetConf(c *gin.Context) {
 	"Password":"%s"
 }
 `
-	data := fmt.Sprintf(format, mysqlServer,mysqlPort,mysqlDb,mysqlUsername,mysqlPassword)
+	data := fmt.Sprintf(format, mysqlServer, mysqlPort, mysqlDb, mysqlUsername, mysqlPassword)
 	file.WriteString(data)
 
 	c.JSON(200, gin.H{

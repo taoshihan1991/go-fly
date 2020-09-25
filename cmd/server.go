@@ -13,28 +13,30 @@ import (
 	"os/exec"
 	"path/filepath"
 )
-var(
-	port string
-	tcpport string
-	daemon bool
+
+var (
+	port        string
+	tcpport     string
+	daemon      bool
 	GoflyConfig *config.Config
 )
 var serverCmd = &cobra.Command{
-	Use:   "server",
-	Short: "example:go-fly server port 8081",
+	Use:     "server",
+	Short:   "example:go-fly server port 8081",
 	Example: "go-fly server -c config/",
 	Run: func(cmd *cobra.Command, args []string) {
 		run()
 	},
 }
+
 func init() {
 	serverCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "监听端口号")
 	serverCmd.PersistentFlags().StringVarP(&tcpport, "tcpport", "t", "8082", "监听tcp端口号")
 	serverCmd.PersistentFlags().BoolVarP(&daemon, "daemon", "d", false, "是否为守护进程模式")
 }
-func run(){
-	if daemon==true{
-		if os.Getppid() != 1{
+func run() {
+	if daemon == true {
+		if os.Getppid() != 1 {
 			// 将命令行参数中执行文件路径转换成可用路径
 			filePath, _ := filepath.Abs(os.Args[0])
 			cmd := exec.Command(filePath, os.Args[1:]...)
@@ -47,7 +49,7 @@ func run(){
 		}
 	}
 
-	baseServer := "0.0.0.0:"+port
+	baseServer := "0.0.0.0:" + port
 	//tcpBaseServer := "0.0.0.0:"+tcpport
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()

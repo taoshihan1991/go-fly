@@ -19,29 +19,29 @@ func ActionMain(w http.ResponseWriter, r *http.Request) {
 	render.Display("main", render)
 }
 func MainCheckAuth(c *gin.Context) {
-	id,_:=c.Get("kefu_id")
-	userinfo:=models.FindUserRole("user.avator,user.name,user.id, role.name role_name",id)
+	id, _ := c.Get("kefu_id")
+	userinfo := models.FindUserRole("user.avator,user.name,user.id, role.name role_name", id)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "验证成功",
-		"result":gin.H{
-			"avator":userinfo.Avator,
-			"name":userinfo.Name,
-			"role_name":userinfo.RoleName,
+		"result": gin.H{
+			"avator":    userinfo.Avator,
+			"name":      userinfo.Name,
+			"role_name": userinfo.RoleName,
 		},
 	})
 }
 func GetStatistics(c *gin.Context) {
-	visitors:=models.CountVisitors()
-	message:=models.CountMessage()
-	session:=len(clientList)
+	visitors := models.CountVisitors()
+	message := models.CountMessage()
+	session := len(clientList)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
-		"result":gin.H{
-			"visitors":visitors,
-			"message":message,
-			"session":session,
+		"result": gin.H{
+			"visitors": visitors,
+			"message":  message,
+			"session":  session,
 		},
 	})
 }

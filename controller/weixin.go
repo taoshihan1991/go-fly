@@ -9,14 +9,14 @@ import (
 	"sort"
 )
 
-func GetCheckWeixinSign(c *gin.Context){
-	token:=models.FindConfig("WeixinToken")
-	signature:=c.Query("signature")
-	timestamp:=c.Query("timestamp")
-	nonce:=c.Query("nonce")
-	echostr:=c.Query("echostr")
+func GetCheckWeixinSign(c *gin.Context) {
+	token := models.FindConfig("WeixinToken")
+	signature := c.Query("signature")
+	timestamp := c.Query("timestamp")
+	nonce := c.Query("nonce")
+	echostr := c.Query("echostr")
 	//将token、timestamp、nonce三个参数进行字典序排序
-	var tempArray  = []string{token, timestamp, nonce}
+	var tempArray = []string{token, timestamp, nonce}
 	sort.Strings(tempArray)
 	//将三个参数字符串拼接成一个字符串进行sha1加密
 	var sha1String string = ""
