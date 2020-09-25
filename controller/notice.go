@@ -52,6 +52,17 @@ func PostNotice(c *gin.Context) {
 		"result": "",
 	})
 }
+func PostNoticeSave(c *gin.Context) {
+	kefuId, _ := c.Get("kefu_name")
+	content := c.PostForm("content")
+	id := c.PostForm("id")
+	models.UpdateWelcome(fmt.Sprintf("%s", kefuId),id, content)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": "",
+	})
+}
 func DelNotice(c *gin.Context) {
 	kefuId, _ := c.Get("kefu_name")
 	id := c.Query("id")

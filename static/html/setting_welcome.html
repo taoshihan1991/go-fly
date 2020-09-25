@@ -13,6 +13,9 @@
                     <el-table-column
                             prop="content"
                             label="回复内容">
+                        <template slot-scope="scope">
+                            <el-input @change="setWelcomeItem(scope.row.id,scope.row.content)" v-model="scope.row.content"></el-input>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="ctime"

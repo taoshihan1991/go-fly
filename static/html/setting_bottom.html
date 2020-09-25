@@ -342,6 +342,15 @@
                     });
                 });
             },
+            //设置配置项
+            setWelcomeItem(id,content){
+                let _this=this;
+                this.sendAjax("/notice_save","POST",{id:id,content:content},function(result){
+                    _this.sendAjax("/notices","get",{},function(result){
+                        _this.noticeList=result;
+                    });
+                });
+            },
             //提交角色表单
             submitRoleForm(formName){
                 let _this=this;

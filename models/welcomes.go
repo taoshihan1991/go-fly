@@ -22,6 +22,16 @@ func CreateWelcome(userId string, content string) uint {
 	DB.Create(w)
 	return w.ID
 }
+func UpdateWelcome(userId string,id string, content string) uint {
+	if userId == "" || content == "" {
+		return 0
+	}
+	w := &Welcome{
+		Content: content,
+	}
+	DB.Model(w).Where("user_id = ? and id = ?", userId,id).Update(w)
+	return w.ID
+}
 func FindWelcomeByUserId(userId interface{}) Welcome {
 	var w Welcome
 	DB.Where("user_id = ? and is_default=?", userId, 1).First(&w)
