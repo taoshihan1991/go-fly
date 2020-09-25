@@ -67,6 +67,7 @@
                 role_id:"",
             },
             roleList:[],
+            configList:[],
             roleDialog:false,
             noticeList:[],
             welcomeDialog:false,
@@ -200,6 +201,11 @@
                         _this.ipblackList=result.list;
                     });
                 }
+                if(ACTION=="setting_config"){
+                    this.sendAjax("/configs","get",{},function(result){
+                        _this.configList=result;
+                    });
+                }
             },
             sendAjax(url,method,params,callback){
                 let _this=this;
@@ -326,6 +332,15 @@
                 this.roleForm.method=method
                 this.roleForm.path=path
                 this.roleDialog=true;
+            },
+            //设置配置项
+            setConfigItem(key,value){
+                let _this=this;
+                this.sendAjax("/config","POST",{key:key,value:value},function(result){
+                    _this.sendAjax("/configs","get",{},function(result){
+                        _this.configList=result;
+                    });
+                });
             },
             //提交角色表单
             submitRoleForm(formName){

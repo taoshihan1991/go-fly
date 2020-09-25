@@ -1,61 +1,33 @@
 package controller
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/taoshihan1991/imaptool/config"
-	"github.com/taoshihan1991/imaptool/tmpl"
-	"github.com/taoshihan1991/imaptool/tools"
-	"net/http"
-	"os"
+	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/models"
 )
 
-func ActionSetting(w http.ResponseWriter, r *http.Request) {
-	render := tmpl.NewSettingHtml(w)
-	render.SetLeft("setting_left")
-	render.SetBottom("setting_bottom")
-	account := config.GetAccount()
-	render.Username = account["Username"]
-	render.Password = account["Password"]
-	render.Display("setting", render)
+func GetConfigs(c *gin.Context) {
+	configs:=models.FindConfigs()
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":configs,
+	})
 }
-func SettingAccount(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "text/json;charset=utf-8;")
-
-	username := r.PostFormValue("username")
-	password := r.PostFormValue("password")
-
-	isExist, _ := tools.IsFileExist(config.Dir)
-	if !isExist {
-		os.Mkdir(config.Dir, os.ModePerm)
-	}
-	fileConfig := config.AccountConf
-	file, _ := os.OpenFile(fileConfig, os.O_RDWR|os.O_CREATE, os.ModePerm)
-
-	format := `{
-	"Username":"%s",
-	"Password":"%s"
-}
-`
-	data := fmt.Sprintf(format, username, password)
-	file.WriteString(data)
-
-	msg, _ := json.Marshal(tools.JsonResult{Code: 200, Msg: "操作成功!"})
-	w.Write(msg)
-}
-func SettingGetAccount(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "text/json;charset=utf-8;")
-	mailServer := tools.GetMailServerFromCookie(r)
-
-	if mailServer == nil {
-		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: "验证失败"})
-		w.Write(msg)
+func PostConfig(c *gin.Context){
+	key:=c.PostForm("key")
+	value:=c.PostForm("value")
+	if key==""||value==""{
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "error",
+		})
 		return
 	}
-	result := config.GetAccount()
-	msg, _ := json.Marshal(tools.JsonListResult{
-		JsonResult: tools.JsonResult{Code: 200, Msg: "获取成功"},
-		Result:     result,
+	models.UpdateConfig(key,value)
+
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result":"",
 	})
-	w.Write(msg)
 }

@@ -7,7 +7,12 @@ type Config struct{
 	ConfKey string `json:"conf_key"`
 	ConfValue string `json:"conf_value"`
 }
-
+func UpdateConfig(key string,value  string){
+	c:=&Config{
+		ConfValue: value,
+	}
+	DB.Model(c).Where("conf_key = ?",key).Update(c)
+}
 func FindConfigs()[]Config{
 	var config []Config
 	DB.Find(&config)

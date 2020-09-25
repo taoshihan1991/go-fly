@@ -67,14 +67,5 @@ func PageConfig(c *gin.Context) {
 		"action":"setting_config",
 	})
 }
-type SettingHtml struct {
-	*CommonHtml
-	Username, Password string
-}
 
-func NewSettingHtml(w http.ResponseWriter) *SettingHtml {
-	obj := new(SettingHtml)
-	parent := NewRender(w)
-	obj.CommonHtml = parent
-	return obj
-}
+

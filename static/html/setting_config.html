@@ -1,0 +1,36 @@
+{{template "header" }}
+<div id="app" style="width:100%">
+    <template>
+        <el-container v-loading.fullscreen.lock="fullscreenLoading">
+            {{template "setting_left" .}}
+
+            <el-main class="mainMain">
+
+                <el-table
+                        :data="configList"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            prop="conf_name"
+                            label="配置参数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="conf_key"
+                            label="配置key">
+                    </el-table-column>
+                    <el-table-column
+                            prop="id"
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-input @change="setConfigItem(scope.row.conf_key,scope.row.conf_value)" v-model="scope.row.conf_value"></el-input>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-main>
+
+        </el-container>
+    </template>
+
+</div>
+</body>
+{{template "setting_bottom" .}}
