@@ -7,7 +7,7 @@ import (
 )
 
 func InitViewRouter(engine *gin.Engine) {
-	engine.GET("/index", tmpl.PageIndex)
+	engine.GET("/index/:lang", middleware.SetLanguage, tmpl.PageIndex)
 	engine.GET("/login", tmpl.PageLogin)
 	engine.GET("/chat_page", middleware.SetLanguage, tmpl.PageChat)
 	engine.GET("/chatIndex", middleware.SetLanguage, tmpl.PageChat)

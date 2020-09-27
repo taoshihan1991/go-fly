@@ -19,10 +19,7 @@ const Dir = "config/"
 const AccountConf = Dir + "account.json"
 const MysqlConf = Dir + "mysql.json"
 const MailConf = Dir + "mail.json"
-const LangConf = Dir + "language.json"
 const MainConf = Dir + "config.json"
-const WeixinToken = ""
-const ServerJiang = ""
 
 func init() {
 	//配置文件

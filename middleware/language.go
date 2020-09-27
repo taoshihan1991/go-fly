@@ -5,7 +5,10 @@ import (
 )
 
 func SetLanguage(c *gin.Context) {
-	lang := c.Query("lang")
+	var lang string
+	if lang = c.Param("lang"); lang == "" {
+		lang = c.Query("lang")
+	}
 	if lang == "" || lang != "cn" {
 		lang = "en"
 	}

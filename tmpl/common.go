@@ -44,11 +44,8 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 
 //首页
 func PageIndex(c *gin.Context) {
-	lang := c.Query("lang")
-	if lang == "" || lang != "cn" {
-		lang = "en"
-	}
-	language := config.CreateLanguage(lang)
+	lang, _ := c.Get("lang")
+	language := config.CreateLanguage(lang.(string))
 	c.HTML(http.StatusOK, "index.html", gin.H{
 		"Copyright":  language.WebCopyRight,
 		"WebDesc":    language.MainIntro,
@@ -58,6 +55,7 @@ func PageIndex(c *gin.Context) {
 		"AgentBtn":   language.IndexAgent,
 		"OnlineChat": language.IndexOnlineChat,
 		"IndexSend":  language.Send,
+		"Maintech":   language.Maintech,
 		"Lang":       lang,
 	})
 }

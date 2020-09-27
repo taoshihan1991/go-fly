@@ -52,7 +52,7 @@ func init() {
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	//go sendPingUpdateStatus()
+	go UpdateVisitorStatusCron()
 	go singleBroadcaster()
 	//go sendPingOnlineUsers()
 	//sendPingToClient()
@@ -173,16 +173,19 @@ func sendPingToClient() {
 }
 
 //定时给更新数据库状态
-func sendPingUpdateStatus() {
+func UpdateVisitorStatusCron() {
 	for {
 		visitors := models.FindVisitorsOnline()
 		for _, visitor := range visitors {
+			if visitor.VisitorId == "" {
+				continue
+			}
 			_, ok := clientList[visitor.VisitorId]
 			if !ok {
 				models.UpdateVisitorStatus(visitor.VisitorId, 0)
 			}
 		}
-		time.Sleep(20 * time.Second)
+		time.Sleep(60 * time.Second)
 	}
 }
 
