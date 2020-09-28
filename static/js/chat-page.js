@@ -236,13 +236,14 @@ new Vue({
                 $.each(faceTitles, function (index, item) {
                     _this.face.push({"name":item,"path":faces[item]});
                 });
-                $(".faceBtn").click(function(){
+                $(".faceBtn").click(function(e){
                     var status=$('.faceBox').css("display");
                     if(status=="block"){
                         $('.faceBox').hide();
                     }else{
                         $('.faceBox').show();
                     }
+                    return false;
                 });
             });
         },
@@ -268,6 +269,8 @@ new Vue({
             $('body').click(function(){
                 clearTimeout(titleTimer);
                 document.title = originTitle;
+
+                $('.faceBox').hide();
             });
         },
         //表情点击事件
