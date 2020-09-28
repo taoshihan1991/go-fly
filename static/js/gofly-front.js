@@ -3,7 +3,7 @@ $("#launchButton").click(function() {
     if (launchButtonFlag) return;
     var width=$(window).width();
     if(width<768){
-        window.open(GOFLY_URL+'/chatIndex?refer='+window.document.title);
+        window.open(GOFLY_URL+'/chatIndex?kefu_id='+GOFLY_KEFU_ID+'&refer='+window.document.title);
         return;
     }
     layer.open({
