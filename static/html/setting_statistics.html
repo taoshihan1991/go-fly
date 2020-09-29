@@ -1,0 +1,34 @@
+{{template "header" }}
+<div id="app" style="width:100%">
+    <template>
+        <el-container v-loading.fullscreen.lock="fullscreenLoading">
+            <el-main class="mainMain settingMain">
+                <h2 class="textDark">数据总览</h2>
+                <el-row :gutter="10">
+                    <el-col :span="8">
+                        <div class="smallBox bgInfo">
+                            <h3  v-html="statistics.visitors"></h3>
+                            <p>总访客数</p>
+                        </div>
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="smallBox bgSuccess">
+                            <h3  v-html="statistics.message"></h3>
+                            <p>总消息数</p>
+                        </div>
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="smallBox bgDanger">
+                            <h3 v-html="statistics.session"></h3>
+                            <p>当前会话数</p>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-main>
+        </el-container>
+    </template>
+</div>
+</body>
+{{template "setting_bottom" .}}
+
+

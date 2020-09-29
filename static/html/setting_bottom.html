@@ -7,6 +7,7 @@
         el: '#app',
         delimiters:["<{","}>"],
         data: {
+            iframeUrl:"/setting_statistics",
             fullscreenLoading:false,
             openIndex:[1],
             account: {
@@ -145,7 +146,8 @@
             },
             //跳转
             openUrl(url){
-                window.location.href=url;
+                //window.location.href=url;
+                this.iframeUrl=url;
             },
             //展示提示
             showNotice(){
@@ -186,7 +188,7 @@
                         _this.roleList=result;
                     });
                 }
-                if(ACTION=="setting"){
+                if(ACTION=="setting_statistics"){
                     this.sendAjax("/statistics","get",{},function(result) {
                         _this.statistics = result;
                     });

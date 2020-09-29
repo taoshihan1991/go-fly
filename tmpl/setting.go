@@ -21,6 +21,14 @@ func PageSettingWelcome(c *gin.Context) {
 	})
 }
 
+//统计
+func PageSettingStatis(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_statistics.html", gin.H{
+		"tab_index": "1-3",
+		"action":    "setting_statistics",
+	})
+}
+
 //设置mysql
 func PageSettingMysql(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting_mysql.html", gin.H{
