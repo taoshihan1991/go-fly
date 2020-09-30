@@ -151,7 +151,7 @@ new Vue({
                 type:"get",
                 url:"/messages?visitorId="+this.visitor.visitor_id,
                 success: function(data) {
-                    if(data.code==200 && data.result!=null){
+                    if(data.code==200 && data.result!=null&&data.result.length!=0){
                         let msgList=data.result;
                         _this.msgList=[];
                         for(let i=0;i<msgList.length;i++){
@@ -171,6 +171,9 @@ new Vue({
                             _this.msgList.push(content);
                             _this.scrollBottom();
                         }
+                        _this.$nextTick(() => {
+                            $(".chatBox").append("<div class=\"chatTime\">—— 以上是历史消息 ——</div>");
+                        });
                     }
                     if(data.code!=200){
                         _this.$message({
@@ -204,15 +207,6 @@ new Vue({
             }
         },getCache : function (key){
             return JSON.parse(localStorage.getItem(key));
-        },
-        generateUUID:function () {
-            var d = new Date().getTime();
-            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = (d + Math.random()*16)%16 | 0;
-                d = Math.floor(d/16);
-                return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-            });
-            return uuid;
         },
         //获取自动欢迎语句
         getNotice : function (){
