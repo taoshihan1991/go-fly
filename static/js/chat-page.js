@@ -12,6 +12,7 @@ new Vue({
         visitor:{},
         face:[],
         showKfonline:false,
+        socketClosed:false,
     },
     methods: {
         //初始化websocket
@@ -76,6 +77,7 @@ new Vue({
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
                 this.socket.close();
+                this.socketClosed=true;
             }
             window.parent.postMessage(redata);
         },
@@ -89,7 +91,13 @@ new Vue({
                 });
                 return;
             }
-
+            if(this.socketClosed){
+                this.$message({
+                    message: '连接关闭!请重新打开页面',
+                    type: 'warning'
+                });
+                return;
+            }
             let _this=this;
             let mes = {};
             mes.type = "visitor";
