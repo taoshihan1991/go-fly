@@ -14,6 +14,7 @@ func UpdateConfig(key string, value string) {
 		ConfValue: value,
 	}
 	DB.Model(c).Where("conf_key = ?", key).Update(c)
+	InitConfig()
 }
 func FindConfigs() []Config {
 	var config []Config
