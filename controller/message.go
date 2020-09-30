@@ -135,6 +135,30 @@ func SendVisitorNotice(c *gin.Context) {
 		"msg":  "ok",
 	})
 }
+func SendCloseMessage(c *gin.Context) {
+	visitorId := c.Query("visitor_id")
+	if visitorId == "" {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "visitor_id不能为空",
+		})
+		return
+	}
+	msg := TypeMessage{
+		Type: "close",
+		Data: visitorId,
+	}
+	str, _ := json.Marshal(msg)
+	for _, visitor := range clientList {
+		if visitorId == visitor.id {
+			visitor.conn.WriteMessage(websocket.TextMessage, str)
+		}
+	}
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+	})
+}
 func UploadImg(c *gin.Context) {
 	config := config.CreateConfig()
 	f, err := c.FormFile("imgfile")

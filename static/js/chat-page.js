@@ -17,6 +17,7 @@ new Vue({
         //初始化websocket
         initConn() {
             let socket = new ReconnectingWebSocket(this.server);//创建Socket实例
+            socket.maxReconnectAttempts = 30;
             this.socket = socket
             this.socket.onmessage = this.OnMessage;
             this.socket.onopen = this.OnOpen;
@@ -68,6 +69,12 @@ new Vue({
                 this.scrollBottom();
                 flashTitle();//标题闪烁
             }
+            if (redata.type == "close") {
+                this.chatTitle="连接关闭!请重新打开页面";
+                $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+                this.scrollBottom();
+                this.socket.close();
+            }
             window.parent.postMessage(redata);
         },
         //发送给客户
@@ -111,7 +118,8 @@ new Vue({
 
         },
         OnClose() {
-            this.chatTitle="连接关闭!"
+            this.chatTitle="连接关闭!请重新打开页面";
+            $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
         },
         //获取当前用户信息
         getUserInfo(){
