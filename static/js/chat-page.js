@@ -22,6 +22,8 @@ new Vue({
             this.socket.onmessage = this.OnMessage;
             this.socket.onopen = this.OnOpen;
             this.socket.onclose = this.OnClose;
+            //心跳
+            this.ping();
         },
         OnOpen() {
             this.chatTitle="连接成功!"
@@ -370,7 +372,6 @@ new Vue({
         this.scrollBottom();
         //获取欢迎
         this.getNotice();
-        //心跳
-        this.ping();
+
     }
 })
