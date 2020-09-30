@@ -20,6 +20,7 @@ var app=new Vue({
             to_id : "",
         },
         visitor:{
+            visitor_id:"",
             refer:"",
             client_ip:"",
             city:"",
@@ -337,7 +338,28 @@ var app=new Vue({
                         _this.visitor.client_ip=r.client_ip;
                         _this.visitor.source_ip=r.source_ip;
                         _this.visitor.status=r.status==1?"在线":"离线";
+                        _this.visitor.visitor_id=r.visitor_id;
                     }
+                    if(data.code!=200){
+                        _this.$message({
+                            message: data.msg,
+                            type: 'error'
+                        });
+                    }
+                }
+            });
+        },
+        //关闭访客
+        closeVisitor(visitorId){
+            let _this=this;
+            $.ajax({
+                type:"get",
+                url:"/message_close",
+                data:{visitor_id:visitorId},
+                headers:{
+                    "token":localStorage.getItem("token")
+                },
+                success: function(data) {
                     if(data.code!=200){
                         _this.$message({
                             message: data.msg,

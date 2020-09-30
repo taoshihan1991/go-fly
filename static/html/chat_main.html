@@ -170,10 +170,12 @@
                                         <i class="el-icon-s-tools"></i>
                                         <span slot="title">时间：<{visitor.created_at}></span>
                                     </el-menu-item>
-                                    <el-menu-item style="padding-left:2px;">
-                                        <i class="el-icon-s-tools"></i>
-                                        <span slot="title">状态：<{visitor.status}></span>
-                                    </el-menu-item>
+                                    <el-tooltip content="点击关闭连接" placement="left">
+                                        <el-menu-item v-on:click="closeVisitor(visitor.visitor_id)" style="padding-left:2px;">
+                                            <i class="el-icon-s-tools"></i>
+                                            <span slot="title">状态：<{visitor.status}></span>
+                                        </el-menu-item>
+                                    </el-tooltip>
                                 </el-menu>
                             </el-tab-pane>
                             <el-tab-pane label="黑名单" name="blackList">
