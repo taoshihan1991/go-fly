@@ -252,12 +252,12 @@ new Vue({
             let _this=this;
             let mes = {}
             mes.type = "ping";
-            mes.data = "";
+            mes.data = "visitor:"+_this.visitor.visitor_id;
             setInterval(function () {
                 if(_this.socket!=null){
                     _this.socket.send(JSON.stringify(mes));
                 }
-            },30000);
+            },10000);
         },
         //初始化
         init(){
