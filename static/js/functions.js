@@ -77,6 +77,11 @@ function replaceContent (content) {// 转义聊天内容中的特殊字符
             var src = face.replace(/^img\[/g, '').replace(/\]/g, '');;
             return '<img onclick="bigPic(src,true)" src="' + src + '" style="max-width: 100%"/></div>';
         })
+        .replace(/\[([^\s\[\]]+?)\]+link\[([^\s\[\]]+?)\]/g, function (face) {  // 转义超链接
+            var text = face.replace(/link\[.*?\]/g, '').replace(/\[|\]/g, '');
+            var src = face.replace(/^\[([^\s\[\]]+?)\]+link\[/g, '').replace(/\]/g, '');
+            return '<a href="#" onclick="window.open(\'' + src + '\')" />【'+text+'】</a>';
+        })
         .replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') // 转移HTML代码
         .replace(/\n/g, '<br>') // 转义换行
 
