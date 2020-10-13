@@ -84,3 +84,11 @@ func PageConfig(c *gin.Context) {
 		"action":    "setting_config",
 	})
 }
+
+//配置项编辑首页
+func PageSettingIndexPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_pageindex.html", gin.H{
+		"tab_index": "4-7",
+		"action":    "setting_pageindex",
+	})
+}

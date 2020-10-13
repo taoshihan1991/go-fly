@@ -1,4 +1,7 @@
 {{define "setting_left"}}
+    <style>
+
+    </style>
 <el-aside width="200px">
 <el-menu
         background-color="#222d32"
@@ -35,6 +38,7 @@
             <el-menu-item style="display:none" index="2-2">设置imap</el-menu-item>
             <el-menu-item style="display:none" index="2-3" v-on:click="openUrl('/setting')">设置登陆账号</el-menu-item>
             <el-menu-item style="display:none" index="2-4"  v-on:click="openUrl('/setting_mysql')">设置mysql</el-menu-item>
+            <el-menu-item index="4-7"  v-on:click="openUrl('/setting_indexpage')">编辑首页</el-menu-item>
             <el-menu-item index="4-6"  v-on:click="openUrl('/setting_config')">配置参数</el-menu-item>
             <el-menu-item index="4-5"  v-on:click="openUrl('/setting_ipblack')">IP黑名单</el-menu-item>
             <el-menu-item index="2-5"  v-on:click="openUrl('/setting_deploy')">网页部署</el-menu-item>

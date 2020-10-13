@@ -16,6 +16,7 @@ func InitViewRouter(engine *gin.Engine) {
 	engine.GET("/chat_main", middleware.JwtPageMiddleware, tmpl.PageChatMain)
 	engine.GET("/setting", tmpl.PageSetting)
 	engine.GET("/setting_statistics", tmpl.PageSettingStatis)
+	engine.GET("/setting_indexpage", tmpl.PageSettingIndexPage)
 	engine.GET("/setting_mysql", tmpl.PageSettingMysql)
 	engine.GET("/setting_welcome", tmpl.PageSettingWelcome)
 	engine.GET("/setting_deploy", tmpl.PageSettingDeploy)
