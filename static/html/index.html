@@ -4,115 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>GO-FLY - {{.WebDesc}}</title>
-    <meta name="description" content="GO-FLY，{{.SubIntro}}" />
+    <title>{{.Title}}</title>
+    <meta name="keywords" content="{{.Keywords}}" />
+    <meta name="description" content="{{.Desc}}" />
 
-    <style>
-        *{
-            margin: 0;padding: 0;
-        }
-        .header{
-            height: 80px;
-            background-color: #fff;
-            color: #fff;
-            top: 0;
-            left: 0;
-            width: 100%;
-            line-height: 80px;
-            z-index: 100;
-            position: relative;
-        }
-        .container{
-            width: 1140px;
-            padding: 0;
-            margin: 0 auto;
-        }
-        .header .container{
-            height: 100%;
-            box-sizing: border-box;
-            border-bottom: 1px solid #dcdfe6;
-        }
-        .header h1{
-            margin: 0;
-            float: left;
-            font-size: 32px;
-            font-weight: 400;
-        }
-        .header a{
-            color: #519eff;
-            font-family: "Microsoft JhengHei";
-            text-decoration: none;
-        }
-        .header h1 a{
-            font-size: 30px;
-            font-weight: bold;
-        }
-        .header .navBtn{
-            float: right;
-            margin-left: 20px;
-        }
-        .banner{
-            padding-top: 20px;
-            text-align: center;
-        }
-        .banner h1{
-            font-size: 34px;
-            margin: 0;
-            line-height: 48px;
-            color: #555;
-            font-weight: 500;
-            font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
-        }
-        .banner p{
-            font-size: 18px;
-            line-height: 28px;
-            color: #888;
-            margin: 10px 0 5px;
-        }
-        .jumbotron{
-            width: 587px;
-            height: 560px;
-            margin: 30px auto;
-        }
-        .footer {
-            clear: both;
-            background-color: #f7fbfd;
-            width: 100%;
-            padding: 40px 150px;
-            box-sizing: border-box;
-        }
-        .copyright{
-            color: #6c757d;
-            text-align: center;
-            margin: 60px 0;
-        }
-        .mainTechLeft{
-            width: 300px;
-            float: left;
-        }
-        .mainTechLeft h1{
-            font-size: 34px;
-            margin: 0;
-            line-height: 48px;
-            color: #555;
-            font-weight: 500;
-            font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
-        }
-        .mainTechLeft p{
-            font-size: 18px;
-            line-height: 28px;
-            color: #888;
-            margin: 10px 0 5px;
-        }
-        .floatRight{
-            width: 700px;
-            border: 1px solid #e1e1e1;
-            padding: 4px;
-            margin-top: 35px;
-            display: block;
-            float: right;
-        }
-    </style>
+    {{.CssJs}}
 </head>
 <header class="header">
     <div class="container">
@@ -124,35 +20,7 @@
         <a class="navBtn" href="/docs/index.html" target="_blank">{{.Document}}</a>
     </div>
 </header>
-<div class="banner">
-    <h1>{{.WebDesc}}</h1>
-    <p>{{.SubIntro}}</p>
-</div>
-<div class="jumbotron">
-    {{if eq .Lang "en"}}
-    <img src="/static/images/intro3.png"/>
-    {{else}}
-    <img src="/static/images/intro1.jpg"/>
-    {{end}}
-</div>
-<div class="container">
-    <div class="mainTechLeft">
-        <h1>{{.Maintech}}</h1>
-        <p>github.com/dgrijalva/jwt-go</p>
-        <p>github.com/gin-gonic/gin</p>
-        <p> github.com/go-sql-driver/mysql</p>
-        <p>  github.com/gobuffalo/packr/v2</p>
-        <p>  github.com/gorilla/websocket</p>
-        <p>   github.com/ipipdotnet/ipdb-go</p>
-        <p>    github.com/jinzhu/gorm</p>
-        <p>    github.com/satori/go.uuid</p>
-        <p>   github.com/spf13/cobra</p>
-        <p>   github.com/swaggo/gin-swagger</p>
-        <p>  github.com/swaggo/swag
-        </p>
-    </div>
-    <img src="/static/images/admin.png" class="floatRight"/>
-</div>
+{{.Content}}
 
 
 <footer class="footer">

@@ -3,7 +3,9 @@ package tmpl
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
+	"html"
 	"html/template"
 	"net/http"
 )
@@ -46,6 +48,18 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 func PageIndex(c *gin.Context) {
 	lang, _ := c.Get("lang")
 	language := config.CreateLanguage(lang.(string))
+	about := models.FindAboutByPage("index")
+	cssJs := html.UnescapeString(about.CssJs)
+	title := about.TitleCn
+	keywords := about.KeywordsCn
+	desc := html.UnescapeString(about.DescCn)
+	content := html.UnescapeString(about.HtmlCn)
+	if lang == "en" {
+		title = about.TitleEn
+		keywords = about.KeywordsEn
+		desc = html.UnescapeString(about.DescEn)
+		content = html.UnescapeString(about.HtmlEn)
+	}
 	c.HTML(http.StatusOK, "index.html", gin.H{
 		"Copyright":  language.WebCopyRight,
 		"WebDesc":    language.MainIntro,
@@ -57,6 +71,11 @@ func PageIndex(c *gin.Context) {
 		"IndexSend":  language.Send,
 		"Maintech":   language.Maintech,
 		"Lang":       lang,
+		"Title":      title,
+		"Keywords":   keywords,
+		"Desc":       desc,
+		"Content":    template.HTML(content),
+		"CssJs":      template.HTML(cssJs),
 	})
 }
 

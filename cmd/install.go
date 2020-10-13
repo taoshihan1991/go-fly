@@ -28,7 +28,7 @@ func install() {
 		os.Exit(1)
 	}
 	sqls, _ := ioutil.ReadFile(sqlFile)
-	sqlArr := strings.Split(string(sqls), ";")
+	sqlArr := strings.Split(string(sqls), "|")
 	for _, sql := range sqlArr {
 		if sql == "" {
 			continue
