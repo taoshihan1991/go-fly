@@ -1,0 +1,47 @@
+{{template "header" }}
+<div id="app" style="width:100%">
+    <template>
+        <el-container>
+
+            <el-main class="mainMain">
+                <el-form ref="form" :model="pageindex" label-width="100px">
+                    <el-form-item label="中文标题">
+                        <el-input v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="英文标题">
+                        <el-input v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中文关键词">
+                        <el-input v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="英文关键词">
+                        <el-input v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中文描述">
+                        <el-input v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="英文描述">
+                        <el-input v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="JS&CSS">
+                        <el-input v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="中文内容">
+                        <el-input type="textarea" v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item label="英文内容">
+                        <el-input type="textarea" v-model="pageindex.titlecn"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit">保存</el-button>
+                        <el-button>取消</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-main>
+
+        </el-container>
+    </template>
+
+</div>
+</body>
+{{template "setting_bottom" .}}
