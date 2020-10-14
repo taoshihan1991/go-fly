@@ -294,6 +294,7 @@ html {
 }
 .chatVisitorPage .chatBox{
     min-height: 540px;
+    padding: 0 4px;
 }
 .chatBox .el-col{margin:10px 0;}
 .chatUser{
