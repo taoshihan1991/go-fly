@@ -389,6 +389,16 @@
                     }
                 });
             },
+            //提交首页表单
+            setPageIndex(){
+                let _this=this;
+                this.sendAjax("/about","POST",this.pageindex,function(result){
+                    _this.$message({
+                        message: "编辑成功",
+                        type: 'success'
+                    });
+                });
+            },
             //生成部署js
             createDeployJs(){
                 let domain=window.location.host;

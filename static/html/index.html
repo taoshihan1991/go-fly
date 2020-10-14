@@ -10,27 +10,13 @@
 
     {{.CssJs}}
 </head>
-<header class="header">
-    <div class="container">
-        <h1><a href="/">GO-FLY</a></h1>
-        <a class="navBtn" href="/index_en">English (United States)</a>
-        <a class="navBtn" href="/index_cn">中文版 (简体)</a>
-        <a class="navBtn" href="https://github.com/taoshihan1991/go-fly" target="_blank">Github</a>
-        <a class="navBtn" href="/login">{{.AgentBtn}}</a>
-        <a class="navBtn" href="/docs/index.html" target="_blank">{{.Document}}</a>
-    </div>
-</header>
+<body>
+
+
 {{.Content}}
 
 
-<footer class="footer">
-    <div class="container">
 
-    </div>
-    <div class="copyright">
-        {{.Copyright}}&copy; 2020
-    </div>
-</footer>
 
 <!--对接客服代码-->
 <script>
@@ -118,5 +104,5 @@ setTimeout(function(){
 },8000);
 </script>
 <!--自动弹代码-->
-
+</body>
 </html>
