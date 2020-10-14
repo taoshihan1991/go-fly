@@ -12,9 +12,9 @@
 </head>
 <header class="header">
     <div class="container">
-        <h1><a href="/index">GO-FLY</a></h1>
-        <a class="navBtn" href="/index/en">English (United States)</a>
-        <a class="navBtn" href="/index/cn">中文版 (简体)</a>
+        <h1><a href="/">GO-FLY</a></h1>
+        <a class="navBtn" href="/index_en">English (United States)</a>
+        <a class="navBtn" href="/index_cn">中文版 (简体)</a>
         <a class="navBtn" href="https://github.com/taoshihan1991/go-fly" target="_blank">Github</a>
         <a class="navBtn" href="/login">{{.AgentBtn}}</a>
         <a class="navBtn" href="/docs/index.html" target="_blank">{{.Document}}</a>
@@ -36,32 +36,87 @@
 <script>
     var GOFLY_URL="";
     var GOFLY_KEFU_ID="kefu2";
-    var GOFLY_BTN_TEXT="Chat with me";
+    var GOFLY_BTN_TEXT="{{.OnlineChat}}";
 </script>
 <script src="/static/js/gofly-front.js"></script>
 <!--//对接客服代码-->
 
-<script>
-setTimeout(function(){
-    if (launchButtonFlag) return;
-    layer.open({
-        type: 2,
-        title: "Chat with me",
-        closeBtn: 1, //不显示关闭按钮
-        shade: [0],
-        area: ['510px', '520px'],
-        offset: 'rb', //右下角弹出
-        anim: 2,
-        content: ['/chatIndex?kefu_id='+GOFLY_KEFU_ID+'&refer='+window.document.title, 'no'], //iframe的url，no代表不显示滚动条
-        end: function(){
-            launchButtonFlag=false;
-            $(".launchButton").show();
-        }
-    });
-    launchButtonFlag=true;
-    $(".launchButton").hide();
-},8000);
+<!--自动弹代码-->
+<style>
+    /*自动弹出*/
+    .autoInvite{
+        width: 400px;
+        height: 162px;
+        position: fixed;
+        top:50%;
+        left: 50%;
+        margin-top: -81px;
+        margin-left: -200px;
+        background: url("/static/images/inviteColorBack1.png");
+        display: none;
+    }
+    .autoInvite .autoInviteNotice{
+        margin-top: 4px;
+    }
+    .autoInvite .autoInviteContent{
+        width: 220px;
+        height: 90px;
+        position: absolute;
+        top:55px;
+        right: 20px;
+        font-size: 13pt;
+        color: #fff;
+        word-break: break-all;
+        line-height: 25px;
+    }
+    .autoInvite .autoInviteBtns a{
+        display: inline-block;
+        width: 80px;
+        height: 32px;
+        line-height: 32px;
+        color: #fff;
+        text-align: center;
+        border: 1px solid #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-right: 8px;
+        text-decoration: none;
+    }
+    .autoInvite .autoInviteBtns a.nowAsk{
+        color: #0085DA;
+        background-color: #fff;
+    }
 
+</style>
+<div class="autoInvite">
+    <div class="autoInviteContent">
+        <div class="autoInviteNotice">{{.Notice}}</div>
+        <div class="autoInviteBtns">
+            <a href="javascript:void(0)" id="noAsk">{{.LaterAsk}}</a>
+            <a href="javascript:void(0)" class="nowAsk">{{.NowAsk}}</a>
+        </div>
+    </div>
+</div>
+<script>
+    var invite=false;
+
+setTimeout(function(){
+    if (invite) return;
+    $(".autoInvite").show();
+    invite=true;
+
+    $("#noAsk").click(function(){
+        $(".autoInvite").hide();
+        invite=true;
+    });
+    $(".nowAsk").click(function(){
+        $(".autoInvite").hide();
+        showKefu();
+        invite=true;
+    });
+},8000);
 </script>
+<!--自动弹代码-->
 
 </html>

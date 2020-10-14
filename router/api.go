@@ -50,6 +50,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/statistics", middleware.JwtApiMiddleware, controller.GetStatistics)
 	//前台接口
 	engine.GET("/about", controller.GetAbout)
+	engine.POST("/about", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostAbout)
 	engine.GET("/notice", middleware.SetLanguage, controller.GetNotice)
 	engine.POST("/notice", middleware.JwtApiMiddleware, controller.PostNotice)
 	engine.DELETE("/notice", middleware.JwtApiMiddleware, controller.DelNotice)

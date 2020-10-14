@@ -7,7 +7,7 @@ import (
 )
 
 func Index(c *gin.Context) {
-	c.Redirect(302, "/index/en")
+	c.Redirect(302, "/index_en")
 }
 
 //首页跳转

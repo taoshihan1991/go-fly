@@ -4,7 +4,7 @@ type Language struct {
 	WebCopyRight                                                             string
 	MainIntro                                                                string
 	Send                                                                     string
-	Notice, Maintech                                                         string
+	Notice, Maintech, NowAsk, LaterAsk                                       string
 	IndexSubIntro, IndexVisitors, IndexAgent, IndexDocument, IndexOnlineChat string
 }
 
@@ -23,6 +23,8 @@ func CreateLanguage(lang string) *Language {
 			Send:            "Send",
 			Notice:          "Hello and welcome to go-fly - how can we help?",
 			Maintech:        "Main technical architecture",
+			NowAsk:          "Start Chat",
+			LaterAsk:        "Chat Later",
 		}
 	}
 	if lang == "cn" {
@@ -33,10 +35,12 @@ func CreateLanguage(lang string) *Language {
 			IndexVisitors:   "访客入口",
 			IndexAgent:      "客服入口",
 			IndexDocument:   "接口文档",
-			IndexOnlineChat: "在线咨询",
+			IndexOnlineChat: "真人在线-点击与我交流",
 			Send:            "发送",
 			Notice:          "欢迎您访问go-fly！有什么我能帮助您的？",
 			Maintech:        "主要技术架构",
+			NowAsk:          "现在咨询",
+			LaterAsk:        "稍后再说",
 		}
 	}
 	return language

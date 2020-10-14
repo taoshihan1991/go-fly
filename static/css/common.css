@@ -293,7 +293,7 @@ html {
     /*margin-bottom: 80px;*/
 }
 .chatVisitorPage .chatBox{
-    min-height: 530px;
+    min-height: 540px;
 }
 .chatBox .el-col{margin:10px 0;}
 .chatUser{
