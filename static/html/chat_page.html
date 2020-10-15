@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="陶士涵">
-    <title>GO-FLY咨询页</title>
+    <title>GO-FLY在线咨询</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="/static/js/functions.js?v=0.1.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -70,6 +70,9 @@
             </div>
         </div>
         <!--//客服代码-->
+        <audio id="chatMessageAudio">
+            <source id="chatMessageAudioSource" src="/static/images/alert.mp3" type="audio/mpeg" />
+        </audio>
     </template>
 </div>
 </body>
@@ -79,5 +82,5 @@
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
 </script>
-<script src="/static/js/chat-page.js?v=0.2.4"></script>
+<script src="/static/js/chat-page.js?v=0.2.5"></script>
 </html>

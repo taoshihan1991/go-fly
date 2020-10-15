@@ -71,6 +71,7 @@ new Vue({
                 //this.saveHistory(content);
                 this.scrollBottom();
                 flashTitle();//标题闪烁
+                this.alertSound();//提示音
             }
             if (redata.type == "close") {
                 this.chatTitle="连接关闭!请重新打开页面";
@@ -365,6 +366,12 @@ new Vue({
                     console.log(data);
                 }
             });
+        },
+        //提示音
+        alertSound(){
+            var b = document.getElementById("chatMessageAudio");
+            var p = b.play();
+            p && p.then(function(){}).catch(function(e){});
         }
     },
     mounted() {
@@ -377,7 +384,7 @@ new Vue({
         this.getMesssagesByVisitorId();
         //this.msgList=this.getHistory();
         //滚动底部
-        this.scrollBottom();
+        //this.scrollBottom();
         //获取欢迎
         this.getNotice();
 
