@@ -18,6 +18,18 @@ func FindAboutByPage(page interface{}) About {
 	DB.Where("page = ?", page).First(&a)
 	return a
 }
+func FindAboutByPageLanguage(page interface{}, lang string) About {
+	var a About
+	if lang == "" {
+		lang = "cn"
+	}
+	if lang == "en" {
+		DB.Select("css_js,title_en,keywords_en,desc_en,html_en").Where("page = ?", page).First(&a)
+	} else {
+		DB.Select("css_js,title_cn,keywords_cn,desc_cn,html_cn").Where("page = ?", page).First(&a)
+	}
+	return a
+}
 func UpdateAbout(page string, title_cn string, title_en string, keywords_cn string, keywords_en string, desc_cn string, desc_en string, css_js string, html_cn string, html_en string) {
 	c := &About{
 		TitleCn:    title_cn,

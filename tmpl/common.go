@@ -48,7 +48,7 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 func PageIndex(c *gin.Context) {
 	lang, _ := c.Get("lang")
 	language := config.CreateLanguage(lang.(string))
-	about := models.FindAboutByPage("index")
+	about := models.FindAboutByPageLanguage("index", lang.(string))
 	cssJs := html.UnescapeString(about.CssJs)
 	title := about.TitleCn
 	keywords := about.KeywordsCn
@@ -61,15 +61,7 @@ func PageIndex(c *gin.Context) {
 		content = html.UnescapeString(about.HtmlEn)
 	}
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"Copyright":  language.WebCopyRight,
-		"WebDesc":    language.MainIntro,
-		"SubIntro":   language.IndexSubIntro,
-		"Document":   language.IndexDocument,
-		"VisitorBtn": language.IndexVisitors,
-		"AgentBtn":   language.IndexAgent,
 		"OnlineChat": language.IndexOnlineChat,
-		"IndexSend":  language.Send,
-		"Maintech":   language.Maintech,
 		"Notice":     language.Notice,
 		"NowAsk":     language.NowAsk,
 		"LaterAsk":   language.LaterAsk,
