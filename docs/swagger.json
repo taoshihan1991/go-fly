@@ -1,14 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "{{.Description}}",
-        "title": "{{.Title}}",
         "contact": {},
-        "license": {},
-        "version": "{{.Version}}"
+        "license": {}
     },
-    "host": "{{.Host}}",
-    "basePath": "{{.BasePath}}",
     "paths": {
         "/check": {
             "post": {
@@ -46,7 +41,6 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/controller.Response"
                         }
                     }
@@ -96,7 +90,6 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/controller.Response"
                         }
                     }
@@ -132,7 +125,6 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
                             "$ref": "#/definitions/controller.Response"
                         }
                     }
@@ -168,7 +160,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
+                            "$ref": "#/definitions/controller.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/visitors_online": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取在线访客列表接口",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
                             "$ref": "#/definitions/controller.Response"
                         }
                     }

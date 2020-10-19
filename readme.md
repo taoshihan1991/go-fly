@@ -123,4 +123,4 @@ server{
 ### 生成文档
 
 1. 需要先安装swag
-2. 在根目录swag init
+2. 在根目录swag init -g go-fly.go

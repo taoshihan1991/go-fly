@@ -175,6 +175,12 @@ func GetVisitorMessage(c *gin.Context) {
 		"result": result,
 	})
 }
+
+// @Summary 获取在线访客列表接口
+// @Produce  json
+// @Success 200 {object} controller.Response
+// @Failure 200 {object} controller.Response
+// @Router /visitors_online [get]
 func GetVisitorOnlines(c *gin.Context) {
 	users := make([]map[string]string, 0)
 	for uid, visitor := range clientList {

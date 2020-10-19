@@ -1,4 +1,3 @@
-basePath: '{{.BasePath}}'
 definitions:
   controller.Response:
     properties:
@@ -9,13 +8,9 @@ definitions:
       result:
         type: object
     type: object
-host: '{{.Host}}'
 info:
   contact: {}
-  description: '{{.Description}}'
   license: {}
-  title: '{{.Title}}'
-  version: '{{.Version}}'
 paths:
   /check:
     post:
@@ -44,7 +39,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/controller.Response'
-            type: object
       summary: 登陆验证接口
   /message:
     post:
@@ -78,7 +72,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/controller.Response'
-            type: object
       summary: 发送消息接口
   /messages:
     get:
@@ -102,7 +95,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/controller.Response'
-            type: object
       summary: 获取访客聊天信息接口
   /visitors:
     get:
@@ -126,6 +118,15 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/controller.Response'
-            type: object
       summary: 获取访客列表接口
+  /visitors_online:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response'
+      summary: 获取在线访客列表接口
 swagger: "2.0"

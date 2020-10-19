@@ -66,7 +66,7 @@ func run() {
 	//docs.SwaggerInfo.Host = "127.0.0.1:"+port
 	docs.SwaggerInfo.Host = "gofly.sopans.com"
 	docs.SwaggerInfo.BasePath = "/"
-	//docs.SwaggerInfo.Schemes = []string{"http"}
+	docs.SwaggerInfo.Schemes = []string{"https"}
 	engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//logFile, _ := os.OpenFile("./fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
