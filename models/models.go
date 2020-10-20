@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/tools"
 	"time"
 )
 
@@ -26,6 +27,7 @@ func init() {
 	}
 	DB.SingularTable(true)
 	DB.LogMode(true)
+	DB.SetLogger(tools.Logger())
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
 

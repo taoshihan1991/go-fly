@@ -19,6 +19,7 @@ require (
 	github.com/ipipdotnet/ipdb-go v1.3.0
 	github.com/jinzhu/gorm v1.9.14
 	github.com/satori/go.uuid v1.2.0
+	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.5
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.5.1

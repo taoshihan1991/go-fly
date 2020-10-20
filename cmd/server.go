@@ -8,6 +8,7 @@ import (
 	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/docs"
 	"github.com/taoshihan1991/imaptool/router"
+	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 	"os"
 	"os/exec"
@@ -56,6 +57,8 @@ func run() {
 	engine.LoadHTMLGlob("static/html/*")
 	engine.Static("/static", "./static")
 
+	//记录日志
+	engine.Use(tools.LoggerToFile())
 	router.InitViewRouter(engine)
 	router.InitApiRouter(engine)
 

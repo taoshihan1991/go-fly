@@ -46,6 +46,10 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 
 //首页
 func PageIndex(c *gin.Context) {
+	if c.Request.RequestURI == "/favicon.ico" {
+		return
+	}
+
 	lang, _ := c.Get("lang")
 	language := config.CreateLanguage(lang.(string))
 	about := models.FindAboutByPageLanguage("index", lang.(string))
