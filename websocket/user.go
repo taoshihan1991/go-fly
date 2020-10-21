@@ -36,10 +36,10 @@ func NewKefuServer(c *gin.Context) {
 
 		//获取GET参数,创建WS
 		var kefu User
-		kefu.id = kefuInfo.Name
-		kefu.name = kefuInfo.Nickname
-		kefu.avator = kefuInfo.Avator
-		kefu.conn = conn
+		kefu.Id = kefuInfo.Name
+		kefu.Name = kefuInfo.Nickname
+		kefu.Avator = kefuInfo.Avator
+		kefu.Conn = conn
 		AddKefuToList(&kefu)
 
 		message <- &Message{
@@ -52,11 +52,20 @@ func NewKefuServer(c *gin.Context) {
 }
 func AddKefuToList(kefu *User) {
 	var newKefuConns = []*User{kefu}
-	kefuConns := kefuList[kefu.id]
+	kefuConns := KefuList[kefu.Id]
 	if kefuConns != nil {
-		newKefuConns = append(newKefuConns, kefuConns...)
+		for _, kefu := range kefuConns {
+			msg := TypeMessage{
+				Type: "pong",
+			}
+			str, _ := json.Marshal(msg)
+			err := kefu.Conn.WriteMessage(websocket.TextMessage, str)
+			if err != nil {
+				newKefuConns = append(newKefuConns, kefu)
+			}
+		}
 	}
-	kefuList[kefu.id] = newKefuConns
+	KefuList[kefu.Id] = newKefuConns
 }
 
 //后端广播发送消息

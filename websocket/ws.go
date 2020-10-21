@@ -6,11 +6,11 @@ import (
 )
 
 type User struct {
-	conn   *websocket.Conn
-	name   string
-	id     string
-	avator string
-	to_id  string
+	Conn   *websocket.Conn
+	Name   string
+	Id     string
+	Avator string
+	To_id  string
 }
 type Message struct {
 	conn        *websocket.Conn
@@ -36,8 +36,8 @@ type ClientMessage struct {
 	Refer     string `json:"refer"`
 }
 
-var clientList = make(map[string]*User)
-var kefuList = make(map[string][]*User)
+var ClientList = make(map[string]*User)
+var KefuList = make(map[string][]*User)
 var message = make(chan *Message)
 var upgrader = websocket.Upgrader{}
 
