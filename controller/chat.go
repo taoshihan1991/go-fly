@@ -90,6 +90,13 @@ func NewChatServer(c *gin.Context) {
 							kefuConn.WriteMessage(websocket.TextMessage, str)
 						}
 					}
+					//新版
+					mKefuConns := ws.KefuList[visitor.to_id]
+					if mKefuConns != nil {
+						for _, kefu := range mKefuConns {
+							kefu.Conn.WriteMessage(websocket.TextMessage, str)
+						}
+					}
 					sendPingOnlineUsers()
 				}
 			}

@@ -40,6 +40,13 @@ func FindUnreadMessageNumByVisitorId(visitor_id string) uint {
 	return count
 }
 
+//查询最后一条消息
+func FindLastMessage(visitorIds []string) []Message {
+	var messages []Message
+	DB.Select("ANY_VALUE(visitor_id) visitor_id,ANY_VALUE(id) id,ANY_VALUE(Content) content").Where("visitor_id in (? )", visitorIds).Group("visitor_id").Find(&messages)
+	return messages
+}
+
 //查询条数
 func CountMessage() uint {
 	var count uint

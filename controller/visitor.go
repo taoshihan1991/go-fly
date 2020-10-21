@@ -183,13 +183,19 @@ func GetVisitorMessage(c *gin.Context) {
 // @Router /visitors_online [get]
 func GetVisitorOnlines(c *gin.Context) {
 	users := make([]map[string]string, 0)
+	visitorIds := make([]string, 0)
 	for uid, visitor := range clientList {
 		userInfo := make(map[string]string)
 		userInfo["uid"] = uid
 		userInfo["name"] = visitor.name
 		userInfo["avator"] = visitor.avator
 		users = append(users, userInfo)
+		visitorIds = append(visitorIds, visitor.id)
 	}
+	//查询最新消息
+	messages := models.FindLastMessage(visitorIds)
+	log.Println(messages)
+
 	tcps := make([]string, 0)
 	for ip, _ := range clientTcpList {
 		tcps = append(tcps, ip)
@@ -198,8 +204,9 @@ func GetVisitorOnlines(c *gin.Context) {
 		"code": 200,
 		"msg":  "ok",
 		"result": gin.H{
-			"ws":  users,
-			"tcp": tcps,
+			"ws":       users,
+			"tcp":      tcps,
+			"messages": messages,
 		},
 	})
 }
