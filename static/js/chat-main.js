@@ -7,6 +7,7 @@ var app=new Vue({
         rightTabActive:"visitorInfo",
         users:[],
         usersMap:[],
+        //server:getWsBaseUrl()+"/ws_kefu?token="+localStorage.getItem("token"),
         server:getWsBaseUrl()+"/chat_server",
         socket:null,
         messageContent:"",

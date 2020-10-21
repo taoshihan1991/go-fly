@@ -17,6 +17,9 @@ func JwtPageMiddleware(c *gin.Context) {
 }
 func JwtApiMiddleware(c *gin.Context) {
 	token := c.GetHeader("token")
+	if token == "" {
+		token = c.Query("token")
+	}
 	userinfo := tools.ParseToken(token)
 	if userinfo == nil || userinfo["name"] == nil || userinfo["create_time"] == nil {
 		c.JSON(200, gin.H{
