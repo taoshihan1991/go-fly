@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/middleware"
-	"github.com/taoshihan1991/imaptool/websocket"
+	"github.com/taoshihan1991/imaptool/ws"
 )
 
 func InitApiRouter(engine *gin.Engine) {
@@ -14,7 +14,8 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.POST("/check_auth", middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	//前后聊天
 	engine.GET("/chat_server", middleware.Ipblack, controller.NewChatServer)
-	engine.GET("/ws_kefu", middleware.JwtApiMiddleware, websocket.NewKefuServer)
+	engine.GET("/ws_kefu", middleware.JwtApiMiddleware, ws.NewKefuServer)
+	engine.GET("/ws_visitor", ws.NewVisitorServer)
 
 	//获取消息
 	engine.GET("/messages", controller.GetVisitorMessage)

@@ -1,4 +1,4 @@
-package websocket
+package ws
 
 import (
 	"encoding/json"
@@ -25,6 +25,14 @@ func NewKefuServer(c *gin.Context) {
 		log.Print("upgrade:", err)
 		return
 	}
+	//获取GET参数,创建WS
+	var kefu User
+	kefu.Id = kefuInfo.Name
+	kefu.Name = kefuInfo.Nickname
+	kefu.Avator = kefuInfo.Avator
+	kefu.Conn = conn
+	AddKefuToList(&kefu)
+
 	for {
 		//接受消息
 		var receive []byte
@@ -33,14 +41,6 @@ func NewKefuServer(c *gin.Context) {
 			log.Println(err)
 			return
 		}
-
-		//获取GET参数,创建WS
-		var kefu User
-		kefu.Id = kefuInfo.Name
-		kefu.Name = kefuInfo.Nickname
-		kefu.Avator = kefuInfo.Avator
-		kefu.Conn = conn
-		AddKefuToList(&kefu)
 
 		message <- &Message{
 			conn:        conn,
@@ -65,6 +65,7 @@ func AddKefuToList(kefu *User) {
 			}
 		}
 	}
+	log.Println(newKefuConns)
 	KefuList[kefu.Id] = newKefuConns
 }
 
@@ -79,7 +80,7 @@ func kefuServerBackend() {
 			continue
 		}
 		msgType := typeMsg.Type.(string)
-		log.Println("客户端:", msgType)
+		log.Println("客户端:", string(message.content))
 
 		switch msgType {
 		//心跳

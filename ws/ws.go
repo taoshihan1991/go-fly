@@ -1,8 +1,9 @@
-package websocket
+package ws
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"net/http"
 )
 
 type User struct {
@@ -45,5 +46,10 @@ func init() {
 	upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
+		// 解决跨域问题
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
 	}
+
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
-	myws "github.com/taoshihan1991/imaptool/websocket"
+	"github.com/taoshihan1991/imaptool/ws"
 	"log"
 	"sort"
 	"time"
@@ -276,6 +276,16 @@ func singleBroadcaster() {
 				Data: userInfo,
 			}
 			str, _ := json.Marshal(msg)
+
+			//新版
+			mKefuConns := ws.KefuList[user.to_id]
+			if mKefuConns != nil {
+				for _, kefu := range mKefuConns {
+					kefu.Conn.WriteMessage(websocket.TextMessage, str)
+				}
+			}
+
+			//兼容旧版
 			kefuConns := kefuList[user.to_id]
 			if kefuConns != nil {
 				for k, kefuConn := range kefuConns {
@@ -283,13 +293,7 @@ func singleBroadcaster() {
 					kefuConn.WriteMessage(websocket.TextMessage, str)
 				}
 			}
-			mKefuConns := myws.KefuList[user.to_id]
-			if mKefuConns != nil {
-				for k, kefu := range mKefuConns {
-					log.Println(k, "xxxxxxxx")
-					kefu.Conn.WriteMessage(websocket.TextMessage, str)
-				}
-			}
+
 			//客户上线发微信通知
 			go SendServerJiang(userInfo["username"])
 			sendPingOnlineUsers()
