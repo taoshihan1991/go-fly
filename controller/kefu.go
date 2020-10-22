@@ -20,6 +20,15 @@ func GetKefuInfo(c *gin.Context) {
 		"result": info,
 	})
 }
+func GetKefuInfoAll(c *gin.Context) {
+	id, _ := c.Get("kefu_id")
+	userinfo := models.FindUserRole("user.avator,user.name,user.id, role.name role_name", id)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "验证成功",
+		"result": userinfo,
+	})
+}
 func GetKefuInfoSetting(c *gin.Context) {
 	kefuId := c.Query("kefu_id")
 	user := models.FindUserById(kefuId)
