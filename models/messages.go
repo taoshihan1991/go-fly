@@ -50,7 +50,7 @@ func FindLastMessage(visitorIds []string) []Message {
 		Limit(1024).
 		SubQuery()
 	DB.Raw("SELECT ANY_VALUE(visitor_id) visitor_id,ANY_VALUE(id) id,ANY_VALUE(content) content FROM ? message_alia GROUP BY visitor_id", subQuery).Scan(&messages)
-	//DB.Select("ANY_VALUE(visitor_id) visitor_id,ANY_VALUE(id) id,ANY_VALUE(Content) content").Table("?", subQuery).Group("visitor_id").Find(&messages)
+	//DB.Select("ANY_VALUE(visitor_id) visitor_id,MAX(ANY_VALUE(id)) id,ANY_VALUE(content) content").Group("visitor_id").Find(&messages)
 	return messages
 }
 

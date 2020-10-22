@@ -195,3 +195,37 @@ func UploadImg(c *gin.Context) {
 		})
 	}
 }
+
+func GetMessagesV2(c *gin.Context) {
+	visitorId := c.Query("visitor_id")
+	messages := models.FindMessageByVisitorId(visitorId)
+	//result := make([]map[string]interface{}, 0)
+	chatMessages := make([]ChatMessage, 0)
+	for _, message := range messages {
+		//item := make(map[string]interface{})
+		var visitor models.Visitor
+		var kefu models.User
+		if visitor.Name == "" || kefu.Name == "" {
+			kefu = models.FindUser(message.KefuId)
+			visitor = models.FindVisitorByVistorId(message.VisitorId)
+		}
+		var chatMessage ChatMessage
+		chatMessage.Time = message.CreatedAt.Format("2006-01-02 15:04:05")
+		chatMessage.Content = message.Content
+		chatMessage.MesType = message.MesType
+		if message.MesType == "kefu" {
+			chatMessage.Name = kefu.Nickname
+			chatMessage.Avator = kefu.Avator
+		} else {
+			chatMessage.Name = visitor.Name
+			chatMessage.Avator = visitor.Avator
+		}
+		chatMessages = append(chatMessages, chatMessage)
+	}
+	models.ReadMessageByVisitorId(visitorId)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": chatMessages,
+	})
+}

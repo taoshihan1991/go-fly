@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
+	"sync"
 )
 
 type User struct {
@@ -41,6 +42,7 @@ var ClientList = make(map[string]*User)
 var KefuList = make(map[string][]*User)
 var message = make(chan *Message)
 var upgrader = websocket.Upgrader{}
+var Mux sync.RWMutex
 
 func init() {
 	upgrader = websocket.Upgrader{

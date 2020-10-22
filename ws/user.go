@@ -89,7 +89,9 @@ func kefuServerBackend() {
 				Type: "pong",
 			}
 			str, _ := json.Marshal(msg)
+			Mux.Lock()
 			conn.WriteMessage(websocket.TextMessage, str)
+			Mux.Unlock()
 		}
 
 	}

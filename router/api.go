@@ -19,6 +19,7 @@ func InitApiRouter(engine *gin.Engine) {
 
 	//获取消息
 	engine.GET("/messages", controller.GetVisitorMessage)
+	engine.GET("/2/messages", controller.GetMessagesV2)
 	engine.GET("/message_notice", controller.SendVisitorNotice)
 	//发送单条消息
 	engine.POST("/message", middleware.Ipblack, controller.SendMessage)
