@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
-	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 )
 
@@ -32,7 +31,7 @@ func NewVisitorServer(c *gin.Context) {
 		Id:     vistorInfo.VisitorId,
 		To_id:  vistorInfo.ToId,
 	}
-	go tools.SendServerJiang(vistorInfo.Name)
+	go SendServerJiang(vistorInfo.Name)
 	AddVisitorToList(user)
 
 	for {
