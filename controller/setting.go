@@ -13,6 +13,15 @@ func GetConfigs(c *gin.Context) {
 		"result": configs,
 	})
 }
+func GetConfig(c *gin.Context) {
+	key := c.Query("key")
+	config := models.FindConfig(key)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": config,
+	})
+}
 func PostConfig(c *gin.Context) {
 	key := c.PostForm("key")
 	value := c.PostForm("value")

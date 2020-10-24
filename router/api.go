@@ -70,6 +70,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/ipblacks_all", middleware.JwtApiMiddleware, controller.GetIpblacks)
 	engine.GET("/configs", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetConfigs)
 	engine.POST("/config", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostConfig)
+	engine.GET("/config", controller.GetConfig)
 	//微信接口
 	engine.GET("/micro_program", controller.GetCheckWeixinSign)
 }
