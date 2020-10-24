@@ -8,6 +8,7 @@ import (
 	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
+	"github.com/taoshihan1991/imaptool/ws"
 	"log"
 	"math/rand"
 	"strconv"
@@ -63,7 +64,7 @@ func PostVisitorLogin(c *gin.Context) {
 	ipcity := tools.ParseIp(c.ClientIP())
 	avator := fmt.Sprintf("/static/images/%d.jpg", rand.Intn(14))
 	toId := c.PostForm("to_id")
-	id := c.PostForm("id")
+	id := c.PostForm("visitor_id")
 	if id == "" {
 		id = tools.Uuid()
 	}
@@ -184,13 +185,13 @@ func GetVisitorMessage(c *gin.Context) {
 func GetVisitorOnlines(c *gin.Context) {
 	users := make([]map[string]string, 0)
 	visitorIds := make([]string, 0)
-	for uid, visitor := range clientList {
+	for uid, visitor := range ws.ClientList {
 		userInfo := make(map[string]string)
 		userInfo["uid"] = uid
-		userInfo["name"] = visitor.name
-		userInfo["avator"] = visitor.avator
+		userInfo["name"] = visitor.Name
+		userInfo["avator"] = visitor.Avator
 		users = append(users, userInfo)
-		visitorIds = append(visitorIds, visitor.id)
+		visitorIds = append(visitorIds, visitor.Id)
 	}
 
 	//查询最新消息
@@ -214,5 +215,50 @@ func GetVisitorOnlines(c *gin.Context) {
 			"ws":  users,
 			"tcp": tcps,
 		},
+	})
+}
+
+// @Summary 获取客服的在线访客列表接口
+// @Produce  json
+// @Success 200 {object} controller.Response
+// @Failure 200 {object} controller.Response
+// @Router /visitors_kefu_online [get]
+func GetKefusVisitorOnlines(c *gin.Context) {
+	kefuName, _ := c.Get("kefu_name")
+	users := make([]*VisitorOnline, 0)
+	visitorIds := make([]string, 0)
+	for uid, visitor := range ws.ClientList {
+		if visitor.To_id != kefuName {
+			continue
+		}
+		userInfo := new(VisitorOnline)
+		userInfo.Uid = uid
+		userInfo.Username = visitor.Name
+		userInfo.Avator = visitor.Avator
+		users = append(users, userInfo)
+		visitorIds = append(visitorIds, visitor.Id)
+	}
+
+	//查询最新消息
+	messages := models.FindLastMessage(visitorIds)
+	temp := make(map[string]string, 0)
+	for _, mes := range messages {
+		temp[mes.VisitorId] = mes.Content
+	}
+	for _, user := range users {
+		user.LastMessage = temp[user.Uid]
+		if user.LastMessage == "" {
+			user.LastMessage = "新访客"
+		}
+	}
+
+	tcps := make([]string, 0)
+	for ip, _ := range clientTcpList {
+		tcps = append(tcps, ip)
+	}
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": users,
 	})
 }

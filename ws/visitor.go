@@ -74,11 +74,15 @@ func NewVisitorServer(c *gin.Context) {
 func AddVisitorToList(user *User) {
 	//用户id对应的连接
 	ClientList[user.Id] = user
-
+	lastMessage := models.FindLastMessageByVisitorId(user.Id)
 	userInfo := make(map[string]string)
 	userInfo["uid"] = user.Id
 	userInfo["username"] = user.Name
 	userInfo["avator"] = user.Avator
+	userInfo["last_message"] = lastMessage.Content
+	if userInfo["last_message"] == "" {
+		userInfo["last_message"] = "新访客"
+	}
 	msg := TypeMessage{
 		Type: "userOnline",
 		Data: userInfo,

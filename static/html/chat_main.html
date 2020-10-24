@@ -168,7 +168,11 @@
                                     </el-menu-item>
                                     <el-menu-item style="padding-left:2px;">
                                         <i class="el-icon-s-tools"></i>
-                                        <span slot="title">时间：<{visitor.created_at}></span>
+                                        <span slot="title">创建时间：<{visitor.created_at}></span>
+                                    </el-menu-item>
+                                    <el-menu-item style="padding-left:2px;">
+                                        <i class="el-icon-s-tools"></i>
+                                        <span slot="title">访问时间：<{visitor.updated_at}></span>
                                     </el-menu-item>
                                     <el-tooltip content="点击关闭连接" placement="left">
                                         <el-menu-item v-on:click="closeVisitor(visitor.visitor_id)" style="padding-left:2px;">
@@ -198,5 +202,5 @@
     </template>
 </div>
 </body>
-<script src="/static/js/chat-main.js?v=0.1.1"></script>
+<script src="/static/js/chat-main.js?v=0.3.1"></script>
 </html>

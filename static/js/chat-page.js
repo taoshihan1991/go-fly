@@ -4,7 +4,8 @@ new Vue({
     delimiters:["<{","}>"],
     data: {
         window:window,
-        server:getWsBaseUrl()+"/chat_server",
+        //server:getWsBaseUrl()+"/chat_server",
+        server:getWsBaseUrl()+"/ws_visitor",
         socket:null,
         msgList:[],
         messageContent:"",
@@ -17,7 +18,7 @@ new Vue({
     methods: {
         //初始化websocket
         initConn() {
-            let socket = new ReconnectingWebSocket(this.server);//创建Socket实例
+            let socket = new ReconnectingWebSocket(this.server+"?visitor_id="+this.visitor.visitor_id);//创建Socket实例
             socket.maxReconnectAttempts = 30;
             this.socket = socket
             this.socket.onmessage = this.OnMessage;
@@ -28,11 +29,11 @@ new Vue({
         },
         OnOpen() {
             this.chatTitle="连接成功!"
-            let mes = {}
-            mes.type = "userInit";
-            this.visitor.refer=REFER;
-            mes.data = this.visitor;
-            this.socket.send(JSON.stringify(mes));
+            // let mes = {}
+            // mes.type = "userInit";
+            // this.visitor.refer=REFER;
+            // mes.data = this.visitor;
+            // this.socket.send(JSON.stringify(mes));
         },
         OnMessage(e) {
             const redata = JSON.parse(e.data);
@@ -107,7 +108,7 @@ new Vue({
             mes.to_id = this.visitor.to_id;
             mes.content = this.messageContent;
             //发送消息
-            $.post("/message",mes,function(res){
+            $.post("/2/message",mes,function(res){
                 if(res.code!=200){
                     _this.$message({
                         message: res.msg,
@@ -135,10 +136,13 @@ new Vue({
         //获取当前用户信息
         getUserInfo(){
             let obj=this.getCache("visitor");
-            if(!obj){
+            var visitor_id=""
+            if(obj){
+                visitor_id=obj.visitor_id;
+            }
                 let _this=this;
                 //发送消息
-                $.post("/visitor_login",{refer:REFER,to_id:KEFU_ID,client_ip:returnCitySN["cip"],},function(res){
+                $.post("/visitor_login",{visitor_id:visitor_id,refer:REFER,to_id:KEFU_ID,client_ip:returnCitySN["cip"],},function(res){
                     if(res.code!=200){
                         _this.$message({
                             message: res.msg,
@@ -148,12 +152,13 @@ new Vue({
                     }
                     _this.visitor=res.result;
                     _this.setCache("visitor",res.result);
+                    _this.getMesssagesByVisitorId();
                     _this.initConn();
                 });
-            }else{
-                this.visitor=obj;
-                this.initConn();
-            }
+            // }else{
+            //     this.visitor=obj;
+            //     this.initConn();
+            // }
         },
         //获取信息列表
         getMesssagesByVisitorId(){
@@ -381,7 +386,6 @@ new Vue({
         this.init();
         this.getUserInfo();
         //加载历史记录
-        this.getMesssagesByVisitorId();
         //this.msgList=this.getHistory();
         //滚动底部
         //this.scrollBottom();

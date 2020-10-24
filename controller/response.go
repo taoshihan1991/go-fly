@@ -12,3 +12,9 @@ type ChatMessage struct {
 	Name    string `json:"name"`
 	Avator  string `json:"avator"`
 }
+type VisitorOnline struct {
+	Uid         string `json:"uid"`
+	Username    string `json:"username"`
+	Avator      string `json:"avator"`
+	LastMessage string `json:"last_message"`
+}

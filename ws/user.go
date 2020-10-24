@@ -54,18 +54,18 @@ func AddKefuToList(kefu *User) {
 	var newKefuConns = []*User{kefu}
 	kefuConns := KefuList[kefu.Id]
 	if kefuConns != nil {
-		for _, kefu := range kefuConns {
+		for _, otherKefu := range kefuConns {
 			msg := TypeMessage{
-				Type: "pong",
+				Type: "many pong",
 			}
 			str, _ := json.Marshal(msg)
-			err := kefu.Conn.WriteMessage(websocket.TextMessage, str)
-			if err != nil {
-				newKefuConns = append(newKefuConns, kefu)
+			err := otherKefu.Conn.WriteMessage(websocket.TextMessage, str)
+			if err == nil {
+				newKefuConns = append(newKefuConns, otherKefu)
 			}
 		}
 	}
-	log.Println(newKefuConns)
+	log.Println("xxxxxxxxxxxxxxxxxxxxxxxx", newKefuConns)
 	KefuList[kefu.Id] = newKefuConns
 }
 
