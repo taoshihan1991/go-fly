@@ -145,9 +145,9 @@ func SendMessageV2(c *gin.Context) {
 		return
 	}
 	models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, cType)
-
+	var msg TypeMessage
 	if cType == "kefu" {
-		guest, ok := clientList[vistorInfo.VisitorId]
+		guest, ok := ws.ClientList[vistorInfo.VisitorId]
 		if guest == nil || !ok {
 			c.JSON(200, gin.H{
 				"code": 200,
@@ -155,9 +155,9 @@ func SendMessageV2(c *gin.Context) {
 			})
 			return
 		}
-		conn := guest.conn
+		conn := guest.Conn
 
-		msg := TypeMessage{
+		msg = TypeMessage{
 			Type: "message",
 			Data: ClientMessage{
 				Name:    kefuInfo.Nickname,
@@ -170,6 +170,7 @@ func SendMessageV2(c *gin.Context) {
 		}
 		str, _ := json.Marshal(msg)
 		conn.WriteMessage(websocket.TextMessage, str)
+
 	}
 	if cType == "visitor" {
 		kefuConns, ok := ws.KefuList[kefuInfo.Name]
@@ -180,7 +181,7 @@ func SendMessageV2(c *gin.Context) {
 			})
 			return
 		}
-		msg := TypeMessage{
+		msg = TypeMessage{
 			Type: "message",
 			Data: ClientMessage{
 				Avator:  vistorInfo.Avator,
@@ -197,8 +198,9 @@ func SendMessageV2(c *gin.Context) {
 		}
 	}
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
+		"code":   200,
+		"msg":    "ok",
+		"result": msg,
 	})
 }
 func SendVisitorNotice(c *gin.Context) {

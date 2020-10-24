@@ -54,6 +54,13 @@ func FindLastMessage(visitorIds []string) []Message {
 	return messages
 }
 
+//查询最后一条消息
+func FindLastMessageByVisitorId(visitorId string) Message {
+	var m Message
+	DB.Select("content").Where("visitor_id=?", visitorId).Order("id desc").First(&m)
+	return m
+}
+
 //查询条数
 func CountMessage() uint {
 	var count uint
