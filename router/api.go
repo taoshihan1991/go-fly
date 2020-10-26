@@ -10,6 +10,14 @@ import (
 func InitApiRouter(engine *gin.Engine) {
 	//首页
 	engine.GET("/", controller.Index)
+	//路由分组
+	v2 := engine.Group("/2")
+	{
+		//获取消息
+		v2.GET("/2/messages", controller.GetMessagesV2)
+		//发送单条信息
+		v2.POST("/2/message", middleware.Ipblack, controller.SendMessageV2)
+	}
 	engine.POST("/check", controller.LoginCheckPass)
 	engine.POST("/check_auth", middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	engine.GET("/userinfo", middleware.JwtApiMiddleware, controller.GetKefuInfoAll)
@@ -19,9 +27,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/ws_kefu", middleware.JwtApiMiddleware, ws.NewKefuServer)
 	engine.GET("/ws_visitor", ws.NewVisitorServer)
 
-	//获取消息
 	engine.GET("/messages", controller.GetVisitorMessage)
-	engine.GET("/2/messages", controller.GetMessagesV2)
 	engine.GET("/message_notice", controller.SendVisitorNotice)
 	//发送单条消息
 	engine.POST("/message", middleware.Ipblack, controller.SendMessage)

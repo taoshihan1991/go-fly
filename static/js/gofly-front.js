@@ -36,7 +36,7 @@ function clickBtn(){
             type: 2,
             title: GOFLY_BTN_TEXT,
             closeBtn: 1, //不显示关闭按钮
-            shade: [0],
+            shade: 0,
             area: ['520px', '530px'],
             offset: 'rb', //右下角弹出
             anim: 2,
