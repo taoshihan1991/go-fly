@@ -378,7 +378,7 @@ var app=new Vue({
             let _this=this;
             $.ajax({
                 type:"get",
-                url:"/message_close",
+                url:"/2/message_close",
                 data:{visitor_id:visitorId},
                 headers:{
                     "token":localStorage.getItem("token")

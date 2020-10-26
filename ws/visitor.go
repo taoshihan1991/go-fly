@@ -31,7 +31,9 @@ func NewVisitorServer(c *gin.Context) {
 		Id:     vistorInfo.VisitorId,
 		To_id:  vistorInfo.ToId,
 	}
+	go models.UpdateVisitorStatus(vistorInfo.VisitorId, 1)
 	go SendServerJiang(vistorInfo.Name)
+
 	AddVisitorToList(user)
 
 	for {

@@ -14,9 +14,11 @@ func InitApiRouter(engine *gin.Engine) {
 	v2 := engine.Group("/2")
 	{
 		//获取消息
-		v2.GET("/2/messages", controller.GetMessagesV2)
+		v2.GET("/messages", controller.GetMessagesV2)
 		//发送单条信息
-		v2.POST("/2/message", middleware.Ipblack, controller.SendMessageV2)
+		v2.POST("/message", middleware.Ipblack, controller.SendMessageV2)
+		//关闭连接
+		v2.GET("/message_close", controller.SendCloseMessageV2)
 	}
 	engine.POST("/check", controller.LoginCheckPass)
 	engine.POST("/check_auth", middleware.JwtApiMiddleware, controller.MainCheckAuth)
@@ -31,7 +33,6 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/message_notice", controller.SendVisitorNotice)
 	//发送单条消息
 	engine.POST("/message", middleware.Ipblack, controller.SendMessage)
-	engine.POST("/2/message", middleware.Ipblack, controller.SendMessageV2)
 	//发送关闭消息
 	engine.GET("/message_close", controller.SendCloseMessage)
 	//上传文件
