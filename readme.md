@@ -124,3 +124,6 @@ server{
 
 1. 需要先安装swag
 2. 在根目录swag init -g go-fly.go
+
+### 打赏作者
+![Image text](https://img2020.cnblogs.com/blog/726254/202010/726254-20201027110550478-1779816342.jpg)

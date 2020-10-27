@@ -80,7 +80,7 @@ function replaceContent (content) {// 转义聊天内容中的特殊字符
         .replace(/\[([^\s\[\]]+?)\]+link\[([^\s\[\]]+?)\]/g, function (face) {  // 转义超链接
             var text = face.replace(/link\[.*?\]/g, '').replace(/\[|\]/g, '');
             var src = face.replace(/^\[([^\s\[\]]+?)\]+link\[/g, '').replace(/\]/g, '');
-            return '<a href="#" onclick="window.open(\'' + src + '\')" />【'+text+'】</a>';
+            return '<a href="javascript:void(0)" onclick="window.open(\'' + src + '\')" />【'+text+'】</a>';
         })
         .replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') // 转移HTML代码
         .replace(/\n/g, '<br>') // 转义换行
