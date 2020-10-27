@@ -14,6 +14,7 @@ new Vue({
         face:[],
         showKfonline:false,
         socketClosed:false,
+        timer:null,
     },
     methods: {
         //初始化websocket
@@ -126,6 +127,7 @@ new Vue({
                 //_this.saveHistory(content);
                 _this.scrollBottom();
                 _this.messageContent = "";
+                clearInterval(_this.timer);
             });
 
         },
@@ -231,14 +233,21 @@ new Vue({
                 //debugger;
                 if (res.result != null) {
                     let msg = res.result;
-                    for(let i=0;i<msg.length;i++){
-                        let content = msg[i];
-                        content.content = replaceContent(content.content);
-                        setTimeout(function () {
+                    var len=msg.length;
+                    var i=0;
+                    if(len>0){
+                        _this.timer=setInterval(function(){
+                            if(i>=len){
+                                clearInterval(_this.timer);
+                            }
+                            let content = msg[i];
+                            content.content = replaceContent(content.content);
                             _this.msgList.push(content);
                             _this.scrollBottom();
-                        }, 5000*(i+1));
+                            i++;
+                        },3000);
                     }
+
                 }
             });
         },
