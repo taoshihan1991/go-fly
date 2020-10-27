@@ -225,10 +225,11 @@ func GetVisitorOnlines(c *gin.Context) {
 // @Router /visitors_kefu_online [get]
 func GetKefusVisitorOnlines(c *gin.Context) {
 	kefuName, _ := c.Get("kefu_name")
+	roleId, _ := c.Get("kefu_id")
 	users := make([]*VisitorOnline, 0)
 	visitorIds := make([]string, 0)
 	for uid, visitor := range ws.ClientList {
-		if visitor.To_id != kefuName {
+		if visitor.To_id != kefuName && roleId.(float64) != 2 {
 			continue
 		}
 		userInfo := new(VisitorOnline)

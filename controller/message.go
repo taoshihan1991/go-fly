@@ -170,19 +170,19 @@ func SendMessageV2(c *gin.Context) {
 		}
 		str, _ := json.Marshal(msg)
 		conn.WriteMessage(websocket.TextMessage, str)
-		msg = TypeMessage{
-			Type: "message",
-			Data: ClientMessage{
-				Name:    kefuInfo.Nickname,
-				Avator:  kefuInfo.Avator,
-				Id:      vistorInfo.VisitorId,
-				Time:    time.Now().Format("2006-01-02 15:04:05"),
-				ToId:    vistorInfo.VisitorId,
-				Content: content,
-			},
-		}
-		str2, _ := json.Marshal(msg)
-		ws.SuperAdminMessage(str2)
+		//msg = TypeMessage{
+		//	Type: "message",
+		//	Data: ClientMessage{
+		//		Name:    kefuInfo.Nickname,
+		//		Avator:  kefuInfo.Avator,
+		//		Id:      vistorInfo.VisitorId,
+		//		Time:    time.Now().Format("2006-01-02 15:04:05"),
+		//		ToId:    vistorInfo.VisitorId,
+		//		Content: content,
+		//	},
+		//}
+		//str2, _ := json.Marshal(msg)
+		//ws.SuperAdminMessage(str2)
 
 	}
 	if cType == "visitor" {
