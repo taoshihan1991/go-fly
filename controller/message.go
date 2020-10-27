@@ -148,29 +148,25 @@ func SendMessageV2(c *gin.Context) {
 	var msg TypeMessage
 	if cType == "kefu" {
 		guest, ok := ws.ClientList[vistorInfo.VisitorId]
-		if guest == nil || !ok {
-			c.JSON(200, gin.H{
-				"code": 200,
-				"msg":  "ok",
-			})
-			return
-		}
-		conn := guest.Conn
+		if guest != nil && ok {
+			conn := guest.Conn
 
-		msg = TypeMessage{
-			Type: "message",
-			Data: ws.ClientMessage{
-				Name:    kefuInfo.Nickname,
-				Avator:  kefuInfo.Avator,
-				Id:      kefuInfo.Name,
-				Time:    time.Now().Format("2006-01-02 15:04:05"),
-				ToId:    vistorInfo.VisitorId,
-				Content: content,
-				IsKefu:  "no",
-			},
+			msg = TypeMessage{
+				Type: "message",
+				Data: ws.ClientMessage{
+					Name:    kefuInfo.Nickname,
+					Avator:  kefuInfo.Avator,
+					Id:      kefuInfo.Name,
+					Time:    time.Now().Format("2006-01-02 15:04:05"),
+					ToId:    vistorInfo.VisitorId,
+					Content: content,
+					IsKefu:  "no",
+				},
+			}
+			str, _ := json.Marshal(msg)
+			conn.WriteMessage(websocket.TextMessage, str)
 		}
-		str, _ := json.Marshal(msg)
-		conn.WriteMessage(websocket.TextMessage, str)
+
 		msg = TypeMessage{
 			Type: "message",
 			Data: ws.ClientMessage{
