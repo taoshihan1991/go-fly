@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/models"
 	"strings"
@@ -9,30 +10,13 @@ import (
 func RbacAuth(c *gin.Context) {
 	roleId, _ := c.Get("role_id")
 	role := models.FindRole(roleId)
-	var methodFlag bool
-	rPaths := strings.Split(c.Request.RequestURI, "?")
-	if role.Method != "*" {
-		methods := strings.Split(role.Method, ",")
-		for _, m := range methods {
-			if c.Request.Method == m {
-				methodFlag = true
-				break
-			}
-		}
-		if !methodFlag {
-			c.JSON(200, gin.H{
-				"code": 403,
-				"msg":  "没有权限:" + c.Request.Method + "," + rPaths[0],
-			})
-			c.Abort()
-			return
-		}
-	}
 	var flag bool
-	if role.Path != "*" {
+	rPaths := strings.Split(c.Request.RequestURI, "?")
+	uriParam := fmt.Sprintf("%s:%s", c.Request.Method, rPaths[0])
+	if role.Method != "*" || role.Path != "*" {
 		paths := strings.Split(role.Path, ",")
 		for _, p := range paths {
-			if rPaths[0] == p {
+			if uriParam == p {
 				flag = true
 				break
 			}
@@ -40,10 +24,43 @@ func RbacAuth(c *gin.Context) {
 		if !flag {
 			c.JSON(200, gin.H{
 				"code": 403,
-				"msg":  "没有权限:" + rPaths[0],
+				"msg":  "没有权限:" + uriParam,
 			})
 			c.Abort()
 			return
 		}
+		//methods := strings.Split(role.Method, ",")
+		//for _, m := range methods {
+		//	if c.Request.Method == m {
+		//		methodFlag = true
+		//		break
+		//	}
+		//}
+		//if !methodFlag {
+		//	c.JSON(200, gin.H{
+		//		"code": 403,
+		//		"msg":  "没有权限:" + c.Request.Method + "," + rPaths[0],
+		//	})
+		//	c.Abort()
+		//	return
+		//}
 	}
+	//var flag bool
+	//if role.Path != "*" {
+	//	paths := strings.Split(role.Path, ",")
+	//	for _, p := range paths {
+	//		if rPaths[0] == p {
+	//			flag = true
+	//			break
+	//		}
+	//	}
+	//	if !flag {
+	//		c.JSON(200, gin.H{
+	//			"code": 403,
+	//			"msg":  "没有权限:" + rPaths[0],
+	//		})
+	//		c.Abort()
+	//		return
+	//	}
+	//}
 }

@@ -186,7 +186,13 @@ var app=new Vue({
             mes.from_id = this.kfConfig.id;
             mes.to_id = this.currentGuest;
             mes.content = this.messageContent;
-            $.post("/2/message",mes,function(){
+            $.post("/2/message",mes,function(res){
+               if(res.code!=200){
+                    _this.$message({
+                        message: data.msg,
+                        type: 'error'
+                    });
+                }
                 _this.messageContent = "";
             });
 
