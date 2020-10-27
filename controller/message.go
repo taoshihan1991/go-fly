@@ -159,31 +159,32 @@ func SendMessageV2(c *gin.Context) {
 
 		msg = TypeMessage{
 			Type: "message",
-			Data: ClientMessage{
+			Data: ws.ClientMessage{
 				Name:    kefuInfo.Nickname,
 				Avator:  kefuInfo.Avator,
 				Id:      kefuInfo.Name,
 				Time:    time.Now().Format("2006-01-02 15:04:05"),
 				ToId:    vistorInfo.VisitorId,
 				Content: content,
+				IsKefu:  "no",
 			},
 		}
 		str, _ := json.Marshal(msg)
 		conn.WriteMessage(websocket.TextMessage, str)
-		//msg = TypeMessage{
-		//	Type: "message",
-		//	Data: ClientMessage{
-		//		Name:    kefuInfo.Nickname,
-		//		Avator:  kefuInfo.Avator,
-		//		Id:      vistorInfo.VisitorId,
-		//		Time:    time.Now().Format("2006-01-02 15:04:05"),
-		//		ToId:    vistorInfo.VisitorId,
-		//		Content: content,
-		//	},
-		//}
-		//str2, _ := json.Marshal(msg)
-		//ws.SuperAdminMessage(str2)
-
+		msg = TypeMessage{
+			Type: "message",
+			Data: ws.ClientMessage{
+				Name:    kefuInfo.Nickname,
+				Avator:  kefuInfo.Avator,
+				Id:      vistorInfo.VisitorId,
+				Time:    time.Now().Format("2006-01-02 15:04:05"),
+				ToId:    vistorInfo.VisitorId,
+				Content: content,
+				IsKefu:  "yes",
+			},
+		}
+		str2, _ := json.Marshal(msg)
+		ws.OneKefuMessage(kefuInfo.Name, str2)
 	}
 	if cType == "visitor" {
 		//kefuConns, ok := ws.KefuList[kefuInfo.Name]
@@ -196,13 +197,14 @@ func SendMessageV2(c *gin.Context) {
 		//}
 		msg = TypeMessage{
 			Type: "message",
-			Data: ClientMessage{
+			Data: ws.ClientMessage{
 				Avator:  vistorInfo.Avator,
 				Id:      vistorInfo.VisitorId,
 				Name:    vistorInfo.Name,
 				ToId:    kefuInfo.Name,
 				Content: content,
 				Time:    time.Now().Format("2006-01-02 15:04:05"),
+				IsKefu:  "no",
 			},
 		}
 		str, _ := json.Marshal(msg)

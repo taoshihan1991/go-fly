@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
+	"time"
 )
 
 type User struct {
@@ -42,6 +43,7 @@ type ClientMessage struct {
 	City      string `json:"city"`
 	ClientIp  string `json:"client_ip"`
 	Refer     string `json:"refer"`
+	IsKefu    string `json:"is_kefu"`
 }
 
 var ClientList = make(map[string]*User)
@@ -59,7 +61,7 @@ func init() {
 			return true
 		},
 	}
-
+	go UpdateVisitorStatusCron()
 }
 func SendServerJiang(content string) string {
 	noticeServerJiang, err := strconv.ParseBool(models.FindConfig("NoticeServerJiang"))
@@ -74,4 +76,21 @@ func SendServerJiang(content string) string {
 	//log.Println(url)
 	res := tools.Get(url)
 	return res
+}
+
+//定时给更新数据库状态
+func UpdateVisitorStatusCron() {
+	for {
+		visitors := models.FindVisitorsOnline()
+		for _, visitor := range visitors {
+			if visitor.VisitorId == "" {
+				continue
+			}
+			_, ok := ClientList[visitor.VisitorId]
+			if !ok {
+				models.UpdateVisitorStatus(visitor.VisitorId, 0)
+			}
+		}
+		time.Sleep(60 * time.Second)
+	}
 }

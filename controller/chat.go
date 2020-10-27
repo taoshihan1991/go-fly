@@ -53,7 +53,7 @@ func init() {
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	go UpdateVisitorStatusCron()
+	//go UpdateVisitorStatusCron()
 	go singleBroadcaster()
 	//go sendPingOnlineUsers()
 	//sendPingToClient()

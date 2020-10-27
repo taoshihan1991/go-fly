@@ -129,10 +129,20 @@ var app=new Vue({
                 content.avator = msg.avator;
                 content.name = msg.name;
                 content.content = replaceContent(msg.content);
-                content.is_kefu = false;
+                content.is_kefu = msg.is_kefu=="yes"? true:false;
                 content.time = msg.time;
                 if (msg.id == this.currentGuest) {
                     this.msgList.push(content);
+                }
+
+                for(let i=0;i<this.users.length;i++){
+                    if(this.users[i].uid==msg.id){
+                        this.$set(this.users[i],'last_message',msg.content);
+                    }
+                }
+                this.scrollBottom();
+                if(content.is_kefu){
+                    return;
                 }
                 //发送通知
                 notify(msg.name, {
@@ -144,12 +154,6 @@ var app=new Vue({
                     notification.close();
                     _this.talkTo(msg.id,msg.name);
                 });
-                for(let i=0;i<this.users.length;i++){
-                    if(this.users[i].uid==msg.id){
-                        this.$set(this.users[i],'last_message',msg.content);
-                    }
-                }
-                this.scrollBottom();
             }
         },
         //接手客户
@@ -186,13 +190,13 @@ var app=new Vue({
                 _this.messageContent = "";
             });
 
-            let content = {}
-            content.avator = this.kfConfig.avator;
-            content.name = this.kfConfig.name;
-            content.content = replaceContent(this.messageContent);
-            content.is_kefu = true;
-            content.time = '';
-            this.msgList.push(content);
+            // let content = {}
+            // content.avator = this.kfConfig.avator;
+            // content.name = this.kfConfig.name;
+            // content.content = replaceContent(this.messageContent);
+            // content.is_kefu = true;
+            // content.time = '';
+            // this.msgList.push(content);
             this.scrollBottom();
         },
         //处理当前在线用户列表
