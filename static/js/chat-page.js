@@ -121,7 +121,7 @@ new Vue({
                 content.content = replaceContent(_this.messageContent);
                 content.name = _this.visitor.name;
                 content.is_kefu = true;
-                content.time = _this.getNowDate();
+                content.time = res.result.data.time;
                 _this.msgList.push(content);
                 //_this.saveHistory(content);
                 _this.scrollBottom();
