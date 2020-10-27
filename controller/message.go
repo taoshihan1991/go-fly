@@ -170,17 +170,30 @@ func SendMessageV2(c *gin.Context) {
 		}
 		str, _ := json.Marshal(msg)
 		conn.WriteMessage(websocket.TextMessage, str)
+		msg = TypeMessage{
+			Type: "message",
+			Data: ClientMessage{
+				Name:    kefuInfo.Nickname,
+				Avator:  kefuInfo.Avator,
+				Id:      vistorInfo.VisitorId,
+				Time:    time.Now().Format("2006-01-02 15:04:05"),
+				ToId:    vistorInfo.VisitorId,
+				Content: content,
+			},
+		}
+		str2, _ := json.Marshal(msg)
+		ws.SuperAdminMessage(str2)
 
 	}
 	if cType == "visitor" {
-		kefuConns, ok := ws.KefuList[kefuInfo.Name]
-		if kefuConns == nil || !ok {
-			c.JSON(200, gin.H{
-				"code": 200,
-				"msg":  "ok",
-			})
-			return
-		}
+		//kefuConns, ok := ws.KefuList[kefuInfo.Name]
+		//if kefuConns == nil || !ok {
+		//	c.JSON(200, gin.H{
+		//		"code": 200,
+		//		"msg":  "ok",
+		//	})
+		//	return
+		//}
 		msg = TypeMessage{
 			Type: "message",
 			Data: ClientMessage{
@@ -193,9 +206,7 @@ func SendMessageV2(c *gin.Context) {
 			},
 		}
 		str, _ := json.Marshal(msg)
-		for _, kefuConn := range kefuConns {
-			kefuConn.Conn.WriteMessage(websocket.TextMessage, str)
-		}
+		ws.OneKefuMessage(kefuInfo.Name, str)
 	}
 	c.JSON(200, gin.H{
 		"code":   200,

@@ -9,8 +9,8 @@ import (
 )
 
 func NewKefuServer(c *gin.Context) {
-	kefuId, _ := c.Get("kefu_name")
-	kefuInfo := models.FindUser(kefuId.(string))
+	kefuId, _ := c.Get("kefu_id")
+	kefuInfo := models.FindUserById(kefuId)
 	if kefuInfo.ID == 0 {
 		c.JSON(200, gin.H{
 			"code": 400,
@@ -30,6 +30,7 @@ func NewKefuServer(c *gin.Context) {
 	kefu.Id = kefuInfo.Name
 	kefu.Name = kefuInfo.Nickname
 	kefu.Avator = kefuInfo.Avator
+	kefu.Role_id = kefuInfo.RoleId
 	kefu.Conn = conn
 	AddKefuToList(&kefu)
 
@@ -95,4 +96,28 @@ func kefuServerBackend() {
 		}
 
 	}
+}
+
+//给超管发消息
+func SuperAdminMessage(str []byte) {
+	//给超管发
+	for _, kefuUsers := range KefuList {
+		for _, kefuUser := range kefuUsers {
+			if kefuUser.Role_id == "2" {
+				kefuUser.Conn.WriteMessage(websocket.TextMessage, str)
+			}
+		}
+	}
+}
+
+//给指定客服发消息
+func OneKefuMessage(toId string, str []byte) {
+	//新版
+	mKefuConns := KefuList[toId]
+	if mKefuConns != nil {
+		for _, kefu := range mKefuConns {
+			kefu.Conn.WriteMessage(websocket.TextMessage, str)
+		}
+	}
+	SuperAdminMessage(str)
 }

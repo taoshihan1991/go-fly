@@ -5,6 +5,7 @@ import (
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tmpl"
 	"github.com/taoshihan1991/imaptool/tools"
+	"github.com/taoshihan1991/imaptool/ws"
 	"net/http"
 )
 
@@ -34,7 +35,7 @@ func MainCheckAuth(c *gin.Context) {
 func GetStatistics(c *gin.Context) {
 	visitors := models.CountVisitors()
 	message := models.CountMessage()
-	session := len(clientList)
+	session := len(ws.ClientList)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",

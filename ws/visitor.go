@@ -3,7 +3,6 @@ package ws
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
 	"log"
 )
@@ -54,12 +53,8 @@ func NewVisitorServer(c *gin.Context) {
 						Data: userInfo,
 					}
 					str, _ := json.Marshal(msg)
-					kefuConns := KefuList[visitor.To_id]
-					if kefuConns != nil {
-						for _, kefuConn := range kefuConns {
-							kefuConn.Conn.WriteMessage(websocket.TextMessage, str)
-						}
-					}
+					//新版
+					OneKefuMessage(user.To_id, str)
 				}
 			}
 			log.Println(err)
@@ -93,10 +88,5 @@ func AddVisitorToList(user *User) {
 	str, _ := json.Marshal(msg)
 
 	//新版
-	mKefuConns := KefuList[user.To_id]
-	if mKefuConns != nil {
-		for _, kefu := range mKefuConns {
-			kefu.Conn.WriteMessage(websocket.TextMessage, str)
-		}
-	}
+	OneKefuMessage(user.To_id, str)
 }

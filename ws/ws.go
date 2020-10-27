@@ -13,11 +13,12 @@ import (
 )
 
 type User struct {
-	Conn   *websocket.Conn
-	Name   string
-	Id     string
-	Avator string
-	To_id  string
+	Conn    *websocket.Conn
+	Name    string
+	Id      string
+	Avator  string
+	To_id   string
+	Role_id string
 }
 type Message struct {
 	conn        *websocket.Conn
