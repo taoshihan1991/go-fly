@@ -73,6 +73,7 @@ new Vue({
                 //this.saveHistory(content);
                 this.scrollBottom();
                 flashTitle();//标题闪烁
+                clearInterval(this.timer);
                 this.alertSound();//提示音
             }
             if (redata.type == "close") {
@@ -245,8 +246,9 @@ new Vue({
                             content.content = replaceContent(content.content);
                             _this.msgList.push(content);
                             _this.scrollBottom();
+                            _this.sendSound();
                             i++;
-                        },3000);
+                        },4000);
                     }
 
                 }
