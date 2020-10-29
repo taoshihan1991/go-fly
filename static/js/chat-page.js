@@ -128,6 +128,7 @@ new Vue({
                 _this.scrollBottom();
                 _this.messageContent = "";
                 clearInterval(_this.timer);
+                _this.sendSound();
             });
 
         },
@@ -384,6 +385,11 @@ new Vue({
         //提示音
         alertSound(){
             var b = document.getElementById("chatMessageAudio");
+            var p = b.play();
+            p && p.then(function(){}).catch(function(e){});
+        },
+        sendSound(){
+            var b = document.getElementById("chatMessageSendAudio");
             var p = b.play();
             p && p.then(function(){}).catch(function(e){});
         }

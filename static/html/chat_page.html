@@ -65,7 +65,10 @@
         </div>
         <!--//客服代码-->
         <audio id="chatMessageAudio">
-            <source id="chatMessageAudioSource" src="/static/images/alert.mp3" type="audio/mpeg" />
+            <source id="chatMessageAudioSource" src="/static/images/alert2.ogg" type="audio/mpeg" />
+        </audio>
+        <audio id="chatMessageSendAudio">
+            <source id="chatMessageSendAudioSource" src="/static/images/sent.ogg" type="audio/mpeg" />
         </audio>
     </template>
 </div>
@@ -76,5 +79,5 @@
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
 </script>
-<script src="/static/js/chat-page.js?v=0.3.2"></script>
+<script src="/static/js/chat-page.js?v=0.3.3"></script>
 </html>
