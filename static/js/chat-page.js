@@ -246,7 +246,7 @@ new Vue({
                             content.content = replaceContent(content.content);
                             _this.msgList.push(content);
                             _this.scrollBottom();
-                            _this.sendSound();
+                            _this.alertSound();
                             i++;
                         },4000);
                     }
