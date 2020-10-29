@@ -73,7 +73,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.POST("/notice_save", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostNoticeSave)
 	engine.GET("/notices", middleware.JwtApiMiddleware, controller.GetNotices)
 	engine.POST("/ipblack", middleware.JwtApiMiddleware, controller.PostIpblack)
-	engine.DELETE("/ipblack", middleware.JwtApiMiddleware, controller.DelIpblack)
+	engine.DELETE("/ipblack", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.DelIpblack)
 	engine.GET("/ipblacks_all", middleware.JwtApiMiddleware, controller.GetIpblacks)
 	engine.GET("/configs", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetConfigs)
 	engine.POST("/config", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostConfig)
