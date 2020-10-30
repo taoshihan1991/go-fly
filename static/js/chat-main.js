@@ -89,6 +89,7 @@ var app=new Vue({
                         notification.close();
                         _this.talkTo(redata.data.uid,redata.data.username);
                     });
+                    _this.alertSound();
 
                     break;
                 case "userOffline":
@@ -154,6 +155,7 @@ var app=new Vue({
                     notification.close();
                     _this.talkTo(msg.id,msg.name);
                 });
+                _this.alertSound();
             }
         },
         //接手客户
@@ -194,6 +196,7 @@ var app=new Vue({
                     });
                 }
                 _this.messageContent = "";
+               _this.sendSound();
             });
 
             // let content = {}
@@ -576,6 +579,17 @@ var app=new Vue({
         openUrl(url){
             window.open(url);
         },
+        //提示音
+        alertSound(){
+            var b = document.getElementById("chatMessageAudio");
+            var p = b.play();
+            p && p.then(function(){}).catch(function(e){});
+        },
+        sendSound(){
+            var b = document.getElementById("chatMessageSendAudio");
+            var p = b.play();
+            p && p.then(function(){}).catch(function(e){});
+        }
     },
     mounted() {
         document.addEventListener('paste', this.onPasteUpload)
