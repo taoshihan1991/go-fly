@@ -1,6 +1,7 @@
 package ws
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -48,7 +49,7 @@ type ClientMessage struct {
 
 var ClientList = make(map[string]*User)
 var KefuList = make(map[string][]*User)
-var message = make(chan *Message)
+var message = make(chan *Message, 10)
 var upgrader = websocket.Upgrader{}
 var Mux sync.RWMutex
 
@@ -92,5 +93,33 @@ func UpdateVisitorStatusCron() {
 			}
 		}
 		time.Sleep(60 * time.Second)
+	}
+}
+
+//后端广播发送消息
+func WsServerBackend() {
+	for {
+		message := <-message
+		var typeMsg TypeMessage
+		json.Unmarshal(message.content, &typeMsg)
+		conn := message.conn
+		if typeMsg.Type == nil || typeMsg.Data == nil {
+			continue
+		}
+		msgType := typeMsg.Type.(string)
+		log.Println("客户端:", string(message.content))
+
+		switch msgType {
+		//心跳
+		case "ping":
+			msg := TypeMessage{
+				Type: "pong",
+			}
+			str, _ := json.Marshal(msg)
+			Mux.Lock()
+			conn.WriteMessage(websocket.TextMessage, str)
+			Mux.Unlock()
+		}
+
 	}
 }

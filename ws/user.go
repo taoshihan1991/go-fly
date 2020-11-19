@@ -19,7 +19,7 @@ func NewKefuServer(c *gin.Context) {
 		return
 	}
 
-	go kefuServerBackend()
+	//go kefuServerBackend()
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Print("upgrade:", err)
