@@ -54,7 +54,7 @@ func init() {
 		WriteBufferSize: 1024,
 	}
 	//go UpdateVisitorStatusCron()
-	go singleBroadcaster()
+	//go singleBroadcaster()
 	//go sendPingOnlineUsers()
 	//sendPingToClient()
 }

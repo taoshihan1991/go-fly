@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -56,6 +57,9 @@ func run() {
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
 	engine.Static("/static", "./static")
+
+	//性能监控
+	pprof.Register(engine)
 
 	//记录日志
 	engine.Use(tools.LoggerToFile())
