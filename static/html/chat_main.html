@@ -59,6 +59,7 @@
         .chatArea{margin: 10px 0;}
         .chatBox{max-height: 350px;overflow-y: auto;overflow-x: hidden;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
+        .funcBtns{margin: 2px 0px;color: #7f7f7f;border-bottom: 1px solid #e6e6e6;font-size: 12px;padding: 5px 0px;}
     </style>
 </head>
 <body>
@@ -107,9 +108,16 @@
                 <el-col :span="12">
                     <div class="sw-bg chatBgContext">
                         <el-alert
+                                :closable="false"
+                                :type="chatTitleType"
+                                show-icon
                                 :title="chatTitle"
-                                type="success">
+                                >
                         </el-alert>
+                        <div class="funcBtns" v-show="visitor.visitor_id">
+                            <el-button size="small" type="success" plain icon="el-icon-position">转接</el-button>
+                            <el-button v-on:click="closeVisitor(visitor.visitor_id)" size="small" type="success" plain icon="el-icon-close">结束</el-button>
+                        </div>
                         <div class="chatBox">
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                                 <div class="chatTime"><{v.time}></div>
@@ -208,5 +216,5 @@
     </template>
 </div>
 </body>
-<script src="/static/js/chat-main.js?v=0.3.4"></script>
+<script src="/static/js/chat-main.js?v=0.3.5"></script>
 </html>

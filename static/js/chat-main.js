@@ -2,6 +2,7 @@ var app=new Vue({
     el: '#app',
     delimiters:["<{","}>"],
     data: {
+        chatTitleType:"info",
         fullscreenLoading:true,
         leftTabActive:"first",
         rightTabActive:"visitorInfo",
@@ -161,7 +162,7 @@ var app=new Vue({
         //接手客户
         talkTo(guestId,name) {
             this.currentGuest = guestId;
-            this.chatTitle=name+"|"+guestId+",正在处理中...";
+            //this.chatTitle=name+"|"+guestId+",正在处理中...";
 
             //发送给客户
             let mes = {}
@@ -376,6 +377,8 @@ var app=new Vue({
                         // _this.visitor.source_ip=r.source_ip;
                         _this.visitor.status=r.status==1?"在线":"离线";
                         //_this.visitor.visitor_id=r.visitor_id;
+                        _this.chatTitle="#"+r.id+"|"+r.name;
+                        _this.chatTitleType="success";
                     }
                     if(data.code!=200){
                         _this.$message({
