@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
+	"github.com/taoshihan1991/imaptool/ws"
 	"strconv"
 )
 
@@ -27,6 +28,32 @@ func GetKefuInfoAll(c *gin.Context) {
 		"code":   200,
 		"msg":    "验证成功",
 		"result": userinfo,
+	})
+}
+func GetOtherKefuList(c *gin.Context) {
+	idStr, _ := c.Get("kefu_id")
+	id := idStr.(float64)
+	result := make([]interface{}, 0)
+	kefus := models.FindUsers()
+	for _, kefu := range kefus {
+		if uint(id) == kefu.ID {
+			continue
+		}
+
+		item := make(map[string]interface{})
+		item["name"] = kefu.Name
+		item["avator"] = kefu.Avator
+		item["status"] = "offline"
+		_, ok := ws.KefuList[kefu.Name]
+		if ok {
+			item["status"] = "online"
+		}
+		result = append(result, item)
+	}
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": result,
 	})
 }
 func GetKefuInfoSetting(c *gin.Context) {
