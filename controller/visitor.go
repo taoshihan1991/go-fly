@@ -80,7 +80,7 @@ func PostVisitorLogin(c *gin.Context) {
 		city = "未识别地区"
 		name = "匿名网友"
 	}
-	client_ip := c.PostForm("client_ip")
+	client_ip := c.ClientIP()
 	//log.Println(name,avator,c.ClientIP(),toId,id,refer,city,client_ip)
 	if name == "" || avator == "" || toId == "" || id == "" || refer == "" || city == "" || client_ip == "" {
 		c.JSON(200, gin.H{
