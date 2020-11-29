@@ -115,7 +115,7 @@
                                 >
                         </el-alert>
                         <div class="funcBtns" v-show="visitor.visitor_id">
-                            <el-button size="small" type="success" plain icon="el-icon-position">转接</el-button>
+                            <el-button v-on:click="transKefu" size="small" type="success" plain icon="el-icon-position">转接</el-button>
                             <el-button v-on:click="closeVisitor(visitor.visitor_id)" size="small" type="success" plain icon="el-icon-close">结束</el-button>
                         </div>
                         <div class="chatBox">
@@ -213,6 +213,19 @@
         <audio id="chatMessageSendAudio">
             <source id="chatMessageSendAudioSource" src="/static/images/sent.ogg" type="audio/mpeg" />
         </audio>
+        <!--转接-->
+        <el-dialog
+                title="转移客服"
+                :visible.sync="transKefuDialog"
+                width="30%"
+                top="0"
+        >
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="transKefuDialog = false">取 消</el-button>
+                <el-button type="primary" @click="transKefuBtn">确 定</el-button>
+              </span>
+        </el-dialog>
+        <!--//转接-->
     </template>
 </div>
 </body>
