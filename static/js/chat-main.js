@@ -36,6 +36,7 @@ var app=new Vue({
         visitorPageSize:10,
         face:[],
         transKefuDialog:false,
+        otherKefus:[],
     },
     methods: {
         //跳转
@@ -597,7 +598,9 @@ var app=new Vue({
         //转移客服
         transKefu(){
             this.transKefuDialog=true;
+            var _this=this;
             this.sendAjax("/other_kefulist","get",{},function(result){
+                _this.otherKefus=result;
             });
         },
         transKefuBtn(){},
