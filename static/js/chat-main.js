@@ -603,7 +603,13 @@ var app=new Vue({
                 _this.otherKefus=result;
             });
         },
-        transKefuBtn(){},
+        //转移访客客服
+        transKefuVisitor(kefu,visitorId){
+            var _this=this;
+            // this.sendAjax("/other_kefulist","get",{},function(result){
+            //     _this.otherKefus=result;
+            // });
+        },
         sendAjax(url,method,params,callback){
             let _this=this;
             $.ajax({

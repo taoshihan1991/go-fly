@@ -230,11 +230,15 @@
                 <el-table-column
                         prop="status"
                         label="操作">
+                    <template slot-scope="scope">
+                        <el-tag v-show="scope.row.status=='offline'"
+                                disable-transitions>离线</el-tag>
+                        <el-button v-show="scope.row.status=='online'" type="primary" @click="transKefuVisitor(scope.row.name,visitor.visitor_id)">转移</el-button>
+                    </template>
                 </el-table-column>
             </el-table>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="transKefuDialog = false">取 消</el-button>
-                <el-button type="primary" @click="transKefuBtn">确 定</el-button>
               </span>
         </el-dialog>
         <!--//转接-->
