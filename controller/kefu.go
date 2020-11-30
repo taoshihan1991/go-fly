@@ -44,8 +44,8 @@ func GetOtherKefuList(c *gin.Context) {
 		item["name"] = kefu.Name
 		item["avator"] = kefu.Avator
 		item["status"] = "offline"
-		_, ok := ws.KefuList[kefu.Name]
-		if ok {
+		kefus, ok := ws.KefuList[kefu.Name]
+		if ok && len(kefus) != 0 {
 			item["status"] = "online"
 		}
 		result = append(result, item)
