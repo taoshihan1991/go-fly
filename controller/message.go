@@ -148,6 +148,7 @@ func SendMessageV2(c *gin.Context) {
 	var msg TypeMessage
 	if cType == "kefu" {
 		guest, ok := ws.ClientList[vistorInfo.VisitorId]
+
 		if guest != nil && ok {
 			conn := guest.Conn
 

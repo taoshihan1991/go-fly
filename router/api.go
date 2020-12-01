@@ -50,6 +50,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.DELETE("/kefuinfo", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.DeleteKefuInfo)
 	engine.GET("/kefulist", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetKefuList)
 	engine.GET("/other_kefulist", middleware.JwtApiMiddleware, controller.GetOtherKefuList)
+	engine.GET("/trans_kefu", middleware.JwtApiMiddleware, controller.PostTransKefu)
 	//角色列表
 	engine.GET("/roles", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetRoleList)
 	engine.POST("/role", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostRole)

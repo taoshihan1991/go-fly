@@ -74,6 +74,10 @@ func UpdateVisitor(visitorId string, status uint, clientIp string, sourceIp stri
 	}
 	DB.Model(visitor).Where("visitor_id = ?", visitorId).Update(visitor)
 }
+func UpdateVisitorKefu(visitorId string, kefuId string) {
+	visitor := Visitor{}
+	DB.Model(&visitor).Where("visitor_id = ?", visitorId).Update("to_id", kefuId)
+}
 
 //查询条数
 func CountVisitors() uint {

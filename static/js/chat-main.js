@@ -606,9 +606,10 @@ var app=new Vue({
         //转移访客客服
         transKefuVisitor(kefu,visitorId){
             var _this=this;
-            // this.sendAjax("/other_kefulist","get",{},function(result){
-            //     _this.otherKefus=result;
-            // });
+            this.sendAjax("/trans_kefu","get",{kefu_id:kefu,visitor_id:visitorId},function(result){
+                //_this.otherKefus=result;
+                _this.transKefuDialog = false
+            });
         },
         sendAjax(url,method,params,callback){
             let _this=this;
