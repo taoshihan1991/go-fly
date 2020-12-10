@@ -225,6 +225,11 @@
 .chatLeft .el-tabs__nav,.chatRight .el-tabs__nav {
     margin-left: 20px;
 }
+.chatRight{
+    height: 100%;
+    overflow: scroll;
+    overflow: scroll!important;
+}
 .onlineUsers {
     padding: 5px;
     height: 40px;
@@ -314,4 +319,22 @@
 .footContact a{font-size: 12px;color: #999;text-decoration: none;}
 .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
 .chatTimeHide{display: none;}
+.chatRightTitle{
+    color: #303133;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    font-size: 14px;
+    border-bottom:1px solid #E4E7ED;
+    background: #E3E3E3;
+}
+.replyBox{
+    padding: 0 10px;
+    font-size: 12px;
+    min-height: 300px;
+}
+.replyItem:hover{
+    background-color: #f0f9eb;
+    color: #67C23A;
+}
 .clear{clear:both;}

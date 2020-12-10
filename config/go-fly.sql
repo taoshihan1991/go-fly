@@ -134,12 +134,16 @@ CREATE TABLE `reply_group` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `group_name` varchar(50) NOT NULL DEFAULT '',
  `user_id` varchar(50) NOT NULL DEFAULT '',
- PRIMARY KEY (`id`)
+ PRIMARY KEY (`id`),
+ KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 DROP TABLE IF EXISTS `reply_item`|
 CREATE TABLE `reply_item` (
  `id` int(11) NOT NULL,
  `content` varchar(1024) NOT NULL DEFAULT '',
  `group_id` int(11) NOT NULL DEFAULT '0',
- `user_id` int(11) NOT NULL DEFAULT '0'
+ `user_id` int(11) NOT NULL DEFAULT '0',
+ `item_name` varchar(50) NOT NULL DEFAULT '',
+ KEY `user_id` (`user_id`),
+ KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|

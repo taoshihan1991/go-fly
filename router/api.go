@@ -81,7 +81,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/configs", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetConfigs)
 	engine.POST("/config", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostConfig)
 	engine.GET("/config", controller.GetConfig)
-	engine.GET("/replys", controller.GetReplys)
+	engine.GET("/replys", middleware.JwtApiMiddleware, controller.GetReplys)
 	//微信接口
 	engine.GET("/micro_program", middleware.JwtApiMiddleware, controller.GetCheckWeixinSign)
 }
