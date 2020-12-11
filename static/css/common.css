@@ -319,6 +319,9 @@
 .footContact a{font-size: 12px;color: #999;text-decoration: none;}
 .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
 .chatTimeHide{display: none;}
+.visitorInfo .el-menu-item{
+    font-size: 13px;
+}
 .chatRightTitle{
     color: #303133;
     height: 40px;
@@ -326,15 +329,23 @@
     padding-left: 20px;
     font-size: 14px;
     border-bottom:1px solid #E4E7ED;
-    background: #E3E3E3;
 }
 .replyBox{
-    padding: 0 10px;
     font-size: 12px;
     min-height: 300px;
+    background: #fff;
+    border: solid 1px #e6e6e6;
+    margin-top: 5px;
 }
 .replyItem:hover{
     background-color: #f0f9eb;
     color: #67C23A;
+}
+.replyContent{
+    padding: 0 10px;
+}
+.iconBtnsBox{
+    position: relative;
+    margin-top: 4px;
 }
 .clear{clear:both;}
