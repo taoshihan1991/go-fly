@@ -37,6 +37,7 @@ var app=new Vue({
         face:[],
         transKefuDialog:false,
         otherKefus:[],
+        replyGroupDialog:false,
     },
     methods: {
         //跳转

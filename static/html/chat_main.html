@@ -196,7 +196,9 @@
                         </el-tabs>
                     </div>
                     <div class="replyBox">
-                        <div class="chatRightTitle">快捷回复</div>
+                        <div class="chatRightTitle">快捷回复
+                        <a href="javascript:void(0);"  @click="replyGroupDialog = true">+添加分组</a>
+                        </div>
                         <div class="replyContent">
                             <el-collapse>
                                 <el-collapse-item title="客服营销" name="1">
@@ -252,8 +254,20 @@
               </span>
         </el-dialog>
         <!--//转接-->
+        <!--转接-->
+        <el-dialog
+                title="添加分组"
+                :visible.sync="replyGroupDialog"
+                width="30%"
+                top="0"
+        >
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="replyGroupDialog = false">取 消</el-button>
+              </span>
+        </el-dialog>
+        <!--//转接-->
     </template>
 </div>
 </body>
-<script src="/static/js/chat-main.js?v=0.3.5"></script>
+<script src="/static/js/chat-main.js?v=0.3.6"></script>
 </html>

@@ -326,9 +326,14 @@
     color: #303133;
     height: 40px;
     line-height: 40px;
-    padding-left: 20px;
+    padding:0 10px;
     font-size: 14px;
     border-bottom:1px solid #E4E7ED;
+}
+.chatRightTitle a{
+    float: right;
+    text-decoration: none;
+    color: #519eff;
 }
 .replyBox{
     font-size: 12px;
