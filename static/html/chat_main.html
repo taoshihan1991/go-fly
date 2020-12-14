@@ -261,7 +261,9 @@
                 width="30%"
                 top="0"
         >
+                <el-input  v-model="groupName"></el-input>
             <span slot="footer" class="dialog-footer">
+                <el-button @click="addReplyGroup">保 存</el-button>
                 <el-button @click="replyGroupDialog = false">取 消</el-button>
               </span>
         </el-dialog>

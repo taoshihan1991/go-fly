@@ -38,6 +38,7 @@ var app=new Vue({
         transKefuDialog:false,
         otherKefus:[],
         replyGroupDialog:false,
+        groupName:"",
     },
     methods: {
         //跳转
@@ -612,6 +613,14 @@ var app=new Vue({
                 _this.transKefuDialog = false
             });
         },
+        //保存回复分组
+        addReplyGroup(){
+            var _this=this;
+            this.sendAjax("/reply","post",{group_name:this.group_name},function(result){
+                //_this.otherKefus=result;
+                _this.replyGroupDialog = false
+            });
+        },
         sendAjax(url,method,params,callback){
             let _this=this;
             $.ajax({
@@ -619,6 +628,7 @@ var app=new Vue({
                 url: url,
                 data:params,
                 headers: {
+                    "Content-Type":"",
                     "token": localStorage.getItem("token")
                 },
                 success: function(data) {
