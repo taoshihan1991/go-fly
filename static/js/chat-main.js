@@ -38,7 +38,12 @@ var app=new Vue({
         transKefuDialog:false,
         otherKefus:[],
         replyGroupDialog:false,
+        replyContentDialog:false,
         groupName:"",
+        groupId:"",
+        replys:[],
+        replyContent:"",
+
     },
     methods: {
         //跳转
@@ -616,9 +621,42 @@ var app=new Vue({
         //保存回复分组
         addReplyGroup(){
             var _this=this;
-            this.sendAjax("/reply","post",{group_name:this.group_name},function(result){
+            this.sendAjax("/reply","post",{group_name:_this.groupName},function(result){
                 //_this.otherKefus=result;
                 _this.replyGroupDialog = false
+                _this.groupName="";
+                _this.getReplys();
+            });
+        },
+        //添加回复内容
+        addReplyContent(){
+            var _this=this;
+            this.sendAjax("/reply_content","post",{group_id:_this.groupId,content:_this.replyContent},function(result){
+                //_this.otherKefus=result;
+                _this.replyContentDialog = false
+                _this.replyContent="";
+                _this.getReplys();
+            });
+        },
+        //获取快捷回复
+        getReplys(){
+            var _this=this;
+            this.sendAjax("/replys","get",{},function(result){
+                _this.replys=result;
+            });
+        },
+        //删除回复
+        deleteReplyGroup(id){
+            var _this=this;
+            this.sendAjax("/reply?id="+id,"delete",{},function(result){
+                _this.getReplys();
+            });
+        },
+        //删除回复
+        deleteReplyContent(id){
+            var _this=this;
+            this.sendAjax("/reply_content?id="+id,"delete",{},function(result){
+                _this.getReplys();
             });
         },
         sendAjax(url,method,params,callback){
@@ -628,8 +666,17 @@ var app=new Vue({
                 url: url,
                 data:params,
                 headers: {
-                    "Content-Type":"",
                     "token": localStorage.getItem("token")
+                },
+                error:function(res){
+                    var data=JSON.parse(res.responseText);
+                    console.log(data);
+                    if(data.code!=200){
+                        _this.$message({
+                            message: data.msg,
+                            type: 'error'
+                        });
+                    }
                 },
                 success: function(data) {
                     if(data.code!=200){
@@ -654,6 +701,7 @@ var app=new Vue({
         this.initJquery();
         this.getKefuInfo();
         this.getOnlineVisitors();
+        this.getReplys();
         //心跳
         this.ping();
     }

@@ -4,7 +4,7 @@
     <meta name="description" content="">
     <meta name="author" content="陶士涵">
     <title>聊天界面</title>
-    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/common.css?v=0.3.7">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="/static/js/functions.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -201,13 +201,13 @@
                         </div>
                         <div class="replyContent">
                             <el-collapse>
-                                <el-collapse-item title="客服营销" name="1">
-                                    <div class="replyItem">与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-                                    <div class="replyItem">在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
-                                </el-collapse-item>
-                                <el-collapse-item title="通用话术" name="2">
-                                    <div class="replyItem">控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-                                    <div class="replyItem">页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
+                                <el-collapse-item v-for="reply in replys" :key="reply.group_id" :title="reply.group_name" :name="reply.group_id">
+                                    <template slot="title">
+                                        <i class="header-icon el-icon-info"></i>&nbsp;<{reply.group_name}>
+                                    </template>
+                                    <div class="replyItem" @click="messageContent=item.item_content"  v-for="item in reply.items" ><{item.item_content}> &nbsp;&nbsp;<el-button @click="deleteReplyContent(item.item_id)" type="text">删除</el-button></div>
+                                    <el-button @click="replyContentDialog=true;groupName=reply.group_name;groupId=reply.group_id" type="text">+添加回复内容</el-button>
+                                    <el-button @click="deleteReplyGroup(reply.group_id)" type="text">-删除组</el-button>
                                 </el-collapse-item>
                             </el-collapse>
                         </div>
@@ -254,7 +254,7 @@
               </span>
         </el-dialog>
         <!--//转接-->
-        <!--转接-->
+        <!--回复分组-->
         <el-dialog
                 title="添加分组"
                 :visible.sync="replyGroupDialog"
@@ -267,9 +267,23 @@
                 <el-button @click="replyGroupDialog = false">取 消</el-button>
               </span>
         </el-dialog>
-        <!--//转接-->
+        <!--//回复分组-->
+        <!--回复内容-->
+        <el-dialog
+                title="添加回复内容"
+                :visible.sync="replyContentDialog"
+                width="30%"
+                top="0"
+        >
+            <el-input type="textarea"  v-model="replyContent"></el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="addReplyContent">保 存</el-button>
+                <el-button @click="replyContentDialog = false">取 消</el-button>
+              </span>
+        </el-dialog>
+        <!--//回复内容-->
     </template>
 </div>
 </body>
-<script src="/static/js/chat-main.js?v=0.3.6"></script>
+<script src="/static/js/chat-main.js?v=0.3.7"></script>
 </html>

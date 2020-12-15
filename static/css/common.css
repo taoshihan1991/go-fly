@@ -341,6 +341,7 @@
     background: #fff;
     border: solid 1px #e6e6e6;
     margin-top: 5px;
+    margin-bottom: 50px;
 }
 .replyItem:hover{
     background-color: #f0f9eb;

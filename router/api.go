@@ -83,6 +83,9 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/config", controller.GetConfig)
 	engine.GET("/replys", middleware.JwtApiMiddleware, controller.GetReplys)
 	engine.POST("/reply", middleware.JwtApiMiddleware, controller.PostReply)
+	engine.POST("/reply_content", middleware.JwtApiMiddleware, controller.PostReplyContent)
+	engine.DELETE("/reply_content", middleware.JwtApiMiddleware, controller.DelReplyContent)
+	engine.DELETE("/reply", middleware.JwtApiMiddleware, controller.DelReplyGroup)
 	//微信接口
 	engine.GET("/micro_program", middleware.JwtApiMiddleware, controller.GetCheckWeixinSign)
 }

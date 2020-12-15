@@ -139,11 +139,12 @@ CREATE TABLE `reply_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 DROP TABLE IF EXISTS `reply_item`|
 CREATE TABLE `reply_item` (
- `id` int(11) NOT NULL,
+ `id` int(11) NOT NULL AUTO_INCREMENT,
  `content` varchar(1024) NOT NULL DEFAULT '',
  `group_id` int(11) NOT NULL DEFAULT '0',
- `user_id` int(11) NOT NULL DEFAULT '0',
+ `user_id` varchar(50) NOT NULL DEFAULT '',
  `item_name` varchar(50) NOT NULL DEFAULT '',
+ PRIMARY KEY (`id`),
  KEY `user_id` (`user_id`),
  KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
