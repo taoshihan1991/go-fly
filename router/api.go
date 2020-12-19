@@ -38,6 +38,8 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/message_close", controller.SendCloseMessage)
 	//上传文件
 	engine.POST("/uploadimg", middleware.Ipblack, controller.UploadImg)
+	//上传文件
+	engine.POST("/uploadfile", middleware.Ipblack, controller.UploadFile)
 	//获取未读消息数
 	engine.GET("/message_status", controller.GetVisitorMessage)
 	//设置消息已读
@@ -78,6 +80,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.POST("/ipblack", middleware.JwtApiMiddleware, controller.PostIpblack)
 	engine.DELETE("/ipblack", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.DelIpblack)
 	engine.GET("/ipblacks_all", middleware.JwtApiMiddleware, controller.GetIpblacks)
+	engine.GET("/ipblacks", middleware.JwtApiMiddleware, controller.GetIpblacksByKefuId)
 	engine.GET("/configs", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetConfigs)
 	engine.POST("/config", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostConfig)
 	engine.GET("/config", controller.GetConfig)

@@ -13,7 +13,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/front.css?v=0.2.3" />
-    <link rel="stylesheet" href="/static/css/common.css?v=0.2.3" />
+    <link rel="stylesheet" href="/static/css/common.css?v=0.2.4" />
 </head>
 <body>
 <div id="app"  class="chatCenter">
@@ -47,6 +47,7 @@
             <div class="iconBtns">
                 <div class="faceBtn visitorFaceBtn"></div>
                 <div class="imageBtn visitorImageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
+                <div class="folderBtn visitorFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
                 <div class="clear"></div>
             </div>
             <el-input type="textarea" class="chatArea" v-model="messageContent" v-on:keyup.enter.native="chatToUser"></el-input>
@@ -78,5 +79,5 @@
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
 </script>
-<script src="/static/js/chat-page.js?v=0.3.6"></script>
+<script src="/static/js/chat-page.js?v=0.3.7"></script>
 </html>

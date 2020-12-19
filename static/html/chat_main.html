@@ -187,10 +187,12 @@
                                 </el-menu>
                             </el-tab-pane>
                             <el-tab-pane label="黑名单" name="blackList">
-                                <el-row  v-for="item in visitors" :key="item.uid" class="">
-                                    <div style="cursor:pointer" class="onlineUsers imgGray">
-                                            待开发
+                                <el-row  v-for="item in ipBlacks" :key="item.id" class="">
+                                    <el-tooltip content="点击删除黑名单" placement="left">
+                                    <div v-on:click="delIpblack(item.ip)" style="cursor:pointer" class="onlineUsers imgGray">
+                                            <{item.ip}>
                                     </div>
+                                    </el-tooltip>
                                 </el-row>
                             </el-tab-pane>
                         </el-tabs>
@@ -285,5 +287,5 @@
     </template>
 </div>
 </body>
-<script src="/static/js/chat-main.js?v=0.3.7"></script>
+<script src="/static/js/chat-main.js?v=0.3.8"></script>
 </html>

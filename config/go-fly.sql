@@ -110,6 +110,7 @@ INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL,
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'Server酱API', 'ServerJiangAPI', '')|
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '微信小程序Token', 'WeixinToken', '')|
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '当前小程序审核状态', 'MiniAppAudit', 'yes')|
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '是否允许上传附件', 'SendAttachment', 'ture')|
 
 DROP TABLE IF EXISTS `about`|
 CREATE TABLE `about` (

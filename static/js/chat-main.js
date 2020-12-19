@@ -43,7 +43,7 @@ var app=new Vue({
         groupId:"",
         replys:[],
         replyContent:"",
-
+        ipBlacks:[],
     },
     methods: {
         //跳转
@@ -659,6 +659,22 @@ var app=new Vue({
                 _this.getReplys();
             });
         },
+        //获取黑名单
+        getIpblacks(){
+            var _this=this;
+            this.sendAjax("/ipblacks","get",{},function(result){
+                _this.ipBlacks=result;
+            });
+        },
+        //删除黑名单
+        delIpblack(ip){
+            let _this=this;
+            this.sendAjax("/ipblack?ip="+ip,"DELETE",{ip:ip},function(result){
+                _this.sendAjax("/ipblacks","get",{},function(result){
+                    _this.ipBlacks=result;
+                });
+            });
+        },
         sendAjax(url,method,params,callback){
             let _this=this;
             $.ajax({
@@ -702,6 +718,7 @@ var app=new Vue({
         this.getKefuInfo();
         this.getOnlineVisitors();
         this.getReplys();
+        this.getIpblacks();
         //心跳
         this.ping();
     }

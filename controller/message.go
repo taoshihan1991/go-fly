@@ -11,6 +11,7 @@ import (
 	"github.com/taoshihan1991/imaptool/ws"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -322,7 +323,51 @@ func UploadImg(c *gin.Context) {
 		})
 	}
 }
+func UploadFile(c *gin.Context) {
+	SendAttachment, err := strconv.ParseBool(models.FindConfig("SendAttachment"))
+	if !SendAttachment || err != nil {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "禁止上传附件!",
+		})
+		return
+	}
+	config := config.CreateConfig()
+	f, err := c.FormFile("realfile")
+	if err != nil {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "上传失败!",
+		})
+		return
+	} else {
 
+		fileExt := strings.ToLower(path.Ext(f.Filename))
+		if f.Size >= 90*1024*1024 {
+			c.JSON(200, gin.H{
+				"code": 400,
+				"msg":  "上传失败!不允许超过90M",
+			})
+			return
+		}
+
+		fileName := tools.Md5(fmt.Sprintf("%s%s", f.Filename, time.Now().String()))
+		fildDir := fmt.Sprintf("%s%d%s/", config.Upload, time.Now().Year(), time.Now().Month().String())
+		isExist, _ := tools.IsFileExist(fildDir)
+		if !isExist {
+			os.Mkdir(fildDir, os.ModePerm)
+		}
+		filepath := fmt.Sprintf("%s%s%s", fildDir, fileName, fileExt)
+		c.SaveUploadedFile(f, filepath)
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "上传成功!",
+			"result": gin.H{
+				"path": filepath,
+			},
+		})
+	}
+}
 func GetMessagesV2(c *gin.Context) {
 	visitorId := c.Query("visitor_id")
 	messages := models.FindMessageByVisitorId(visitorId)

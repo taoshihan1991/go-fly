@@ -26,6 +26,11 @@ func FindIp(ip string) Ipblack {
 	DB.Where("ip = ?", ip).First(&ipblack)
 	return ipblack
 }
+func FindIpsByKefuId(id string) []Ipblack {
+	var ipblack []Ipblack
+	DB.Where("kefu_id = ?", id).Find(&ipblack)
+	return ipblack
+}
 func FindIps(query interface{}, args []interface{}, page uint, pagesize uint) []Ipblack {
 	offset := (page - 1) * pagesize
 	if offset < 0 {

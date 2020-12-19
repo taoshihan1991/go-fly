@@ -55,3 +55,12 @@ func GetIpblacks(c *gin.Context) {
 		},
 	})
 }
+func GetIpblacksByKefuId(c *gin.Context) {
+	kefuId, _ := c.Get("kefu_name")
+	list := models.FindIpsByKefuId(kefuId.(string))
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": list,
+	})
+}
