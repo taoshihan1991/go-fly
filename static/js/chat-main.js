@@ -44,6 +44,7 @@ var app=new Vue({
         replys:[],
         replyContent:"",
         ipBlacks:[],
+        sendDisabled:false,
     },
     methods: {
         //跳转
@@ -191,6 +192,7 @@ var app=new Vue({
             if(this.messageContent==""||this.messageContent=="\r\n"||this.currentGuest==""){
                 return;
             }
+            this.sendDisabled=true;
             let _this=this;
             let mes = {};
             mes.type = "kefu";
@@ -216,6 +218,7 @@ var app=new Vue({
             // content.is_kefu = true;
             // content.time = '';
             // this.msgList.push(content);
+            _this.sendDisabled=false;
             this.scrollBottom();
         },
         //处理当前在线用户列表

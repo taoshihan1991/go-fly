@@ -58,7 +58,7 @@
                 <div class="clear"></div>
             </div>
             <div class="btnArea">
-                <el-button type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
+                <el-button :disabled="sendDisabled" type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
             </div>
             <div class="footContact clear">
                 <a href="https://github.com/taoshihan1991/go-fly" target="_blank">GO-FLY0.2.2客服陶士涵提供技术支持</a>
@@ -79,5 +79,5 @@
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
 </script>
-<script src="/static/js/chat-page.js?v=0.3.7"></script>
+<script src="/static/js/chat-page.js?v=0.3.8"></script>
 </html>

@@ -15,6 +15,7 @@ new Vue({
         showKfonline:false,
         socketClosed:false,
         timer:null,
+        sendDisabled:false,
     },
     methods: {
         //初始化websocket
@@ -102,6 +103,7 @@ new Vue({
                 });
                 return;
             }
+            this.sendDisabled=true;
             let _this=this;
             let mes = {};
             mes.type = "visitor";
@@ -130,6 +132,7 @@ new Vue({
                 _this.messageContent = "";
                 clearInterval(_this.timer);
                 _this.sendSound();
+                _this.sendDisabled=false;
             });
 
         },

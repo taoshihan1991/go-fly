@@ -136,7 +136,7 @@
                             </div>
                             <div class="faceBtn"></div>
                             <div class="imageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
-                            <el-button size="small" class="floatRight" type="primary" v-on:click="chatToUser">发送</el-button>
+                            <el-button :disabled="sendDisabled" size="small" class="floatRight" type="primary" v-on:click="chatToUser">发送</el-button>
                         </div>
                         <div class="clear"></div>
                         <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"></el-input>
@@ -287,5 +287,5 @@
     </template>
 </div>
 </body>
-<script src="/static/js/chat-main.js?v=0.3.8"></script>
+<script src="/static/js/chat-main.js?v=0.3.9"></script>
 </html>
