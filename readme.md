@@ -125,7 +125,11 @@ server{
 1. 需要先安装swag
 2. 在根目录swag init -g go-fly.go
 ### 感谢赞助
+2020年12月16日 **彬  8.8元
+
 2020年11月30日 **宇  88元
 
 ### 打赏作者
-![Image text](https://img2020.cnblogs.com/blog/726254/202012/726254-20201201110657576-1390695321.png)
+欢迎使用爱发电赞赏作者
+
+https://afdian.net/@taoshihan
