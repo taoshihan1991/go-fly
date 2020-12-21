@@ -133,3 +133,7 @@ server{
 欢迎使用爱发电赞赏作者
 
 https://afdian.net/@taoshihan
+
+欢迎使用支付宝
+
+![Image text](https://gofly.sopans.com/static/upload/2020December/9d736faeba2e9967a5dcc1c489f85541.png)
