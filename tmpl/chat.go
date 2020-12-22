@@ -15,6 +15,9 @@ func PageChat(c *gin.Context) {
 	if refer == "" {
 		refer = c.Request.Referer()
 	}
+	if refer == "" {
+		refer = "直接访问"
+	}
 	c.HTML(http.StatusOK, "chat_page.html", gin.H{
 		"KEFU_ID": kefuId,
 		"SendBtn": language.Send,
