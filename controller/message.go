@@ -207,7 +207,7 @@ func SendMessageV2(c *gin.Context) {
 		}
 		str, _ := json.Marshal(msg)
 		ws.OneKefuMessage(kefuInfo.Name, str)
-		go ws.SendServerJiang(vistorInfo.Name+"说", content, c.GetHeader("Host"))
+		go ws.SendServerJiang(vistorInfo.Name+"说", content, c.Request.Host)
 	}
 	c.JSON(200, gin.H{
 		"code":   200,
