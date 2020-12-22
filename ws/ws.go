@@ -64,15 +64,15 @@ func init() {
 	}
 	go UpdateVisitorStatusCron()
 }
-func SendServerJiang(content string) string {
+func SendServerJiang(title string, content string, domain string) string {
 	noticeServerJiang, err := strconv.ParseBool(models.FindConfig("NoticeServerJiang"))
 	serverJiangAPI := models.FindConfig("ServerJiangAPI")
 	if err != nil || !noticeServerJiang || serverJiangAPI == "" {
 		log.Println("do not notice serverjiang:", serverJiangAPI, noticeServerJiang)
 		return ""
 	}
-	sendStr := fmt.Sprintf("%s,访客来了", content)
-	desp := "[登录](https://gofly.sopans.com/main)"
+	sendStr := fmt.Sprintf("%s%s", title, content)
+	desp := title + ":" + content + "[登录](http://" + domain + "/main)"
 	url := serverJiangAPI + "?text=" + sendStr + "&desp=" + desp
 	//log.Println(url)
 	res := tools.Get(url)

@@ -32,7 +32,7 @@ func NewVisitorServer(c *gin.Context) {
 		To_id:  vistorInfo.ToId,
 	}
 	go models.UpdateVisitorStatus(vistorInfo.VisitorId, 1)
-	go SendServerJiang(vistorInfo.Name)
+	go SendServerJiang(vistorInfo.Name, "来了", c.GetHeader("Host"))
 
 	AddVisitorToList(user)
 
