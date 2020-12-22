@@ -60,6 +60,18 @@ func PageKefuList(c *gin.Context) {
 		"action":    "setting_kefu_list",
 	})
 }
+func PageAvator(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_avator.html", gin.H{
+		"tab_index": "3-2",
+		"action":    "setting_avator",
+	})
+}
+func PageModifypass(c *gin.Context) {
+	c.HTML(http.StatusOK, "setting_modifypass.html", gin.H{
+		"tab_index": "3-2",
+		"action":    "setting_modifypass",
+	})
+}
 
 //角色列表
 func PageRoleList(c *gin.Context) {

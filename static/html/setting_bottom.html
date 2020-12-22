@@ -95,6 +95,7 @@
                 html_en: "",
             },
         },
+
         methods: {
             //提交表单
             setAccount(formName){
@@ -406,6 +407,22 @@
                     '    var GOFLY_KEFU_ID="'+this.kefuForm.name+'";\n' +
                     '    <\/script>\n'+
                     ' <script type="text/javascript" src="http://'+domain+'/webjs"><\/script>', '网页部署');
+            },
+            GetRequest() {
+                var str = location.href
+                var num = str.indexOf("#");
+                if(num <0){
+                    return "";
+                }
+                str = str.substr(num + 1);
+                return str;
+            },
+        },
+
+        mounted:function(){
+            var urlParam=this.GetRequest();
+            if(urlParam!=""){
+                this.iframeUrl=urlParam;
             }
         },
         created: function () {
