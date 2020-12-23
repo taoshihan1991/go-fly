@@ -1,5 +1,9 @@
 package controller
 
+var (
+	Port string
+)
+
 type Response struct {
 	Code   int         `json:"code"`
 	Msg    string      `json:"msg"`

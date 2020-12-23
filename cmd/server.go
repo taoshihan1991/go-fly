@@ -7,6 +7,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/docs"
 	"github.com/taoshihan1991/imaptool/router"
 	"github.com/taoshihan1991/imaptool/tools"
@@ -17,7 +18,7 @@ import (
 )
 
 var (
-	port        string
+	Port        string
 	tcpport     string
 	daemon      bool
 	GoflyConfig *config.Config
@@ -32,7 +33,7 @@ var serverCmd = &cobra.Command{
 }
 
 func init() {
-	serverCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "监听端口号")
+	serverCmd.PersistentFlags().StringVarP(&Port, "port", "p", "8081", "监听端口号")
 	serverCmd.PersistentFlags().StringVarP(&tcpport, "tcpport", "t", "8082", "监听tcp端口号")
 	serverCmd.PersistentFlags().BoolVarP(&daemon, "daemon", "d", false, "是否为守护进程模式")
 }
@@ -51,8 +52,9 @@ func run() {
 		}
 	}
 
-	baseServer := "0.0.0.0:" + port
+	baseServer := "0.0.0.0:" + Port
 	//tcpBaseServer := "0.0.0.0:"+tcpport
+	controller.Port = Port
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
