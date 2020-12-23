@@ -62,3 +62,6 @@ func getIpFromAddr(addr net.Addr) net.IP {
 
 	return ip
 }
+func GetExternalIp() string {
+	return Get("http://myexternalip.com/raw")
+}
