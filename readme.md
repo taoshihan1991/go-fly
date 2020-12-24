@@ -65,7 +65,7 @@
 ```
 
 
-3. 源码运行 go run go-fly.go server port 8081
+3. 源码运行 go run go-fly.go server
 
 4. 源码打包 go build go-fly.go 会生成go-fly可以执行文件
 
@@ -73,10 +73,16 @@
 
 6. 二进制文件运行
  
-   linux:   ./go-fly server port 8081
+   linux:   ./go-fly server [可选 -p 8082 -d]
    
-   windows: go-fly.exe server port 8081 
+   windows: go-fly.exe server [可选 -p 8082 -d]
+7. 参数说明
 
+   -p 指定端口
+   
+   -d linux下是否以daemon守护进程运行
+   
+   -h 查看帮助
 ### nginx部署
 
 访问：https://gofly.sopans.com
