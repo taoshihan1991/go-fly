@@ -144,22 +144,21 @@
     content: '';
     float: left;
     background-color: #9da0a0;
-    width: 1.5em;
-    height: 0.45em;
-    margin-left: 0.07em;
-    margin-bottom: -0.07em;
-    border-top-left-radius: 0.1em;
-    border-top-right-radius: 0.1em;
-    box-shadow: 1.25em 0.25em 0 0em #9da0a0;
+    width: 15px;
+    height: 3px;
+    margin-left: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    box-shadow: 2px 2px 0 0 #9da0a0;
 }
 .folderBtn:after {
     content: '';
     float: left;
     clear: left;
     background-color: #d4d6d6;
-    width: 2.5em;
-    height: 1.8em;
-    border-radius: 0.1em;
+    width: 33px;
+    height: 22px;
+    border-radius: 1px;
 }
 .visitorImageBtn{
     float: left;
