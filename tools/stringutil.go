@@ -4,6 +4,7 @@ package tools
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"github.com/gobuffalo/packr/v2"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
@@ -27,6 +28,19 @@ func Reverse(s string) string {
 	r := []rune(s)
 	for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
 		r[i], r[j] = r[j], r[i]
+	}
+	return string(r)
+}
+
+// Reverse2 将其实参字符串以符文为单位左右反转。
+func Reverse2(s string) string {
+	r := []rune(s)
+	left := 0
+	right := len(r) - 1
+	for left < right {
+		r[left], r[right] = r[right], r[left]
+		left++
+		right--
 	}
 	return string(r)
 }
@@ -67,4 +81,10 @@ func Md5(src string) string {
 	m.Write([]byte(src))
 	res := hex.EncodeToString(m.Sum(nil))
 	return res
+}
+func ShowStringByte(str string) {
+	s := []byte(str)
+	for i, c := range s {
+		fmt.Println(i, c)
+	}
 }
