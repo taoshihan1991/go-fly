@@ -35,10 +35,9 @@
         .signin .loginDesc{
             font-size: 14px;
             margin-bottom: 15px;
-        }
-        .signin .loginDesc a{
             color: #409EFF;
             text-decoration: none;
+            cursor: pointer;
         }
         .signin .copyright{
             font-size: 12px;
@@ -57,19 +56,46 @@
 <body>
 <div id="app" class="signin">
     <template>
-        <h1 class="loginTitle">账户登录</h1>
-        <h2 class="loginDesc">请联系<a href="/chatIndex?kefu_id=kefu2">开发者</a>获取登录账号</h2>
-        <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
-            <el-form-item  prop="username">
-                <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
-            </el-form-item>
-            <el-form-item  prop="password">
-                <el-input v-model="kefuForm.password" placeholder="密码"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button style="width: 100%" :loading="loading" type="primary" @click="kefuLogin('kefuForm')">登录</el-button>
-            </el-form-item>
-        </el-form>
+        <div class="loginHtml" v-show="!showRegHtml">
+            <h1 class="loginTitle">账户登录</h1>
+            <h2 class="loginDesc" @click="showRegHtml=true">注册获取新登录账号</h2>
+            <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
+                <el-form-item  prop="username">
+                    <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
+                </el-form-item>
+                <el-form-item  prop="password">
+                    <el-input v-model="kefuForm.password" placeholder="密码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button style="width: 100%" :loading="loading" type="primary" @click="kefuLogin('kefuForm')">登录</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div class="regHtml" v-show="showRegHtml">
+            <h1 class="loginTitle">账户注册</h1>
+            <h2 class="loginDesc" @click="showRegHtml=false">立即登录</h2>
+            <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
+                <el-form-item  prop="username">
+                    <el-input v-model="newName" placeholder="用户名"></el-input>
+                </el-form-item>
+                <el-form-item  prop="username">
+                    <el-input v-model="nickname" placeholder="昵称"></el-input>
+                </el-form-item>
+                <el-form-item  prop="password">
+                    <el-input v-model="newPass" placeholder="密码"></el-input>
+                </el-form-item>
+                <el-form-item  prop="password">
+                    <el-input v-model="newRefPass" placeholder="确认密码"></el-input>
+                </el-form-item>
+                <el-form-item  prop="password">
+                    <el-input style="float: left; width: 150px;" v-model="captcha" placeholder="验证码"></el-input>
+                    <img style="float: right;" :src="codeSrc" @click="codeSrc='/captcha?t='+Math.random()">
+                </el-form-item>
+                <el-form-item>
+                    <el-button style="width: 100%" :loading="loading" type="primary" @click="register()">注册</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
         <p class="copyright">陶士涵版权所有 &copy; 2020 </p>
 </template>
 </div>
@@ -109,6 +135,13 @@
                     { required: true, message: '密码不能为空', trigger: 'blur' },
                 ],
             },
+            showRegHtml:false,
+            newName:"",
+            nickname:"",
+            newPass:"",
+            newRefPass:"",
+            captcha:"",
+            codeSrc:"/captcha",
 		},
 		methods: {
             //提交表单
@@ -149,6 +182,32 @@
                 this.loading=false;
                 this.$refs[formName].resetFields();
             },
+            //注册
+            register(){
+                var data = {};
+                data.name=this.newName;
+                data.password = this.newPass;
+                data.rePassword = this.newRefPass;
+                data.nickname=this.nickname;
+                data.captcha=this.captcha;
+                this.loading=true;
+                var _this=this;
+                $.post("/register", data, function (data) {
+                    if (data.code == 200) {
+                        _this.$message({
+                            message: data.msg,
+                            type: 'success'
+                        });
+                        window.location.href="/login";
+                    } else {
+                        _this.$message({
+                            message: data.msg,
+                            type: 'error'
+                        });
+                    }
+                    _this.loading=false;
+                });
+            }
 		},
         created: function () {
             if (top.location != location){

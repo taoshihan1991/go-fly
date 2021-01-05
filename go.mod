@@ -8,11 +8,13 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/casbin/casbin/v2 v2.7.2
+	github.com/dchest/captcha v0.0.0-20200903113550-03f5f0333e1f
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/emersion/go-message v0.11.2
 	github.com/emersion/go-sasl v0.0.0-20200509203442-7bfe0ed36a21
 	github.com/emersion/go-smtp v0.13.0
 	github.com/gin-contrib/pprof v1.3.0
+	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gobuffalo/packr/v2 v2.5.1

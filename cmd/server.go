@@ -54,7 +54,7 @@ func run() {
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
 	engine.Static("/static", "./static")
-
+	engine.Use(tools.Session("gofly"))
 	//性能监控
 	pprof.Register(engine)
 

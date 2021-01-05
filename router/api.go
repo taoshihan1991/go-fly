@@ -20,10 +20,11 @@ func InitApiRouter(engine *gin.Engine) {
 		//关闭连接
 		v2.GET("/message_close", controller.SendCloseMessageV2)
 	}
+	engine.GET("/captcha", controller.GetCaptcha)
 	engine.POST("/check", controller.LoginCheckPass)
 	engine.POST("/check_auth", middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	engine.GET("/userinfo", middleware.JwtApiMiddleware, controller.GetKefuInfoAll)
-
+	engine.POST("/register", middleware.Ipblack, controller.PostKefuRegister)
 	//前后聊天
 	engine.GET("/chat_server", middleware.Ipblack, controller.NewChatServer)
 	engine.GET("/ws_kefu", middleware.JwtApiMiddleware, ws.NewKefuServer)
