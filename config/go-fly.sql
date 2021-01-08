@@ -149,3 +149,23 @@ CREATE TABLE `reply_item` (
  KEY `user_id` (`user_id`),
  KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
+DROP TABLE IF EXISTS `land_page`|
+CREATE TABLE `land_page` (
+  `id` int(11) NOT NULL,
+  `title` varchar(125) NOT NULL DEFAULT '',
+  `keyword` varchar(255) NOT NULL DEFAULT '',
+  `content` text NOT NULL,
+  `language` varchar(50) NOT NULL DEFAULT '',
+  `page_id` varchar(50) NOT NULL DEFAULT '',
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci|
+DROP TABLE IF EXISTS `language`|
+CREATE TABLE `language` (
+  `id` int(11) NOT NULL,
+  `country` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `short_key` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci|
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (1, '中文简体', 'zh-cn')|
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (2, '正體中文', 'zh-tw')|
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (3, 'English', 'en_us')|
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (4, '日本語', 'ja_jp')
