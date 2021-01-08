@@ -432,7 +432,8 @@ new Vue({
         //提示音
         alertSound:function(){
             var b = document.getElementById("chatMessageAudio");
-            if (b.canPlayType('audio/mpeg;')) {
+            if (b.canPlayType('audio/ogg; codecs="vorbis"')) {
+                alert(1);
                 b.type= 'audio/mpeg';
                 b.src= '/static/images/alert2.ogg';
                 var p = b.play();
@@ -443,7 +444,8 @@ new Vue({
         },
         sendSound:function(){
             var b = document.getElementById("chatMessageSendAudio");
-            if (b.canPlayType('audio/mpeg;')) {
+            if (b.canPlayType('audio/ogg; codecs="vorbis"')) {
+                alert(2);
                 b.type= 'audio/mpeg';
                 b.src= '/static/images/sent.ogg';
                 var p = b.play();
