@@ -88,3 +88,7 @@ func ShowStringByte(str string) {
 		fmt.Println(i, c)
 	}
 }
+func NilChannel() {
+	var ch chan int
+	ch <- 1
+}

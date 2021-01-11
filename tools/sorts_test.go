@@ -40,3 +40,6 @@ func TestMergeSort(t *testing.T) {
 	MergeSort(&arr, 0, len(arr)-1)
 	t.Log(arr)
 }
+func TestNilChannel(t *testing.T) {
+	NilChannel()
+}
