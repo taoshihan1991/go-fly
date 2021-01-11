@@ -21,8 +21,8 @@ GOFLY.init=function(config){
         this.GOFLY_BTN_TEXT=config.GOFLY_BTN_TEXT;
     }
     this.dynamicLoadCss(this.GOFLY_URL+"/static/css/gofly-front.css");
+    var _this=this;
     if (typeof $!="function"){
-        var _this=this;
         this.dynamicLoadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function () {
             _this.dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
                 _this.clickBtn();
