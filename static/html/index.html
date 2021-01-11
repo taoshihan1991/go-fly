@@ -19,12 +19,14 @@
 
 
 <!--对接客服代码-->
-<script>
-    var GOFLY_URL="";
-    var GOFLY_KEFU_ID="kefu2";
-    var GOFLY_BTN_TEXT="{{.OnlineChat}}";
-</script>
 <script src="/static/js/gofly-front.js"></script>
+<script>
+    GOFLY.init({
+        GOFLY_URL:"https://gofly.sopans.com",
+        GOFLY_KEFU_ID: "kefu2",
+        GOFLY_BTN_TEXT: "{{.OnlineChat}}"
+    })
+</script>
 <!--//对接客服代码-->
 
 <!--自动弹代码-->

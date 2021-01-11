@@ -1,60 +1,82 @@
-var launchButtonFlag=false;
-var titleTimer,titleNum=0;
-var originTitle = document.title;
-if (typeof GOFLY_URL=="undefined"){
-    var GOFLY_URL="https://gofly.sopans.com";
-}
-if (typeof GOFLY_KEFU_ID=="undefined"){
-    var GOFLY_KEFU_ID="";
-}
-if (typeof GOFLY_BTN_TEXT=="undefined"){
-    var GOFLY_BTN_TEXT="Chat with me";
-}
-dynamicLoadCss(GOFLY_URL+"/static/css/gofly-front.css");
-if (typeof $!="function"){
-    dynamicLoadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function () {
-        dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
-            clickBtn();
+var GOFLY={
+    GOFLY_URL:"https://gofly.sopans.com",
+    GOFLY_KEFU_ID:"",
+    GOFLY_BTN_TEXT:"Chat with me",
+};
+GOFLY.launchButtonFlag=false;
+GOFLY.titleTimer=0;
+GOFLY.titleNum=0;
+GOFLY.originTitle=document.title;
+GOFLY.init=function(config){
+    if(typeof config=="undefined"){
+        return;
+    }
+    if (typeof config.GOFLY_URL!="undefined"){
+        this.GOFLY_URL=config.GOFLY_URL;
+    }
+    if (typeof config.GOFLY_KEFU_ID!="undefined"){
+        this.GOFLY_KEFU_ID=config.GOFLY_KEFU_ID;
+    }
+    if (typeof config.GOFLY_BTN_TEXT!="undefined"){
+        this.GOFLY_BTN_TEXT=config.GOFLY_BTN_TEXT;
+    }
+    this.dynamicLoadCss(this.GOFLY_URL+"/static/css/gofly-front.css");
+    if (typeof $!="function"){
+        var _this=this;
+        this.dynamicLoadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function () {
+            _this.dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
+                _this.clickBtn();
+            });
         });
+    }else{
+        this.dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
+            _this.clickBtn();
+        });
+    }
+
+    window.addEventListener('message',function(e){
+        var msg=e.data;
+        if(msg.type=="message"){
+            _this.flashTitle();//标题闪烁
+        }
     });
-}else{
-    dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
-        clickBtn();
-    });
+    window.onfocus = function () {
+        clearTimeout(this.titleTimer);
+        document.title = _this.originTitle;
+    };
+}
+GOFLY.dynamicLoadCss=function(url){
+    var head = document.getElementsByTagName('head')[0];
+    var link = document.createElement('link');
+    link.type='text/css';
+    link.rel = 'stylesheet';
+    link.href = url;
+    head.appendChild(link);
+}
+GOFLY.dynamicLoadJs=function(url, callback){
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    if(typeof(callback)=='function'){
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete"){
+                callback();
+                script.onload = script.onreadystatechange = null;
+            }
+        };
+    }
+    head.appendChild(script);
 }
 
-function clickBtn(){
-    $('body').append('<div id="launchButton" class="launchButton animateUpDown"><div class="launchButtonText">'+GOFLY_BTN_TEXT+'</div></div>');
+GOFLY.clickBtn=function (){
+    var _this=this;
+    $('body').append('<div id="launchButton" class="launchButton animateUpDown"><div class="launchButtonText">'+_this.GOFLY_BTN_TEXT+'</div></div>');
     $("#launchButton").on("click",function() {
-        if (launchButtonFlag) return;
-        var width=$(window).width();
-        if(width<768 || isIE()>0){
-            window.open(GOFLY_URL+'/chatIndex?kefu_id='+GOFLY_KEFU_ID+'&refer='+window.document.title);
-            return;
-        }
-        layer.open({
-            type: 2,
-            title: GOFLY_BTN_TEXT,
-            closeBtn: 1, //不显示关闭按钮
-            shade: 0,
-            area: ['520px', '530px'],
-            offset: 'rb', //右下角弹出
-            anim: 2,
-            content: [GOFLY_URL+'/chatIndex?kefu_id='+GOFLY_KEFU_ID+'&refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
-            end: function(){
-                launchButtonFlag=false;
-                $(".launchButton").show();
-            }
-        });
-        launchButtonFlag=true;
-        $(".launchButton").hide();
-    });
-    $("body").click(function () {
-        clearTimeout(titleTimer);
-        document.title = originTitle;
+        _this.showKefu();
     });
 }
-function isIE() {
+GOFLY.isIE=function(){
     var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
     var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
     var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器
@@ -82,80 +104,54 @@ function isIE() {
         return -1;//不是ie浏览器
     }
 }
-function showKefu(){
-    if (launchButtonFlag) return;
+GOFLY.showKefu=function (){
+    if (this.launchButtonFlag) return;
     var width=$(window).width();
-    if(width<768 || isIE()>0){
-        window.open(GOFLY_URL+'/chatIndex?kefu_id='+GOFLY_KEFU_ID+'&refer='+window.document.title);
+    if(width<768 || this.isIE()>0){
+        this.windowOpen();
         return;
     }
-    layer.open({
-        type: 2,
-        title: GOFLY_BTN_TEXT,
-        closeBtn: 1, //不显示关闭按钮
-        shade: [0],
-        area: ['520px', '530px'],
-        offset: 'rb', //右下角弹出
-        anim: 2,
-        content: [GOFLY_URL+'/chatIndex?kefu_id='+GOFLY_KEFU_ID+'&refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
-        end: function(){
-            launchButtonFlag=false;
-            $(".launchButton").show();
-        }
-    });
-    launchButtonFlag=true;
+    this.layerOpen();
+    this.launchButtonFlag=true;
     $(".launchButton").hide();
 
     $("body").click(function () {
-        clearTimeout(titleTimer);
-        document.title = originTitle;
+        clearTimeout(this.titleTimer);
+        document.title = this.originTitle;
     });
 }
-function dynamicLoadCss(url) {
-    var head = document.getElementsByTagName('head')[0];
-    var link = document.createElement('link');
-    link.type='text/css';
-    link.rel = 'stylesheet';
-    link.href = url;
-    head.appendChild(link);
+GOFLY.layerOpen=function (){
+    if (this.launchButtonFlag) return;
+    layer.open({
+        type: 2,
+        title: this.GOFLY_BTN_TEXT,
+        closeBtn: 1, //不显示关闭按钮
+        shade: 0,
+        area: ['520px', '530px'],
+        offset: 'rb', //右下角弹出
+        anim: 2,
+        content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
+        end: function(){
+            this.launchButtonFlag=false;
+            $(".launchButton").show();
+        }
+    });
 }
-function dynamicLoadJs(url, callback) {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    if(typeof(callback)=='function'){
-        script.onload = script.onreadystatechange = function () {
-            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete"){
-                callback();
-                script.onload = script.onreadystatechange = null;
-            }
-        };
+GOFLY.windowOpen=function (){
+   window.open(this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&refer='+window.document.title);
+}
+GOFLY.flashTitle=function () {
+    this.titleNum++;
+    if (this.titleNum >=3) {
+        this.titleNum = 1;
     }
-    head.appendChild(script);
+    if (this.titleNum == 1) {
+        document.title = '【】' + this.originTitle;
+    }
+    if (this.titleNum == 2) {
+        document.title = '【你有一条消息】' + this.originTitle;
+    }
+    this.titleTimer = setTimeout("this.flashTitle()", 500);
 }
 
-function flashTitle() {
-    titleNum++;
-    if (titleNum >=3) {
-        titleNum = 1;
-    }
-    if (titleNum == 1) {
-        document.title = '【】' + originTitle;
-    }
-    if (titleNum == 2) {
-        document.title = '【你有一条消息】' + originTitle;
-    }
-    titleTimer = setTimeout("flashTitle()", 500);
-}
-window.addEventListener('message',function(e){
-    var msg=e.data;
-    if(msg.type=="message"){
-        flashTitle();//标题闪烁
-    }
-});
-window.onfocus = function () {
-    clearTimeout(titleTimer);
-    document.title = originTitle;
-};
 
