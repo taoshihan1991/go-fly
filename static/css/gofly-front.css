@@ -16,6 +16,7 @@
     cursor: pointer;
     box-shadow: 0 1px 6px rgba(0,0,0,.06), 0 2px 32px rgba(0,0,0,.16);
     position: absolute;
+    bottom: 60px;
     color: #222;
     line-height: 1.5;
     font-size: 14px;
