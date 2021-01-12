@@ -45,3 +45,47 @@ func ReverseBetween(head *ListNode, m int, n int) *ListNode {
 	head.next = ReverseBetween(head.next, m-1, n-1)
 	return head
 }
+
+/** 反转区间 [a, b) 的元素，注意是左闭右开 */
+func ReverseSingleList(a *ListNode, b *ListNode) *ListNode {
+	var (
+		pre, cur, nxt *ListNode
+	)
+	pre = nil
+	cur = a
+	nxt = a
+	//终止的条件改一下就行了
+	for cur != b {
+		nxt = cur.next
+		// 逐个结点反转
+		cur.next = pre
+		// 更新指针位置
+		pre = cur
+		cur = nxt
+	}
+	// 返回反转后的头结点
+	return pre
+}
+func ReverseKGroup(head *ListNode, k int) *ListNode {
+	if head == nil {
+		return nil
+	}
+	// 区间 [a, b) 包含 k 个待反转元素
+	var (
+		a, b *ListNode
+	)
+	b = head
+	a = head
+	for i := 0; i < k; i++ {
+		// 不足 k 个，不需要反转，base case
+		if b == nil {
+			return head
+		}
+		b = b.next
+	}
+	// 反转前 k 个元素
+	newHead := ReverseSingleList(a, b)
+	// 递归反转后续链表并连接起来
+	a.next = ReverseKGroup(b, k)
+	return newHead
+}
