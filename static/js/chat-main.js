@@ -40,6 +40,8 @@ var app=new Vue({
         replyGroupDialog:false,
         replyContentDialog:false,
         replySearch:"",
+        replySearchList:[],
+        replySearchListActive:[],
         groupName:"",
         groupId:"",
         replys:[],
@@ -666,8 +668,15 @@ var app=new Vue({
         //搜索回复
         searchReply(){
             var _this=this;
+            _this.replySearchListActive=[];
+            if(this.replySearch==""){
+                _this.replySearchList=[];
+            }
             this.sendAjax("/reply_search","post",{search:this.replySearch},function(result){
-                _this.replys=result;
+                _this.replySearchList=result;
+                for (var i in result) {
+                    _this.replySearchListActive.push(result[i].group_id);
+                }
             });
         },
         //获取黑名单

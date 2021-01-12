@@ -4,7 +4,7 @@
     <meta name="description" content="">
     <meta name="author" content="陶士涵">
     <title>聊天界面</title>
-    <link rel="stylesheet" href="/static/css/common.css?v=0.3.7">
+    <link rel="stylesheet" href="/static/css/common.css?v=0.3.8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="/static/js/functions.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -205,7 +205,17 @@
                             <el-button slot="append" icon="el-icon-search" @click="searchReply"></el-button>
                         </el-input>
                         <div class="replyContent">
-                            <el-collapse>
+                            <el-collapse v-show="replySearchList" v-model="replySearchListActive">
+                                <el-collapse-item v-for="reply in replySearchList" :key="reply.group_id" :title="reply.group_name" :name="reply.group_id">
+                                    <template slot="title">
+                                        <i class="header-icon el-icon-info"></i>&nbsp;<{reply.group_name}>
+                                    </template>
+                                    <div class="replyItem" @click="messageContent=item.item_content"  v-for="item in reply.items" ><{item.item_content}> &nbsp;&nbsp;<el-button @click="deleteReplyContent(item.item_id)" type="text">删除</el-button></div>
+                                    <el-button @click="replyContentDialog=true;groupName=reply.group_name;groupId=reply.group_id" type="text">+添加回复内容</el-button>
+                                    <el-button @click="deleteReplyGroup(reply.group_id)" type="text">-删除组</el-button>
+                                </el-collapse-item>
+                            </el-collapse>
+                            <el-collapse v-show="replySearchList.length==0">
                                 <el-collapse-item v-for="reply in replys" :key="reply.group_id" :title="reply.group_name" :name="reply.group_id">
                                     <template slot="title">
                                         <i class="header-icon el-icon-info"></i>&nbsp;<{reply.group_name}>
@@ -290,5 +300,5 @@
     </template>
 </div>
 </body>
-<script src="/static/js/chat-main.js?v=0.3.9"></script>
+<script src="/static/js/chat-main.js?v=0.4.1"></script>
 </html>
