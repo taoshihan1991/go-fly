@@ -201,6 +201,9 @@
                         <div class="chatRightTitle">快捷回复
                         <a href="javascript:void(0);"  @click="replyGroupDialog = true">+添加分组</a>
                         </div>
+                        <el-input placeholder="选中文字自动搜索" v-model="replySearch" class="replySearch" @keyup.enter="searchReply">
+                            <el-button slot="append" icon="el-icon-search" @click="searchReply"></el-button>
+                        </el-input>
                         <div class="replyContent">
                             <el-collapse>
                                 <el-collapse-item v-for="reply in replys" :key="reply.group_id" :title="reply.group_name" :name="reply.group_id">

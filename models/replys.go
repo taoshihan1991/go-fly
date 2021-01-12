@@ -53,3 +53,24 @@ func DeleteReplyGroup(id string, userId string) {
 	DB.Where("user_id = ? and id = ?", userId, id).Delete(ReplyGroup{})
 	DB.Where("user_id = ? and group_id = ?", userId, id).Delete(ReplyItem{})
 }
+func FindReplyBySearcch(userId interface{}, search string) []*ReplyGroup {
+	var replyGroups []*ReplyGroup
+	var replyItems []*ReplyItem
+	DB.Where("user_id = ?", userId).Find(&replyGroups)
+	DB.Where("user_id = ? and content like ?", userId, "%"+search+"%").Find(&replyItems)
+	temp := make(map[string]*ReplyGroup)
+	for _, replyGroup := range replyGroups {
+		replyGroup.Items = make([]*ReplyItem, 0)
+		temp[replyGroup.Id] = replyGroup
+	}
+	for _, replyItem := range replyItems {
+		temp[replyItem.GroupId].Items = append(temp[replyItem.GroupId].Items, replyItem)
+	}
+	var newReplyGroups []*ReplyGroup = make([]*ReplyGroup, 0)
+	for _, replyGroup := range replyGroups {
+		if len(replyGroup.Items) != 0 {
+			newReplyGroups = append(newReplyGroups, replyGroup)
+		}
+	}
+	return newReplyGroups
+}

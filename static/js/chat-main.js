@@ -39,6 +39,7 @@ var app=new Vue({
         otherKefus:[],
         replyGroupDialog:false,
         replyContentDialog:false,
+        replySearch:"",
         groupName:"",
         groupId:"",
         replys:[],
@@ -662,6 +663,13 @@ var app=new Vue({
                 _this.getReplys();
             });
         },
+        //搜索回复
+        searchReply(){
+            var _this=this;
+            this.sendAjax("/reply_search","post",{search:this.replySearch},function(result){
+                _this.replys=result;
+            });
+        },
         //获取黑名单
         getIpblacks(){
             var _this=this;
@@ -676,6 +684,30 @@ var app=new Vue({
                 _this.sendAjax("/ipblacks","get",{},function(result){
                     _this.ipBlacks=result;
                 });
+            });
+        },
+        //划词搜索
+        selectText(){
+            var _this=this;
+            $('body').click(function(){
+                try{
+                    var selecter = window.getSelection().toString();
+                    if (selecter != null && selecter.trim() != ""){
+                        _this.replySearch=selecter.trim();
+                        _this.searchReply();
+                    }else{
+                        _this.replySearch="";
+                    }
+                } catch (err){
+                    var selecter = document.selection.createRange();
+                    var s = selecter.text;
+                    if (s != null && s.trim() != ""){
+                        _this.replySearch=s.trim();
+                        _this.searchReply();
+                    }else{
+                        _this.replySearch="";
+                    }
+                }
             });
         },
         sendAjax(url,method,params,callback){
@@ -722,6 +754,7 @@ var app=new Vue({
         this.getOnlineVisitors();
         this.getReplys();
         this.getIpblacks();
+        this.selectText();
         //心跳
         this.ping();
     }

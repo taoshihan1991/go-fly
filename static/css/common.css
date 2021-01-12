@@ -380,6 +380,10 @@
 .replyContent{
     padding: 0 10px;
 }
+.replySearch{
+    margin: 5px 7px;
+    width: 96% !important;
+}
 .iconBtnsBox{
     position: relative;
     margin-top: 4px;

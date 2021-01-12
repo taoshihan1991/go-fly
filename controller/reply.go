@@ -76,3 +76,20 @@ func DelReplyGroup(c *gin.Context) {
 		"msg":  "ok",
 	})
 }
+func PostReplySearch(c *gin.Context) {
+	kefuId, _ := c.Get("kefu_name")
+	search := c.PostForm("search")
+	if search == "" {
+		c.JSON(400, gin.H{
+			"code": 200,
+			"msg":  "参数错误",
+		})
+		return
+	}
+	res := models.FindReplyBySearcch(kefuId, search)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": res,
+	})
+}
