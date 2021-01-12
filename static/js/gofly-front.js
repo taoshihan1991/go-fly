@@ -20,7 +20,7 @@ GOFLY.init=function(config){
     if (typeof config.GOFLY_BTN_TEXT!="undefined"){
         this.GOFLY_BTN_TEXT=config.GOFLY_BTN_TEXT;
     }
-    this.dynamicLoadCss(this.GOFLY_URL+"/static/css/gofly-front.css");
+    this.dynamicLoadCss(this.GOFLY_URL+"/static/css/gofly-front.css?v=1");
     var _this=this;
     if (typeof $!="function"){
         this.dynamicLoadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function () {
