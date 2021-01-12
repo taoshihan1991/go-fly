@@ -7,12 +7,14 @@
                 <el-tabs>
                     <el-tab-pane label="默认JS模式">
                        <textarea style="width:100%;color:green;font-size:12px;height:290px;">
-<script>
-    var GOFLY_URL="";
-    var GOFLY_KEFU_ID="kefu2";
-    var GOFLY_BTN_TEXT="Chat with me";
-</script>
 <script src="/static/js/gofly-front.js"></script>
+<script>
+    GOFLY.init({
+        GOFLY_URL:"https://gofly.sopans.com",
+        GOFLY_KEFU_ID: "[客服名称]",
+        GOFLY_BTN_TEXT: "在线咨询"
+    })
+</script>
                        </textarea>
                     </el-tab-pane>
                     <el-tab-pane label="超链接模式">

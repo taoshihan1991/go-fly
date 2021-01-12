@@ -1,8 +1,26 @@
-.launchButton{
+.launchButtonBox{
     position: fixed!important;
-    bottom: 100px!important;
+    bottom: 120px!important;
     right: 20px!important;
     left: auto!important;
+}
+.launchButtonNotice{
+    padding: 10px;
+    margin: 0 auto;
+    display: block;
+    clear: both;
+    margin-top: 15px!important;
+    border-radius: 4px;
+    background-color: #fff;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 1px 6px rgba(0,0,0,.06), 0 2px 32px rgba(0,0,0,.16);
+    position: absolute;
+    color: #222;
+    line-height: 1.5;
+    font-size: 14px;
+}
+.launchButton{
     height: 48px!important;
     width: auto!important;
     z-index: 10000000000000!important;

@@ -71,7 +71,11 @@ GOFLY.dynamicLoadJs=function(url, callback){
 
 GOFLY.clickBtn=function (){
     var _this=this;
-    $('body').append('<div id="launchButton" class="launchButton animateUpDown"><div class="launchButtonText">'+_this.GOFLY_BTN_TEXT+'</div></div>');
+    var html="<div class='launchButtonBox'>" +
+        '<div id="launchButton" class="launchButton animateUpDown"><div class="launchButtonText">'+_this.GOFLY_BTN_TEXT+'</div></div>' +
+        '<div class="launchButtonNotice">您好:<br/>极简强大的开源免费Go语言在线客服单页营销系统</div>' +
+        '</div>';
+    $('body').append(html);
     $("#launchButton").on("click",function() {
         _this.showKefu();
     });
