@@ -14,12 +14,26 @@
     background-color: #fff;
     overflow: hidden;
     cursor: pointer;
-    box-shadow: 0 1px 6px rgba(0,0,0,.06), 0 2px 32px rgba(0,0,0,.16);
+    box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
     position: absolute;
     bottom: 60px;
     color: #222;
     line-height: 1.5;
     font-size: 14px;
+    display: none;
+}
+.launchIcon{
+    background: red;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    position: absolute;
+    top: -4px;
+    left: 0px;
+    color: #fff;
+    display: none;
 }
 .launchButton{
     height: 48px!important;
