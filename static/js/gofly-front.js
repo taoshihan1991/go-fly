@@ -42,6 +42,7 @@ GOFLY.init=function(config){
     });
     window.onfocus = function () {
         clearTimeout(this.titleTimer);
+        console.log(1);
         document.title = _this.originTitle;
     };
 }
@@ -78,10 +79,7 @@ GOFLY.clickBtn=function (){
         '<div id="launchButtonNotice" class="launchButtonNotice">您好:<br/>极简强大的开源免费Go语言在线客服单页营销系统，来了解一下？</div>' +
         '</div>';
     $('body').append(html);
-    $("#launchButton").on("click",function() {
-        _this.showKefu();
-    });
-    $("#launchButtonNotice").on("click",function() {
+    $(".launchButtonBox").on("click",function() {
         _this.showKefu();
     });
     setTimeout(function(){
@@ -126,15 +124,16 @@ GOFLY.showKefu=function (){
     }
     this.layerOpen();
     this.launchButtonFlag=true;
-    $(".launchButton").hide();
-
+    $(".launchButtonBox").hide();
+    var _this=this;
     $("body").click(function () {
-        clearTimeout(this.titleTimer);
-        document.title = this.originTitle;
+        clearTimeout(_this.titleTimer);
+        document.title = _this.originTitle;
     });
 }
 GOFLY.layerOpen=function (){
     if (this.launchButtonFlag) return;
+    var _this=this;
     layer.open({
         type: 2,
         title: this.GOFLY_BTN_TEXT,
@@ -145,8 +144,8 @@ GOFLY.layerOpen=function (){
         anim: 2,
         content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
         end: function(){
-            this.launchButtonFlag=false;
-            $(".launchButton").show();
+            _this.launchButtonFlag=false;
+            $(".launchButtonBox").show();
         }
     });
 }
@@ -164,7 +163,7 @@ GOFLY.flashTitle=function () {
     if (this.titleNum == 2) {
         document.title = '【你有一条消息】' + this.originTitle;
     }
-    this.titleTimer = setTimeout("this.flashTitle()", 500);
+    this.titleTimer = setTimeout("GOFLY.flashTitle()", 500);
 }
 
 
