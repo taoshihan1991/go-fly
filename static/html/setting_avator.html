@@ -1,10 +1,53 @@
 {{template "header" }}
+<style>
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+</style>
 <div id="app" style="width:100%">
     <template>
         <el-container>
 
             <el-main class="mainMain">
-aaa
+                <el-form :model="modifyPass" label-width="100px">
+                    <el-form-item label="原头像">
+                        <el-avatar  :size="120" :src="avatarUrl"></el-avatar>
+                    </el-form-item>
+                    <el-form-item label="新头像">
+                        <el-upload
+                                class="avatar-uploader"
+                                action="/uploadimg"
+                                :show-file-list="false"
+                                name="imgfile"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                            <i class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="setModifyAvatar()">保存</el-button>
+                    </el-form-item>
+                </el-form>
             </el-main>
 
         </el-container>

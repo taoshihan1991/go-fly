@@ -54,6 +54,8 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/kefulist", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetKefuList)
 	engine.GET("/other_kefulist", middleware.JwtApiMiddleware, controller.GetOtherKefuList)
 	engine.GET("/trans_kefu", middleware.JwtApiMiddleware, controller.PostTransKefu)
+	engine.POST("/modifypass", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostKefuPass)
+	engine.POST("/modifyavator", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostKefuAvator)
 	//角色列表
 	engine.GET("/roles", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetRoleList)
 	engine.POST("/role", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostRole)

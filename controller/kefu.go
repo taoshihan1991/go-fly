@@ -10,6 +10,54 @@ import (
 	"strconv"
 )
 
+func PostKefuAvator(c *gin.Context) {
+
+	avator := c.PostForm("avator")
+	if avator == "" {
+		c.JSON(200, gin.H{
+			"code":   400,
+			"msg":    "不能为空",
+			"result": "",
+		})
+		return
+	}
+	kefuName, _ := c.Get("kefu_name")
+	models.UpdateUserAvator(kefuName.(string), avator)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": "",
+	})
+}
+func PostKefuPass(c *gin.Context) {
+	kefuName, _ := c.Get("kefu_name")
+	newPass := c.PostForm("new_pass")
+	confirmNewPass := c.PostForm("confirm_new_pass")
+	old_pass := c.PostForm("old_pass")
+	if newPass != confirmNewPass {
+		c.JSON(200, gin.H{
+			"code":   400,
+			"msg":    "密码不一致",
+			"result": "",
+		})
+		return
+	}
+	user := models.FindUser(kefuName.(string))
+	if user.Password != tools.Md5(old_pass) {
+		c.JSON(200, gin.H{
+			"code":   400,
+			"msg":    "旧密码不正确",
+			"result": "",
+		})
+		return
+	}
+	models.UpdateUserPass(kefuName.(string), tools.Md5(newPass))
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": "",
+	})
+}
 func GetKefuInfo(c *gin.Context) {
 	kefuId, _ := c.Get("kefu_id")
 	user := models.FindUserById(kefuId)

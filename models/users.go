@@ -35,6 +35,18 @@ func UpdateUser(id string, name string, password string, avator string, nickname
 	}
 	DB.Model(&User{}).Where("id = ?", id).Update(user)
 }
+func UpdateUserPass(name string, pass string) {
+	user := &User{
+		Password: pass,
+	}
+	DB.Model(user).Where("name = ?", name).Update("Password", pass)
+}
+func UpdateUserAvator(name string, avator string) {
+	user := &User{
+		Avator: avator,
+	}
+	DB.Model(user).Where("name = ?", name).Update("Avator", avator)
+}
 func FindUser(username string) User {
 	var user User
 	DB.Where("name = ?", username).First(&user)

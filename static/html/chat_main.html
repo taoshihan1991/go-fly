@@ -93,6 +93,7 @@
                                     </div>
                                 </el-row>
                                 <el-pagination
+                                        v-show="visitorCount>visitorPageSize"
                                         background
                                         @current-change="visitorPage"
                                         :current-page="visitorCurrentPage"
