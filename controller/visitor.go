@@ -151,10 +151,10 @@ func GetVisitorMessage(c *gin.Context) {
 	visitorId := c.Query("visitorId")
 	messages := models.FindMessageByVisitorId(visitorId)
 	result := make([]map[string]interface{}, 0)
+	var visitor models.Visitor
+	var kefu models.User
 	for _, message := range messages {
 		item := make(map[string]interface{})
-		var visitor models.Visitor
-		var kefu models.User
 		if visitor.Name == "" || kefu.Name == "" {
 			kefu = models.FindUser(message.KefuId)
 			visitor = models.FindVisitorByVistorId(message.VisitorId)
