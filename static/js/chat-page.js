@@ -136,6 +136,21 @@ new Vue({
             });
 
         },
+        //正在输入
+        inputNextText(){
+            if(this.socketClosed||!this.socket){
+                return;
+            }
+            console.log(this.messageContent);
+            var message = {}
+            message.type = "inputing";
+            message.data = {
+                from : this.visitor.visitor_id,
+                to : this.visitor.to_id,
+                content:this.messageContent
+            };
+            this.socket.send(JSON.stringify(message));
+        },
         OnClose:function() {
             this.chatTitle="连接关闭!请重新打开页面";
             $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
@@ -155,6 +170,7 @@ new Vue({
                             message: res.msg,
                             type: 'error'
                         });
+                        _this.sendDisabled=true;
                         return;
                     }
                     _this.visitor=res.result;
