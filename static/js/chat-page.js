@@ -137,7 +137,7 @@ new Vue({
 
         },
         //正在输入
-        inputNextText(){
+        inputNextText:function(){
             if(this.socketClosed||!this.socket){
                 return;
             }
