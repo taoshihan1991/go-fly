@@ -15,6 +15,7 @@ var app=new Vue({
         currentGuest:"",
         msgList:[],
         chatTitle:"暂时未处理咨询",
+        chatInputing:"",
         kfConfig:{
             id : "kf_1",
             name : "客服丽丽",
@@ -85,6 +86,10 @@ var app=new Vue({
         OnMessage(e) {
             const redata = JSON.parse(e.data);
             switch (redata.type){
+                case "inputing":
+                    this.handleInputing(redata.data);
+                    //this.sendKefuOnline();
+                    break;
                 case "allUsers":
                     this.handleOnlineUsers(redata.data);
                     //this.sendKefuOnline();
@@ -170,6 +175,7 @@ var app=new Vue({
                     _this.talkTo(msg.id,msg.name);
                 });
                 _this.alertSound();
+                _this.chatInputing="";
             }
         },
         //接手客户
@@ -283,6 +289,12 @@ var app=new Vue({
                 }
             }
 
+        },
+        //处理正在输入
+        handleInputing:function (retData) {
+            if(retData.from==this.visitor.visitor_id){
+                this.chatInputing="正在输入："+retData.content+"...";
+            }
         },
         //获取客服信息
         getKefuInfo(){

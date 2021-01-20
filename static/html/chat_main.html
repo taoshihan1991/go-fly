@@ -56,7 +56,7 @@
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
         .chatBoxMe .chatContent:after{left:auto;right: -10px;}
-        .chatBox{max-height: 340px;overflow-y: auto;overflow-x: hidden;}
+        .chatBox{height: 340px;overflow-y: auto;overflow-x: hidden;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
         .funcBtns{margin: 2px 0px;color: #7f7f7f;border-bottom: 1px solid #e6e6e6;font-size: 12px;padding: 5px 0px;}
     </style>
@@ -75,7 +75,7 @@
                                             <el-avatar :size="40" :src="item.avator"></el-avatar>
                                         </el-col>
                                         <el-col :span="16">
-                                            <div><{item.username}></div>
+                                            <div style="height:20px;overflow: hidden"><{item.username}></div>
                                             <div class="lastNewMsg"><{item.last_message}></div>
                                         </el-col>
                                     </div>
@@ -87,7 +87,7 @@
                                         <el-col :span="4">
                                             <el-avatar v-bind:class="{'imgGray': item.status==0 }" :size="40" :src="item.avator"></el-avatar>
                                         </el-col>
-                                        <el-col :span="16" v-bind:class="{'imgGray': item.status==0 }">
+                                        <el-col style="height:40px;overflow: hidden" :span="16" v-bind:class="{'imgGray': item.status==0 }">
                                             <{item.name}>
                                         </el-col>
                                     </div>
@@ -128,6 +128,13 @@
                                 </el-col>
                             </el-row>
                         </div>
+                        <el-alert
+                                v-show="chatInputing!=''"
+                                :closable="false"
+                                show-icon
+                                :title="chatInputing"
+                        >
+                        </el-alert>
                         <div class="iconBtnsBox">
                             <div class="faceBox kefuFaceBox">
                                 <ul class="faceBoxList">
