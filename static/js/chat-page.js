@@ -71,7 +71,10 @@ new Vue({
                 content.time = msg.time;
                 this.msgList.push(content);
 
-                //this.saveHistory(content);
+                notify(msg.name, {
+                    body: msg.content,
+                    icon: msg.avator
+                });
                 this.scrollBottom();
                 flashTitle();//标题闪烁
                 clearInterval(this.timer);
