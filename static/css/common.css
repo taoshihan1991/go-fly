@@ -314,6 +314,7 @@
     display: inline-block;
     margin-left: 6px;
 }
+.chatContent a{color: #07a9fe;text-decoration: none;}
 .chatContent:after {
     content: '';
     position: absolute;
