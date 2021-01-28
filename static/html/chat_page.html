@@ -2,18 +2,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+    <meta name="keywords" content="开源客服系统,golang在线客服,免费客服系统,go语言在线聊天工具,gofly,GOFLY客服系统"/>
+    <meta name="description" content="golang开发的开源免费客服系统,可独立部署客服系统,支持文字/表情/图片/文件发送,支持快捷回复,支持IP黑名单,展示访客信息,后台权限控制"/>
     <meta name="author" content="陶士涵">
-    <title>GO-FLY在线咨询</title>
+    <title>GO语言开源客服系统-GOFLY</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="/static/js/functions.js?v=0.1.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="/static/js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/css/front.css?v=0.2.3" />
-    <link rel="stylesheet" href="/static/css/common.css?v=0.2.5" />
+    <link rel="stylesheet" href="/static/css/front.css?v=1.0.0" />
+    <link rel="stylesheet" href="/static/css/common.css?v=1.0.0" />
 </head>
 <body>
 <div id="app"  class="chatCenter">
@@ -22,12 +22,7 @@
         <div class="chatContext chatVisitorPage">
             <div class="chatBox">
                 <el-alert
-                        style="margin-bottom: 10px;font-size: 12px;"
-                        title="公告 : 访客您好，欢迎star fork github https://github.com/taoshihan1991/go-fly ，感谢您的支持。"
-                        type="success">
-                </el-alert>
-                <el-alert
-                        style="margin-bottom: 10px;"
+                        style="margin:10px 0px;width: 100%"
                         :title="chatTitle"
                         :closable="false"
                         type="success">
@@ -61,7 +56,7 @@
                 <el-button :disabled="sendDisabled" type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
             </div>
             <div class="footContact clear">
-                <a href="https://github.com/taoshihan1991/go-fly" target="_blank">GO-FLY0.2.2客服陶士涵提供技术支持</a>
+                <a href="https://github.com/taoshihan1991/go-fly" target="_blank">GO-FLY1.0.0客服陶士涵提供技术支持</a>
             </div>
         </div>
         <!--//客服代码-->
@@ -79,5 +74,5 @@
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
 </script>
-<script src="/static/js/chat-page.js?v=0.5.0"></script>
+<script src="/static/js/chat-page.js?v=1.0.0"></script>
 </html>
