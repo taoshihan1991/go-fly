@@ -294,6 +294,9 @@ var app=new Vue({
         handleInputing:function (retData) {
             if(retData.from==this.visitor.visitor_id){
                 this.chatInputing="正在输入："+retData.content+"...";
+                if(retData.content==""){
+                    this.chatInputing="";
+                }
             }
         },
         //获取客服信息
