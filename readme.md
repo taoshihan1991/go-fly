@@ -27,15 +27,15 @@
 
 ### 项目预览
 
-![Image text](https://img2020.cnblogs.com/blog/726254/202009/726254-20200902141655838-534372058.jpg)
+![Image text](https://gitee.com/taoshihan/go-fly/raw/master/static/images/newintro1.jpg)
 
 ![Image text](https://img2020.cnblogs.com/blog/726254/202009/726254-20200902141707515-1201702349.jpg)
 
-![Image text](https://img2020.cnblogs.com/blog/726254/202009/726254-20200902141723679-927777888.png)
+![Image text](https://gitee.com/taoshihan/go-fly/raw/master/static/images/newintro2.jpg)
 
 ![Image text](https://img2020.cnblogs.com/blog/726254/202009/726254-20200902141736713-1155907367.jpg)
 
-![Image text](https://img2020.cnblogs.com/blog/726254/202009/726254-20200902141745935-1312775469.jpg)
+![Image text](https://gitee.com/taoshihan/go-fly/raw/master/static/images/newintro3.jpg)
 
 
 ### 安装使用
@@ -135,6 +135,8 @@ server{
 2020年01月22日 **~  1000元(多商户)
 
 2020年01月20日 **生  8.88元
+
+2020年01月17日 **白  8.88元
 
 2020年01月13日 **~  500元(多商户)
 
