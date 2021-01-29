@@ -4,18 +4,18 @@ new Vue({
     delimiters:["<{","}>"],
     data: {
         window:window,
-        //server:getWsBaseUrl()+"/chat_server",
         server:getWsBaseUrl()+"/ws_visitor",
         socket:null,
         msgList:[],
         messageContent:"",
-        chatTitle:"正在连接...",
+        chatTitle:GOFLY_LANG[LANG]['connecting'],
         visitor:{},
         face:[],
         showKfonline:false,
         socketClosed:false,
         timer:null,
         sendDisabled:false,
+        flyLang:GOFLY_LANG[LANG],
     },
     methods: {
         //初始化websocket
@@ -30,12 +30,7 @@ new Vue({
             this.ping();
         },
         OnOpen:function() {
-            this.chatTitle="连接成功!"
-            // let mes = {}
-            // mes.type = "userInit";
-            // this.visitor.refer=REFER;
-            // mes.data = this.visitor;
-            // this.socket.send(JSON.stringify(mes));
+            this.chatTitle=GOFLY_LANG[LANG]['connectok'];
         },
         OnMessage:function(e) {
             const redata = JSON.parse(e.data);
@@ -45,7 +40,7 @@ new Vue({
                     return;
                 }
                 this.visitor.to_id=msg.id;
-                this.chatTitle=msg.name+",正在与您沟通!"
+                this.chatTitle=msg.name+","+GOFLY_LANG[LANG]['chating'];
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
                 this.showKfonline=true;
@@ -91,14 +86,12 @@ new Vue({
         },
         //发送给客户
         chatToUser:function() {
-            this.messageContent=this.messageContent.trim("\r\n");
-            if(this.messageContent==""||this.messageContent=="\r\n"){
-                this.$message({
-                    message: '不能发送空白信息',
-                    type: 'warning'
-                });
+            var messageContent=this.messageContent.trim("\r\n");
+            if(messageContent==""||messageContent=="\r\n"){
+                this.messageContent="";
                 return;
             }
+            this.messageContent=messageContent;
             if(this.socketClosed){
                 this.$message({
                     message: '连接关闭!请重新打开页面',
@@ -214,7 +207,7 @@ new Vue({
                             _this.scrollBottom();
                         }
                         _this.$nextTick(function(){
-                            $(".chatBox").append("<div class=\"chatTime\">—— 以上是历史消息 ——</div>");
+                            $(".chatBox").append("<div class=\"chatTime\">"+GOFLY_LANG[LANG]['historymes']+"</div>");
                         });
                     }
                     if(data.code!=200){

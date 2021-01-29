@@ -96,11 +96,6 @@ function bigPic(src,isVisitor){
         window.open(src);
         return;
     }
-    // $("#bigPic img").attr("src",src);
-    // $("#bigPic").show();
-    // $("#bigPic img").click(function(){
-    //     $("#bigPic").hide();
-    // });
 }
 function filter (obj){
     var imgType = ["image/jpeg","image/png","image/jpg","image/gif"];
@@ -116,4 +111,26 @@ function filter (obj){
 function sleep(time) {
     var startTime = new Date().getTime() + parseInt(time, 10);
     while(new Date().getTime() < startTime) {}
-};
+}
+function checkLang(){
+    var langs=["cn","en"];
+    var lang=getQuery("lang");
+    if(lang!=""&&langs.indexOf(lang) > 0 ){
+        return lang;
+    }
+    return "cn";
+}
+function getQuery(key) {
+    var query = window.location.search.substring(1);
+    var key_values = query.split("&");
+    var params = {};
+    key_values.map(function (key_val){
+        var key_val_arr = key_val.split("=");
+        params[key_val_arr[0]] = key_val_arr[1];
+    });
+    if(typeof params[key]!="undefined"){
+        return params[key];
+    }
+    return "";
+}
+;

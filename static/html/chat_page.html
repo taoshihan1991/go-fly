@@ -53,7 +53,7 @@
                 <div class="clear"></div>
             </div>
             <div class="btnArea">
-                <el-button :disabled="sendDisabled" type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser">{{.SendBtn}}</el-button>
+                <el-button :disabled="sendDisabled||messageContent==''" type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser"><{flyLang.sent}></el-button>
             </div>
             <div class="footContact clear">
                 <a href="https://github.com/taoshihan1991/go-fly" target="_blank">GO-FLY1.0.0客服陶士涵提供技术支持</a>
@@ -73,6 +73,8 @@
 <script>
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
+    var LANG=checkLang();
 </script>
+<script src="/static/js/chat-lang.js?v=1.0.0"></script>
 <script src="/static/js/chat-page.js?v=1.0.0"></script>
 </html>
