@@ -97,10 +97,9 @@ GOFLY.clickBtn=function (){
         _this.showKefu();
     });
     setTimeout(function(){
-        // $("#launchButtonNotice").show();
-        // $("#launchIcon").show();
+        $("#launchIcon").show();
         _this.getNotice();
-    },3000);
+    },4000);
 }
 GOFLY.getNotice=function(){
     $.get("/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {

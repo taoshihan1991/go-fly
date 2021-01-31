@@ -23,6 +23,10 @@
     font-size: 14px;
     display: none;
 }
+.launchButtonNotice a{
+    color: #07a9fe;
+    text-decoration: none;
+}
 .launchIcon{
     background: red;
     width: 20px;
