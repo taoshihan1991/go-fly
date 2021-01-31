@@ -2,26 +2,40 @@ var GOFLY={
     GOFLY_URL:"https://gofly.sopans.com",
     GOFLY_KEFU_ID:"",
     GOFLY_BTN_TEXT:"Chat with me",
+    GOFLY_LANG:"en",
 };
 GOFLY.launchButtonFlag=false;
 GOFLY.titleTimer=0;
 GOFLY.titleNum=0;
+GOFLY.noticeTimer=null;
 GOFLY.originTitle=document.title;
 GOFLY.init=function(config){
+    var _this=this;
     if(typeof config=="undefined"){
         return;
     }
+
     if (typeof config.GOFLY_URL!="undefined"){
         this.GOFLY_URL=config.GOFLY_URL;
     }
+    this.dynamicLoadCss(this.GOFLY_URL+"/static/css/gofly-front.css?v=1");
+
     if (typeof config.GOFLY_KEFU_ID!="undefined"){
         this.GOFLY_KEFU_ID=config.GOFLY_KEFU_ID;
     }
     if (typeof config.GOFLY_BTN_TEXT!="undefined"){
         this.GOFLY_BTN_TEXT=config.GOFLY_BTN_TEXT;
     }
-    this.dynamicLoadCss(this.GOFLY_URL+"/static/css/gofly-front.css?v=1");
-    var _this=this;
+
+    this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
+        _this.GOFLY_LANG=checkLang();
+        if (typeof config.GOFLY_LANG!="undefined"){
+            this.GOFLY_LANG=config.GOFLY_LANG;
+        }else{
+            this.GOFLY_LANG=config.GOFLY_LANG;
+        }
+    });
+
     if (typeof $!="function"){
         this.dynamicLoadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function () {
             _this.dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
@@ -83,9 +97,31 @@ GOFLY.clickBtn=function (){
         _this.showKefu();
     });
     setTimeout(function(){
-        $("#launchButtonNotice").show();
-        $("#launchIcon").show();
-    },4000);
+        // $("#launchButtonNotice").show();
+        // $("#launchIcon").show();
+        _this.getNotice();
+    },3000);
+}
+GOFLY.getNotice=function(){
+    $.get("/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
+        //debugger;
+        if (res.result != null) {
+            var msg = res.result;
+            var len=msg.length;
+            var i=0;
+            if(len>0){
+                if(typeof msg[0]=="undefined"||msg[0]==null){
+                    return;
+                }
+                var content = msg[0];
+                if(typeof content.content =="undefined"){
+                    return;
+                }
+                $("#launchButtonNotice").html(replaceContent(content.content)).show();
+            }
+
+        }
+    });
 }
 GOFLY.isIE=function(){
     var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
@@ -142,7 +178,7 @@ GOFLY.layerOpen=function (){
         area: ['520px', '530px'],
         offset: 'rb', //右下角弹出
         anim: 2,
-        content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
+        content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
         end: function(){
             _this.launchButtonFlag=false;
             $(".launchButtonBox").show();
@@ -150,7 +186,7 @@ GOFLY.layerOpen=function (){
     });
 }
 GOFLY.windowOpen=function (){
-   window.open(this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&refer='+window.document.title);
+   window.open(this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title);
 }
 GOFLY.flashTitle=function () {
     this.titleNum++;

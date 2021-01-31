@@ -45,7 +45,7 @@
                 <div class="folderBtn visitorFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
                 <div class="clear"></div>
             </div>
-            <el-input type="textarea" class="chatArea" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" placeholder="请输入内容"></el-input>
+            <el-input type="textarea" class="chatArea" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" :placeholder="flyLang.textarea"></el-input>
             <div class="faceBox visitorFaceBox">
                 <ul class="faceBoxList">
                     <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
@@ -56,7 +56,7 @@
                 <el-button :disabled="sendDisabled||messageContent==''" type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser"><{flyLang.sent}></el-button>
             </div>
             <div class="footContact clear">
-                <a href="https://github.com/taoshihan1991/go-fly" target="_blank">GO-FLY1.0.0客服陶士涵提供技术支持</a>
+                <a href="https://github.com/taoshihan1991/go-fly" target="_blank"><{flyLang.copyright}></a>
             </div>
         </div>
         <!--//客服代码-->
