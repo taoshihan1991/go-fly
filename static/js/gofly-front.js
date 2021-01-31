@@ -102,7 +102,7 @@ GOFLY.clickBtn=function (){
     },4000);
 }
 GOFLY.getNotice=function(){
-    $.get("/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
+    $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
         //debugger;
         if (res.result != null) {
             var msg = res.result;
