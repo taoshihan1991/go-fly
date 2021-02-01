@@ -28,11 +28,10 @@ GOFLY.init=function(config){
     }
 
     this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
-        _this.GOFLY_LANG=checkLang();
         if (typeof config.GOFLY_LANG!="undefined"){
             _this.GOFLY_LANG=config.GOFLY_LANG;
         }else{
-            _this.GOFLY_LANG=config.GOFLY_LANG;
+            _this.GOFLY_LANG=checkLang();
         }
     });
 
