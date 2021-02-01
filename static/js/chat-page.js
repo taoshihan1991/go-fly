@@ -61,7 +61,7 @@ new Vue({
                 let content = {}
                 content.avator = msg.avator;
                 content.name = msg.name;
-                content.content =replaceContent(msg.content,true);
+                content.content =replaceContent(msg.content);
                 content.is_kefu = false;
                 content.time = msg.time;
                 this.msgList.push(content);
