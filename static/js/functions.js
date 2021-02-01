@@ -62,7 +62,10 @@ function placeFace() {
     }
     return faces;
 }
-function replaceContent (content) {// 转义聊天内容中的特殊字符
+function replaceContent (content,baseUrl) {// 转义聊天内容中的特殊字符
+    if(typeof baseUrl=="undefined"){
+        baseUrl="";
+    }
     var faces=placeFace();
     var html = function (end) {
         return new RegExp('\\n*\\[' + (end || '') + '(pre|div|span|p|table|thead|th|tbody|tr|td|ul|li|ol|li|dl|dt|dd|h2|h3|h4|h5)([\\s\\S]*?)\\]\\n*', 'g');
@@ -71,7 +74,7 @@ function replaceContent (content) {// 转义聊天内容中的特殊字符
         .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;') // XSS
         .replace(/face\[([^\s\[\]]+?)\]/g, function (face) {  // 转义表情
             var alt = face.replace(/^face/g, '');
-            return '<img alt="' + alt + '" title="' + alt + '" src="' + faces[alt] + '">';
+            return '<img alt="' + alt + '" title="' + alt + '" src="'+baseUrl + faces[alt] + '">';
         })
         .replace(/img\[([^\s\[\]]+?)\]/g, function (face) {  // 转义图片
             var src = face.replace(/^img\[/g, '').replace(/\]/g, '');;

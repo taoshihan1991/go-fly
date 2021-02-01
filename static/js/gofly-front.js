@@ -102,6 +102,7 @@ GOFLY.clickBtn=function (){
     },4000);
 }
 GOFLY.getNotice=function(){
+    var _this=this;
     $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
         //debugger;
         if (res.result != null) {
@@ -116,7 +117,7 @@ GOFLY.getNotice=function(){
                 if(typeof content.content =="undefined"){
                     return;
                 }
-                $("#launchButtonNotice").html(replaceContent(content.content)).show();
+                $("#launchButtonNotice").html(replaceContent(content.content,_this.GOFLY_URL)).show();
             }
 
         }
