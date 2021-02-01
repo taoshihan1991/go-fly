@@ -98,15 +98,10 @@ var app=new Vue({
                     this.addOnlineUser(redata.data);
                     //发送通知
                     let _this=this;
-                    notify(redata.data.username, {
+                    window.parent.postMessage({
+                        name:redata.data.username,
                         body: "来了",
                         icon: redata.data.avator
-                    }, function(notification) {
-                        //可直接打开通知notification相关联的tab窗口
-                        window.focus();
-                        $('#tab-first').trigger('click');
-                        notification.close();
-                        _this.talkTo(redata.data.uid,redata.data.username);
                     });
                     _this.alertSound();
 
@@ -116,31 +111,9 @@ var app=new Vue({
                     //this.sendKefuOnline();
                     break;
                 case "notice":
-                    // if(!this.usersMap[redata.data.uid]){
-                    //     this.$notify({
-                    //         title: "通知",
-                    //         message: "新客户访问",
-                    //         type: 'success',
-                    //         duration: 0,
-                    //     });
-                    // }
                     this.sendKefuOnline();
                     break;
             }
-            // if (redata.type == "notice") {
-            //     this.$notify({
-            //         title: "通知",
-            //         message: "新客户访问",
-            //         type: 'success',
-            //         duration: 0,
-            //     });
-            //发送给客户我在线
-            // let mes = {}
-            // mes.type = "kfConnect";
-            // kfConfig.guest_id=redata.data[0].uid;
-            // mes.data = kfConfig;
-            // this.socket.send(JSON.stringify(mes));
-            //}
 
             if (redata.type == "message") {
                 let msg = redata.data
@@ -164,15 +137,10 @@ var app=new Vue({
                 if(content.is_kefu){
                     return;
                 }
-                //发送通知
-                notify(msg.name, {
+                window.parent.postMessage({
+                    name:msg.name,
                     body: msg.content,
                     icon: msg.avator
-                }, function(notification) {
-                    //可直接打开通知notification相关联的tab窗口
-                    window.focus();
-                    notification.close();
-                    _this.talkTo(msg.id,msg.name);
                 });
                 _this.alertSound();
                 _this.chatInputing="";

@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="/static/js/functions.js"></script>
     <style>
         html,
         body {
@@ -62,12 +63,29 @@
         el: '#app',
         delimiters:["<{","}>"],
         data: {
+            window:window,
             iframeUrl:"",
             mailTotal:0,
             adminAvator:"",
             adminRole:"",
         },
         methods: {
+            focusWindow(){
+                var _this=this;
+                window.addEventListener('message',function(e){
+                    var redata=e.data;
+                    console.log(redata);
+                    notify(redata.name, {
+                        body: redata.body,
+                        icon: redata.icon
+                    }, function(notification) {
+                        //可直接打开通知notification相关联的tab窗口
+                        window.focus();
+                        notification.close();
+                        _this.openIframeUrl("/chat_main");
+                    });
+                });
+            },
             openIframeUrl(url){
                 this.iframeUrl=url;
             },
@@ -102,61 +120,11 @@
         },
         created: function () {
             this.checkAuth();
+            this.focusWindow();
         }
     })
-
-</script>
-<script>
-    new Vue({
-        delimiters:["<{","}>"],
-        data: {
-            websock: null,
-        },
-        created() {
-            //this.initWebSocket();
-        },
-        destroyed() {
-            this.websock.close() //离开路由之后断开websocket连接
-        },
-        methods: {
-            initWebSocket(){ //初始化weosocket
-                const wsuri = "ws://127.0.0.1:8080/push_mail";
-                this.websock = new WebSocket(wsuri);
-                this.websock.onmessage = this.websocketonmessage;
-                this.websock.onopen = this.websocketonopen;
-                this.websock.onerror = this.websocketonerror;
-                this.websock.onclose = this.websocketclose;
-            },
-            websocketonopen(){ //连接建立之后执行send方法发送数据
-                // let actions = "ping";
-                // let _this=this;
-                // setInterval(function(){
-                //     _this.websocketsend(JSON.stringify(actions));
-                // },10000);
-            },
-            websocketonerror(){//连接建立失败重连
-                this.initWebSocket();
-            },
-            websocketonmessage(e){ //数据接收
-                const redata = JSON.parse(e.data);
-                if (redata.code==200){
-                    this.$notify({
-                        title: redata.result.folder_name,
-                        message: "新邮件："+redata.result.new_num,
-                        type: 'success',
-                        duration: 0,
-                    });
-                }
-            },
-            websocketsend(Data){//数据发送
-                this.websock.send(Data);
-            },
-            websocketclose(e){  //关闭
-                console.log('断开连接',e);
-            },
-        },
+    $(window).bind("focus",function(e){
+        //alert(1);
     });
 </script>
-
-
 </html>
