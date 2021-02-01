@@ -83,6 +83,11 @@
    -d linux下是否以daemon守护进程运行
    
    -h 查看帮助
+
+8. 直接访问
+
+   http://127.0.0.1:8081
+   
 ### nginx部署
 
 访问：https://gofly.sopans.com
