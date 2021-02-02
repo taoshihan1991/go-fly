@@ -9,7 +9,7 @@ CREATE TABLE `user` (
  `deleted_at` timestamp NULL DEFAULT NULL,
  `avator` varchar(100) NOT NULL DEFAULT '',
  PRIMARY KEY (`id`),
- KEY `idx_name` (`name`)
+ UNIQUE KEY `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 TRUNCATE TABLE `user`|
 INSERT INTO `user` (`id`, `name`, `password`, `nickname`, `created_at`, `updated_at`, `deleted_at`, `avator`) VALUES
@@ -32,7 +32,8 @@ CREATE TABLE `visitor` (
  `city` varchar(100) NOT NULL DEFAULT '',
  `client_ip` varchar(100) NOT NULL,
  PRIMARY KEY (`id`),
- UNIQUE KEY `visitor_id` (`visitor_id`)
+ UNIQUE KEY `visitor_id` (`visitor_id`),
+ KEY `to_id` (`to_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 
 DROP TABLE IF EXISTS `message`|
