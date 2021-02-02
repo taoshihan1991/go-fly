@@ -6,19 +6,32 @@
             <el-main class="mainMain">
                 <el-tabs>
                     <el-tab-pane label="默认JS模式">
-                       <textarea style="width:100%;color:green;font-size:12px;height:290px;">
-<script src="/static/js/gofly-front.js"></script>
+                        <el-alert
+                                :closable="false"
+                                title="例如: 服务器搭建完成后可以把域名替换为自己的IP或域名 , GOFLY_KEFU_ID为自己添加的客服名称"
+                                type="success"
+                                effect="dark">
+                        </el-alert>
+                       <textarea style="width:100%;color:green;margin-top:10px;font-size:12px;height:290px;">
+<script src="https://gofly.sopans.com/static/js/gofly-front.js"></script>
 <script>
     GOFLY.init({
         GOFLY_URL:"https://gofly.sopans.com",
-        GOFLY_KEFU_ID: "[客服名称]",
-        GOFLY_BTN_TEXT: "在线咨询"
+        GOFLY_KEFU_ID: "kefu2",
+        GOFLY_BTN_TEXT: "客服在线 欢迎咨询",
+        GOFLY_LANG:"cn"
     })
 </script>
                        </textarea>
                     </el-tab-pane>
                     <el-tab-pane label="超链接模式">
-                        <el-input value="https://gofly.sopans.com/chatIndex?kefu_id=[客服用户名]"></el-input>
+                        <el-alert
+                                :closable="false"
+                                title="例如: 服务器搭建完成后可以把域名替换为自己的IP或域名 , GOFLY_KEFU_ID为自己添加的客服名称"
+                                type="success"
+                                effect="dark">
+                        </el-alert>
+                        <el-input style="margin-top:10px;" value="https://gofly.sopans.com/chatIndex?kefu_id=[客服用户名]"></el-input>
                     </el-tab-pane>
                 </el-tabs>
             </el-main>
