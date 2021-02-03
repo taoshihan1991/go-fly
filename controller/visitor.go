@@ -149,27 +149,24 @@ func GetVisitors(c *gin.Context) {
 // @Router /messages [get]
 func GetVisitorMessage(c *gin.Context) {
 	visitorId := c.Query("visitorId")
-	messages := models.FindMessageByVisitorId(visitorId)
+
+	query := "message.visitor_id= ?"
+	messages := models.FindMessageByWhere(query, visitorId)
 	result := make([]map[string]interface{}, 0)
-	var visitor models.Visitor
-	var kefu models.User
 	for _, message := range messages {
 		item := make(map[string]interface{})
-		if visitor.Name == "" || kefu.Name == "" {
-			kefu = models.FindUser(message.KefuId)
-			visitor = models.FindVisitorByVistorId(message.VisitorId)
-		}
+
 		item["time"] = message.CreatedAt.Format("2006-01-02 15:04:05")
 		item["content"] = message.Content
 		item["mes_type"] = message.MesType
-		item["visitor_name"] = visitor.Name
-		item["visitor_avator"] = visitor.Avator
-		item["kefu_name"] = kefu.Nickname
-		item["kefu_avator"] = kefu.Avator
+		item["visitor_name"] = message.VisitorName
+		item["visitor_avator"] = message.VisitorAvator
+		item["kefu_name"] = message.KefuName
+		item["kefu_avator"] = message.KefuAvator
 		result = append(result, item)
 
 	}
-	models.ReadMessageByVisitorId(visitorId)
+	go models.ReadMessageByVisitorId(visitorId)
 	c.JSON(200, gin.H{
 		"code":   200,
 		"msg":    "ok",

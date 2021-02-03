@@ -8,6 +8,19 @@ type Message struct {
 	MesType   string `json:"mes_type"`
 	Status    string `json:"status"`
 }
+type MessageKefu struct {
+	Model
+	KefuId        string `json:"kefu_id"`
+	VisitorId     string `json:"visitor_id"`
+	Content       string `json:"content"`
+	MesType       string `json:"mes_type"`
+	Status        string `json:"status"`
+	VisitorName   string `json:"visitor_name"`
+	VisitorAvator string `json:"visitor_avator"`
+	KefuName      string `json:"kefu_name"`
+	KefuAvator    string `json:"kefu_avator"`
+	CreateTime    string `json:"create_time"`
+}
 
 func CreateMessage(kefu_id string, visitor_id string, content string, mes_type string) {
 	v := &Message{
@@ -59,6 +72,11 @@ func FindLastMessageByVisitorId(visitorId string) Message {
 	var m Message
 	DB.Select("content").Where("visitor_id=?", visitorId).Order("id desc").First(&m)
 	return m
+}
+func FindMessageByWhere(query interface{}, args ...interface{}) []MessageKefu {
+	var messages []MessageKefu
+	DB.Table("message").Where(query, args...).Select("message.*,visitor.avator visitor_avator,visitor.name visitor_name,user.avator kefu_avator,user.nickname kefu_name").Joins("left join user on message.kefu_id=user.name").Joins("left join visitor on visitor.visitor_id=message.visitor_id").Order("message.id asc").Find(&messages)
+	return messages
 }
 
 //查询条数
