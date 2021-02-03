@@ -41,17 +41,7 @@
 ### 安装使用
 
 
-1. 先安装和运行mysql , 创建go-fly数据库，并导入*.sql创建表结构与数据.
-
-2. 基于go module使用
-
-   go env -w GO111MODULE=on
-   
-   go env -w GOPROXY=https://goproxy.cn,direct
-   
-   在任意目录 git clone https://github.com/taoshihan1991/go-fly.git
-   
-   进入go-fly 目录
+#### 1. 先安装和运行mysql , 创建go-fly数据库，并导入*.sql创建表结构与数据.
    
    在config目录mysql.json中配置数据库
 ```php
@@ -63,28 +53,58 @@
 	"Password":"go-fly"
 }
 ```
+#### 2. 二进制文件运行
 
+   1) 下载地址 
+   https://github.com/taoshihan1991/go-fly/releases/download/0.2.3/gofly-0.2.3.zip
+   2) 解压缩后 
+   
+        在cmd命令行 , 进入项目所在目录 
+        
+        导入数据库(会删除表清空数据) 
+        
+        go-fly.exe install
 
-3. 源码运行 go run go-fly.go server
+        运行项目
+        
+        linux:   ./go-fly server [可选 -p 8082 -d]
+           
+        windows: go-fly.exe server [可选 -p 8082]
+        
+   3) 参数说明
+    
+        -p 指定端口
+        
+        -d linux下是否以daemon守护进程运行
+        
+        -h 查看帮助 
+        
+#### 3. 源码运行
 
-4. 源码打包 go build go-fly.go 会生成go-fly可以执行文件
+1. 基于go module使用
 
-5. 导入数据库(会删除表清空数据) ./go-fly install
+   go env -w GO111MODULE=on
+   
+   go env -w GOPROXY=https://goproxy.cn,direct
+   
+   在任意目录 git clone https://github.com/taoshihan1991/go-fly.git
+   
+   进入go-fly 目录
 
-6. 二进制文件运行
+2. 源码运行 go run go-fly.go server
+
+3. 源码打包 go build go-fly.go 会生成go-fly可以执行文件
+
+4. 导入数据库(会删除表清空数据) ./go-fly install
+
+5. 二进制文件运行
  
    linux:   ./go-fly server [可选 -p 8082 -d]
    
    windows: go-fly.exe server [可选 -p 8082 -d]
-7. 参数说明
 
-   -p 指定端口
-   
-   -d linux下是否以daemon守护进程运行
-   
-   -h 查看帮助
 
-8. 直接访问
+#### 4. 在线访问
 
    http://127.0.0.1:8081
    
