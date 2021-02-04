@@ -56,7 +56,11 @@
 #### 2. 二进制文件运行
 
    1) 下载地址 
-   https://github.com/taoshihan1991/go-fly/releases/download/0.2.3/gofly-0.2.3.zip
+
+        github: https://github.com/taoshihan1991/go-fly/releases/download/0.2.3/gofly-0.2.3.zip
+   
+        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/608635/download/gofly-0.2.3.zips
+   
    2) 解压缩后 
    
         在cmd命令行 , 进入项目所在目录 
