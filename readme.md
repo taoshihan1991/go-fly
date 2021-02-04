@@ -41,7 +41,9 @@
 ### 安装使用
 
 
-#### 1. 先安装和运行mysql , 创建go-fly数据库，并导入*.sql创建表结构与数据.
+#### 1. 先安装和运行mysql , 创建go-fly数据库.
+ 
+    create database go-fly charset utf8;
    
    在config目录mysql.json中配置数据库
 ```php
@@ -59,21 +61,30 @@
 
         github: https://github.com/taoshihan1991/go-fly/releases/download/0.2.3/gofly-0.2.3.zip
    
-        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/608635/download/gofly-0.2.3.zips
+        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/608635/download/gofly-0.2.3.zip
    
-   2) 解压缩后 
+   2) 文件解压缩 
    
-        在cmd命令行 , 进入项目所在目录 
+        windows系统下,在cmd命令行,进入项目解压后目录; linux系统下创建目录执行如下 
         
-        导入数据库(会删除表清空数据) 
+            linux服务器:
+            mkdir go-fly
+            cd go-fly
+            wget https://gitee.com/taoshihan/go-fly/attach_files/608635/download/gofly-0.2.3.zip
+            unzip gofly-0.2.3.zip
+            chmod 0777 -R ./
         
-        go-fly.exe install
+        导入数据库( 注意:会删除表并且清空数据 ) 
+        
+            windows: go-fly.exe install
+            
+            linux: ./go-fly install
 
         运行项目
         
-        linux:   ./go-fly server [可选 -p 8082 -d]
+            linux:   ./go-fly server [可选 -p 8082 -d]
            
-        windows: go-fly.exe server [可选 -p 8082]
+            windows: go-fly.exe server [可选 -p 8082]
         
    3) 参数说明
     
