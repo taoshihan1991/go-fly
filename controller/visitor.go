@@ -99,6 +99,7 @@ func PostVisitorLogin(c *gin.Context) {
 	}
 	models.CreateVisitor(name, avator, c.ClientIP(), toId, id, refer, city, client_ip)
 	visitor := models.FindVisitorByVistorId(id)
+	go SendNoticeEmail(visitor.Name, "来了")
 	c.JSON(200, gin.H{
 		"code":   200,
 		"msg":    "ok",

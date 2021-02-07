@@ -22,3 +22,15 @@ func SendServerJiang(content string) string {
 	res := tools.Get(url)
 	return res
 }
+func SendNoticeEmail(username, msg string) {
+	smtp := models.FindConfig("NoticeEmailSmtp")
+	email := models.FindConfig("NoticeEmailAddress")
+	password := models.FindConfig("NoticeEmailPassword")
+	if smtp == "" || email == "" || password == "" {
+		return
+	}
+	err:=tools.SendSmtp(smtp, email, password, []string{email}, "[通知]"+username, msg)
+	if err!=nil{
+		log.Println(err)
+	}
+}

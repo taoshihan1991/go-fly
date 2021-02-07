@@ -9,6 +9,7 @@ import (
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
+	"log"
 	"os"
 	"path"
 	"strconv"
@@ -144,6 +145,11 @@ func SendMessageV2(c *gin.Context) {
 			"msg":  "用户不存在",
 		})
 		return
+	}
+	kefus, ok := ws.KefuList[kefuInfo.Name]
+	if !ok || len(kefus) == 0 {
+		log.Println("客服不在线,发送邮件通知")
+		go SendNoticeEmail(vistorInfo.Name, content)
 	}
 	models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, cType)
 	var msg TypeMessage

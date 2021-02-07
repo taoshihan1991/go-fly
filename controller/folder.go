@@ -251,7 +251,7 @@ func FolderSend(w http.ResponseWriter, r *http.Request) {
 	smtpBody := sendData.Body
 	smtpPass := mailServer.Password
 	smtpSubject := sendData.Subject
-	err = tools.Send(smtpServer, smtpFrom, smtpPass, smtpTo, smtpSubject, smtpBody)
+	err = tools.SendSmtp(smtpServer, smtpFrom, smtpPass, smtpTo, smtpSubject, smtpBody)
 	if err != nil {
 		msg, _ := json.Marshal(tools.JsonResult{Code: 400, Msg: err.Error()})
 		w.Write(msg)
