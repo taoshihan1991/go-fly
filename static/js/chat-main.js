@@ -169,6 +169,9 @@ var app=new Vue({
             if(this.messageContent==""||this.messageContent=="\r\n"||this.currentGuest==""){
                 return;
             }
+            if(this.sendDisabled){
+                return;
+            }
             this.sendDisabled=true;
             let _this=this;
             let mes = {};
@@ -178,7 +181,8 @@ var app=new Vue({
             mes.to_id = this.currentGuest;
             mes.content = this.messageContent;
             $.post("/2/message",mes,function(res){
-               if(res.code!=200){
+                _this.sendDisabled=false;
+                if(res.code!=200){
                     _this.$message({
                         message: data.msg,
                         type: 'error'
@@ -195,7 +199,6 @@ var app=new Vue({
             // content.is_kefu = true;
             // content.time = '';
             // this.msgList.push(content);
-            _this.sendDisabled=false;
             this.scrollBottom();
         },
         //处理当前在线用户列表
