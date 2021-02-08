@@ -58,6 +58,24 @@ func PostKefuPass(c *gin.Context) {
 		"result": "",
 	})
 }
+func PostKefuClient(c *gin.Context) {
+	kefuName, _ := c.Get("kefu_name")
+	clientId := c.PostForm("client_id")
+
+	if clientId == "" {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "client_id不能为空",
+		})
+		return
+	}
+	models.CreateUserClient(kefuName.(string), clientId)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": "",
+	})
+}
 func GetKefuInfo(c *gin.Context) {
 	kefuId, _ := c.Get("kefu_id")
 	user := models.FindUserById(kefuId)

@@ -47,6 +47,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.POST("/message_status", controller.GetVisitorMessage)
 
 	//获取客服信息
+	engine.POST("/kefuinfo_client", middleware.JwtApiMiddleware, controller.PostKefuClient)
 	engine.GET("/kefuinfo", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetKefuInfo)
 	engine.GET("/kefuinfo_setting", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetKefuInfoSetting)
 	engine.POST("/kefuinfo", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostKefuInfo)

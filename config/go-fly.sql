@@ -172,4 +172,13 @@ CREATE TABLE `language` (
 INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (1, '中文简体', 'zh-cn')|
 INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (2, '正體中文', 'zh-tw')|
 INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (3, 'English', 'en_us')|
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (4, '日本語', 'ja_jp')
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (4, '日本語', 'ja_jp')|
+DROP TABLE IF EXISTS `user_client`|
+CREATE TABLE `user_client` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `kefu` varchar(100) NOT NULL DEFAULT '',
+ `client_id` varchar(100) NOT NULL DEFAULT '',
+ `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ UNIQUE KEY `idx_user` (`kefu`,`client_id`),
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8|
