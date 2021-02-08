@@ -2,8 +2,6 @@
 package tools
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
 	"golang.org/x/net/html/charset"
@@ -75,13 +73,6 @@ func FileGetContent(file string) string {
 	return content
 }
 
-//md5加密
-func Md5(src string) string {
-	m := md5.New()
-	m.Write([]byte(src))
-	res := hex.EncodeToString(m.Sum(nil))
-	return res
-}
 func ShowStringByte(str string) {
 	s := []byte(str)
 	for i, c := range s {

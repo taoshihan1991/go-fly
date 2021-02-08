@@ -22,3 +22,8 @@ type VisitorOnline struct {
 	Avator      string `json:"avator"`
 	LastMessage string `json:"last_message"`
 }
+type GetuiResponse struct {
+	Code float64                `json:"code"`
+	Msg  string                 `json:"msg"`
+	Data map[string]interface{} `json:"data"`
+}
