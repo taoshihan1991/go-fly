@@ -102,7 +102,7 @@ func PostVisitorLogin(c *gin.Context) {
 
 	//各种通知
 	go SendNoticeEmail(visitor.Name, "来了")
-	go SendAppGetuiPush(visitor.Name + "来了")
+	go SendAppGetuiPush(kefuInfo.Name, visitor.Name, visitor.Name+"来了")
 
 	c.JSON(200, gin.H{
 		"code":   200,

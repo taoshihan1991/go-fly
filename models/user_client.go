@@ -18,3 +18,8 @@ func CreateUserClient(kefu, clientId string) uint {
 	DB.Create(u)
 	return u.ID
 }
+func FindClients(kefu string) []User_client {
+	var arr []User_client
+	DB.Where("kefu = ?", kefu).Find(&arr)
+	return arr
+}

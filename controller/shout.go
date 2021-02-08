@@ -36,7 +36,7 @@ func SendNoticeEmail(username, msg string) {
 		log.Println(err)
 	}
 }
-func SendAppGetuiPush(msg string) {
+func SendAppGetuiPush(kefu string, title, content string) {
 	token := models.FindConfig("GetuiToken")
 	if token == "" {
 		token = getGetuiToken()
@@ -58,21 +58,30 @@ func SendAppGetuiPush(msg string) {
     },
     "push_message":{
         "notification":{
-            "title":"请填写通知标题",
-            "body":"请填写通知内容",
+            "title":"%s",
+            "body":"%s",
             "click_type":"url",
             "url":"https//:xxx"
         }
     }
 }
 `
-	req := fmt.Sprintf(format, tools.Uuid(), "0507db8a6769af494f22e17a6177c29a")
-	url := "https://restapi.getui.com/v2/" + appid + "/push/single/cid"
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/json;charset=utf-8"
-	headers["token"] = token
-	res, err := tools.PostHeader(url, []byte(req), headers)
-	log.Println(url, req, err, res)
+	clients := models.FindClients(kefu)
+	if len(clients) == 0 {
+		return
+	}
+	//clientIds := make([]string, 0)
+	for _, client := range clients {
+		//clientIds = append(clientIds, client.Client_id)
+		req := fmt.Sprintf(format, tools.Md5(tools.Uuid()), client.Client_id, title, content)
+		url := "https://restapi.getui.com/v2/" + appid + "/push/single/cid"
+		headers := make(map[string]string)
+		headers["Content-Type"] = "application/json;charset=utf-8"
+		headers["token"] = token
+		res, err := tools.PostHeader(url, []byte(req), headers)
+		log.Println(url, req, err, res)
+	}
+
 }
 func getGetuiToken() string {
 	appid := models.FindConfig("GetuiAppID")
