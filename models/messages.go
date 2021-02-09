@@ -23,6 +23,7 @@ type MessageKefu struct {
 }
 
 func CreateMessage(kefu_id string, visitor_id string, content string, mes_type string) {
+	DB.Exec("set names utf8mb4")
 	v := &Message{
 		KefuId:    kefu_id,
 		VisitorId: visitor_id,
