@@ -8,6 +8,7 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/docs"
+	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/router"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
@@ -51,6 +52,8 @@ func run() {
 	baseServer := "0.0.0.0:" + Port
 	controller.Port = Port
 	log.Println("start server...\r\ngo：http://" + baseServer)
+	tools.Logger().Println("start server...\r\ngo：http://" + baseServer)
+
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/html/*")
 	engine.Static("/static", "./static")
@@ -59,7 +62,7 @@ func run() {
 	pprof.Register(engine)
 
 	//记录日志
-	engine.Use(tools.LoggerToFile())
+	engine.Use(middleware.NewMidLogger())
 	router.InitViewRouter(engine)
 	router.InitApiRouter(engine)
 
