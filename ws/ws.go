@@ -101,6 +101,7 @@ func UpdateVisitorStatusCron() {
 				models.UpdateVisitorStatus(visitor.VisitorId, 0)
 			}
 		}
+		SendPingToKefuClient()
 		time.Sleep(60 * time.Second)
 	}
 }
@@ -137,12 +138,12 @@ func WsServerBackend() {
 			//json.Unmarshal([]byte(typeMsg.Data.(string)),&data)
 			//log.Println(data)
 			//from:=typeMsg.Data["from"]
-			to:=typeMsg.Data.(map[string]interface{})["to"].(string)
+			to := typeMsg.Data.(map[string]interface{})["to"].(string)
 			//content:=typeMsg.Data["content"]
 			log.Println(to)
 			Mux.Lock()
 			//conn.WriteMessage(websocket.TextMessage, str)
-			OneKefuMessage(to,message.content)
+			OneKefuMessage(to, message.content)
 			Mux.Unlock()
 		}
 
