@@ -40,6 +40,7 @@ func NewKefuServer(c *gin.Context) {
 		messageType, receive, err := conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
+			go SendPingToKefuClient()
 			return
 		}
 
