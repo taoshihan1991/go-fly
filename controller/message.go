@@ -128,7 +128,14 @@ func SendMessageV2(c *gin.Context) {
 		})
 		return
 	}
-
+	//限流
+	if !tools.LimitFreqSingle("sendmessage:"+c.ClientIP(), 1, 2) {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  c.ClientIP() + "发送频率过快",
+		})
+		return
+	}
 	var kefuInfo models.User
 	var vistorInfo models.Visitor
 	if cType == "kefu" {

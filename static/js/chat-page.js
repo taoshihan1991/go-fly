@@ -109,6 +109,7 @@ new Vue({
             mes.content = this.messageContent;
             //发送消息
             $.post("/2/message",mes,function(res){
+                _this.sendDisabled=false;
                 if(res.code!=200){
                     _this.$message({
                         message: res.msg,
@@ -128,7 +129,6 @@ new Vue({
                 _this.messageContent = "";
                 clearInterval(_this.timer);
                 _this.sendSound();
-                _this.sendDisabled=false;
             });
 
         },
@@ -137,7 +137,7 @@ new Vue({
             if(this.socketClosed||!this.socket){
                 return;
             }
-            console.log(this.messageContent);
+            //console.log(this.messageContent);
             var message = {}
             message.type = "inputing";
             message.data = {
