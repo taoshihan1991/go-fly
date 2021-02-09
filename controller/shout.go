@@ -44,7 +44,6 @@ func SendAppGetuiPush(kefu string, title, content string) {
 			return
 		}
 	}
-	appid := models.FindConfig("GetuiAppID")
 	format := `
 {
     "request_id":"%s",
@@ -74,14 +73,30 @@ func SendAppGetuiPush(kefu string, title, content string) {
 	for _, client := range clients {
 		//clientIds = append(clientIds, client.Client_id)
 		req := fmt.Sprintf(format, tools.Md5(tools.Uuid()), client.Client_id, title, content)
-		url := "https://restapi.getui.com/v2/" + appid + "/push/single/cid"
-		headers := make(map[string]string)
-		headers["Content-Type"] = "application/json;charset=utf-8"
-		headers["token"] = token
-		res, err := tools.PostHeader(url, []byte(req), headers)
-		log.Println(url, req, err, res)
+		num := sendPushApi(token, req)
+		if num == 10001 {
+			token = getGetuiToken()
+			sendPushApi(token, req)
+		}
 	}
 
+}
+func sendPushApi(token string, req string) int {
+	appid := models.FindConfig("GetuiAppID")
+	url := "https://restapi.getui.com/v2/" + appid + "/push/single/cid"
+	headers := make(map[string]string)
+	headers["Content-Type"] = "application/json;charset=utf-8"
+	headers["token"] = token
+	res, err := tools.PostHeader(url, []byte(req), headers)
+	log.Println(url, req, err, res)
+	if err == nil && res != "" {
+		var pushRes GetuiResponse
+		json.Unmarshal([]byte(res), &pushRes)
+		if pushRes.Code == 10001 {
+			return 10001
+		}
+	}
+	return 200
 }
 func getGetuiToken() string {
 	appid := models.FindConfig("GetuiAppID")
