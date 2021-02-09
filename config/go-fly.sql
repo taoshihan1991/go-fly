@@ -50,7 +50,7 @@ CREATE TABLE `message` (
  PRIMARY KEY (`id`),
  KEY `kefu_id` (`kefu_id`),
  KEY `visitor_id` (`visitor_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8|
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4|
 
 DROP TABLE IF EXISTS `user_role`|
 CREATE TABLE `user_role` (

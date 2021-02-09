@@ -19,7 +19,7 @@ type Model struct {
 
 func init() {
 	mysql := config.CreateMysql()
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", mysql.Username, mysql.Password, mysql.Server, mysql.Port, mysql.Database)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", mysql.Username, mysql.Password, mysql.Server, mysql.Port, mysql.Database)
 	var err error
 	DB, err = gorm.Open("mysql", dsn)
 	if err != nil {
