@@ -103,6 +103,7 @@
     height: 32px;
     overflow: hidden;
     line-height: 32px;
+    margin-bottom: 4px;
 }
 @-webkit-keyframes bounce-up {
     25% {-webkit-transform: translateY(6px);}

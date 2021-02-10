@@ -108,9 +108,6 @@ GOFLY.getNotice=function(){
             if(len>0){
 
                 _this.noticeTimer=setInterval(function(){
-                    if(i==0){
-                        $("#launchIcon").text(len).show();
-                    }
                     if(i>=len||typeof msg[i]=="undefined"||msg[i]==null){
                         clearInterval(_this.noticeTimer);
                         return;
@@ -123,6 +120,7 @@ GOFLY.getNotice=function(){
                     welcomeHtml+="<div>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
                     $("#launchButtonNotice").html(welcomeHtml).show();
                     i++;
+                    $("#launchIcon").text(i).show();
                 },4000);
             }
 
