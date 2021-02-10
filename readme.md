@@ -43,14 +43,14 @@
 
 #### 1. 先安装和运行mysql , 创建go-fly数据库.
  
-    create database go-fly charset utf8;
+    create database gofly charset utf8;
    
    在config目录mysql.json中配置数据库
 ```php
 {
 	"Server":"127.0.0.1",
 	"Port":"3306",
-	"Database":"go-fly",
+	"Database":"gofly",
 	"Username":"go-fly",
 	"Password":"go-fly"
 }
