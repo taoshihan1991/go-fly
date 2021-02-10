@@ -95,28 +95,36 @@ GOFLY.clickBtn=function (){
     $(".launchButtonBox").on("click",function() {
         _this.showKefu();
     });
-    setTimeout(function(){
-        $("#launchIcon").show();
-        _this.getNotice();
-    },4000);
+    _this.getNotice();
 }
 GOFLY.getNotice=function(){
     var _this=this;
     $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
         //debugger;
-        if (res.result != null) {
-            var msg = res.result;
+        if (res.result.welcome != null) {
+            var msg = res.result.welcome;
             var len=msg.length;
             var i=0;
             if(len>0){
-                if(typeof msg[0]=="undefined"||msg[0]==null){
-                    return;
-                }
-                var content = msg[0];
-                if(typeof content.content =="undefined"){
-                    return;
-                }
-                $("#launchButtonNotice").html(replaceContent(content.content,_this.GOFLY_URL)).show();
+
+                _this.noticeTimer=setInterval(function(){
+                    if(i==0){
+                        $("#launchIcon").text(len).show();
+                    }
+                    if(i>=len||typeof msg[i]=="undefined"||msg[i]==null){
+                        clearInterval(_this.noticeTimer);
+                        return;
+                    }
+                    var content = msg[i];
+                    if(typeof content.content =="undefined"){
+                        return;
+                    }
+                    content.content = replaceContent(content.content);
+                    var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span></div>";
+                    welcomeHtml+="<div>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
+                    $("#launchButtonNotice").html(welcomeHtml).show();
+                    i++;
+                },4000);
             }
 
         }

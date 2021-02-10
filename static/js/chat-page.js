@@ -248,8 +248,8 @@ new Vue({
             let _this=this;
             $.get("/notice?kefu_id="+KEFU_ID,function(res) {
                 //debugger;
-                if (res.result != null) {
-                    let msg = res.result;
+                if (res.result.welcome != null) {
+                    let msg = res.result.welcome;
                     var len=msg.length;
                     var i=0;
                     if(len>0){

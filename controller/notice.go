@@ -28,9 +28,13 @@ func GetNotice(c *gin.Context) {
 		result = append(result, h)
 	}
 	c.JSON(200, gin.H{
-		"code":   200,
-		"msg":    "ok",
-		"result": result,
+		"code": 200,
+		"msg":  "ok",
+		"result": gin.H{
+			"welcome":  result,
+			"username": user.Nickname,
+			"avatar":   user.Avator,
+		},
 	})
 }
 func GetNotices(c *gin.Context) {
@@ -56,7 +60,7 @@ func PostNoticeSave(c *gin.Context) {
 	kefuId, _ := c.Get("kefu_name")
 	content := c.PostForm("content")
 	id := c.PostForm("id")
-	models.UpdateWelcome(fmt.Sprintf("%s", kefuId),id, content)
+	models.UpdateWelcome(fmt.Sprintf("%s", kefuId), id, content)
 	c.JSON(200, gin.H{
 		"code":   200,
 		"msg":    "ok",
