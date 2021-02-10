@@ -119,8 +119,7 @@ GOFLY.getNotice=function(){
                     if(typeof content.content =="undefined"){
                         return;
                     }
-                    content.content = replaceContent(content.content);
-                    var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span></div>";
+                    var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+_this.GOFLY_URL+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span></div>";
                     welcomeHtml+="<div>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
                     $("#launchButtonNotice").html(welcomeHtml).show();
                     i++;
