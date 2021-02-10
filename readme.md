@@ -41,7 +41,7 @@
 ### 安装使用
 
 
-#### 1. 先安装和运行mysql , 创建go-fly数据库.
+#### 1. 先安装和运行mysql , 创建gofly数据库.
  
     create database gofly charset utf8;
    
