@@ -92,8 +92,11 @@ GOFLY.clickBtn=function (){
         '<div id="launchButtonNotice" class="launchButtonNotice">您好:<br/>极简强大的开源免费Go语言在线客服单页营销系统，来了解一下？</div>' +
         '</div>';
     $('body').append(html);
-    $(".launchButtonBox").on("click",function() {
+    $(".launchButton").on("click",function() {
         _this.showKefu();
+    });
+    $("body").on("click","#launchNoticeClose",function() {
+        $("#launchButtonNotice").hide();
     });
     _this.getNotice();
 }
@@ -116,7 +119,9 @@ GOFLY.getNotice=function(){
                     if(typeof content.content =="undefined"){
                         return;
                     }
-                    var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+_this.GOFLY_URL+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span></div>";
+                    var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+_this.GOFLY_URL+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span>" +
+                        "<span id='launchNoticeClose' class='flyClose'>×</span>" +
+                        "</div>";
                     welcomeHtml+="<div>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
                     $("#launchButtonNotice").html(welcomeHtml).show();
                     i++;

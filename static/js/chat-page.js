@@ -264,7 +264,9 @@ new Vue({
                             }
                             content.content = replaceContent(content.content);
                             _this.msgList.push(content);
-                            _this.scrollBottom();
+                            if(_this.msgList.length>=5){
+                                _this.scrollBottom();
+                            }
                             if(i==0){
                                 _this.alertSound();
                             }

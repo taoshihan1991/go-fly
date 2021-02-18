@@ -14,7 +14,6 @@
     border-radius: 4px;
     background-color: #fff;
     overflow: hidden;
-    cursor: pointer;
     box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
     position: absolute;
     bottom: 60px;
@@ -25,7 +24,7 @@
     display: none;
 }
 .launchButtonNotice a{
-    color: #07a9fe;
+    color: #07a9fe;!important;
     text-decoration: none;
 }
 .launchIcon{
@@ -104,6 +103,15 @@
     overflow: hidden;
     line-height: 32px;
     margin-bottom: 4px;
+}
+.launchButtonNotice .flyClose{
+    float: right;
+    display: inline-block;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
 }
 @-webkit-keyframes bounce-up {
     25% {-webkit-transform: translateY(6px);}
