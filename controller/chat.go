@@ -239,103 +239,103 @@ func sendPingOnlineUsers() {
 }
 
 //后端广播发送消息
-func singleBroadcaster() {
-	for {
-		message := <-message
-		//log.Println("debug:",message)
-
-		var typeMsg TypeMessage
-		var clientMsg ClientMessage
-		json.Unmarshal(message.content, &typeMsg)
-		conn := message.conn
-		if typeMsg.Type == nil || typeMsg.Data == nil {
-			continue
-		}
-		msgType := typeMsg.Type.(string)
-		msgData, _ := json.Marshal(typeMsg.Data)
-		switch msgType {
-		//用户上线
-		case "userInit":
-			json.Unmarshal(msgData, &clientMsg)
-			vistorInfo := models.FindVisitorByVistorId(clientMsg.VisitorId)
-			if vistorInfo.VisitorId == "" {
-				SendNotice("访客数据不存在", conn)
-				continue
-			}
-			//用户id对应的连接
-			user := &vistor{
-				conn:   conn,
-				name:   clientMsg.Name,
-				avator: clientMsg.Avator,
-				id:     clientMsg.VisitorId,
-				to_id:  clientMsg.ToId,
-			}
-			clientList[clientMsg.VisitorId] = user
-			//插入数据表
-			models.UpdateVisitor(clientMsg.VisitorId, 1, clientMsg.ClientIp, message.c.ClientIP(), clientMsg.Refer)
-			//models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.VisitorId,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
-			userInfo := make(map[string]string)
-			userInfo["uid"] = user.id
-			userInfo["username"] = user.name
-			userInfo["avator"] = user.avator
-			msg := TypeMessage{
-				Type: "userOnline",
-				Data: userInfo,
-			}
-			str, _ := json.Marshal(msg)
-
-			//新版
-			mKefuConns := ws.KefuList[user.to_id]
-			if mKefuConns != nil {
-				for _, kefu := range mKefuConns {
-					kefu.Conn.WriteMessage(websocket.TextMessage, str)
-				}
-			}
-
-			//兼容旧版
-			kefuConns := kefuList[user.to_id]
-			if kefuConns != nil {
-				for k, kefuConn := range kefuConns {
-					log.Println(k, "xxxxxxxx")
-					kefuConn.WriteMessage(websocket.TextMessage, str)
-				}
-			}
-
-			//客户上线发微信通知
-			go SendServerJiang(userInfo["username"])
-			sendPingOnlineUsers()
-		//客服上线
-		case "kfOnline":
-			json.Unmarshal(msgData, &clientMsg)
-			//客服id对应的连接
-			var newKefuConns = []*websocket.Conn{conn}
-			kefuConns := kefuList[clientMsg.Id]
-			if kefuConns != nil {
-				newKefuConns = append(newKefuConns, kefuConns...)
-			}
-			log.Println(newKefuConns)
-			kefuList[clientMsg.Id] = newKefuConns
-			//发送给客户
-			if len(clientList) == 0 {
-				continue
-			}
-			sendPingOnlineUsers()
-		//客服接手
-		case "kfConnect":
-			json.Unmarshal(msgData, &clientMsg)
-			visitor, ok := clientList[clientMsg.ToId]
-			if visitor == nil || !ok {
-				continue
-			}
-			SendKefuOnline(clientMsg, visitor.conn)
-		//心跳
-		case "ping":
-			msg := TypeMessage{
-				Type: "pong",
-			}
-			str, _ := json.Marshal(msg)
-			conn.WriteMessage(websocket.TextMessage, str)
-		}
-
-	}
-}
+//func singleBroadcaster() {
+//	for {
+//		message := <-message
+//		//log.Println("debug:",message)
+//
+//		var typeMsg TypeMessage
+//		var clientMsg ClientMessage
+//		json.Unmarshal(message.content, &typeMsg)
+//		conn := message.conn
+//		if typeMsg.Type == nil || typeMsg.Data == nil {
+//			continue
+//		}
+//		msgType := typeMsg.Type.(string)
+//		msgData, _ := json.Marshal(typeMsg.Data)
+//		switch msgType {
+//		//用户上线
+//		case "userInit":
+//			json.Unmarshal(msgData, &clientMsg)
+//			vistorInfo := models.FindVisitorByVistorId(clientMsg.VisitorId)
+//			if vistorInfo.VisitorId == "" {
+//				SendNotice("访客数据不存在", conn)
+//				continue
+//			}
+//			//用户id对应的连接
+//			user := &vistor{
+//				conn:   conn,
+//				name:   clientMsg.Name,
+//				avator: clientMsg.Avator,
+//				id:     clientMsg.VisitorId,
+//				to_id:  clientMsg.ToId,
+//			}
+//			clientList[clientMsg.VisitorId] = user
+//			//插入数据表
+//			models.UpdateVisitor(clientMsg.VisitorId, 1, clientMsg.ClientIp, message.c.ClientIP(), clientMsg.Refer, "")
+//			//models.CreateVisitor(clientMsg.Name,clientMsg.Avator,message.c.ClientIP(),clientMsg.ToId,clientMsg.VisitorId,clientMsg.Refer,clientMsg.City,clientMsg.ClientIp)
+//			userInfo := make(map[string]string)
+//			userInfo["uid"] = user.id
+//			userInfo["username"] = user.name
+//			userInfo["avator"] = user.avator
+//			msg := TypeMessage{
+//				Type: "userOnline",
+//				Data: userInfo,
+//			}
+//			str, _ := json.Marshal(msg)
+//
+//			//新版
+//			mKefuConns := ws.KefuList[user.to_id]
+//			if mKefuConns != nil {
+//				for _, kefu := range mKefuConns {
+//					kefu.Conn.WriteMessage(websocket.TextMessage, str)
+//				}
+//			}
+//
+//			//兼容旧版
+//			kefuConns := kefuList[user.to_id]
+//			if kefuConns != nil {
+//				for k, kefuConn := range kefuConns {
+//					log.Println(k, "xxxxxxxx")
+//					kefuConn.WriteMessage(websocket.TextMessage, str)
+//				}
+//			}
+//
+//			//客户上线发微信通知
+//			go SendServerJiang(userInfo["username"])
+//			sendPingOnlineUsers()
+//		//客服上线
+//		case "kfOnline":
+//			json.Unmarshal(msgData, &clientMsg)
+//			//客服id对应的连接
+//			var newKefuConns = []*websocket.Conn{conn}
+//			kefuConns := kefuList[clientMsg.Id]
+//			if kefuConns != nil {
+//				newKefuConns = append(newKefuConns, kefuConns...)
+//			}
+//			log.Println(newKefuConns)
+//			kefuList[clientMsg.Id] = newKefuConns
+//			//发送给客户
+//			if len(clientList) == 0 {
+//				continue
+//			}
+//			sendPingOnlineUsers()
+//		//客服接手
+//		case "kfConnect":
+//			json.Unmarshal(msgData, &clientMsg)
+//			visitor, ok := clientList[clientMsg.ToId]
+//			if visitor == nil || !ok {
+//				continue
+//			}
+//			SendKefuOnline(clientMsg, visitor.conn)
+//		//心跳
+//		case "ping":
+//			msg := TypeMessage{
+//				Type: "pong",
+//			}
+//			str, _ := json.Marshal(msg)
+//			conn.WriteMessage(websocket.TextMessage, str)
+//		}
+//
+//	}
+//}
