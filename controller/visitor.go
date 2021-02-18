@@ -1,70 +1,68 @@
 package controller
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
-	"log"
 	"math/rand"
 	"strconv"
 )
 
-func PostVisitor(c *gin.Context) {
-	name := c.PostForm("name")
-	avator := c.PostForm("avator")
-	toId := c.PostForm("to_id")
-	id := c.PostForm("id")
-	refer := c.PostForm("refer")
-	city := c.PostForm("city")
-	client_ip := c.PostForm("client_ip")
-	if name == "" || avator == "" || toId == "" || id == "" || refer == "" || city == "" || client_ip == "" {
-		c.JSON(200, gin.H{
-			"code": 400,
-			"msg":  "error",
-		})
-		return
-	}
-	kefuInfo := models.FindUser(toId)
-	if kefuInfo.ID == 0 {
-		c.JSON(200, gin.H{
-			"code": 400,
-			"msg":  "用户不存在",
-		})
-		return
-	}
-	models.CreateVisitor(name, avator, c.ClientIP(), toId, id, refer, city, client_ip)
-
-	userInfo := make(map[string]string)
-	userInfo["uid"] = id
-	userInfo["username"] = name
-	userInfo["avator"] = avator
-	msg := TypeMessage{
-		Type: "userOnline",
-		Data: userInfo,
-	}
-	str, _ := json.Marshal(msg)
-	kefuConns := kefuList[toId]
-	if kefuConns != nil {
-		for k, kefuConn := range kefuConns {
-			log.Println(k, "xxxxxxxx")
-			kefuConn.WriteMessage(websocket.TextMessage, str)
-		}
-	}
-	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-	})
-}
+//func PostVisitor(c *gin.Context) {
+//	name := c.PostForm("name")
+//	avator := c.PostForm("avator")
+//	toId := c.PostForm("to_id")
+//	id := c.PostForm("id")
+//	refer := c.PostForm("refer")
+//	city := c.PostForm("city")
+//	client_ip := c.PostForm("client_ip")
+//	if name == "" || avator == "" || toId == "" || id == "" || refer == "" || city == "" || client_ip == "" {
+//		c.JSON(200, gin.H{
+//			"code": 400,
+//			"msg":  "error",
+//		})
+//		return
+//	}
+//	kefuInfo := models.FindUser(toId)
+//	if kefuInfo.ID == 0 {
+//		c.JSON(200, gin.H{
+//			"code": 400,
+//			"msg":  "用户不存在",
+//		})
+//		return
+//	}
+//	models.CreateVisitor(name, avator, c.ClientIP(), toId, id, refer, city, client_ip)
+//
+//	userInfo := make(map[string]string)
+//	userInfo["uid"] = id
+//	userInfo["username"] = name
+//	userInfo["avator"] = avator
+//	msg := TypeMessage{
+//		Type: "userOnline",
+//		Data: userInfo,
+//	}
+//	str, _ := json.Marshal(msg)
+//	kefuConns := kefuList[toId]
+//	if kefuConns != nil {
+//		for k, kefuConn := range kefuConns {
+//			log.Println(k, "xxxxxxxx")
+//			kefuConn.WriteMessage(websocket.TextMessage, str)
+//		}
+//	}
+//	c.JSON(200, gin.H{
+//		"code": 200,
+//		"msg":  "ok",
+//	})
+//}
 func PostVisitorLogin(c *gin.Context) {
 	ipcity := tools.ParseIp(c.ClientIP())
 	avator := fmt.Sprintf("/static/images/%d.jpg", rand.Intn(14))
 	toId := c.PostForm("to_id")
 	id := c.PostForm("visitor_id")
+	extra := c.PostForm("extra")
 	if id == "" {
 		id = tools.Uuid()
 	}
@@ -97,7 +95,7 @@ func PostVisitorLogin(c *gin.Context) {
 		})
 		return
 	}
-	models.CreateVisitor(name, avator, c.ClientIP(), toId, id, refer, city, client_ip)
+	models.CreateVisitor(name, avator, c.ClientIP(), toId, id, refer, city, client_ip, extra)
 	visitor := models.FindVisitorByVistorId(id)
 
 	//各种通知

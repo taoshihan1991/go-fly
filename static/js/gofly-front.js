@@ -3,6 +3,7 @@ var GOFLY={
     GOFLY_KEFU_ID:"",
     GOFLY_BTN_TEXT:"Chat with me",
     GOFLY_LANG:"en",
+    GOFLY_EXTRA:"",
 };
 GOFLY.launchButtonFlag=false;
 GOFLY.titleTimer=0;
@@ -26,6 +27,9 @@ GOFLY.init=function(config){
     if (typeof config.GOFLY_BTN_TEXT!="undefined"){
         this.GOFLY_BTN_TEXT=config.GOFLY_BTN_TEXT;
     }
+    if (typeof config.GOFLY_EXTRA!="undefined"){
+        this.GOFLY_EXTRA=config.GOFLY_EXTRA;
+    }
 
     this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
         if (typeof config.GOFLY_LANG!="undefined"){
@@ -33,6 +37,7 @@ GOFLY.init=function(config){
         }else{
             _this.GOFLY_LANG=checkLang();
         }
+        _this.GOFLY_EXTRA=utf8ToB64(_this.GOFLY_EXTRA);
     });
 
     if (typeof $!="function"){
@@ -187,7 +192,7 @@ GOFLY.layerOpen=function (){
         area: ['520px', '530px'],
         offset: 'rb', //右下角弹出
         anim: 2,
-        content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title, 'yes'], //iframe的url，no代表不显示滚动条
+        content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA , 'yes'], //iframe的url，no代表不显示滚动条
         end: function(){
             _this.launchButtonFlag=false;
             $(".launchButtonBox").show();
@@ -195,7 +200,7 @@ GOFLY.layerOpen=function (){
     });
 }
 GOFLY.windowOpen=function (){
-   window.open(this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title);
+   window.open(this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA);
 }
 GOFLY.flashTitle=function () {
     this.titleNum++;

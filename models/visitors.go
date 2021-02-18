@@ -11,9 +11,10 @@ type Visitor struct {
 	Refer     string `json:"refer"`
 	City      string `json:"city"`
 	ClientIp  string `json:"client_ip"`
+	Extra     string `json:"extra"`
 }
 
-func CreateVisitor(name string, avator string, sourceIp string, toId string, visitorId string, refer string, city string, clientIp string) {
+func CreateVisitor(name, avator, sourceIp, toId, visitorId, refer, city, clientIp, extra string) {
 	old := FindVisitorByVistorId(visitorId)
 	if old.Name != "" {
 		//更新状态上线
@@ -30,6 +31,7 @@ func CreateVisitor(name string, avator string, sourceIp string, toId string, vis
 		Refer:     refer,
 		City:      city,
 		ClientIp:  clientIp,
+		Extra:     extra,
 	}
 	DB.Create(v)
 }

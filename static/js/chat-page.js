@@ -159,8 +159,9 @@ new Vue({
                 visitor_id=obj.visitor_id;
             }
                 let _this=this;
+                var extra=getQuery("extra");
                 //发送消息
-                $.post("/visitor_login",{visitor_id:visitor_id,refer:REFER,to_id:KEFU_ID,client_ip:'',},function(res){
+                $.post("/visitor_login",{visitor_id:visitor_id,refer:REFER,to_id:KEFU_ID,extra:extra},function(res){
                     if(res.code!=200){
                         _this.$message({
                             message: res.msg,

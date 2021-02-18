@@ -69,7 +69,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/visitors_kefu_online", middleware.JwtApiMiddleware, controller.GetKefusVisitorOnlines)
 	engine.GET("/clear_online_tcp", controller.DeleteOnlineTcp)
 	engine.POST("/visitor_login", middleware.Ipblack, controller.PostVisitorLogin)
-	engine.POST("/visitor", controller.PostVisitor)
+	//engine.POST("/visitor", controller.PostVisitor)
 	engine.GET("/visitor", middleware.JwtApiMiddleware, controller.GetVisitor)
 	engine.GET("/visitors", middleware.JwtApiMiddleware, controller.GetVisitors)
 	engine.GET("/statistics", middleware.JwtApiMiddleware, controller.GetStatistics)

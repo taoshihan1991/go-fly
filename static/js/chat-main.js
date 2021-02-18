@@ -31,6 +31,7 @@ var app=new Vue({
             source_ip:"",
             created_at:"",
         },
+        visitorExtra:[],
         visitors:[],
         visitorCount:0,
         visitorCurrentPage:1,
@@ -377,9 +378,18 @@ var app=new Vue({
                         // _this.visitor.client_ip=r.client_ip;
                         // _this.visitor.source_ip=r.source_ip;
                         _this.visitor.status=r.status==1?"在线":"离线";
+
                         //_this.visitor.visitor_id=r.visitor_id;
                         _this.chatTitle="#"+r.id+"|"+r.name;
                         _this.chatTitleType="success";
+                        if(r.extra!=""){
+                            var extra=JSON.parse(b64ToUtf8(r.extra));
+                            for(var key in extra){
+                                var temp={key:key,val:extra[key]}
+                                _this.visitorExtra.push(temp);
+                            }
+                        }
+
                     }
                     if(data.code!=200){
                         _this.$message({

@@ -161,12 +161,6 @@
                                             <span slot="title">ClientIP：<{visitor.source_ip}></span>
                                         </el-menu-item>
                                     </el-tooltip>
-                                    <el-tooltip content="点击加入黑名单" placement="left">
-                                        <el-menu-item v-on:click="addIpblack(visitor.client_ip)" title="点击加入黑名单"  style="padding-left:2px;">
-                                            <i class="el-icon-s-tools"></i>
-                                            <span slot="title">IP：<{visitor.client_ip}></span>
-                                        </el-menu-item>
-                                    </el-tooltip>
                                     <el-menu-item v-on:click="openUrl('https://www.baidu.com/s?wd='+visitor.client_ip)" style="padding-left:2px;">
                                         <i class="el-icon-s-tools"></i>
                                         <span slot="title">城市：<{visitor.city}></span>
@@ -190,6 +184,12 @@
                                         <el-menu-item v-on:click="closeVisitor(visitor.visitor_id)" style="padding-left:2px;">
                                             <i class="el-icon-s-tools"></i>
                                             <span slot="title">状态：<{visitor.status}></span>
+                                        </el-menu-item>
+                                    </el-tooltip>
+                                    <el-tooltip  v-for="v in visitorExtra" :content="v.val" placement="left">
+                                        <el-menu-item  :title="v.val"  style="padding-left:2px;">
+                                            <i class="el-icon-s-tools"></i>
+                                            <span slot="title"><{v.key}>：<{v.val}></span>
                                         </el-menu-item>
                                     </el-tooltip>
                                 </el-menu>
