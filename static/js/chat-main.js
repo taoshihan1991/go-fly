@@ -382,6 +382,7 @@ var app=new Vue({
                         //_this.visitor.visitor_id=r.visitor_id;
                         _this.chatTitle="#"+r.id+"|"+r.name;
                         _this.chatTitleType="success";
+                        _this.visitorExtra=[];
                         if(r.extra!=""){
                             var extra=JSON.parse(b64ToUtf8(r.extra));
                             for(var key in extra){
