@@ -167,6 +167,8 @@ var app=new Vue({
         //发送给客户
         chatToUser() {
             this.messageContent=this.messageContent.trim("\r\n");
+            this.messageContent=this.messageContent.replace("\n","");
+            this.messageContent=this.messageContent.replace("\r\n","");
             if(this.messageContent==""||this.messageContent=="\r\n"||this.currentGuest==""){
                 return;
             }
