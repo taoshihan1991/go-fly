@@ -5,24 +5,37 @@ import (
 	"fmt"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
+	"github.com/taoshihan1991/imaptool/ws"
 	"log"
 	"strconv"
 	"time"
 )
 
-func SendServerJiang(content string) string {
+func SendServerJiang(title string, content string, domain string) string {
 	noticeServerJiang, err := strconv.ParseBool(models.FindConfig("NoticeServerJiang"))
 	serverJiangAPI := models.FindConfig("ServerJiangAPI")
 	if err != nil || !noticeServerJiang || serverJiangAPI == "" {
 		log.Println("do not notice serverjiang:", serverJiangAPI, noticeServerJiang)
 		return ""
 	}
-	sendStr := fmt.Sprintf("%s,访客来了", content)
-	desp := "[登录](https://gofly.sopans.com/main)"
+	sendStr := fmt.Sprintf("%s%s", title, content)
+	desp := title + ":" + content + "[登录](http://" + domain + "/main)"
 	url := serverJiangAPI + "?text=" + sendStr + "&desp=" + desp
 	//log.Println(url)
 	res := tools.Get(url)
 	return res
+}
+func SendVisitorLoginNotice(kefuName, visitorName, avator, content string) {
+	userInfo := make(map[string]string)
+	userInfo["username"] = visitorName
+	userInfo["avator"] = avator
+	userInfo["content"] = content
+	msg := TypeMessage{
+		Type: "notice",
+		Data: userInfo,
+	}
+	str, _ := json.Marshal(msg)
+	ws.OneKefuMessage(kefuName, str)
 }
 func SendNoticeEmail(username, msg string) {
 	smtp := models.FindConfig("NoticeEmailSmtp")

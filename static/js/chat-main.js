@@ -97,14 +97,6 @@ var app=new Vue({
                     break;
                 case "userOnline":
                     this.addOnlineUser(redata.data);
-                    //发送通知
-                    let _this=this;
-                    window.parent.postMessage({
-                        name:redata.data.username,
-                        body: "来了",
-                        icon: redata.data.avator
-                    });
-                    _this.alertSound();
 
                     break;
                 case "userOffline":
@@ -112,7 +104,14 @@ var app=new Vue({
                     //this.sendKefuOnline();
                     break;
                 case "notice":
-                    this.sendKefuOnline();
+                    //发送通知
+                    var _this=this;
+                    window.parent.postMessage({
+                        name:redata.data.username,
+                        body: redata.data.content,
+                        icon: redata.data.avator
+                    });
+                    _this.alertSound();
                     break;
             }
 
