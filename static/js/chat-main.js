@@ -485,6 +485,7 @@ var app=new Vue({
                         }else{
                             $('.faceBox').show();
                         }
+                        return false;
                     });
                 });
             });
@@ -716,6 +717,10 @@ var app=new Vue({
                     }else{
                         _this.replySearch="";
                     }
+                }
+                var status=$('.faceBox').css("display");
+                if(status=="block"){
+                    $('.faceBox').hide();
                 }
             });
         },
