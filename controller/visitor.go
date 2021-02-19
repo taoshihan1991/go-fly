@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/config"
@@ -62,7 +63,7 @@ func PostVisitorLogin(c *gin.Context) {
 	avator := fmt.Sprintf("/static/images/%d.jpg", rand.Intn(14))
 	toId := c.PostForm("to_id")
 	id := c.PostForm("visitor_id")
-	extra := c.PostForm("extra")
+
 	if id == "" {
 		id = tools.Uuid()
 	}
@@ -79,6 +80,21 @@ func PostVisitorLogin(c *gin.Context) {
 		name = "匿名网友"
 	}
 	client_ip := c.ClientIP()
+	extra := c.PostForm("extra")
+	extraJson := tools.Base64Decode(extra)
+	//log.Println(extra, extraJson, "aaaaaaaaaaaaa")
+	if extraJson != "" {
+		var extraObj VisitorExtra
+		err := json.Unmarshal([]byte(extraJson), &extraObj)
+		if err == nil {
+			if extraObj.VisitorName != "" {
+				name = extraObj.VisitorName
+			}
+			if extraObj.VisitorAvatar != "" {
+				avator = extraObj.VisitorAvatar
+			}
+		}
+	}
 	//log.Println(name,avator,c.ClientIP(),toId,id,refer,city,client_ip)
 	if name == "" || avator == "" || toId == "" || id == "" || refer == "" || city == "" || client_ip == "" {
 		c.JSON(200, gin.H{

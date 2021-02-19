@@ -390,6 +390,7 @@ var app=new Vue({
                                 if(extra[key]==""){
                                     extra[key]="无";
                                 }
+                                if(key=="visitorAvatar"||key=="visitorName") continue;
                                 var temp={key:key,val:extra[key]}
                                 _this.visitorExtra.push(temp);
                             }

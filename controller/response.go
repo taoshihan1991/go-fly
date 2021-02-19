@@ -27,3 +27,7 @@ type GetuiResponse struct {
 	Msg  string                 `json:"msg"`
 	Data map[string]interface{} `json:"data"`
 }
+type VisitorExtra struct {
+	VisitorName   string `json:"visitorName"`
+	VisitorAvatar string `json:"visitorAvatar"`
+}

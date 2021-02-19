@@ -162,6 +162,18 @@ new Vue({
             }
                 let _this=this;
                 var extra=getQuery("extra");
+                if(extra!=""){
+                    var extraJson=JSON.parse(window.atob(extra))
+                    for(var key in extraJson){
+                        if(extraJson[key]==""){
+                            _this.$message({
+                                message: "用户扩展信息错误",
+                                type: 'error'
+                            });
+                            return;
+                        }
+                    }
+                }
                 //发送消息
                 $.post("/visitor_login",{visitor_id:visitor_id,refer:REFER,to_id:KEFU_ID,extra:extra},function(res){
                     if(res.code!=200){

@@ -18,7 +18,7 @@ func CreateVisitor(name, avator, sourceIp, toId, visitorId, refer, city, clientI
 	old := FindVisitorByVistorId(visitorId)
 	if old.Name != "" {
 		//更新状态上线
-		UpdateVisitor(visitorId, 1, clientIp, sourceIp, refer, extra)
+		UpdateVisitor(name, avator, visitorId, 1, clientIp, sourceIp, refer, extra)
 		return
 	}
 	v := &Visitor{
@@ -67,13 +67,15 @@ func UpdateVisitorStatus(visitorId string, status uint) {
 	visitor := Visitor{}
 	DB.Model(&visitor).Where("visitor_id = ?", visitorId).Update("status", status)
 }
-func UpdateVisitor(visitorId string, status uint, clientIp string, sourceIp string, refer, extra string) {
+func UpdateVisitor(name, avator, visitorId string, status uint, clientIp string, sourceIp string, refer, extra string) {
 	visitor := &Visitor{
 		Status:   status,
 		ClientIp: clientIp,
 		SourceIp: sourceIp,
 		Refer:    refer,
 		Extra:    extra,
+		Name:     name,
+		Avator:   avator,
 	}
 	DB.Model(visitor).Where("visitor_id = ?", visitorId).Update(visitor)
 }
