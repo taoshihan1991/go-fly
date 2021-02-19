@@ -156,7 +156,7 @@ func SendMessageV2(c *gin.Context) {
 	kefus, ok := ws.KefuList[kefuInfo.Name]
 	if !ok || len(kefus) == 0 {
 		log.Println("客服不在线,发送邮件通知")
-		go SendNoticeEmail(vistorInfo.Name, content)
+		go SendNoticeEmail(content+vistorInfo.Name, content)
 	}
 	models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, cType)
 	var msg TypeMessage

@@ -386,6 +386,9 @@ var app=new Vue({
                         if(r.extra!=""){
                             var extra=JSON.parse(b64ToUtf8(r.extra));
                             for(var key in extra){
+                                if(extra[key]==""){
+                                    extra[key]="无";
+                                }
                                 var temp={key:key,val:extra[key]}
                                 _this.visitorExtra.push(temp);
                             }
