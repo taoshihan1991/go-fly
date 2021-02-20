@@ -153,33 +153,14 @@ func SendMessageV2(c *gin.Context) {
 		})
 		return
 	}
-	kefus, ok := ws.KefuList[kefuInfo.Name]
-	if !ok || len(kefus) == 0 {
-		log.Println("客服不在线,发送邮件通知")
-		go SendNoticeEmail(content+vistorInfo.Name, content)
-	}
+
 	models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, cType)
 	var msg TypeMessage
 	if cType == "kefu" {
 		guest, ok := ws.ClientList[vistorInfo.VisitorId]
 
 		if guest != nil && ok {
-			conn := guest.Conn
-
-			msg = TypeMessage{
-				Type: "message",
-				Data: ws.ClientMessage{
-					Name:    kefuInfo.Nickname,
-					Avator:  kefuInfo.Avator,
-					Id:      kefuInfo.Name,
-					Time:    time.Now().Format("2006-01-02 15:04:05"),
-					ToId:    vistorInfo.VisitorId,
-					Content: content,
-					IsKefu:  "no",
-				},
-			}
-			str, _ := json.Marshal(msg)
-			conn.WriteMessage(websocket.TextMessage, str)
+			ws.VisitorMessage(vistorInfo.VisitorId, content, kefuInfo)
 		}
 
 		msg = TypeMessage{
@@ -228,6 +209,17 @@ func SendMessageV2(c *gin.Context) {
 		"msg":    "ok",
 		"result": msg,
 	})
+	kefus, ok := ws.KefuList[kefuInfo.Name]
+	if !ok || len(kefus) == 0 {
+		log.Println("客服不在线,发送邮件通知")
+		go SendNoticeEmail(content+"|"+vistorInfo.Name, content)
+		go func() {
+			time.Sleep(1 * time.Second)
+			content = "我暂时离线，留言已转发到我的邮箱，稍后回复~"
+			ws.VisitorMessage(vistorInfo.VisitorId, content, kefuInfo)
+			models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, "kefu")
+		}()
+	}
 }
 func SendVisitorNotice(c *gin.Context) {
 	notice := c.Query("msg")

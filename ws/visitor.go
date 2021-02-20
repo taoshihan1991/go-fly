@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
 	"log"
+	"time"
 )
 
 func NewVisitorServer(c *gin.Context) {
@@ -116,6 +117,23 @@ func VisitorNotice(visitorId string, notice string) {
 	msg := TypeMessage{
 		Type: "notice",
 		Data: notice,
+	}
+	str, _ := json.Marshal(msg)
+	visitor := ClientList[visitorId]
+	visitor.Conn.WriteMessage(websocket.TextMessage, str)
+}
+func VisitorMessage(visitorId, content string, kefuInfo models.User) {
+	msg := TypeMessage{
+		Type: "message",
+		Data: ClientMessage{
+			Name:    kefuInfo.Nickname,
+			Avator:  kefuInfo.Avator,
+			Id:      kefuInfo.Name,
+			Time:    time.Now().Format("2006-01-02 15:04:05"),
+			ToId:    visitorId,
+			Content: content,
+			IsKefu:  "no",
+		},
 	}
 	str, _ := json.Marshal(msg)
 	visitor := ClientList[visitorId]

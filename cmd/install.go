@@ -7,6 +7,7 @@ import (
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 )
@@ -33,6 +34,11 @@ func install() {
 		if sql == "" {
 			continue
 		}
-		models.Execute(sql)
+		err := models.Execute(sql)
+		if err == nil {
+			log.Println(sql, "\t success!")
+		} else {
+			log.Println(sql, err, "\t failed!")
+		}
 	}
 }
