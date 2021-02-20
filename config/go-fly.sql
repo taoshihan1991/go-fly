@@ -31,7 +31,7 @@ CREATE TABLE `visitor` (
  `refer` varchar(500) NOT NULL DEFAULT '',
  `city` varchar(100) NOT NULL DEFAULT '',
  `client_ip` varchar(100) NOT NULL DEFAULT '',
- `extra` varchar(255) NOT NULL DEFAULT '',
+ `extra` varchar(2048) NOT NULL DEFAULT '',
  PRIMARY KEY (`id`),
  UNIQUE KEY `visitor_id` (`visitor_id`),
  KEY `to_id` (`to_id`)
