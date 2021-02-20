@@ -109,7 +109,7 @@ GOFLY.clickBtn=function (){
 GOFLY.getNotice=function(){
     var _this=this;
     $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
-        _this.chatPageTitle="<img style='margin-top: 5px;' src='"+res.result.avatar+"' class='flyAvatar'>"+res.result.username;
+        _this.chatPageTitle="<img style='margin-top: 5px;' src='"+_this.GOFLY_URL+res.result.avatar+"' class='flyAvatar'>"+res.result.username;
         if (res.result.welcome != null) {
             var msg = res.result.welcome;
             var len=msg.length;
