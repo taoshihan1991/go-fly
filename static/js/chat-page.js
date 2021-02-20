@@ -313,6 +313,17 @@ new Vue({
                     }
                     return false;
                 });
+
+                var windheight = $(window).height();
+                $(window).resize(function(){
+                    var docheight = $(window).height();  /*唤起键盘时当前窗口高度*/
+                    console.log(docheight,windheight);
+                    if(docheight < windheight){            /*当唤起键盘高度小于未唤起键盘高度时执行*/
+                        $(".chatBoxSend").css("position","static");
+                    }else{
+                        $(".chatBoxSend").css("position","fixed");
+                    }
+                });
             });
         },
         //心跳
