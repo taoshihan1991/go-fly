@@ -10,6 +10,7 @@ GOFLY.titleTimer=0;
 GOFLY.titleNum=0;
 GOFLY.noticeTimer=null;
 GOFLY.originTitle=document.title;
+GOFLY.chatPageTitle="GOFLY";
 GOFLY.init=function(config){
     var _this=this;
     if(typeof config=="undefined"){
@@ -108,7 +109,7 @@ GOFLY.clickBtn=function (){
 GOFLY.getNotice=function(){
     var _this=this;
     $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
-        //debugger;
+        _this.chatPageTitle="<img style='margin-top: 5px;' src='"+res.result.avatar+"' class='flyAvatar'>"+res.result.username;
         if (res.result.welcome != null) {
             var msg = res.result.welcome;
             var len=msg.length;
@@ -186,7 +187,7 @@ GOFLY.layerOpen=function (){
     var _this=this;
     layer.open({
         type: 2,
-        title: this.GOFLY_BTN_TEXT,
+        title: this.chatPageTitle,
         closeBtn: 1, //不显示关闭按钮
         shade: 0,
         area: ['520px', '530px'],

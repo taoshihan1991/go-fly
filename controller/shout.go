@@ -96,6 +96,9 @@ func SendAppGetuiPush(kefu string, title, content string) {
 }
 func sendPushApi(token string, req string) int {
 	appid := models.FindConfig("GetuiAppID")
+	if appid == "" {
+		return 0
+	}
 	url := "https://restapi.getui.com/v2/" + appid + "/push/single/cid"
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/json;charset=utf-8"
@@ -117,6 +120,9 @@ func getGetuiToken() string {
 	appkey := models.FindConfig("GetuiAppKey")
 	//appsecret := models.FindConfig("GetuiAppSecret")
 	appmastersecret := models.FindConfig("GetuiMasterSecret")
+	if appid == "" {
+		return ""
+	}
 	type req struct {
 		Sign      string `json:"sign"`
 		Timestamp string `json:"timestamp"`

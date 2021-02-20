@@ -93,6 +93,15 @@
     border:1px solid #cccccc;
     float: left;
 }
+.flyAvatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    border:1px solid #cccccc;
+    float: left;
+    margin-right: 5px;
+}
 .launchButtonNotice .flyUsername{
     font-weight: bold;
     float: left;
