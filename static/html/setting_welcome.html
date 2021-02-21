@@ -24,7 +24,7 @@
                             prop="id"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="deleteWelcome(scope.row.id)" type="danger" size="small" plain>删除</el-button>
+                            <el-button v-show="scope.row.is_default==0" @click="deleteWelcome(scope.row.id)" type="danger" size="small" plain>删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

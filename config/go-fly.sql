@@ -80,14 +80,18 @@ DROP TABLE IF EXISTS `welcome`|
 CREATE TABLE `welcome` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `user_id` varchar(100) NOT NULL DEFAULT '',
+ `keyword` varchar(100) NOT NULL DEFAULT '',
  `content` varchar(500) NOT NULL DEFAULT '',
  `is_default` tinyint(3) unsigned NOT NULL DEFAULT '0',
  `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`),
- KEY `user_id` (`user_id`)
+ KEY `user_id` (`user_id`),
+ KEY `keyword` (`keyword`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
-INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`) VALUES
-(1, 'kefu2', '本客服代码开源,欢迎star,开源地址:https://github.com/taoshihan1991/go-fly', 1, '2020-08-24 02:57:49')|
+INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
+(NULL, 'kefu2', '我暂时离线，留言已转发到我的邮箱，稍后回复~', 1, '2020-08-24 02:57:49','offline')|
+INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
+(NULL, 'kefu2', '本客服代码开源,欢迎star,开源地址:https://github.com/taoshihan1991/go-fly', 0, '2020-08-24 02:57:49','welcome')|
 
 DROP TABLE IF EXISTS `ipblack`|
 CREATE TABLE `ipblack` (

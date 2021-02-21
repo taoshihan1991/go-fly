@@ -14,7 +14,7 @@ import (
 
 func GetNotice(c *gin.Context) {
 	kefuId := c.Query("kefu_id")
-	welcomes := models.FindWelcomesByUserId(kefuId)
+	welcomes := models.FindWelcomesByKeyword(kefuId, "welcome")
 	user := models.FindUser(kefuId)
 	result := make([]gin.H, 0)
 	for _, welcome := range welcomes {

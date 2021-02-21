@@ -215,8 +215,11 @@ func SendMessageV2(c *gin.Context) {
 		go SendNoticeEmail(content+"|"+vistorInfo.Name, content)
 		go func() {
 			time.Sleep(1 * time.Second)
-			content = "我暂时离线，留言已转发到我的邮箱，稍后回复~"
-			ws.VisitorMessage(vistorInfo.VisitorId, content, kefuInfo)
+			welcome := models.FindWelcomeByUserIdKey(kefuInfo.Name, "offline")
+			if welcome.Content == "" {
+				return
+			}
+			ws.VisitorMessage(vistorInfo.VisitorId, welcome.Content, kefuInfo)
 			models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, "kefu")
 		}()
 	}
