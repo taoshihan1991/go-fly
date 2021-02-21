@@ -220,7 +220,7 @@ func SendMessageV2(c *gin.Context) {
 				return
 			}
 			ws.VisitorMessage(vistorInfo.VisitorId, welcome.Content, kefuInfo)
-			models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, "kefu")
+			models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, welcome.Content, "kefu")
 		}()
 	}
 }
