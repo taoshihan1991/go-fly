@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>开源免费客服系统-极简强大Go语言开发客服单页营销系统 - GOFLY</title>
+	<style>
+	*{
+		margin: 0;padding: 0;
+	}
+	.header{
+		background-color: #fff;
+		color: #fff;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 100;
+		position: relative;
+	}
+	.container{
+		width: 1140px;
+		padding: 0;
+		margin: 0 auto;
+	}
+	.header .logo{
+		margin: 0;
+		float: left;
+		font-size: 32px;
+		font-weight: bold;
+		margin-top: 10px;
+	}
+	.header a{
+		color: #20b2bb;
+		font-family: "Microsoft JhengHei";
+		text-decoration: none;
+	}
+	.header .logo a{
+		font-size: 30px;
+		text-decoration: none;
+	}
+   .header .navBtn{
+		float: right;
+		margin:30px 0 30px 20px;
+	}
+	@media screen and (max-width: 500px) {
+		.container{
+			width: 100%;
+		}
+		.header{
+			height: auto;
+		}
+		.header .logo{
+			float: none;
+			text-align: center;
+			margin: 20px 0px;
+		}
+	   .header .navBtn{
+			margin:5px 0 10px 10px;
+			display: none;
+		}
+		.header .navBtn.mobile{
+			display: inline-block;
+		}
+	}
+	.clear{clear:both}
+	</style>
+</head>
+<body>
+	<header class="header">
+	    <div class="container">
+	        <h1 class="logo"><a href="/">GO-FLY</a></h1>
+	        <a class="navBtn mobile" href="/index_en">English (United States)</a>
+	        <a class="navBtn mobile" href="/index_cn">中文版 (简体)</a>
+	        <a class="navBtn " href="https://github.com/taoshihan1991/go-fly" target="_blank">Github</a>
+	        <a class="navBtn mobile" href="/login">管理入口</a>
+	        <a class="navBtn" href="/docs/index.html" target="_blank">接口文档</a>
+	    </div>
+	</header>
+	<div class="clear"></div>
+	
+</body>
+</html>
