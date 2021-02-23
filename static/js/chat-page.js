@@ -342,6 +342,7 @@ new Vue({
         },
         //初始化
         init:function(){
+            var _this=this;
             this.initCss();
             $("#app").click(function(){
                 clearTimeout(titleTimer);
@@ -353,6 +354,9 @@ new Vue({
 
                 $('.faceBox').hide();
             });
+            window.onfocus = function () {
+                _this.initConn();
+            }
         },
         //表情点击事件
         faceIconClick:function(index){
