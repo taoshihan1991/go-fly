@@ -279,7 +279,7 @@
     max-width: 800px;
     margin:0 auto;
 }
-.chatCenter{background: #fff;max-width: 800px;margin: 0 auto;}
+.chatCenter{background: #fff;max-width: 800px;margin: 0 auto;border: 1px solid #d1d1d1;margin-top: 10px;box-shadow: 2px 2px 6px rgba(0,0,0,.3);}
 .chatContext{
     width: 100%;
     text-align: left;
@@ -339,6 +339,7 @@
 .btnArea{width: 10%;float: right;}
 @media screen and (max-width: 500px) {
     body{background: #fff}
+    .chatCenter{border: none;box-shadow:none;margin-top: 0px;}
     .chatArea {width: 70%;}
     .btnArea{width: 20%;}
 }
