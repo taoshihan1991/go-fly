@@ -11,11 +11,8 @@
 	.header{
 		background-color: #fff;
 		color: #fff;
-		top: 0;
-		left: 0;
 		width: 100%;
 		z-index: 100;
-		position: relative;
 	}
 	.container{
 		width: 1140px;
@@ -41,13 +38,64 @@
    .header .navBtn{
 		float: right;
 		margin:30px 0 30px 20px;
+		display: inline-block;
 	}
-	@media screen and (max-width: 500px) {
+	.banner{
+		text-align: center;
+		color: #fff;
+		background-color: #20b2bb;
+		padding: 20px 10px;
+		font-size: 18px;
+		line-height: 28px;
+	}
+	.banner h1 {
+	    font-size: 34px;
+	    margin: 20px 0px;
+		line-height: 45px;
+	    font-weight: 500;
+	    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+	}
+	.banner p{
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+	.banner .downloadBtn{margin-top: 20px;}
+	.downloadBtn{display:inline-block;text-decoration:none;color:#fff;border:1px solid #fff;padding:10px 15px;border-radius:5px;}
+	.downloadBtn:hover{background:#fff;color:#20b2bb;}
+	.jumbotron{
+	    width: 1000px;
+	    margin: 30px auto;
+	    box-shadow: 2px 2px 15px rgba(0,0,0,.3);
+		display: block;
+	 }
+	 .useFunction{
+		 background-color: #2d3748;
+		 border-radius: 6px;padding:3px;width:420px;
+		 color:#b5f4a5;
+		 margin-top:10px;
+		 font-size:12px;
+		 height:290px;
+	 }
+	 .mainTechLeft{
+		 float: left;
+	 }
+	 .mainTechLeft h3{
+		 font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+	 }
+	 .mainTechRight{
+		 width: 500px;
+	 		 float: right;
+			 box-shadow: 2px 2px 15px rgba(0,0,0,.3);
+	 }
+	 .copyright{
+		 font-size: 20px;
+		 color: #ccc;
+		 text-align: center;
+		 margin: 40px 0px;
+	 }
+	@media screen and (max-width: 800px) {
 		.container{
 			width: 100%;
-		}
-		.header{
-			height: auto;
 		}
 		.header .logo{
 			float: none;
@@ -56,27 +104,71 @@
 		}
 	   .header .navBtn{
 			margin:5px 0 10px 10px;
-			display: none;
+			float: none;
 		}
-		.header .navBtn.mobile{
-			display: inline-block;
+		.banner p{
+			text-align: left;
+		}
+		.jumbotron{
+			width: 100%;
+			height: auto;
+		}
+		.mainTechLeft{
+			float: none;
+		}
+		.mainTechLeft .useFunction{
+			width: 100%;
+		}
+		.mainTechRight{
+			width: 100%;
+			float: none;
 		}
 	}
 	.clear{clear:both}
 	</style>
 </head>
 <body>
-	<header class="header">
+	<div class="header">
 	    <div class="container">
 	        <h1 class="logo"><a href="/">GO-FLY</a></h1>
-	        <a class="navBtn mobile" href="/index_en">English (United States)</a>
-	        <a class="navBtn mobile" href="/index_cn">中文版 (简体)</a>
-	        <a class="navBtn " href="https://github.com/taoshihan1991/go-fly" target="_blank">Github</a>
-	        <a class="navBtn mobile" href="/login">管理入口</a>
+	        <a class="navBtn" href="/index_en">English</a>
+	        <a class="navBtn" href="/index_cn">中文版</a>
+	        <a class="navBtn" href="https://github.com/taoshihan1991/go-fly" target="_blank">Github</a>
+	        <a class="navBtn" href="/login">管理员</a>
 	        <a class="navBtn" href="/docs/index.html" target="_blank">接口文档</a>
 	    </div>
-	</header>
+	</div>
 	<div class="clear"></div>
-	
+	<div class="banner">
+		<h1>极简强大的开源免费在线客服单页营销系统</h1>
+		<p>GO-FLY，一套可独立部署的免费开源客服系统，基于GO语言开发，二进制文件安装和使用非常简单，是一个开箱即用的网页在线客服系统</p>
+		<p>同时也是首页完全可以编辑的单页营销系统</p>
+		<p><a href="https://gitee.com/taoshihan/go-fly/attach_files/616920/download/go-fly-0.2.8.zip" class="downloadBtn">下载 GOFLY (Linux/Windows)</a></p>
+	</div>
+	<img alt="GOFLY在线客服"  title="GOFLY在线客服" class="jumbotron" src="/static/images/admin.jpg"/>      
+
+<div class="container">
+    <div class="mainTechLeft">
+        <h3>立即网页体验</h3>
+        <textarea class="useFunction">
+<script src="https://gofly.sopans.com/static/js/gofly-front.js"></script>
+<script>
+    GOFLY.init({
+        GOFLY_URL:"https://gofly.sopans.com",
+        GOFLY_KEFU_ID: "kefu2",
+        GOFLY_BTN_TEXT: "客服在线 欢迎咨询",
+        GOFLY_LANG:"cn"
+    })
+</script>
+</textarea>
+    </div>
+    <img src="https://gofly.sopans.com/static/upload/2020December/92df578fa093964a29453fe1863b20a9.jpg" class="mainTechRight"/>
+</div>
+<div class="clear"></div>
+<div class="footer">
+    <div class="copyright">
+        陶士涵的菜地版权所有© 2020
+    </div>
+</div>
 </body>
 </html>
