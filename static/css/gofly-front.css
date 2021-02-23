@@ -138,10 +138,15 @@
 @media screen and (max-width: 500px) {
     .launchButtonBox{
         width: 100%;
+        left: 0;
         right: 0;
+        bottom: 5px;
+        text-align: center;
     }
     .launchButtonNotice{
-        width: 100%;
-        right: auto;
+        width: 90%;
+        left: 0;
+        right: 0;
+        text-align: left;
     }
 }
