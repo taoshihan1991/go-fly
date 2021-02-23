@@ -59,9 +59,9 @@
 
    1) 下载地址 
 
-        github: https://github.com/taoshihan1991/go-fly/releases/download/0.2.3/gofly-0.2.3.zip
+        github: https://github.com/taoshihan1991/go-fly/releases/download/0.2.8/go-fly-0.2.8.zip
    
-        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/608635/download/gofly-0.2.3.zip
+        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/616920/download/go-fly-0.2.8.zip
    
    2) 文件解压缩 
    
@@ -70,7 +70,7 @@
             linux服务器:
             mkdir go-fly
             cd go-fly
-            wget https://gitee.com/taoshihan/go-fly/attach_files/608635/download/gofly-0.2.3.zip
+            wget https://gitee.com/taoshihan/go-fly/attach_files/616920/download/go-fly-0.2.8.zip
             unzip gofly-0.2.3.zip
             chmod 0777 -R ./
         
