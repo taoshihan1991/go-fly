@@ -190,7 +190,7 @@ GOFLY.layerOpen=function (){
         title: this.chatPageTitle,
         closeBtn: 1, //不显示关闭按钮
         shade: 0,
-        area: ['520px', '530px'],
+        area: ['400px', '530px'],
         offset: 'rb', //右下角弹出
         anim: 2,
         content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA , 'yes'], //iframe的url，no代表不显示滚动条
