@@ -16,10 +16,12 @@ new Vue({
         timer:null,
         sendDisabled:false,
         flyLang:GOFLY_LANG[LANG],
+        connecting:true,
     },
     methods: {
         //初始化websocket
         initConn:function() {
+            this.connecting=true;
             let socket = new ReconnectingWebSocket(this.server+"?visitor_id="+this.visitor.visitor_id);//创建Socket实例
             socket.maxReconnectAttempts = 30;
             this.socket = socket
@@ -31,6 +33,8 @@ new Vue({
         },
         OnOpen:function() {
             this.chatTitle=GOFLY_LANG[LANG]['connectok'];
+            this.connecting=false;
+
         },
         OnMessage:function(e) {
             const redata = JSON.parse(e.data);
@@ -357,6 +361,9 @@ new Vue({
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
+                if(_this.connecting=true){
+                    return;
+                }
                 _this.initConn();
             }
         },
