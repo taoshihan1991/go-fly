@@ -76,7 +76,7 @@ new Vue({
                 this.alertSound();//提示音
             }
             if (redata.type == "close") {
-                this.chatTitle="连接关闭!请重新打开页面";
+                this.chatTitle="系统关闭连接!请重新打开页面";
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
                 this.socket.close();
@@ -150,8 +150,10 @@ new Vue({
             this.socket.send(JSON.stringify(message));
         },
         OnClose:function() {
+            this.socketClosed=true;
             this.chatTitle="连接关闭!请重新打开页面";
             $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+            this.scrollBottom();
         },
         //获取当前用户信息
         getUserInfo:function(){
@@ -338,7 +340,7 @@ new Vue({
                 if(_this.socket!=null){
                     _this.socket.send(JSON.stringify(mes));
                 }
-            },10000);
+            },120000);
         },
         //初始化
         init:function(){
