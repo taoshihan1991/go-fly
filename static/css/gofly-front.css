@@ -1,8 +1,8 @@
 .launchButtonBox{
     position: fixed!important;
-    bottom: 120px!important;
-    right: 20px!important;
-    left: auto!important;
+    bottom: 120px;
+    right: 20px;
+    left: auto;
 }
 .launchButtonNotice{
     width: 270px;
@@ -23,6 +23,7 @@
     font-size: 14px;
     display: none;
 }
+
 .launchButtonNotice a{
     color: #07a9fe;!important;
     text-decoration: none;
@@ -134,3 +135,13 @@
     75% {transform: translateY(-6px);}
 }
 .animateUpDown{ -webkit-animation: bounce-up 1.4s linear infinite;animation: bounce-up 1.4s linear infinite;}
+@media screen and (max-width: 500px) {
+    .launchButtonBox{
+        width: 100%;
+        right: 0;
+    }
+    .launchButtonNotice{
+        width: 100%;
+        right: auto;
+    }
+}
