@@ -122,17 +122,20 @@
     cursor: pointer;
 }
 @-webkit-keyframes bounce-up {
-    25% {-webkit-transform: translateY(6px);}
+    25% {-webkit-transform: translateY(4px);}
     50%, 100% {-webkit-transform: translateY(0);}
-    75% {-webkit-transform: translateY(-6px);}
+    75% {-webkit-transform: translateY(-4px);}
 }
 
 @keyframes bounce-up {
-    25% {transform: translateY(6px);}
+    25% {transform: translateY(4px);}
     50%, 100% {transform: translateY(0);}
-    75% {transform: translateY(-6px);}
+    75% {transform: translateY(-4px);}
 }
-.animateUpDown{ -webkit-animation: bounce-up 1.4s linear infinite;animation: bounce-up 1.4s linear infinite;}
+.animateUpDown{
+    -webkit-animation: bounce-up 0.5s linear infinite;
+    animation: bounce-up 0.5s linear infinite;
+}
 @media screen and (max-width: 500px) {
     .launchButtonBox{
         width: 100%;

@@ -92,8 +92,8 @@ GOFLY.dynamicLoadJs=function(url, callback){
 GOFLY.clickBtn=function (){
     var _this=this;
     var html="<div class='launchButtonBox'>" +
-        '<div id="launchButton" class="launchButton animateUpDown">' +
-        '<div id="launchIcon" class="launchIcon">1</div> ' +
+        '<div id="launchButton" class="launchButton">' +
+        '<div id="launchIcon" class="launchIcon animateUpDown">1</div> ' +
         '<div class="launchButtonText">'+_this.GOFLY_BTN_TEXT+'</div></div>' +
         '<div id="launchButtonNotice" class="launchButtonNotice">您好:<br/>极简强大的开源免费Go语言在线客服单页营销系统，来了解一下？</div>' +
         '</div>';
