@@ -72,7 +72,10 @@ var app=new Vue({
                 if(_this.socket!=null){
                     _this.socket.send(JSON.stringify(mes));
                 }
-            },5000)
+            },20000)
+            setInterval(function(){
+                _this.getOnlineVisitors();
+            },600000);
         },
         //初始化websocket
         initConn() {
@@ -429,6 +432,9 @@ var app=new Vue({
         //处理tab切换
         handleTabClick(tab, event){
             let _this=this;
+            if(tab.name=="first"){
+                this.getOnlineVisitors();
+            }
             if(tab.name=="second"){
                 this.getVisitorPage(1);
             }

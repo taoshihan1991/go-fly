@@ -35,8 +35,6 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/message_notice", controller.SendVisitorNotice)
 	//发送单条消息
 	engine.POST("/message", middleware.Ipblack, controller.SendMessage)
-	//发送关闭消息
-	engine.GET("/message_close", controller.SendCloseMessage)
 	//上传文件
 	engine.POST("/uploadimg", middleware.Ipblack, controller.UploadImg)
 	//上传文件
