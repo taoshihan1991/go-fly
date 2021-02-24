@@ -61,7 +61,7 @@
 
         github: https://github.com/taoshihan1991/go-fly/releases/download/0.2.8/go-fly-0.2.8.zip
    
-        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/616920/download/go-fly-0.2.8.zip
+        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/619517/download/go-fly-0.2.9.zip
    
    2) 文件解压缩 
    
@@ -118,8 +118,23 @@
    
    windows: go-fly.exe server [可选 -p 8082 -d]
 
+#### 4. 网页使用
 
-#### 4. 在线访问
+   服务端安装成功后可把域名换成自己的域名或IP
+   
+```php
+    <script src="https://gofly.sopans.com/static/js/gofly-front.js"></script>
+    <script>
+        GOFLY.init({
+            GOFLY_URL:"https://gofly.sopans.com",
+            GOFLY_KEFU_ID: "kefu2",
+            GOFLY_BTN_TEXT: "客服在线 欢迎咨询",
+            GOFLY_LANG:"cn"
+        })
+    </script>
+```
+   
+#### 5. 在线访问
 
    http://127.0.0.1:8081
    
