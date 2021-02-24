@@ -29,7 +29,7 @@
     text-decoration: none;
 }
 .launchIcon{
-    background: red;
+    background: #ff305f;
     width: 20px;
     height: 20px;
     line-height: 20px;
@@ -45,7 +45,7 @@
     height: 48px!important;
     width: auto!important;
     z-index: 10000000000000!important;
-    background: #004bdf!important;
+    background: #fac917;
     border: 0!important;
     border-radius: 100px!important;
     box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
@@ -72,7 +72,7 @@
     height: 48px;
 }
 .launchButtonText {
-    color: #fff!important;
+    color: #312927;
     display: inline-block!important;
     font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,Oxygen,Ubuntu,Cantarell,fira sans,droid sans,helvetica neue,sans-serif!important;
     font-size: 1em!important;
