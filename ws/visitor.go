@@ -63,6 +63,18 @@ func NewVisitorServer(c *gin.Context) {
 }
 func AddVisitorToList(user *User) {
 	//用户id对应的连接
+	oldUser, ok := ClientList[user.Id]
+	if oldUser != nil || ok {
+		msg := TypeMessage{
+			Type: "close",
+			Data: user.Id,
+		}
+		str, _ := json.Marshal(msg)
+		if err := oldUser.Conn.WriteMessage(websocket.TextMessage, str); err != nil {
+			oldUser.Conn.Close()
+			delete(ClientList, user.Id)
+		}
+	}
 	ClientList[user.Id] = user
 	lastMessage := models.FindLastMessageByVisitorId(user.Id)
 	userInfo := make(map[string]string)

@@ -16,12 +16,10 @@ new Vue({
         timer:null,
         sendDisabled:false,
         flyLang:GOFLY_LANG[LANG],
-        connecting:true,
     },
     methods: {
         //初始化websocket
         initConn:function() {
-            this.connecting=true;
             let socket = new ReconnectingWebSocket(this.server+"?visitor_id="+this.visitor.visitor_id);//创建Socket实例
             socket.maxReconnectAttempts = 30;
             this.socket = socket
@@ -33,10 +31,10 @@ new Vue({
         },
         OnOpen:function() {
             this.chatTitle=GOFLY_LANG[LANG]['connectok'];
-            this.connecting=false;
-
+            this.socketClosed=false;
         },
         OnMessage:function(e) {
+            this.socketClosed=false;
             const redata = JSON.parse(e.data);
             if (redata.type == "kfOnline") {
                 let msg = redata.data
@@ -155,9 +153,9 @@ new Vue({
         },
         OnClose:function() {
             this.socketClosed=true;
-            this.chatTitle="连接关闭!请重新打开页面";
-            $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
-            this.scrollBottom();
+            // this.chatTitle="连接关闭!请重新打开页面";
+            // $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+            // this.scrollBottom();
         },
         //获取当前用户信息
         getUserInfo:function(){
@@ -344,7 +342,7 @@ new Vue({
                 if(_this.socket!=null){
                     _this.socket.send(JSON.stringify(mes));
                 }
-            },120000);
+            },60000);
         },
         //初始化
         init:function(){
@@ -361,10 +359,13 @@ new Vue({
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
-                if(_this.connecting=true){
+                if(!_this.socketClosed){
                     return;
                 }
                 _this.initConn();
+                _this.chatTitle="连接已重连";
+                $(".chatBox").append("<div class=\"chatTime\">"+_this.chatTitle+"</div>");
+                _this.scrollBottom();
             }
         },
         //表情点击事件
