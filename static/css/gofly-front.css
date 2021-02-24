@@ -51,18 +51,14 @@
     box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
     box-sizing: border-box!important;
     padding: 0 25px;
-    transition: all .4s,bottom .8s ease-in-out!important;
     cursor: pointer!important;
     outline: 0!important;
     display: inline-block;
     margin: 0!important;
     -webkit-font-smoothing: antialiased!important;
     -webkit-tap-highlight-color: transparent!important;
-    animation-name: loadBubble;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
-    animation-duration: .2s;
-    color: #ffffff !important;
+    color: #ffffff;
+    position: relative;
 }
 .launchButton:hover {
     box-shadow: 0 3px 20px 0 rgba(0,0,0,.5)!important;
