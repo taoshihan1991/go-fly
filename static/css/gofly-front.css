@@ -50,7 +50,7 @@
     border-radius: 100px!important;
     box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
     box-sizing: border-box!important;
-    padding: 0 20px!important;
+    padding: 0 25px;
     transition: all .4s,bottom .8s ease-in-out!important;
     cursor: pointer!important;
     outline: 0!important;
@@ -78,12 +78,10 @@
     font-size: 1em!important;
     line-height: 48px!important;
     font-weight: 700!important;
-    margin: 0 0 0 12px!important;
     overflow: hidden!important;
     text-overflow: ellipsis!important;
     vertical-align: top!important;
     white-space: nowrap!important;
-    padding: 0!important;
     transition: .6s ease-in-out!important;
 }
 .launchButtonNotice .flyAvatar{
