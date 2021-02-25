@@ -125,6 +125,7 @@
    2.默认访问本地http://127.0.0.1:8081
    
 ```php
+    //下面js路径和GOFLY_URL 都要改成自己的
     <script src="https://gofly.sopans.com/static/js/gofly-front.js"></script>
     <script>
         GOFLY.init({
