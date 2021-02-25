@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Visitor struct {
 	Model
 	Name      string `json:"name"`
@@ -33,6 +35,7 @@ func CreateVisitor(name, avator, sourceIp, toId, visitorId, refer, city, clientI
 		ClientIp:  clientIp,
 		Extra:     extra,
 	}
+	v.UpdatedAt = time.Now()
 	DB.Create(v)
 }
 func FindVisitorByVistorId(visitorId string) Visitor {
@@ -77,6 +80,7 @@ func UpdateVisitor(name, avator, visitorId string, status uint, clientIp string,
 		Name:     name,
 		Avator:   avator,
 	}
+	visitor.UpdatedAt = time.Now()
 	DB.Model(visitor).Where("visitor_id = ?", visitorId).Update(visitor)
 }
 func UpdateVisitorKefu(visitorId string, kefuId string) {

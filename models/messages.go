@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Message struct {
 	Model
 	KefuId    string `json:"kefu_id"`
@@ -31,6 +33,7 @@ func CreateMessage(kefu_id string, visitor_id string, content string, mes_type s
 		MesType:   mes_type,
 		Status:    "unread",
 	}
+	v.UpdatedAt = time.Now()
 	DB.Create(v)
 }
 func FindMessageByVisitorId(visitor_id string) []Message {

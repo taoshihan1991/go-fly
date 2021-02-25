@@ -2,6 +2,7 @@ package models
 
 import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"time"
 )
 
 type User struct {
@@ -21,6 +22,7 @@ func CreateUser(name string, password string, avator string, nickname string) ui
 		Avator:   avator,
 		Nickname: nickname,
 	}
+	user.UpdatedAt = time.Now()
 	DB.Create(user)
 	return user.ID
 }
@@ -30,6 +32,7 @@ func UpdateUser(id string, name string, password string, avator string, nickname
 		Avator:   avator,
 		Nickname: nickname,
 	}
+	user.UpdatedAt = time.Now()
 	if password != "" {
 		user.Password = password
 	}
@@ -39,12 +42,14 @@ func UpdateUserPass(name string, pass string) {
 	user := &User{
 		Password: pass,
 	}
+	user.UpdatedAt = time.Now()
 	DB.Model(user).Where("name = ?", name).Update("Password", pass)
 }
 func UpdateUserAvator(name string, avator string) {
 	user := &User{
 		Avator: avator,
 	}
+	user.UpdatedAt = time.Now()
 	DB.Model(user).Where("name = ?", name).Update("Avator", avator)
 }
 func FindUser(username string) User {
