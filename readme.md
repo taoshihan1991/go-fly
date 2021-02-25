@@ -59,9 +59,9 @@
 
    1) 下载地址 
 
-        github: https://github.com/taoshihan1991/go-fly/releases/download/0.2.8/go-fly-0.2.8.zip
+        github: https://github.com/taoshihan1991/go-fly/releases/download/0.3.1/go-fly-0.3.1.zip
    
-        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/619517/download/go-fly-0.2.9.zip
+        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/620113/download/go-fly-0.3.1.zip
    
    2) 文件解压缩 
    
@@ -70,7 +70,7 @@
             linux服务器:
             mkdir go-fly
             cd go-fly
-            wget https://gitee.com/taoshihan/go-fly/attach_files/616920/download/go-fly-0.2.8.zip
+            wget https://gitee.com/taoshihan/go-fly/attach_files/620113/download/go-fly-0.3.1.zip
             unzip gofly-0.2.3.zip
             chmod 0777 -R ./
         
@@ -120,7 +120,9 @@
 
 #### 4. 网页使用
 
-   服务端安装成功后可把域名换成自己的域名或IP
+   1.服务端安装成功后可把域名换成自己的域名或IP
+   
+   2.默认访问本地http://127.0.0.1:8081
    
 ```php
     <script src="https://gofly.sopans.com/static/js/gofly-front.js"></script>
@@ -133,10 +135,7 @@
         })
     </script>
 ```
-   
-#### 5. 在线访问
 
-   http://127.0.0.1:8081
    
 ### nginx部署
 
