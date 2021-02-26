@@ -127,38 +127,38 @@
                             <el-tab-pane label="访客信息" name="visitorInfo">
                                 <el-menu class="visitorInfo" v-show="visitor.visitor_id">
                                     <el-tooltip content="点击加入黑名单" placement="left">
-                                        <el-menu-item v-on:click="addIpblack(visitor.source_ip)" title="点击加入黑名单" style="padding-left:2px;">
+                                        <el-menu-item v-on:click="addIpblack(visitor.source_ip)" title="点击加入黑名单" style="padding-left:2px;color: #666;">
                                             <i class="el-icon-user"></i>
                                             <span slot="title">IP地址：<{visitor.source_ip}></span>
                                         </el-menu-item>
                                     </el-tooltip>
-                                    <el-menu-item v-on:click="openUrl('https://www.baidu.com/s?wd='+visitor.client_ip)" style="padding-left:2px;">
+                                    <el-menu-item v-on:click="openUrl('https://www.baidu.com/s?wd='+visitor.client_ip)" style="padding-left:2px;color: #666;">
                                         <i class="el-icon-map-location"></i>
                                         <span slot="title">城市：<{visitor.city}></span>
                                     </el-menu-item>
                                     <el-tooltip :content="visitor.refer" placement="left">
-                                        <el-menu-item  style="padding-left:2px;">
+                                        <el-menu-item  style="padding-left:2px;color: #666;">
                                             <i class="el-icon-guide"></i>
                                             <span slot="title" >来源：<{visitor.refer}></span>
                                         </el-menu-item>
                                     </el-tooltip>
 
-                                    <el-menu-item style="padding-left:2px;">
+                                    <el-menu-item style="padding-left:2px;color: #666;">
                                         <i class="el-icon-time"></i>
                                         <span slot="title">首次访问：<{visitor.created_at}></span>
                                     </el-menu-item>
-                                    <el-menu-item style="padding-left:2px;">
+                                    <el-menu-item style="padding-left:2px;color: #666;">
                                         <i class="el-icon-time"></i>
                                         <span slot="title">最后访问：<{visitor.updated_at}></span>
                                     </el-menu-item>
                                     <el-tooltip content="点击关闭连接" placement="left">
-                                        <el-menu-item v-on:click="closeVisitor(visitor.visitor_id)" style="padding-left:2px;">
+                                        <el-menu-item v-on:click="closeVisitor(visitor.visitor_id)" style="padding-left:2px;color: #666;">
                                             <i class="el-icon-circle-close"></i>
                                             <span slot="title">状态：<{visitor.status}></span>
                                         </el-menu-item>
                                     </el-tooltip>
                                     <el-tooltip  v-for="v in visitorExtra" :content="v.val" placement="left">
-                                        <el-menu-item  style="padding-left:2px;">
+                                        <el-menu-item  style="padding-left:2px;color: #666;">
                                             <i class="el-icon-paperclip"></i>
                                             <span slot="title"><{v.key}>：<{v.val}></span>
                                         </el-menu-item>
