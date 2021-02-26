@@ -32,7 +32,8 @@ GOFLY.init=function(config){
         this.GOFLY_EXTRA=config.GOFLY_EXTRA;
     }
     if(this.GOFLY_EXTRA==""){
-        this.GOFLY_EXTRA='{"refer":"'+document.referrer+'","host":"'+document.location.href+'"}';
+        var refer=document.referrer?document.referrer:"无";
+        this.GOFLY_EXTRA='{"refer":"'+refer+'","host":"'+document.location.href+'"}';
     }
     this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
         if (typeof config.GOFLY_LANG!="undefined"){
