@@ -156,4 +156,7 @@
         right: 0;
         text-align: left;
     }
+    .launchButtonNotice:after{
+        right: 49%;
+    }
 }
