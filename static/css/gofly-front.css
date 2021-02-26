@@ -10,10 +10,8 @@
     margin: 0 auto;
     display: block;
     clear: both;
-    margin-top: 15px!important;
     border-radius: 4px;
     background-color: #fff;
-    overflow: hidden;
     box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
     position: absolute;
     bottom: 60px;
@@ -22,6 +20,18 @@
     line-height: 1.5;
     font-size: 14px;
     display: none;
+}
+.launchButtonNotice:after{
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top-color: rgba(255,255,255,1);
+    z-index: 1;
+    position: absolute;
+    bottom: -12px;
+    left: 40px;
 }
 
 .launchButtonNotice a{
