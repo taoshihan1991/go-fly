@@ -157,7 +157,12 @@ server {
         #listen          80; 
         server_name  gofly.sopans.com;
         access_log  /var/log/nginx/gofly.sopans.com.access.log  main;
+        location /static {
+                root /var/www/html/go-fly;//自己的部署路径
+        }
         location / {
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
                 proxy_pass http://127.0.0.1:8081;
                     proxy_http_version 1.1;
                     proxy_set_header X-Real-IP $remote_addr;
@@ -170,7 +175,12 @@ server{
        listen 80;
         server_name  gofly.sopans.com;
         access_log  /var/log/nginx/gofly.sopans.com.access.log  main;
+        location /static {
+                root /var/www/html/go-fly;//自己的部署路径
+        }        
         location / {
+                add_header Access-Control-Allow-Origin *;
+                add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
                 proxy_pass http://127.0.0.1:8081;
                     proxy_http_version 1.1;
                     proxy_set_header X-Real-IP $remote_addr;
