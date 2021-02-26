@@ -31,7 +31,9 @@ GOFLY.init=function(config){
     if (typeof config.GOFLY_EXTRA!="undefined"){
         this.GOFLY_EXTRA=config.GOFLY_EXTRA;
     }
-
+    if(this.GOFLY_EXTRA==""){
+        this.GOFLY_EXTRA='{"refer":"'+document.referrer+'","host":"'+document.location.href+'"}';
+    }
     this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
         if (typeof config.GOFLY_LANG!="undefined"){
             _this.GOFLY_LANG=config.GOFLY_LANG;
