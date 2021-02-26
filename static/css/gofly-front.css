@@ -31,7 +31,7 @@
     z-index: 1;
     position: absolute;
     bottom: -12px;
-    left: 40px;
+    right: 40px;
 }
 
 .launchButtonNotice a{
