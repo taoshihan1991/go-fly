@@ -39,6 +39,7 @@ func install() {
 			log.Println(sql, "\t success!")
 		} else {
 			log.Println(sql, err, "\t failed!")
+			os.Exit(1)
 		}
 	}
 }

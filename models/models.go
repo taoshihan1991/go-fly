@@ -36,8 +36,7 @@ func init() {
 	InitConfig()
 }
 func Execute(sql string) error {
-	DB.Exec(sql)
-	return DB.Error
+	return DB.Exec(sql).Error
 }
 func CloseDB() {
 	defer DB.Close()

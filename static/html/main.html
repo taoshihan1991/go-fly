@@ -89,6 +89,11 @@
             openIframeUrl(url){
                 this.iframeUrl=url;
             },
+            //退出
+            logout(){
+                localStorage.removeItem("token");
+                this.openIframeUrl('/login');
+            },
             //跳转
             openUrl(url){
                 window.location.href=url;

@@ -16,7 +16,7 @@
             <el-avatar :size="30" :src="adminAvator"></el-avatar>
             <span v-html="adminRole"></span>
         </template>
-        <el-menu-item  v-on:click="openIframeUrl('/login')">
+        <el-menu-item  v-on:click="logout()">
             退出
         </el-menu-item>
     </el-submenu>
