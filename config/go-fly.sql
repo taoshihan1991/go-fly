@@ -73,7 +73,7 @@ CREATE TABLE `role` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
-(1, '普通客服', 'GET', 'GET:/kefuinfo,GET:/kefulist,GET:/roles'),
+(1, '普通客服', 'GET', 'GET:/kefuinfo,GET:/kefulist,GET:/roles,POST:/notice_save,POST:/notice'),
 (2, '管理员', '*', '*')|
 
 DROP TABLE IF EXISTS `welcome`|
