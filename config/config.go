@@ -10,7 +10,7 @@ import (
 
 var (
 	PageSize        uint = 10
-	VisitorPageSize uint = 10
+	VisitorPageSize uint = 8
 	Version              = "0.1.2"
 	GoflyConfig     *Config
 )
