@@ -147,8 +147,12 @@ func GetVisitor(c *gin.Context) {
 // @Router /visitors [get]
 func GetVisitors(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
+	pagesize, _ := strconv.Atoi(c.Query("pagesize"))
+	if pagesize == 0 {
+		pagesize = int(config.VisitorPageSize)
+	}
 	kefuId, _ := c.Get("kefu_name")
-	vistors := models.FindVisitorsByKefuId(uint(page), config.VisitorPageSize, kefuId.(string))
+	vistors := models.FindVisitorsByKefuId(uint(page), uint(pagesize), kefuId.(string))
 	count := models.CountVisitorsByKefuId(kefuId.(string))
 	c.JSON(200, gin.H{
 		"code": 200,
