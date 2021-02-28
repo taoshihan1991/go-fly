@@ -61,7 +61,7 @@
 
         github: https://github.com/taoshihan1991/go-fly/releases/download/0.3.1/go-fly-0.3.1.zip
    
-        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/620113/download/go-fly-0.3.1.zip
+        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/622210/download/gofly-0.3.2.zip
    
    2) 文件解压缩 
    
@@ -70,7 +70,7 @@
             linux服务器:
             mkdir go-fly
             cd go-fly
-            wget https://gitee.com/taoshihan/go-fly/attach_files/620113/download/go-fly-0.3.1.zip
+            wget https://gitee.com/taoshihan/go-fly/attach_files/622210/download/gofly-0.3.2.zip
             unzip gofly-0.2.3.zip
             chmod 0777 -R ./
         
@@ -193,6 +193,15 @@ server{
 
 ### 更新日志
 
+##### V0.3.2
+   1.修改访客界面样式，更加简洁扁平
+   
+   2.修改自动欢迎界面样式增加聊天框效果
+   
+   3.修改数据库时间字段类型,兼容mysql5.7
+   
+   4.修复数据库执行sql获取错误信息
+   
 ##### V0.3.1
    1.修改在线咨询浮框样式
    
