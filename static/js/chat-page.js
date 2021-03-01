@@ -359,6 +359,7 @@ new Vue({
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
+                _this.scrollBottom();
                 if(!_this.socketClosed){
                     return;
                 }
