@@ -60,6 +60,8 @@ GOFLY.init=function(config){
         var msg=e.data;
         if(msg.type=="message"){
             _this.flashTitle();//标题闪烁
+            $("#launchNoticeContent").html(replaceContent(msg.data.content,_this.GOFLY_URL));
+            $("#launchButtonNotice").show();
         }
     });
     window.onfocus = function () {
@@ -131,7 +133,7 @@ GOFLY.getNotice=function(){
                     var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+_this.GOFLY_URL+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span>" +
                         "<span id='launchNoticeClose' class='flyClose'>×</span>" +
                         "</div>";
-                    welcomeHtml+="<div>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
+                    welcomeHtml+="<div id='launchNoticeContent'>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
                     $("#launchButtonNotice").html(welcomeHtml).show();
                     i++;
                     $("#launchIcon").text(i).show();
@@ -187,6 +189,10 @@ GOFLY.showKefu=function (){
 }
 GOFLY.layerOpen=function (){
     if (this.launchButtonFlag) return;
+    if($("#layui-layer1").css("display")=="none"){
+        $("#layui-layer1").show();
+        return;
+    }
     var _this=this;
     layer.open({
         type: 2,
@@ -200,6 +206,12 @@ GOFLY.layerOpen=function (){
         end: function(){
             _this.launchButtonFlag=false;
             $(".launchButtonBox").show();
+        },
+        cancel: function(index, layero){
+            $("#layui-layer1").hide();
+            _this.launchButtonFlag=false;
+            $(".launchButtonBox").show();
+            return false;
         }
     });
 }
