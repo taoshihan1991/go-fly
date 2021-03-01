@@ -255,17 +255,17 @@ func SendCloseMessageV2(c *gin.Context) {
 		})
 		return
 	}
-	msg := TypeMessage{
-		Type: "close",
-		Data: visitorId,
-	}
-	str, _ := json.Marshal(msg)
-	for _, visitor := range ws.ClientList {
-		if visitorId == visitor.Id {
-			if err := visitor.Conn.WriteMessage(websocket.TextMessage, str); err != nil {
-				visitor.Conn.Close()
-				delete(ws.ClientList, visitorId)
-			}
+
+	oldUser, ok := ws.ClientList[visitorId]
+	if oldUser != nil || ok {
+		msg := TypeMessage{
+			Type: "close",
+			Data: visitorId,
+		}
+		str, _ := json.Marshal(msg)
+		if err := oldUser.Conn.WriteMessage(websocket.TextMessage, str); err != nil {
+			oldUser.Conn.Close()
+			delete(ws.ClientList, visitorId)
 		}
 	}
 	c.JSON(200, gin.H{
