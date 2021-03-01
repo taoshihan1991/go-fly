@@ -112,6 +112,8 @@ GOFLY.clickBtn=function (){
     });
     if(this.GOFLY_AUTO_OPEN){
         _this.showKefu();
+        $(".launchButtonBox").show();
+        this.launchButtonFlag=false;
     }
     $("body").on("click","#launchNoticeClose",function() {
         $("#launchButtonNotice").hide();

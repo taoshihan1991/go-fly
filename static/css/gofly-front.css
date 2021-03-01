@@ -127,6 +127,9 @@
     line-height: 30px;
     cursor: pointer;
 }
+#layui-layer1{
+    display: none;
+}
 @-webkit-keyframes bounce-up {
     25% {-webkit-transform: translateY(4px);}
     50%, 100% {-webkit-transform: translateY(0);}
