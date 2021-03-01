@@ -4,6 +4,7 @@ var GOFLY={
     GOFLY_BTN_TEXT:"Chat with me",
     GOFLY_LANG:"en",
     GOFLY_EXTRA:"",
+    GOFLY_AUTO_OPEN:false,
 };
 GOFLY.launchButtonFlag=false;
 GOFLY.titleTimer=0;
@@ -30,6 +31,9 @@ GOFLY.init=function(config){
     }
     if (typeof config.GOFLY_EXTRA!="undefined"){
         this.GOFLY_EXTRA=config.GOFLY_EXTRA;
+    }
+    if (typeof config.GOFLY_AUTO_OPEN!="undefined"){
+        this.GOFLY_AUTO_OPEN=config.GOFLY_AUTO_OPEN;
     }
     if(this.GOFLY_EXTRA==""){
         var refer=document.referrer?document.referrer:"无";
@@ -106,6 +110,9 @@ GOFLY.clickBtn=function (){
     $(".launchButton").on("click",function() {
         _this.showKefu();
     });
+    if(this.GOFLY_AUTO_OPEN){
+        _this.showKefu();
+    }
     $("body").on("click","#launchNoticeClose",function() {
         $("#launchButtonNotice").hide();
     });
@@ -174,11 +181,15 @@ GOFLY.isIE=function(){
 GOFLY.showKefu=function (){
     if (this.launchButtonFlag) return;
     var width=$(window).width();
-    if(width<768 || this.isIE()>0){
+    if(this.isIE()>0){
         this.windowOpen();
         return;
     }
-    this.layerOpen();
+    if(width<768){
+        this.layerOpen("100%","100%");
+        return;
+    }
+    this.layerOpen("400px","530px");
     this.launchButtonFlag=true;
     $(".launchButtonBox").hide();
     var _this=this;
@@ -191,7 +202,7 @@ GOFLY.showKefu=function (){
         document.title = _this.originTitle;
     };
 }
-GOFLY.layerOpen=function (){
+GOFLY.layerOpen=function (width,height){
     if (this.launchButtonFlag) return;
     if($("#layui-layer1").css("display")=="none"){
         $("#layui-layer1").show();
@@ -203,7 +214,7 @@ GOFLY.layerOpen=function (){
         title: this.chatPageTitle,
         closeBtn: 1, //不显示关闭按钮
         shade: 0,
-        area: ['400px', '530px'],
+        area: [width, height],
         offset: 'rb', //右下角弹出
         anim: 2,
         content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA , 'yes'], //iframe的url，no代表不显示滚动条
