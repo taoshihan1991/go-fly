@@ -84,7 +84,7 @@ new Vue({
                 this.socket.close();
                 this.socketClosed=true;
             }
-            window.parent.postMessage(redata);
+            window.parent.postMessage(redata,"*");
         },
         //发送给客户
         chatToUser:function() {
