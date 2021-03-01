@@ -186,6 +186,10 @@ GOFLY.showKefu=function (){
         clearTimeout(_this.titleTimer);
         document.title = _this.originTitle;
     });
+    window.onfocus = function () {
+        clearTimeout(_this.titleTimer);
+        document.title = _this.originTitle;
+    };
 }
 GOFLY.layerOpen=function (){
     if (this.launchButtonFlag) return;
@@ -227,7 +231,7 @@ GOFLY.flashTitle=function () {
         document.title = '【】' + this.originTitle;
     }
     if (this.titleNum == 2) {
-        document.title = '【你有一条消息】' + this.originTitle;
+        document.title = '【new message】' + this.originTitle;
     }
     this.titleTimer = setTimeout("GOFLY.flashTitle()", 500);
 }
