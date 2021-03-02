@@ -335,7 +335,7 @@ var app=new Vue({
                     if(data.code==200 && data.result!=null){
                         let msgList=data.result;
                         _this.msgList=[];
-                        if(!isAll){
+                        if(!isAll&&msgList.length>10){
                             var i=msgList.length-10
                         }else{
                             var i=0;
