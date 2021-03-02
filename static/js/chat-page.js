@@ -199,7 +199,7 @@ new Vue({
             // }
         },
         //获取信息列表
-        getMesssagesByVisitorId:function(){
+        getMesssagesByVisitorId:function(isAll){
             let _this=this;
             $.ajax({
                 type:"get",
@@ -208,7 +208,12 @@ new Vue({
                     if(data.code==200 && data.result!=null&&data.result.length!=0){
                         let msgList=data.result;
                         _this.msgList=[];
-                        for(let i=0;i<msgList.length;i++){
+                        if(!isAll&&msgList.length>10){
+                            var i=msgList.length-10
+                        }else{
+                            var i=0;
+                        }
+                        for(;i<msgList.length;i++){
                             let visitorMes=msgList[i];
                             let content = {}
                             if(visitorMes["mes_type"]=="kefu"){
