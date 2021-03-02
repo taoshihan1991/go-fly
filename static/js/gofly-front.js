@@ -221,7 +221,7 @@ GOFLY.layerOpen=function (width,height){
         anim: 2,
         content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA , 'yes'], //iframe的url，no代表不显示滚动条
         success:function(){
-            if($("#layui-layer1").css("display")=="none"){
+            if(!_this.GOFLY_AUTO_OPEN && $("#layui-layer1").css("display")=="none"){
                 $("#layui-layer1").show();
             }
         },
