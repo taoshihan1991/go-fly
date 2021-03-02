@@ -269,7 +269,7 @@ var app=new Vue({
         //处理正在输入
         handleInputing:function (retData) {
             if(retData.from==this.visitor.visitor_id){
-                this.chatInputing="正在输入："+retData.content+"...";
+                this.chatInputing="|正在输入："+retData.content+"...";
                 if(retData.content==""){
                     this.chatInputing="";
                 }

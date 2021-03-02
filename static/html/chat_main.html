@@ -27,7 +27,7 @@
         }
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
-        .chatBox{width: 100%;height:63%;position: absolute;top: 75px;overflow-y: auto;overflow-x: hidden;}
+        .chatBox{width: 100%;height:380px;overflow-y: auto;overflow-x: hidden;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
         .funcBtns{margin: 2px 0px;color: #7f7f7f;border-bottom: 1px solid #e6e6e6;font-size: 12px;padding: 5px 0px;}
     </style>
@@ -82,7 +82,7 @@
                                 :closable="false"
                                 :type="chatTitleType"
                                 show-icon
-                                :title="chatTitle"
+                                :title="chatTitle+chatInputing"
                                 >
                         </el-alert>
                         <div class="funcBtns" v-show="visitor.visitor_id">
@@ -101,13 +101,6 @@
                             </el-row>
                         </div>
                         <div class="kefuFuncBox">
-                            <el-alert
-                                    v-show="chatInputing!=''"
-                                    :closable="false"
-                                    show-icon
-                                    :title="chatInputing"
-                            >
-                            </el-alert>
                             <div class="iconBtnsBox">
                                 <div class="faceBox kefuFaceBox">
                                     <ul class="faceBoxList">
