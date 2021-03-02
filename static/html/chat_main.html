@@ -86,6 +86,7 @@
                                 >
                         </el-alert>
                         <div class="funcBtns" v-show="visitor.visitor_id">
+                            <el-button v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" size="small" type="success" plain icon="el-icon-user">聊天记录</el-button>
                             <el-button v-on:click="transKefu" size="small" type="success" plain icon="el-icon-position">转接</el-button>
                             <el-button v-on:click="closeVisitor(visitor.visitor_id)" size="small" type="success" plain icon="el-icon-close">结束</el-button>
                         </div>
