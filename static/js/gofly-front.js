@@ -220,6 +220,11 @@ GOFLY.layerOpen=function (width,height){
         offset: 'rb', //右下角弹出
         anim: 2,
         content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA , 'yes'], //iframe的url，no代表不显示滚动条
+        success:function(){
+            if($("#layui-layer1").css("display")=="none"){
+                $("#layui-layer1").show();
+            }
+        },
         end: function(){
             _this.launchButtonFlag=false;
             $(".launchButtonBox").show();
