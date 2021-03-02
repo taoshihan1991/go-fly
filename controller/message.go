@@ -263,10 +263,10 @@ func SendCloseMessageV2(c *gin.Context) {
 			Data: visitorId,
 		}
 		str, _ := json.Marshal(msg)
-		if err := oldUser.Conn.WriteMessage(websocket.TextMessage, str); err != nil {
-			oldUser.Conn.Close()
-			delete(ws.ClientList, visitorId)
-		}
+		err := oldUser.Conn.WriteMessage(websocket.TextMessage, str)
+		oldUser.Conn.Close()
+		delete(ws.ClientList, visitorId)
+		tools.Logger().Println("close_message", oldUser, err)
 	}
 	c.JSON(200, gin.H{
 		"code": 200,
