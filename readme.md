@@ -190,7 +190,62 @@ server{
         }
 }
 ```
+### 宝塔部署
 
+原文地址：https://www.zqcnc.cn/post/99.html
+
+#### 宝塔环境
+1. 创建一个静态站点，地址为想要访问的域名
+![](https://i.aweoo.com/imgs/2021/03/9662692b88b802f9.png)
+2. 为该站点配置证书
+![](https://i.aweoo.com/imgs/2021/03/9c2f91a215d37b2f.png)
+3. 设置反向代理
+![](https://i.aweoo.com/imgs/2021/03/61cdce0167949ff4.png)
+4. 修改反代配置
+![](https://i.aweoo.com/imgs/2021/03/2a5aa9783afa9a19.png)
+**按照图示，将对应代码加入到配置文件中**
+```shell
+#PROXY-START/
+location  ~* \.(php|jsp|cgi|asp|aspx)$
+{
+	add_header Access-Control-Allow-Origin *;
+	add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+    proxy_pass http://127.0.0.1:8081;
+	proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;
+    
+	proxy_set_header Upgrade $http_upgrade;
+	proxy_set_header Connection "upgrade";
+	proxy_set_header Origin "";
+}
+location /
+{
+	add_header Access-Control-Allow-Origin *;
+	add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+    proxy_pass http://127.0.0.1:8081;
+	proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;
+    
+	proxy_set_header Upgrade $http_upgrade;
+	proxy_set_header Connection "upgrade";
+	proxy_set_header Origin "";
+    
+    add_header X-Cache $upstream_cache_status;
+    
+    #Set Nginx Cache
+    
+    	add_header Cache-Control no-cache;
+    expires 12h;
+}
+
+#PROXY-END/
+```
 ### 更新日志
 
 ##### V0.3.2

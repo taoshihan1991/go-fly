@@ -409,4 +409,9 @@
     position: relative;
     margin-top: 4px;
 }
+.kefuFuncBox{
+    position: absolute;
+    bottom: 64px;
+    width: 100%;
+}
 .clear{clear:both;}
