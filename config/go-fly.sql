@@ -34,7 +34,8 @@ CREATE TABLE `visitor` (
  `extra` varchar(2048) NOT NULL DEFAULT '',
  PRIMARY KEY (`id`),
  UNIQUE KEY `visitor_id` (`visitor_id`),
- KEY `to_id` (`to_id`)
+ KEY `to_id` (`to_id`),
+ KEY `idx_update` (`updated_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 
 DROP TABLE IF EXISTS `message`|

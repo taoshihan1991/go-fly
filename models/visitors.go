@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Visitor struct {
 	Model
@@ -54,11 +56,13 @@ func FindVisitors(page uint, pagesize uint) []Visitor {
 }
 func FindVisitorsByKefuId(page uint, pagesize uint, kefuId string) []Visitor {
 	offset := (page - 1) * pagesize
-	if offset < 0 {
+	if offset <= 0 {
 		offset = 0
 	}
 	var visitors []Visitor
-	DB.Where("to_id=?", kefuId).Offset(offset).Limit(pagesize).Order("status desc, updated_at desc").Find(&visitors)
+	//sql := fmt.Sprintf("select * from visitor where id>=(select id from visitor where  to_id='%s' order by updated_at desc limit %d,1) and to_id='%s' order by updated_at desc limit %d ", kefuId, offset, kefuId, pagesize)
+	//DB.Raw(sql).Scan(&visitors)
+	DB.Where("to_id=?", kefuId).Offset(offset).Limit(pagesize).Order("updated_at desc").Find(&visitors)
 	return visitors
 }
 func FindVisitorsOnline() []Visitor {
