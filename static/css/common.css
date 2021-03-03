@@ -411,7 +411,10 @@
 }
 .kefuFuncBox{
     position: absolute;
-    bottom: 64px;
+    bottom: 0px;
+    z-index: 99;
+    padding-bottom:10px;
+    background: #fff;
     width: 100%;
 }
 .clear{clear:both;}
