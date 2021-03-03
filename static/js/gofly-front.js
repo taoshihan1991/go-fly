@@ -110,11 +110,7 @@ GOFLY.clickBtn=function (){
     $(".launchButton").on("click",function() {
         _this.showKefu();
     });
-    if(this.GOFLY_AUTO_OPEN){
-        _this.showKefu();
-        $(".launchButtonBox").show();
-        this.launchButtonFlag=false;
-    }
+
     $("body").on("click","#launchNoticeClose",function() {
         $("#launchButtonNotice").hide();
     });
@@ -124,6 +120,11 @@ GOFLY.getNotice=function(){
     var _this=this;
     $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
         _this.chatPageTitle="<img style='margin-top: 5px;' src='"+_this.GOFLY_URL+res.result.avatar+"' class='flyAvatar'>"+res.result.username;
+        if(_this.GOFLY_AUTO_OPEN){
+            _this.showKefu();
+            $(".launchButtonBox").show();
+            _this.launchButtonFlag=false;
+        }
         if (res.result.welcome != null) {
             var msg = res.result.welcome;
             var len=msg.length;
