@@ -103,9 +103,12 @@
     height: 30px;
     border-radius: 50%;
     display: inline-block;
-    border:1px solid #cccccc;
+    border:2px solid #fff;
     float: left;
     margin-right: 5px;
+}
+.layui-layer-title .flyAvatar{
+    margin-top: 5px;
 }
 .launchButtonNotice .flyUsername{
     font-weight: bold;
@@ -129,6 +132,20 @@
 }
 #layui-layer1{
     display: none;
+}
+.launchPointer{
+    background: #3cc51f;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px;
+    left: 42px;
+    border:2px solid #fff;
+}
+.launchPointer.offline{
+    background: #ce3c39;
 }
 @-webkit-keyframes bounce-up {
     25% {-webkit-transform: translateY(4px);}

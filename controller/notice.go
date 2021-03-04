@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
+	"github.com/taoshihan1991/imaptool/ws"
 	"log"
 	"net/http"
 	"time"
@@ -27,6 +28,12 @@ func GetNotice(c *gin.Context) {
 		}
 		result = append(result, h)
 	}
+	status := "online"
+	if kefus, ok := ws.KefuList[kefuId]; !ok {
+		if len(kefus) <= 0 {
+			status = "offline"
+		}
+	}
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
@@ -34,6 +41,7 @@ func GetNotice(c *gin.Context) {
 			"welcome":  result,
 			"username": user.Nickname,
 			"avatar":   user.Avator,
+			"status":   status,
 		},
 	})
 }
