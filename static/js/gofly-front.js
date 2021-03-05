@@ -4,7 +4,7 @@ var GOFLY={
     GOFLY_BTN_TEXT:"Chat with me",
     GOFLY_LANG:"en",
     GOFLY_EXTRA:"",
-    GOFLY_AUTO_OPEN:false,
+    GOFLY_AUTO_OPEN:true,
 };
 GOFLY.launchButtonFlag=false;
 GOFLY.titleTimer=0;
