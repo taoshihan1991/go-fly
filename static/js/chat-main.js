@@ -134,7 +134,9 @@ var app=new Vue({
                 for(let i=0;i<this.users.length;i++){
                     if(this.users[i].uid==msg.id){
                         this.$set(this.users[i],'last_message',msg.content);
-                        this.$set(this.users[i],'hidden_new_message',false);
+                        if(this.visitor.visitor_id!=msg.id){
+                            this.$set(this.users[i],'hidden_new_message',false);
+                        }
                     }
                 }
                 this.scrollBottom();
@@ -218,6 +220,7 @@ var app=new Vue({
             retData.last_message=retData.last_message;
             retData.status=1;
             retData.name=retData.username;
+            retData.hidden_new_message=true;
             for(let i=0;i<this.users.length;i++){
                 if(this.users[i].uid==retData.uid){
                     flag=true;
@@ -323,6 +326,9 @@ var app=new Vue({
                 success: function(data) {
                     if(data.code==200 && data.result!=null){
                         _this.users=data.result;
+                        for(var i=0;i<_this.users.length;i++){
+                            _this.$set(_this.users[i],'hidden_new_message',true);
+                        }
                     }
                     if(data.code!=200){
                         _this.$message({
