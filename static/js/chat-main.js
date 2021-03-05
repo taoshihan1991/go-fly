@@ -274,6 +274,11 @@ var app=new Vue({
                     this.chatInputing="";
                 }
             }
+            for(var i=0;i<this.users.length;i++){
+                if(this.users[i].uid==retData.from){
+                    this.$set(this.users[i],'last_message',retData.content+"...");
+                }
+            }
         },
         //获取客服信息
         getKefuInfo(){
