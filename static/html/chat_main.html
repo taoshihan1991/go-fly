@@ -43,7 +43,9 @@
                                 <el-row  v-for="item in users" :key="item.uid" class="">
                                     <div :title="item.last_message" style="cursor:pointer" class="onlineUsers hasLastMsg" v-bind:class="{'cur': item.uid==currentGuest }" v-on:click="talkTo(item.uid,item.username)">
                                         <el-col :span="4">
-                                            <el-avatar :size="40" :src="item.avator"></el-avatar>
+                                            <el-badge value="new" :hidden="item.hidden_new_message" class="item">
+                                                <el-avatar :size="40" :src="item.avator"></el-avatar>
+                                            </el-badge>
                                         </el-col>
                                         <el-col :span="16">
                                             <div style="height:20px;overflow: hidden"><{item.username}></div>

@@ -134,6 +134,7 @@ var app=new Vue({
                 for(let i=0;i<this.users.length;i++){
                     if(this.users[i].uid==msg.id){
                         this.$set(this.users[i],'last_message',msg.content);
+                        this.$set(this.users[i],'hidden_new_message',false);
                     }
                 }
                 this.scrollBottom();
@@ -165,6 +166,11 @@ var app=new Vue({
             this.getVistorInfo(guestId);
             //获取当前客户消息
             this.getMesssagesByVisitorId(guestId);
+            for(var i=0;i<this.users.length;i++){
+                if(this.users[i].uid==guestId){
+                    this.$set(this.users[i],'hidden_new_message',true);
+                }
+            }
         },
         //发送给客户
         chatToUser() {
