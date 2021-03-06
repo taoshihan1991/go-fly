@@ -66,6 +66,8 @@ GOFLY.init=function(config){
             _this.flashTitle();//标题闪烁
             $("#launchNoticeContent").html(replaceContent(msg.data.content,_this.GOFLY_URL));
             $("#launchButtonNotice").show();
+            var news=$("#launchIcon").text();
+            $("#launchIcon").text(++news).show();
         }
     });
     window.onfocus = function () {
@@ -109,6 +111,7 @@ GOFLY.clickBtn=function (){
     $('body').append(html);
     $(".launchButton").on("click",function() {
         _this.showKefu();
+        $("#launchIcon").text(0).hide();
     });
 
     $("body").on("click","#launchNoticeClose",function() {
