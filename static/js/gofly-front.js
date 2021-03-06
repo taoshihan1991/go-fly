@@ -123,6 +123,10 @@ GOFLY.getNotice=function(){
             _this.chatPageTitle="<div class='launchPointer offline'></div>";
         }else{
             _this.chatPageTitle="<div class='launchPointer'></div>";
+            setTimeout(function(){
+                var userInfo="<img style='margin-top: 8px;' class='flyAvatar' src='"+_this.GOFLY_URL+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span>"
+                $('.launchButtonText').html(userInfo);
+            },3000);
         }
         _this.chatPageTitle+="<img src='"+_this.GOFLY_URL+res.result.avatar+"' class='flyAvatar'>"+res.result.username;
         if(_this.GOFLY_AUTO_OPEN){

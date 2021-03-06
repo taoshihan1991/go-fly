@@ -118,7 +118,9 @@ func OneKefuMessage(toId string, str []byte) {
 	mKefuConns := KefuList[toId]
 	if mKefuConns != nil {
 		for _, kefu := range mKefuConns {
+			Mux.Lock()
 			kefu.Conn.WriteMessage(websocket.TextMessage, str)
+			Mux.Unlock()
 		}
 	}
 	SuperAdminMessage(str)
