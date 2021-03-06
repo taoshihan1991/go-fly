@@ -63,7 +63,11 @@ GOFLY.init=function(config){
     window.addEventListener('message',function(e){
         var msg=e.data;
         if(msg.type=="message"){
-            _this.flashTitle();//标题闪烁
+            var width=$(window).width();
+            if(width>768){
+                _this.flashTitle();//标题闪烁
+            }
+            if (this.launchButtonFlag) return;
             $("#launchNoticeContent").html(replaceContent(msg.data.content,_this.GOFLY_URL));
             $("#launchButtonNotice").show();
             var news=$("#launchIcon").text();
