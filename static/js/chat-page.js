@@ -347,7 +347,7 @@ new Vue({
                 if(_this.socket!=null){
                     _this.socket.send(JSON.stringify(mes));
                 }
-            },60000);
+            },10000);
         },
         //初始化
         init:function(){
