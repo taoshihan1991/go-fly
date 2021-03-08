@@ -115,14 +115,17 @@ func SuperAdminMessage(str []byte) {
 //给指定客服发消息
 func OneKefuMessage(toId string, str []byte) {
 	//新版
-	mKefuConns := KefuList[toId]
-	if mKefuConns != nil {
+	mKefuConns, ok := KefuList[toId]
+	if mKefuConns != nil && ok {
+		log.Println("OneKefuMessage lock")
+		Mux.Lock()
+		defer Mux.Unlock()
+		log.Println("OneKefuMessage unlock")
 		for _, kefu := range mKefuConns {
-			Mux.Lock()
 			kefu.Conn.WriteMessage(websocket.TextMessage, str)
-			Mux.Unlock()
 		}
 	}
+
 	SuperAdminMessage(str)
 }
 
