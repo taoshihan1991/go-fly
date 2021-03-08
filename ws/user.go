@@ -71,34 +71,6 @@ func AddKefuToList(kefu *User) {
 	KefuList[kefu.Id] = newKefuConns
 }
 
-//后端广播发送消息
-func kefuServerBackend() {
-	for {
-		message := <-message
-		var typeMsg TypeMessage
-		json.Unmarshal(message.content, &typeMsg)
-		conn := message.conn
-		if typeMsg.Type == nil || typeMsg.Data == nil {
-			continue
-		}
-		msgType := typeMsg.Type.(string)
-		log.Println("客户端:", string(message.content))
-
-		switch msgType {
-		//心跳
-		case "ping":
-			msg := TypeMessage{
-				Type: "pong",
-			}
-			str, _ := json.Marshal(msg)
-			Mux.Lock()
-			conn.WriteMessage(websocket.TextMessage, str)
-			Mux.Unlock()
-		}
-
-	}
-}
-
 //给超管发消息
 func SuperAdminMessage(str []byte) {
 	return
@@ -117,11 +89,11 @@ func OneKefuMessage(toId string, str []byte) {
 	//新版
 	mKefuConns, ok := KefuList[toId]
 	if mKefuConns != nil && ok {
-		log.Println("OneKefuMessage lock")
-		Mux.Lock()
-		defer Mux.Unlock()
-		log.Println("OneKefuMessage unlock")
 		for _, kefu := range mKefuConns {
+			log.Println("OneKefuMessage lock")
+			Mux.Lock()
+			defer Mux.Unlock()
+			log.Println("OneKefuMessage unlock")
 			kefu.Conn.WriteMessage(websocket.TextMessage, str)
 		}
 	}
