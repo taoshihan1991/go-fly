@@ -59,9 +59,9 @@
 
    1) 下载地址 
 
-        github: https://github.com/taoshihan1991/go-fly/releases/download/0.3.1/go-fly-0.3.1.zip
+        github: https://github.com/taoshihan1991/go-fly/releases/
    
-        gitee(国内): https://gitee.com/taoshihan/go-fly/attach_files/622210/download/gofly-0.3.2.zip
+        gitee(国内): https://gitee.com/taoshihan/go-fly/releases
    
    2) 文件解压缩 
    
@@ -70,8 +70,8 @@
             linux服务器:
             mkdir go-fly
             cd go-fly
-            wget https://gitee.com/taoshihan/go-fly/attach_files/622210/download/gofly-0.3.2.zip
-            unzip gofly-0.2.3.zip
+            wget xxxxxxxxxxx.zip
+            unzip xxxx.zip
             chmod 0777 -R ./
         
         导入数据库( 注意:会删除表并且清空数据 ) 
@@ -248,6 +248,20 @@ location /
 ```
 ### 更新日志
 
+##### V0.3.3
+
+1.访客/客服端聊天界面样式修改
+
+2.访客端展示客服头像信息
+
+3.访客到来自动打开,以及参数控制
+
+4.访客/客服端聊天信息默认折叠
+
+5.客服端新消息提醒标识
+
+6.客服端访客列表展示访客正在输入信息
+   
 ##### V0.3.2
    1.修改访客界面样式，更加简洁扁平
    
