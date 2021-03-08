@@ -21,12 +21,14 @@ type User struct {
 	Avator  string
 	To_id   string
 	Role_id string
+	Mux     sync.Mutex
 }
 type Message struct {
 	conn        *websocket.Conn
 	context     *gin.Context
 	content     []byte
 	messageType int
+	Mux         sync.Mutex
 }
 type TypeMessage struct {
 	Type interface{} `json:"type"`
@@ -126,9 +128,9 @@ func WsServerBackend() {
 				Type: "pong",
 			}
 			str, _ := json.Marshal(msg)
-			Mux.Lock()
+			message.Mux.Lock()
+			defer message.Mux.Unlock()
 			conn.WriteMessage(websocket.TextMessage, str)
-			Mux.Unlock()
 		case "inputing":
 			to := typeMsg.Data.(map[string]interface{})["to"].(string)
 			OneKefuMessage(to, message.content)

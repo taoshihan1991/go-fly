@@ -91,8 +91,8 @@ func OneKefuMessage(toId string, str []byte) {
 	if mKefuConns != nil && ok {
 		for _, kefu := range mKefuConns {
 			log.Println("OneKefuMessage lock")
-			Mux.Lock()
-			defer Mux.Unlock()
+			kefu.Mux.Lock()
+			defer kefu.Mux.Unlock()
 			log.Println("OneKefuMessage unlock")
 			kefu.Conn.WriteMessage(websocket.TextMessage, str)
 		}
@@ -113,6 +113,8 @@ func SendPingToKefuClient() {
 			if kefuConn == nil {
 				continue
 			}
+			kefuConn.Mux.Lock()
+			defer kefuConn.Mux.Unlock()
 			err := kefuConn.Conn.WriteMessage(websocket.TextMessage, str)
 			if err == nil {
 				newKefuConns = append(newKefuConns, kefuConn)
