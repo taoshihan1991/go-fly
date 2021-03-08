@@ -292,6 +292,10 @@ func UploadImg(c *gin.Context) {
 			})
 			return
 		}
+		isMainUploadExist, _ := tools.IsFileExist(config.Upload)
+		if !isMainUploadExist {
+			os.Mkdir(config.Upload, os.ModePerm)
+		}
 		fileName := tools.Md5(fmt.Sprintf("%s%s", f.Filename, time.Now().String()))
 		fildDir := fmt.Sprintf("%s%d%s/", config.Upload, time.Now().Year(), time.Now().Month().String())
 		isExist, _ := tools.IsFileExist(fildDir)
