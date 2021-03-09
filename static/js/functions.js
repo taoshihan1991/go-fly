@@ -36,6 +36,9 @@ function notify(title, options, callback) {
         notification.onclick = function(event) {
             callback(notification, event);
         }
+        setTimeout(function () {
+            notification.close();
+        },3000);
     }
 }
 var titleTimer,titleNum=0;
