@@ -315,6 +315,8 @@
     border-radius: 5px;
     display: inline-block;
     margin-left: 6px;
+    line-height: 21px;
+    font-size: 14px;
 }
 .chatContent a{color: #07a9fe;text-decoration: none;}
 .chatContent:before,.chatContent:after {
