@@ -91,10 +91,10 @@ func OneKefuMessage(toId string, str []byte) {
 	mKefuConns, ok := KefuList[toId]
 	if mKefuConns != nil && ok {
 		for _, kefu := range mKefuConns {
-			//log.Println("OneKefuMessage lock")
-			//kefu.Mux.Lock()
-			//defer kefu.Mux.Unlock()
-			//log.Println("OneKefuMessage unlock")
+			log.Println("OneKefuMessage lock")
+			kefu.Mux.Lock()
+			defer kefu.Mux.Unlock()
+			log.Println("OneKefuMessage unlock")
 			error := kefu.Conn.WriteMessage(websocket.TextMessage, str)
 			tools.Logger().Println("send_kefu_message", error, str)
 		}
