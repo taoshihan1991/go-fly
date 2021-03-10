@@ -13,6 +13,7 @@ new Vue({
         face:[],
         showKfonline:false,
         socketClosed:false,
+        focusSendConn:false,
         timer:null,
         sendDisabled:false,
         flyLang:GOFLY_LANG[LANG],
@@ -32,9 +33,11 @@ new Vue({
         OnOpen:function() {
             this.chatTitle=GOFLY_LANG[LANG]['connectok'];
             this.socketClosed=false;
+            this.focusSendConn=false;
         },
         OnMessage:function(e) {
             this.socketClosed=false;
+            this.focusSendConn=false;
             const redata = JSON.parse(e.data);
             if (redata.type == "kfOnline") {
                 let msg = redata.data
@@ -78,7 +81,15 @@ new Vue({
                 this.alertSound();//提示音
             }
             if (redata.type == "close") {
-                this.chatTitle="系统关闭连接!请重新打开页面";
+                this.chatTitle="系统自动关闭连接!点击会重连";
+                $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+                this.scrollBottom();
+                this.socket.close();
+                //this.socketClosed=true;
+                this.focusSendConn=true;
+            }
+            if (redata.type == "force_close") {
+                this.chatTitle="客服关闭连接!请重新打开页面";
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
                 this.socket.close();
@@ -152,7 +163,8 @@ new Vue({
             this.socket.send(JSON.stringify(message));
         },
         OnClose:function() {
-            this.socketClosed=true;
+            this.focusSendConn=true;
+            //this.socketClosed=true;
             // this.chatTitle="连接关闭!请重新打开页面";
             // $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
             // this.scrollBottom();
@@ -354,8 +366,10 @@ new Vue({
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
-                _this.scrollBottom();
-                if(!_this.socketClosed){
+                if(_this.socketClosed){
+                    return;
+                }
+                if(!_this.focusSendConn){
                     return;
                 }
                 _this.initConn();

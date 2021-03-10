@@ -259,7 +259,7 @@ func SendCloseMessageV2(c *gin.Context) {
 	oldUser, ok := ws.ClientList[visitorId]
 	if oldUser != nil || ok {
 		msg := TypeMessage{
-			Type: "close",
+			Type: "force_close",
 			Data: visitorId,
 		}
 		str, _ := json.Marshal(msg)
