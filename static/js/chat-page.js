@@ -81,7 +81,7 @@ new Vue({
                 this.alertSound();//提示音
             }
             if (redata.type == "close") {
-                this.chatTitle="系统自动关闭连接!点击会重连";
+                this.chatTitle=GOFLY_LANG[LANG]['closemes'];
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
                 this.socket.close();
@@ -89,7 +89,7 @@ new Vue({
                 this.focusSendConn=true;
             }
             if (redata.type == "force_close") {
-                this.chatTitle="客服关闭连接!请重新打开页面";
+                this.chatTitle=GOFLY_LANG[LANG]['forceclosemes'];
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
                 this.socket.close();
@@ -373,7 +373,7 @@ new Vue({
                     return;
                 }
                 _this.initConn();
-                _this.chatTitle="连接已重连";
+                _this.chatTitle=_this.flyLang['connectok'];
                 $(".chatBox").append("<div class=\"chatTime\">"+_this.chatTitle+"</div>");
                 _this.scrollBottom();
             }

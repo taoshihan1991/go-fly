@@ -8,6 +8,8 @@ var GOFLY_LANG={
         "moremessage":"点击more加载更多记录",
         "copyright":"GO-FLY1.0.0客服陶士涵提供技术支持",
         "textarea":"请输入内容",
+        "closemes":"系统自动关闭连接!点击会重连",
+        "forceclosemes":"客服关闭连接!请重新打开页面",
     },
     "en":{
         "sent":"Send",
@@ -18,5 +20,7 @@ var GOFLY_LANG={
         "moremessage":"click buuton show more messages",
         "copyright":"We run on GOFLY",
         "textarea":"Enter your message",
+        "closemes":"The system automatically closes the connection!",
+        "forceclosemes":"Admin closes the connection! please reload",
     },
 };
