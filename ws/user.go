@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/taoshihan1991/imaptool/models"
+	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 )
 
@@ -90,10 +91,11 @@ func OneKefuMessage(toId string, str []byte) {
 	mKefuConns, ok := KefuList[toId]
 	if mKefuConns != nil && ok {
 		for _, kefu := range mKefuConns {
-			log.Println("OneKefuMessage lock")
-			kefu.Mux.Lock()
-			defer kefu.Mux.Unlock()
-			log.Println("OneKefuMessage unlock")
+			//log.Println("OneKefuMessage lock")
+			//kefu.Mux.Lock()
+			//defer kefu.Mux.Unlock()
+			//log.Println("OneKefuMessage unlock")
+			tools.Logger().Println("send_kefu_message", websocket.TextMessage)
 			kefu.Conn.WriteMessage(websocket.TextMessage, str)
 		}
 	}
