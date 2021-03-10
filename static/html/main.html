@@ -1,6 +1,7 @@
 <html lang="cn">
 <head>
     <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
     <meta name="description" content="">
     <meta name="author" content="陶士涵">
     <title>GO语言开源客服系统-GOFLY</title>
@@ -74,7 +75,9 @@
                 var _this=this;
                 window.addEventListener('message',function(e){
                     var redata=e.data;
-                    console.log(redata);
+                    if(!redata.name||!redata.body){
+                        return;
+                    }
                     notify(redata.name, {
                         body: redata.body,
                         icon: redata.icon
