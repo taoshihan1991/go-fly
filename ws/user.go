@@ -95,8 +95,8 @@ func OneKefuMessage(toId string, str []byte) {
 			//kefu.Mux.Lock()
 			//defer kefu.Mux.Unlock()
 			//log.Println("OneKefuMessage unlock")
-			tools.Logger().Println("send_kefu_message", str)
-			kefu.Conn.WriteMessage(websocket.TextMessage, str)
+			error := kefu.Conn.WriteMessage(websocket.TextMessage, str)
+			tools.Logger().Println("send_kefu_message", error, str)
 		}
 	}
 
