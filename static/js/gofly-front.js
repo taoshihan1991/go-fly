@@ -12,6 +12,8 @@ GOFLY.titleNum=0;
 GOFLY.noticeTimer=null;
 GOFLY.originTitle=document.title;
 GOFLY.chatPageTitle="GOFLY";
+GOFLY.kefuName="";
+GOFLY.kefuAvator="";
 GOFLY.init=function(config){
     var _this=this;
     if(typeof config=="undefined"){
@@ -68,8 +70,11 @@ GOFLY.init=function(config){
                 _this.flashTitle();//标题闪烁
             }
             if (this.launchButtonFlag) return;
-            $("#launchNoticeContent").html(replaceContent(msg.data.content,_this.GOFLY_URL));
-            $("#launchButtonNotice").show();
+            var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+_this.GOFLY_URL+_this.kefuAvator+"'/> <span class='flyUsername'>"+_this.kefuName+"</span>" +
+                "<span id='launchNoticeClose' class='flyClose'>×</span>" +
+                "</div>";
+            welcomeHtml+="<div id='launchNoticeContent'>"+replaceContent(msg.data.content,_this.GOFLY_URL)+"</div>";
+            $("#launchButtonNotice").html(welcomeHtml).show();
             var news=$("#launchIcon").text();
             $("#launchIcon").text(++news).show();
         }
@@ -135,6 +140,8 @@ GOFLY.getNotice=function(){
                 $('.launchButtonText').html(userInfo);
             },3000);
         }
+        _this.kefuAvator=res.result.avatar;
+        _this.kefuName=res.result.username;
         _this.chatPageTitle+="<img src='"+_this.GOFLY_URL+res.result.avatar+"' class='flyAvatar'>"+res.result.username;
         if(_this.GOFLY_AUTO_OPEN&&_this.isIE()<=0){
             _this.showKefu();

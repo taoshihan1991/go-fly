@@ -294,7 +294,7 @@
     /*margin-bottom: 80px;*/
 }
 .chatVisitorPage .chatBox{
-    min-height: 540px;
+    min-height: calc(100% - 105px);
     padding: 0 4px;
 }
 .chatBox .el-col{margin:10px 0;}
