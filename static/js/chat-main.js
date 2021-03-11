@@ -197,7 +197,7 @@ var app=new Vue({
                 _this.sendDisabled=false;
                 if(res.code!=200){
                     _this.$message({
-                        message: data.msg,
+                        message: res.msg,
                         type: 'error'
                     });
                 }
