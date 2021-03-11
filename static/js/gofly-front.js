@@ -78,9 +78,13 @@ GOFLY.init=function(config){
             var news=$("#launchIcon").text();
             $("#launchIcon").text(++news).show();
         }
+        if(msg.type=="focus"){
+            clearTimeout(_this.titleTimer);
+            document.title = _this.originTitle;
+        }
     });
     window.onfocus = function () {
-        clearTimeout(this.titleTimer);
+        clearTimeout(_this.titleTimer);
         console.log(1);
         document.title = _this.originTitle;
     };

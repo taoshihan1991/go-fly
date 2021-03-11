@@ -366,6 +366,7 @@ new Vue({
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
+                window.parent.postMessage({type:"focus"},"*");
                 if(_this.socketClosed){
                     return;
                 }
