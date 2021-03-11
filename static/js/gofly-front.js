@@ -80,12 +80,13 @@ GOFLY.init=function(config){
         }
         if(msg.type=="focus"){
             clearTimeout(_this.titleTimer);
+            _this.titleTimer=0;
             document.title = _this.originTitle;
         }
     });
     window.onfocus = function () {
         clearTimeout(_this.titleTimer);
-        console.log(1);
+        _this.titleTimer=0;
         document.title = _this.originTitle;
     };
 }
@@ -269,6 +270,12 @@ GOFLY.windowOpen=function (){
    window.open(this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA);
 }
 GOFLY.flashTitle=function () {
+    if(this.titleTimer!=0){
+        return;
+    }
+    this.titleTimer = setInterval("GOFLY.flashTitleFunc()", 500);
+}
+GOFLY.flashTitleFunc=function(){
     this.titleNum++;
     if (this.titleNum >=3) {
         this.titleNum = 1;
@@ -279,7 +286,6 @@ GOFLY.flashTitle=function () {
     if (this.titleNum == 2) {
         document.title = '【new message】' + this.originTitle;
     }
-    this.titleTimer = setTimeout("GOFLY.flashTitle()", 500);
 }
 
 
