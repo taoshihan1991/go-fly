@@ -16,7 +16,6 @@
         .el-row{width:100%}
         .chatBg{background: #fff;border: solid 1px #e6e6e6;overflow: hidden;}
         .chatLeft{height:100%;margin-left: 4px;overflow:auto;}
-        .sw-bg{background: #fff;border: solid 1px #e6e6e6;boder-top:none;}
         .chatBgContext .el-row{margin-bottom: 5px;}
         .chatBgContext{position: relative;height: 100%;width: 100%;}
         .chatUser{
@@ -29,7 +28,6 @@
         .chatBoxMe .chatUser{text-align: right}
         .chatBox{width: 100%;height:calc(100% - 175px);;overflow-y: auto;overflow-x: hidden;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
-        .funcBtns{margin: 2px 0px;color: #7f7f7f;border-bottom: 1px solid #e6e6e6;font-size: 12px;padding: 5px 0px;}
     </style>
 </head>
 <body>
@@ -79,7 +77,7 @@
                     </div>
                 </el-col>
                 <el-col :span="12">
-                    <div class="sw-bg chatBgContext">
+                    <div class="kefuMainBg chatBgContext">
                         <el-alert
                                 :closable="false"
                                 :type="chatTitleType"
@@ -87,8 +85,8 @@
                                 :title="chatTitle+chatInputing"
                                 >
                         </el-alert>
-                        <div class="funcBtns" v-show="visitor.visitor_id">
-                            <el-button v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" size="small" type="success" plain icon="el-icon-user">聊天记录</el-button>
+                        <div class="kefuFuncBtns" v-if="visitor.visitor_id">
+                            <el-button v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" size="small" type="success" plain icon="el-icon-user">加载全部</el-button>
                             <el-button v-on:click="transKefu" size="small" type="success" plain icon="el-icon-position">转接</el-button>
                             <el-button v-on:click="closeVisitor(visitor.visitor_id)" size="small" type="success" plain icon="el-icon-close">结束</el-button>
                         </div>

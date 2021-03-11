@@ -143,7 +143,7 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `page` (`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`, `desc_cn`, `desc_en`, `css_js`, `html_cn`, `html_en`, `page`) VALUES
-(NULL, '免费开源客服系统GOFLY0.3.5-演示页', 'Free Customer Live Chat GOFLY0.3.5-demo', 'GOFLY，GO-FLY', 'GOFLY，GO-FLY', '一款开箱即用的在线客服系统', 'HELLO GOFLY LIVE CHAT !', '<style>body{color: #333;padding-left: 40px;}h1{font-size: 6em;}h2{font-size: 3em;font-weight: normal;}a{color: #333;}</style>','<h1>:)</h1><h2>HELLO GOFLY LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>','<h1>:)</h1><h2>HELLO GOFLY LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>','index')|
+(NULL, '免费开源客服系统GOFLY0.3.5-演示页', 'Free Customer Live Chat GOFLY0.3.5-demo', 'GOFLY，GO-FLY', 'GOFLY，GO-FLY', '一款开箱即用的在线客服系统', 'HELLO GOFLY LIVE CHAT !', '<style>body{color: #333;padding-left: 40px;}h1{font-size: 6em;}h2{font-size: 3em;font-weight: normal;}a{color: #333;}</style>','<h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>','<h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>','index')|
 DROP TABLE IF EXISTS `reply_group`|
 CREATE TABLE `reply_group` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
