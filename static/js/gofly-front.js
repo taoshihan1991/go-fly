@@ -21,7 +21,7 @@ GOFLY.init=function(config){
     }
 
     if (typeof config.GOFLY_URL!="undefined"){
-        this.GOFLY_URL=config.GOFLY_URL;
+        this.GOFLY_URL=config.GOFLY_URL.replace(/([\w\W]+)\/$/,"$1");
     }
     this.dynamicLoadCss(this.GOFLY_URL+"/static/css/gofly-front.css?v=1");
 
