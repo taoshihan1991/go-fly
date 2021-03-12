@@ -147,6 +147,32 @@
 .launchPointer.offline{
     background: #ce3c39;
 }
+.folderBtn {
+    display: inline-block;
+    background-color: transparent;
+    overflow: hidden;
+    font-size: 1px;
+}
+.folderBtn:before {
+    content: '';
+    float: left;
+    background-color: #9da0a0;
+    width: 15px;
+    height: 3px;
+    margin-left: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    box-shadow: 2px 2px 0 0 #9da0a0;
+}
+.folderBtn:after {
+    content: '';
+    float: left;
+    clear: left;
+    background-color: #d4d6d6;
+    width: 33px;
+    height: 22px;
+    border-radius: 1px;
+}
 @-webkit-keyframes bounce-up {
     25% {-webkit-transform: translateY(4px);}
     50%, 100% {-webkit-transform: translateY(0);}

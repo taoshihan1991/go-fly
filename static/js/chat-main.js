@@ -200,6 +200,7 @@ var app=new Vue({
                         message: res.msg,
                         type: 'error'
                     });
+                    return;
                 }
                 _this.messageContent = "";
                _this.sendSound();
@@ -550,6 +551,42 @@ var app=new Vue({
                             });
                         }else{
                             _this.messageContent+='img[/' + res.result.path + ']';
+                            _this.chatToUser();
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        },
+        //上传文件
+        uploadFile:function (url){
+            let _this=this;
+            $('#uploadFile').after('<input type="file"  id="uploadRealFile" name="file2" style="display:none" >');
+            $("#uploadRealFile").click();
+            $("#uploadRealFile").change(function (e) {
+                var formData = new FormData();
+                var file = $("#uploadRealFile")[0].files[0];
+                formData.append("realfile",file); //传给后台的file的key值是可以自己定义的
+                console.log(formData);
+                $.ajax({
+                    url: url || '',
+                    type: "post",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'JSON',
+                    mimeType: "multipart/form-data",
+                    success: function (res) {
+
+                        if(res.code!=200){
+                            _this.$message({
+                                message: res.msg,
+                                type: 'error'
+                            });
+                        }else{
+                            _this.messageContent+='file[/' + res.result.path + ']';
                             _this.chatToUser();
                         }
                     },

@@ -81,11 +81,11 @@ function replaceContent (content,baseUrl) {// 转义聊天内容中的特殊字�
         })
         .replace(/img\[([^\s\[\]]+?)\]/g, function (face) {  // 转义图片
             var src = face.replace(/^img\[/g, '').replace(/\]/g, '');;
-            return '<img onclick="bigPic(src,true)" src="' + src + '" style="max-width: 100%"/></div>';
+            return '<img onclick="bigPic(src,true)" src="' +baseUrl+ src + '" style="max-width: 100%"/></div>';
         })
         .replace(/file\[([^\s\[\]]+?)\]/g, function (face) {  // 转义图片
             var src = face.replace(/^file\[/g, '').replace(/\]/g, '');;
-            return '<div class="folderBtn" onclick="window.open(\''+src+'\')"  style="font-size:25px;"/></div>';
+            return '<div class="folderBtn" onclick="window.open(\''+baseUrl+src+'\')"  style="font-size:25px;"/></div>';
         })
         .replace(/\[([^\s\[\]]+?)\]+link\[([^\s\[\]]+?)\]/g, function (face) {  // 转义超链接
             var text = face.replace(/link\[.*?\]/g, '').replace(/\[|\]/g, '');

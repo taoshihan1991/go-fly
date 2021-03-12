@@ -110,7 +110,8 @@
                                 </div>
                                 <div class="faceBtn"></div>
                                 <div class="imageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
-                                <el-button :disabled="sendDisabled" size="small" class="floatRight" type="primary" v-on:click="chatToUser">发送</el-button>
+                                <div class="folderBtn kefuFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
+                                <el-button class="kefuSendBtn" :disabled="sendDisabled" size="small" type="primary" v-on:click="chatToUser">发送</el-button>
                             </div>
                             <div class="clear"></div>
                             <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"  placeholder="请输入内容"></el-input>

@@ -422,4 +422,6 @@
     background: #fff;
 }
 .kefuFuncBox .el-textarea{width: 99%;}
+.kefuFolderBtn{vertical-align: middle;}
+.iconBtnsBox .kefuSendBtn{margin-right: 4px;float: right;}
 .clear{clear:both;}
