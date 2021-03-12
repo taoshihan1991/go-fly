@@ -142,7 +142,11 @@
 
 访问：https://gofly.sopans.com
 
-参考支持https的部署示例 , 注意反向代理的端口号和证书地址
+1.参考支持https的部署示例 , 注意反向代理的端口号和证书地址 , 不使用https也可以访问 , 只是不会有浏览器通知弹窗
+
+2.尽量按照下面的配置处理, 配置独立域名或者二级域名, 不建议在主域名加端口访问, 不建议主域名加目录访问 
+
+3.如果遇到域名跨域错误问题, 检查下面配置中add_header Access-Control-Allow-Origin这俩header头是否添加
 
 ```php
 server {
@@ -158,7 +162,7 @@ server {
         server_name  gofly.sopans.com;
         access_log  /var/log/nginx/gofly.sopans.com.access.log  main;
         location /static {
-                root /var/www/html/go-fly;//自己的部署路径
+                root /var/www/html/go-fly;//自己的部署路径,静态文件直接nginx响应
         }
         location / {
                 add_header Access-Control-Allow-Origin *;
@@ -176,7 +180,7 @@ server{
         server_name  gofly.sopans.com;
         access_log  /var/log/nginx/gofly.sopans.com.access.log  main;
         location /static {
-                root /var/www/html/go-fly;//自己的部署路径
+                root /var/www/html/go-fly;//自己的部署路径,静态文件直接nginx响应
         }        
         location / {
                 add_header Access-Control-Allow-Origin *;
