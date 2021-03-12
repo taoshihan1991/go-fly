@@ -65,6 +65,7 @@ GOFLY.init=function(config){
     window.addEventListener('message',function(e){
         var msg=e.data;
         if(msg.type=="message"){
+            clearInterval(_this.noticeTimer);
             var width=$(window).width();
             if(width>768){
                 _this.flashTitle();//标题闪烁
