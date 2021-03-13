@@ -299,11 +299,11 @@
 }
 .chatBox .el-col{margin:10px 0;}
 .chatUser{
-    line-height: 24px;
     font-size: 12px;
     white-space: nowrap;
     color: #999;
     text-align: left;
+    margin-top: -15px;
 }
 .chatContent{
     background-color: rgb(255,255,255);
@@ -314,7 +314,6 @@
     position: relative;
     border-radius: 5px;
     display: inline-block;
-    margin-left: 6px;
     line-height: 21px;
     font-size: 14px;
 }
@@ -370,7 +369,7 @@
 .chatBoxSendBtn{float: right;margin: 12px 4px 0 0;}
 .footContact{text-align: center;}
 .footContact a{font-size: 12px;color: #999;text-decoration: none;}
-.chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
+.chatTime{text-align: center;color: #bbb;margin: 12px 0;font-size: 12px;}
 .chatTimeHide{display: none;}
 .visitorInfo .el-menu-item{
     font-size: 12px;
