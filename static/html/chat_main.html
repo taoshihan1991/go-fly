@@ -93,7 +93,7 @@
                         <div class="chatBox">
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                                 <div class="chatTime"><{v.time}></div>
-                                <el-col :span="3"><el-avatar shape="square" :size="50" :src="v.avator"></el-avatar></el-col>
+                                <el-col :span="3"><el-avatar shape="square" :size="48" :src="v.avator"></el-avatar></el-col>
                                 <el-col :span="21">
                                     <div class="chatUser"><{v.name}></div>
                                     <div class="chatContent" v-html="v.content"></div>
