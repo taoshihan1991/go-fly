@@ -266,8 +266,12 @@ new Vue({
         },
         textareaBlur:function(){
             if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
-                $(".chatContext").css("margin-bottom","105px");
-                $(".chatBoxSend").css("position","fixed");
+                var chatBoxSendObj=$(".chatBoxSend");
+                var chatContextObj=$(".chatContext");
+                if(chatBoxSendObj.css("position")!="fixed"){
+                    chatContextObj.css("margin-bottom","105px");
+                    chatBoxSendObj.css("position","fixed");
+                }
             }
         },
         //获取日期
