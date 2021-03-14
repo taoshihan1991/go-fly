@@ -355,17 +355,12 @@ new Vue({
         init:function(){
             var _this=this;
             this.initCss();
-            $("#app").click(function(){
-                clearTimeout(titleTimer);
-                document.title = originTitle;
-            });
             $('body').click(function(){
-                clearTimeout(titleTimer);
-                document.title = originTitle;
-
+                clearFlashTitle();
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
+                clearFlashTitle();
                 window.parent.postMessage({type:"focus"},"*");
                 if(_this.socketClosed){
                     return;
