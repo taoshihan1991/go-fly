@@ -256,6 +256,20 @@ new Vue({
                     }
              });
         },
+        //软键盘问题
+        textareaFocus:function(){
+            if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
+                $('body').scrollTop($("body")[0].scrollHeight);
+                $(".chatContext").css("margin-bottom","1px");
+                $(".chatBoxSend").css("position","static");
+            }
+        },
+        textareaBlur:function(){
+            if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
+                $(".chatContext").css("margin-bottom","105px");
+                $(".chatBoxSend").css("position","fixed");
+            }
+        },
         //获取日期
         getNowDate : function() {// 获取日期
             var d = new Date(new Date());
