@@ -55,7 +55,7 @@
                 <div class="folderBtn visitorFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
                 <div class="clear"></div>
             </div>
-            <el-input type="textarea" @focus="textareaFocus" @blur="textareaBlur" @click.native="scrollBottom" class="chatArea" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" :placeholder="flyLang.textarea"></el-input>
+            <el-input type="textarea" @focus="textareaFocus" @blur="textareaBlur" class="chatArea" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" :placeholder="flyLang.textarea"></el-input>
             <div class="faceBox visitorFaceBox">
                 <ul class="faceBoxList">
                     <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>

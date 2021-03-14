@@ -17,6 +17,7 @@ new Vue({
         timer:null,
         sendDisabled:false,
         flyLang:GOFLY_LANG[LANG],
+        textareaFocused:false,
     },
     methods: {
         //初始化websocket
@@ -260,18 +261,21 @@ new Vue({
         textareaFocus:function(){
             if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
                 $('body').scrollTop($("body")[0].scrollHeight);
-                $(".chatContext").css("margin-bottom","1px");
+                $(".chatContext").css("margin-bottom","0");
                 $(".chatBoxSend").css("position","static");
+                this.textareaFocused=true;
             }
         },
         textareaBlur:function(){
-            if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
+            if(this.textareaFocused&&/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
                 var chatBoxSendObj=$(".chatBoxSend");
                 var chatContextObj=$(".chatContext");
-                if(chatBoxSendObj.css("position")!="fixed"){
+                if(this.textareaFocused&&chatBoxSendObj.css("position")!="fixed"){
                     chatContextObj.css("margin-bottom","105px");
                     chatBoxSendObj.css("position","fixed");
+                    this.textareaFocused=false;
                 }
+
             }
         },
         //获取日期
