@@ -247,10 +247,12 @@ new Vue({
         },
         //滚动到底部
         scrollBottom:function(){
-            this.$nextTick(function(){
-                //debugger;
-                $('body').scrollTop($("body")[0].scrollHeight);
-            });
+            var _this=this;
+                this.$nextTick(function(){
+                    if(_this.msgList.length>=3){
+                        $('body').scrollTop($("body")[0].scrollHeight);
+                    }
+             });
         },
         //获取日期
         getNowDate : function() {// 获取日期
@@ -360,6 +362,7 @@ new Vue({
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
+                _this.scrollBottom();
                 clearFlashTitle();
                 window.parent.postMessage({type:"focus"},"*");
                 if(_this.socketClosed){
