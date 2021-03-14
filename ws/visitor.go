@@ -151,3 +151,22 @@ func VisitorMessage(visitorId, content string, kefuInfo models.User) {
 	visitor := ClientList[visitorId]
 	visitor.Conn.WriteMessage(websocket.TextMessage, str)
 }
+func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content string) {
+	kefus, ok := KefuList[kefuInfo.Name]
+	reply := models.FindReplyItemByUserIdTitle(kefuInfo.Name, content)
+	if reply.Content != "" {
+		time.Sleep(2 * time.Second)
+		VisitorMessage(vistorInfo.VisitorId, reply.Content, kefuInfo)
+		KefuMessage(vistorInfo.VisitorId, reply.Content, kefuInfo)
+		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, reply.Content, "kefu")
+	}
+	if !ok || len(kefus) == 0 {
+		time.Sleep(1 * time.Second)
+		welcome := models.FindWelcomeByUserIdKey(kefuInfo.Name, "offline")
+		if welcome.Content == "" || reply.Content != "" {
+			return
+		}
+		VisitorMessage(vistorInfo.VisitorId, welcome.Content, kefuInfo)
+		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, welcome.Content, "kefu")
+	}
+}

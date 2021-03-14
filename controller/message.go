@@ -162,21 +162,25 @@ func SendMessageV2(c *gin.Context) {
 		if guest != nil && ok {
 			ws.VisitorMessage(vistorInfo.VisitorId, content, kefuInfo)
 		}
-
-		msg = TypeMessage{
-			Type: "message",
-			Data: ws.ClientMessage{
-				Name:    kefuInfo.Nickname,
-				Avator:  kefuInfo.Avator,
-				Id:      vistorInfo.VisitorId,
-				Time:    time.Now().Format("2006-01-02 15:04:05"),
-				ToId:    vistorInfo.VisitorId,
-				Content: content,
-				IsKefu:  "yes",
-			},
-		}
-		str2, _ := json.Marshal(msg)
-		ws.OneKefuMessage(kefuInfo.Name, str2)
+		ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
+		//msg = TypeMessage{
+		//	Type: "message",
+		//	Data: ws.ClientMessage{
+		//		Name:    kefuInfo.Nickname,
+		//		Avator:  kefuInfo.Avator,
+		//		Id:      vistorInfo.VisitorId,
+		//		Time:    time.Now().Format("2006-01-02 15:04:05"),
+		//		ToId:    vistorInfo.VisitorId,
+		//		Content: content,
+		//		IsKefu:  "yes",
+		//	},
+		//}
+		//str2, _ := json.Marshal(msg)
+		//ws.OneKefuMessage(kefuInfo.Name, str2)
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "ok",
+		})
 	}
 	if cType == "visitor" {
 		//kefuConns, ok := ws.KefuList[kefuInfo.Name]
@@ -203,26 +207,19 @@ func SendMessageV2(c *gin.Context) {
 		ws.OneKefuMessage(kefuInfo.Name, str)
 		go ws.SendServerJiang(vistorInfo.Name+"说", content, c.Request.Host)
 		go SendAppGetuiPush(kefuInfo.Name, vistorInfo.Name, content)
+		go ws.VisitorAutoReply(vistorInfo, kefuInfo, content)
+		kefus, ok := ws.KefuList[kefuInfo.Name]
+		if !ok || len(kefus) == 0 {
+			log.Println("客服不在线,发送邮件通知")
+			go SendNoticeEmail(content+"|"+vistorInfo.Name, content)
+		}
+		c.JSON(200, gin.H{
+			"code":   200,
+			"msg":    "ok",
+			"result": msg,
+		})
 	}
-	c.JSON(200, gin.H{
-		"code":   200,
-		"msg":    "ok",
-		"result": msg,
-	})
-	kefus, ok := ws.KefuList[kefuInfo.Name]
-	if !ok || len(kefus) == 0 {
-		log.Println("客服不在线,发送邮件通知")
-		go SendNoticeEmail(content+"|"+vistorInfo.Name, content)
-		go func() {
-			time.Sleep(1 * time.Second)
-			welcome := models.FindWelcomeByUserIdKey(kefuInfo.Name, "offline")
-			if welcome.Content == "" {
-				return
-			}
-			ws.VisitorMessage(vistorInfo.VisitorId, welcome.Content, kefuInfo)
-			models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, welcome.Content, "kefu")
-		}()
-	}
+
 }
 func SendVisitorNotice(c *gin.Context) {
 	notice := c.Query("msg")

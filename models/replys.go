@@ -14,6 +14,11 @@ type ReplyGroup struct {
 	Items     []*ReplyItem `json:"items";"`
 }
 
+func FindReplyItemByUserIdTitle(userId interface{}, title string) ReplyItem {
+	var reply ReplyItem
+	DB.Where("user_id = ? and item_name = ?", userId, title).Find(&reply)
+	return reply
+}
 func FindReplyByUserId(userId interface{}) []*ReplyGroup {
 	var replyGroups []*ReplyGroup
 	//DB.Raw("select a.*,b.* from reply_group a left join reply_item b on a.id=b.group_id where a.user_id=? ", userId).Scan(&replyGroups)

@@ -7,6 +7,7 @@ import (
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
+	"time"
 )
 
 func NewKefuServer(c *gin.Context) {
@@ -101,6 +102,22 @@ func OneKefuMessage(toId string, str []byte) {
 	}
 
 	SuperAdminMessage(str)
+}
+func KefuMessage(visitorId, content string, kefuInfo models.User) {
+	msg := TypeMessage{
+		Type: "message",
+		Data: ClientMessage{
+			Name:    kefuInfo.Nickname,
+			Avator:  kefuInfo.Avator,
+			Id:      visitorId,
+			Time:    time.Now().Format("2006-01-02 15:04:05"),
+			ToId:    visitorId,
+			Content: content,
+			IsKefu:  "yes",
+		},
+	}
+	str, _ := json.Marshal(msg)
+	OneKefuMessage(kefuInfo.Name, str)
 }
 
 //给客服客户端发送消息判断客户端是否在线
