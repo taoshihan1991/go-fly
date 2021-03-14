@@ -155,7 +155,7 @@ func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content s
 	kefus, ok := KefuList[kefuInfo.Name]
 	reply := models.FindReplyItemByUserIdTitle(kefuInfo.Name, content)
 	if reply.Content != "" {
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 		VisitorMessage(vistorInfo.VisitorId, reply.Content, kefuInfo)
 		KefuMessage(vistorInfo.VisitorId, reply.Content, kefuInfo)
 		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, reply.Content, "kefu")

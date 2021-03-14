@@ -116,6 +116,16 @@ new Vue({
             }
             this.sendDisabled=true;
             let _this=this;
+
+            let content = {}
+            content.avator=_this.visitor.avator;
+            content.content = replaceContent(_this.messageContent);
+            content.name = _this.visitor.name;
+            content.is_kefu = true;
+            content.time = _this.getNowDate();
+            _this.msgList.push(content);
+            _this.scrollBottom();
+
             let mes = {};
             mes.type = "visitor";
             mes.content = this.messageContent;
@@ -126,21 +136,13 @@ new Vue({
             $.post("/2/message",mes,function(res){
                 _this.sendDisabled=false;
                 if(res.code!=200){
+                    _this.msgList.pop();
                     _this.$message({
                         message: res.msg,
                         type: 'error'
                     });
                     return;
                 }
-                let content = {}
-                content.avator=_this.visitor.avator;
-                content.content = replaceContent(_this.messageContent);
-                content.name = _this.visitor.name;
-                content.is_kefu = true;
-                content.time = res.result.data.time;
-                _this.msgList.push(content);
-                //_this.saveHistory(content);
-                _this.scrollBottom();
                 _this.messageContent = "";
                 clearInterval(_this.timer);
                 _this.sendSound();
