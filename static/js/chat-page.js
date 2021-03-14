@@ -534,6 +534,7 @@ new Vue({
     },
     mounted:function() {
         document.addEventListener('paste', this.onPasteUpload)
+        document.addEventListener('scroll',this.textareaBlur)
     },
     created: function () {
         this.init();
