@@ -40,6 +40,7 @@ GOFLY.init=function(config){
     var refer=document.referrer?document.referrer:"无";
     this.GOFLY_EXTRA.refer=refer;
     this.GOFLY_EXTRA.host=document.location.href;
+    this.GOFLY_EXTRA=JSON.stringify(_this.GOFLY_EXTRA);
 
     this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
         if (typeof config.GOFLY_LANG!="undefined"){
@@ -47,7 +48,7 @@ GOFLY.init=function(config){
         }else{
             _this.GOFLY_LANG=checkLang();
         }
-        _this.GOFLY_EXTRA=utf8ToB64(JSON.stringify(_this.GOFLY_EXTRA));
+        _this.GOFLY_EXTRA=utf8ToB64(_this.GOFLY_EXTRA);
     });
 
     if (typeof $!="function"){
