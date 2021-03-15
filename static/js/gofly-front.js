@@ -3,7 +3,7 @@ var GOFLY={
     GOFLY_KEFU_ID:"",
     GOFLY_BTN_TEXT:"Chat with me",
     GOFLY_LANG:"en",
-    GOFLY_EXTRA:"",
+    GOFLY_EXTRA: {},
     GOFLY_AUTO_OPEN:true,
 };
 GOFLY.launchButtonFlag=false;
@@ -37,17 +37,17 @@ GOFLY.init=function(config){
     if (typeof config.GOFLY_AUTO_OPEN!="undefined"){
         this.GOFLY_AUTO_OPEN=config.GOFLY_AUTO_OPEN;
     }
-    if(this.GOFLY_EXTRA==""){
-        var refer=document.referrer?document.referrer:"无";
-        this.GOFLY_EXTRA='{"refer":"'+refer+'","host":"'+document.location.href+'"}';
-    }
+    var refer=document.referrer?document.referrer:"无";
+    this.GOFLY_EXTRA.refer=refer;
+    this.GOFLY_EXTRA.host=document.location.href;
+
     this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
         if (typeof config.GOFLY_LANG!="undefined"){
             _this.GOFLY_LANG=config.GOFLY_LANG;
         }else{
             _this.GOFLY_LANG=checkLang();
         }
-        _this.GOFLY_EXTRA=utf8ToB64(_this.GOFLY_EXTRA);
+        _this.GOFLY_EXTRA=utf8ToB64(JSON.stringify(_this.GOFLY_EXTRA));
     });
 
     if (typeof $!="function"){
