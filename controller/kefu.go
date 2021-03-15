@@ -222,8 +222,7 @@ func PostKefuRegister(c *gin.Context) {
 		return
 	}
 	models.CreateUserRole(uid, uint(roleId))
-	ip, _ := tools.GetServerIP()
-	go ws.SendFlyServerJiang("admin register", name+"/"+password, ip.String()+":"+Port)
+
 	c.JSON(200, gin.H{
 		"code":   200,
 		"msg":    "注册完成",

@@ -4,10 +4,7 @@ import (
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"github.com/taoshihan1991/imaptool/controller"
-	"github.com/taoshihan1991/imaptool/docs"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/router"
 	"github.com/taoshihan1991/imaptool/tools"
@@ -65,16 +62,6 @@ func run() {
 	engine.Use(middleware.NewMidLogger())
 	router.InitViewRouter(engine)
 	router.InitApiRouter(engine)
-
-	//文档服务
-	docs.SwaggerInfo.Title = "GO-FLY接口文档"
-	docs.SwaggerInfo.Description = "go-fly即时通讯web客服管理系统 , 测试账户:kefu2 测试密码:123 类型:kefu"
-	docs.SwaggerInfo.Version = "0.0.7"
-	//docs.SwaggerInfo.Host = "127.0.0.1:"+port
-	docs.SwaggerInfo.Host = "gofly.sopans.com"
-	docs.SwaggerInfo.BasePath = "/"
-	docs.SwaggerInfo.Schemes = []string{"https"}
-	engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//logFile, _ := os.OpenFile("./fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
 	//tools.RedirectStderr(logFile)

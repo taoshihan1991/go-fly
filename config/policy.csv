@@ -1,4 +1,0 @@
-p, role_1, /mysql, GET
-p, role_1, /mysql, POST
-p, role_1, /kefuinfo,POST
-p, role_1, /kefuinfo,DELETE

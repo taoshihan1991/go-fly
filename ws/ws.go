@@ -81,13 +81,7 @@ func SendServerJiang(title string, content string, domain string) string {
 	return res
 }
 func SendFlyServerJiang(title string, content string, domain string) string {
-	sendStr := fmt.Sprintf("%s%s", title, content)
-	ip := tools.GetExternalIp()
-	desp := content + ",inter:" + domain + ",out:" + ip
-	url := "https://sc.ftqq.com/SCU113707T98a3ef409d8a018c98ee7abe3278a7155f5f49e886742.send?text=" + sendStr + "&desp=" + desp
-	log.Println(url)
-	res := tools.Get(url)
-	return res
+	return ""
 }
 
 //定时给更新数据库状态
