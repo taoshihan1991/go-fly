@@ -191,21 +191,21 @@ func SendMessageV2(c *gin.Context) {
 		//	})
 		//	return
 		//}
-		//msg = TypeMessage{
-		//	Type: "message",
-		//	Data: ws.ClientMessage{
-		//		Avator:  vistorInfo.Avator,
-		//		Id:      vistorInfo.VisitorId,
-		//		Name:    vistorInfo.Name,
-		//		ToId:    kefuInfo.Name,
-		//		Content: content,
-		//		Time:    time.Now().Format("2006-01-02 15:04:05"),
-		//		IsKefu:  "no",
-		//	},
-		//}
-		//str, _ := json.Marshal(msg)
-		//ws.OneKefuMessage(kefuInfo.Name, str)
-		ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
+		msg := TypeMessage{
+			Type: "message",
+			Data: ws.ClientMessage{
+				Avator:  vistorInfo.Avator,
+				Id:      vistorInfo.VisitorId,
+				Name:    vistorInfo.Name,
+				ToId:    kefuInfo.Name,
+				Content: content,
+				Time:    time.Now().Format("2006-01-02 15:04:05"),
+				IsKefu:  "no",
+			},
+		}
+		str, _ := json.Marshal(msg)
+		ws.OneKefuMessage(kefuInfo.Name, str)
+		//ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
 		go ws.SendServerJiang(vistorInfo.Name+"说", content, c.Request.Host)
 		go SendAppGetuiPush(kefuInfo.Name, vistorInfo.Name, content)
 		kefus, ok := ws.KefuList[kefuInfo.Name]
