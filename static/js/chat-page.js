@@ -289,11 +289,13 @@ new Vue({
             return num < 10 ? '0' + (num | 0) : num;
         },
         setCache : function (key,obj){
-            if(typeof(Storage) !== "undefined"){
+            if(navigator.cookieEnabled&&typeof window.localStorage !== 'undefined'){
                 localStorage.setItem(key, JSON.stringify(obj));
             }
         },getCache : function (key){
-            return JSON.parse(localStorage.getItem(key));
+            if(navigator.cookieEnabled&&typeof window.localStorage !== 'undefined') {
+                return JSON.parse(localStorage.getItem(key));
+            }
         },
         //获取自动欢迎语句
         getNotice : function (){
