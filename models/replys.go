@@ -42,12 +42,12 @@ func CreateReplyGroup(groupName string, userId string) {
 	}
 	DB.Create(g)
 }
-func CreateReplyContent(groupId string, userId string, content string) {
+func CreateReplyContent(groupId string, userId string, content, itemName string) {
 	g := &ReplyItem{
 		GroupId:  groupId,
 		UserId:   userId,
 		Content:  content,
-		ItemName: "",
+		ItemName: itemName,
 	}
 	DB.Create(g)
 }

@@ -48,6 +48,7 @@ var app=new Vue({
         groupId:"",
         replys:[],
         replyContent:"",
+        replyTitle:"",
         ipBlacks:[],
         sendDisabled:false,
     },
@@ -705,7 +706,7 @@ var app=new Vue({
         //添加回复内容
         addReplyContent(){
             var _this=this;
-            this.sendAjax("/reply_content","post",{group_id:_this.groupId,content:_this.replyContent},function(result){
+            this.sendAjax("/reply_content","post",{group_id:_this.groupId,item_name:_this.replyTitle,content:_this.replyContent},function(result){
                 //_this.otherKefus=result;
                 _this.replyContentDialog = false
                 _this.replyContent="";

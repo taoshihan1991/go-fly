@@ -10,8 +10,9 @@ type ReplyForm struct {
 	GroupName string `form:"group_name" binding:"required"`
 }
 type ReplyContentForm struct {
-	GroupId string `form:"group_id" binding:"required"`
-	Content string `form:"content" binding:"required"`
+	GroupId  string `form:"group_id" binding:"required"`
+	Content  string `form:"content" binding:"required"`
+	ItemName string `form:"item_name" binding:"required"`
 }
 
 func GetReplys(c *gin.Context) {
@@ -52,7 +53,7 @@ func PostReplyContent(c *gin.Context) {
 		})
 		return
 	}
-	models.CreateReplyContent(replyContentForm.GroupId, kefuId.(string), replyContentForm.Content)
+	models.CreateReplyContent(replyContentForm.GroupId, kefuId.(string), replyContentForm.Content, replyContentForm.ItemName)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",

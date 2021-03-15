@@ -196,7 +196,10 @@
                                     <template slot="title">
                                         <i class="header-icon el-icon-info"></i>&nbsp;<{reply.group_name}>
                                     </template>
-                                    <div class="replyItem" @click="messageContent=item.item_content"  v-for="item in reply.items" ><{item.item_content}> &nbsp;&nbsp;<el-button @click="deleteReplyContent(item.item_id)" type="text">删除</el-button></div>
+                                    <div class="replyItem" @click="messageContent=item.item_content"  v-for="item in reply.items" >
+                                        <div class="replyItemTitle">关键词: <{item.item_name}></div>
+                                        <div class="replyItemContent">回复内容: <{item.item_content}></div>
+                                        <el-button @click="deleteReplyContent(item.item_id)" type="text">删除</el-button></div>
                                     <el-button @click="replyContentDialog=true;groupName=reply.group_name;groupId=reply.group_id" type="text">+添加回复内容</el-button>
                                     <el-button @click="deleteReplyGroup(reply.group_id)" type="text">-删除组</el-button>
                                 </el-collapse-item>
@@ -266,7 +269,8 @@
                 width="30%"
                 top="0"
         >
-            <el-input type="textarea"  v-model="replyContent"></el-input>
+            <el-input style="margin-bottom: 10px;" placeholder="关键词"  v-model="replyTitle"></el-input>
+            <el-input placeholder="内容" type="textarea"  v-model="replyContent"></el-input>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="addReplyContent">保 存</el-button>
                 <el-button @click="replyContentDialog = false">取 消</el-button>
