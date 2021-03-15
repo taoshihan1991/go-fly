@@ -3,6 +3,7 @@
     bottom: 10px;
     right: 20px;
     left: auto;
+    z-index: 999999;
 }
 .launchButtonNotice{
     width: 270px;
@@ -16,6 +17,7 @@
     position: absolute;
     bottom: 60px;
     right: 0;
+    z-index: 999999;
     color: #222;
     line-height: 1.5;
     font-size: 14px;
