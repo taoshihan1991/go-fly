@@ -7,6 +7,7 @@ new Vue({
         server:getWsBaseUrl()+"/ws_visitor",
         socket:null,
         msgList:[],
+        msgListNum:[],
         messageContent:"",
         chatTitle:GOFLY_LANG[LANG]['connecting'],
         visitor:{},
@@ -211,11 +212,13 @@ new Vue({
                 url:"/messages?visitorId="+this.visitor.visitor_id,
                 success: function(data) {
                     if(data.code==200 && data.result!=null&&data.result.length!=0){
+                        _this.msgListNum=data.result.length;
                         let msgList=data.result;
                         _this.msgList=[];
                         if(!isAll&&msgList.length>10){
                             var i=msgList.length-10
                         }else{
+                            _this.msgListNum=0;
                             var i=0;
                         }
                         for(;i<msgList.length;i++){

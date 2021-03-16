@@ -27,16 +27,7 @@
                         :closable="false"
                         type="success">
                 </el-alert>
-                <el-alert
-                        style="margin:10px auto;width: 100%;"
-                        center
-                        :title="flyLang['moremessage']"
-                        close-text="more"
-                        @close="getMesssagesByVisitorId(true)"
-                        v-show="msgList.length>10"
-                        show-icon
-                        type="info">
-                </el-alert>
+                <div class="el-alert el-alert--info is-center is-light el-alert__title" v-show="msgListNum>10" v-on:click="getMesssagesByVisitorId(true)"><i class="el-icon-info" ></i>&nbsp;<{flyLang['moremessage']}></div>
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                     <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><{v.time}></div>
                     <el-col :span="3"><el-avatar shape="square" :size="36" :src="v.avator"></el-avatar></el-col>
