@@ -176,13 +176,15 @@ new Vue({
         getUserInfo:function(){
             let obj=this.getCache("visitor");
             var visitor_id=""
+            var to_id=KEFU_ID;
             if(obj){
                 visitor_id=obj.visitor_id;
+                to_id=obj.to_id;
             }
                 let _this=this;
                 var extra=getQuery("extra");
                 //发送消息
-                $.post("/visitor_login",{visitor_id:visitor_id,refer:REFER,to_id:KEFU_ID,extra:extra},function(res){
+                $.post("/visitor_login",{visitor_id:visitor_id,refer:REFER,to_id:to_id,extra:extra},function(res){
                     if(res.code!=200){
                         _this.$message({
                             message: res.msg,
