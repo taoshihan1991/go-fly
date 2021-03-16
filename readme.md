@@ -255,17 +255,25 @@ location /
 ##### V0.3.6
 
 修复访客端标题闪烁问题
+
 优化访客端头像样式以及小键盘遮挡问题
+
 优化发消息问题
+
 新增访客关键词自动回复功能
+
 客服端增加附件上传功能
+
 客服端增加关键词自动回复功能
 
 ##### V0.3.5
 
 新增分开系统自动断线与客服关闭连接
+
 修复没有设置欢迎时tip显示错误问题
+
 修复客服端发送消息错误提示不显示问题
+
 修复一些界面问题
 
 ##### V0.3.4
@@ -346,10 +354,9 @@ location /
 
 ### 打赏作者
 
-欢迎使用支付宝赞赏
 
-
-![Image text](https://gofly.sopans.com/static/upload/2020December/9d736faeba2e9967a5dcc1c489f85541.png)
+<img src="https://gofly.sopans.com/static/images/alipay.jpg" width="280"  alt="支付宝"/>
+<img src="https://gofly.sopans.com/static/images/weixin.jpg" width="280"  alt="微信"/>
 
 ### 版权声明
 
