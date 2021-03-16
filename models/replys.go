@@ -35,6 +35,22 @@ func FindReplyByUserId(userId interface{}) []*ReplyGroup {
 	}
 	return replyGroups
 }
+func FindReplyTitleByUserId(userId interface{}) []*ReplyGroup {
+	var replyGroups []*ReplyGroup
+	//DB.Raw("select a.*,b.* from reply_group a left join reply_item b on a.id=b.group_id where a.user_id=? ", userId).Scan(&replyGroups)
+	var replyItems []*ReplyItem
+	DB.Where("user_id = ?", userId).Find(&replyGroups)
+	DB.Select("item_name,group_id").Where("user_id = ?", userId).Find(&replyItems)
+	temp := make(map[string]*ReplyGroup)
+	for _, replyGroup := range replyGroups {
+		replyGroup.Items = make([]*ReplyItem, 0)
+		temp[replyGroup.Id] = replyGroup
+	}
+	for _, replyItem := range replyItems {
+		temp[replyItem.GroupId].Items = append(temp[replyItem.GroupId].Items, replyItem)
+	}
+	return replyGroups
+}
 func CreateReplyGroup(groupName string, userId string) {
 	g := &ReplyGroup{
 		GroupName: groupName,

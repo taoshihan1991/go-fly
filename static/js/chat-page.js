@@ -19,6 +19,9 @@ new Vue({
         sendDisabled:false,
         flyLang:GOFLY_LANG[LANG],
         textareaFocused:false,
+        replys:[],
+        noticeName:"",
+        noticeAvatar:"",
     },
     methods: {
         //初始化websocket
@@ -283,6 +286,10 @@ new Vue({
 
             }
         },
+        sendReply:function(title){
+            this.messageContent=title;
+            this.chatToUser();
+        },
         //获取日期
         getNowDate : function() {// 获取日期
             var d = new Date(new Date());
@@ -307,6 +314,8 @@ new Vue({
             let _this=this;
             $.get("/notice?kefu_id="+KEFU_ID,function(res) {
                 //debugger;
+                _this.noticeName=res.result.username;
+                _this.noticeAvatar=res.result.avatar;
                 if (res.result.welcome != null) {
                     let msg = res.result.welcome;
                     var len=msg.length;
@@ -532,6 +541,15 @@ new Vue({
                 }
             });
         },
+        //自动
+        getAutoReply:function(){
+            var _this=this;
+            $.get("/autoreply?kefu_id="+KEFU_ID,function(res) {
+                if(res.code==200){
+                    _this.replys=res.result;
+                }
+            });
+        },
         //提示音
         alertSound:function(){
             var b = document.getElementById("chatMessageAudio");
@@ -567,6 +585,6 @@ new Vue({
         //this.scrollBottom();
         //获取欢迎
         this.getNotice();
-
+        this.getAutoReply();
     }
 })

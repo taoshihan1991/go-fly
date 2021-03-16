@@ -84,6 +84,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/configs", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetConfigs)
 	engine.POST("/config", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostConfig)
 	engine.GET("/config", controller.GetConfig)
+	engine.GET("/autoreply", controller.GetAutoReplys)
 	engine.GET("/replys", middleware.JwtApiMiddleware, controller.GetReplys)
 	engine.POST("/reply", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostReply)
 	engine.POST("/reply_content", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostReplyContent)

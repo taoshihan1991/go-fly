@@ -422,5 +422,16 @@
 }
 .kefuFuncBox .el-textarea{width: 99%;}
 .kefuFolderBtn{vertical-align: middle;}
+.visitorReply{
+    font-size: 14px;
+    line-height: 24px;
+}
+.visitorReplyTitle{
+
+}
+.visitorReplyContent{
+    color:#007aff;
+    cursor: pointer;
+}
 .iconBtnsBox .kefuSendBtn{margin-right: 4px;float: right;}
 .clear{clear:both;}

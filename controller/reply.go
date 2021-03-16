@@ -25,6 +25,15 @@ func GetReplys(c *gin.Context) {
 		"result": res,
 	})
 }
+func GetAutoReplys(c *gin.Context) {
+	kefu_id := c.Query("kefu_id")
+	res := models.FindReplyTitleByUserId(kefu_id)
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": res,
+	})
+}
 func PostReply(c *gin.Context) {
 	var replyForm ReplyForm
 	kefuId, _ := c.Get("kefu_name")

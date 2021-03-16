@@ -28,6 +28,21 @@
                         type="success">
                 </el-alert>
                 <div class="el-alert el-alert--info is-center is-light el-alert__title" v-show="msgListNum>10" v-on:click="getMesssagesByVisitorId(true)"><i class="el-icon-info" ></i>&nbsp;<{flyLang['moremessage']}></div>
+
+                <el-row :gutter="2">
+                    <el-col :span="3"><el-avatar shape="square" :size="36" :src="noticeAvatar"></el-avatar></el-col>
+                    <el-col :span="21">
+                        <div class="chatUser"><{noticeName}></div>
+                        <div class="chatContent visitorReply" >
+                            <div v-for="reply in replys">
+                                <div class="visitorReplyTitle"><{reply.group_name}></div>
+                                <div v-on:click="sendReply(item.item_name)" class="visitorReplyContent" v-for="item in reply.items"><{item.item_name}></div>
+                            </div>
+                        </div>
+                    </el-col>
+                    <div class="clear"></div>
+                </el-row>
+
                 <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                     <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><{v.time}></div>
                     <el-col :span="3"><el-avatar shape="square" :size="36" :src="v.avator"></el-avatar></el-col>
