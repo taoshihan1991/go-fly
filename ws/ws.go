@@ -126,8 +126,13 @@ func WsServerBackend() {
 			defer message.Mux.Unlock()
 			conn.WriteMessage(websocket.TextMessage, str)
 		case "inputing":
-			to := typeMsg.Data.(map[string]interface{})["to"].(string)
-			OneKefuMessage(to, message.content)
+			data := typeMsg.Data.(map[string]interface{})
+			from := data["from"].(string)
+			to := data["to"].(string)
+			//限流
+			if tools.LimitFreqSingle("inputing:"+from, 1, 2) {
+				OneKefuMessage(to, message.content)
+			}
 		}
 
 	}
