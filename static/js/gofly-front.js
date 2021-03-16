@@ -237,11 +237,13 @@ GOFLY.showKefu=function (){
 }
 GOFLY.layerOpen=function (width,height){
     if (this.launchButtonFlag) return;
-    if($("#layui-layer1").css("display")=="none"){
-        $("#layui-layer1").show();
+    var layBox=$("#layui-layer19911116");
+    if(layBox.css("display")=="none"){
+        layBox.show();
         return;
     }
     var _this=this;
+    layer.index="19911115";
     layer.open({
         type: 2,
         title: this.chatPageTitle,
@@ -252,8 +254,9 @@ GOFLY.layerOpen=function (width,height){
         anim: 2,
         content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA , 'yes'], //iframe的url，no代表不显示滚动条
         success:function(){
-            if(!_this.GOFLY_AUTO_OPEN && $("#layui-layer1").css("display")=="none"){
-                $("#layui-layer1").show();
+            var layBox=$("#layui-layer19911116");
+            if(!_this.GOFLY_AUTO_OPEN && layBox.css("display")=="none"){
+                layBox.show();
             }
         },
         end: function(){
@@ -261,7 +264,7 @@ GOFLY.layerOpen=function (width,height){
             $(".launchButtonBox").show();
         },
         cancel: function(index, layero){
-            $("#layui-layer1").hide();
+            $("#layui-layer19911116").hide();
             _this.launchButtonFlag=false;
             $(".launchButtonBox").show();
             return false;
