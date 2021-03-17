@@ -217,7 +217,7 @@
         white-space: normal;
         word-wrap: break-word;
         word-break:break-all;
-        max-height: 130px;
+        max-height: 145px;
     }
     .launchButtonNotice:after{
         right: 4%;
