@@ -200,20 +200,20 @@
         width: 43px;
         height: auto;
         position: absolute;
-        right: 0px;
+        right: 2px;
         bottom: 100px;
-        padding: 0 0px;
+        padding: 10px 0px;
     }
     .launchButtonNotice{
         width: 90%;
-        bottom: 245px;
+        bottom: 270px;
         right: 2%;
         text-align: left;
     }
     .launchButtonText{
         width: 33px;
         font-size: 18px;
-        line-height: 30px;
+        line-height: 21px;
         white-space: normal;
         word-wrap: break-word;
         word-break:break-all;
