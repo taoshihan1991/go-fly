@@ -193,9 +193,8 @@
 @media screen and (max-width: 500px) {
     .launchButtonBox{
         width: 100%;
-        right: 0px;
-        bottom: 100px;
         text-align: center;
+        right: 0px;
     }
     .launchButton{
         width: 43px;
@@ -218,6 +217,7 @@
         white-space: normal;
         word-wrap: break-word;
         word-break:break-all;
+        max-height: 130px;
     }
     .launchButtonNotice:after{
         right: 4%;
