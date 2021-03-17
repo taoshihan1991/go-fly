@@ -400,6 +400,7 @@ new Vue({
             this.initCss();
             $('body').click(function(){
                 clearFlashTitle();
+                window.parent.postMessage({type:"focus"},"*");
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
