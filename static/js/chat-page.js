@@ -128,6 +128,7 @@ new Vue({
             content.name = _this.visitor.name;
             content.is_kefu = true;
             content.time = _this.getNowDate();
+            content.show_time=false;
             _this.msgList.push(content);
             _this.scrollBottom();
 
