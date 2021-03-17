@@ -267,8 +267,8 @@ new Vue({
         },
         //软键盘问题
         textareaFocus:function(){
+            $('body').scrollTop($("body")[0].scrollHeight);
             if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
-                $('body').scrollTop($("body")[0].scrollHeight);
                 $(".chatContext").css("margin-bottom","0");
                 $(".chatBoxSend").css("position","static");
                 this.textareaFocused=true;
