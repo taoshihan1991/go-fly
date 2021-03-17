@@ -402,7 +402,7 @@ new Vue({
                 $('.faceBox').hide();
             });
             window.onfocus = function () {
-                _this.scrollBottom();
+                //_this.scrollBottom();
                 clearFlashTitle();
                 window.parent.postMessage({type:"focus"},"*");
                 if(_this.socketClosed){
