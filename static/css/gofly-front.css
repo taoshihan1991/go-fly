@@ -54,8 +54,8 @@
     display: none;
 }
 .launchButton{
-    height: 48px!important;
-    width: auto!important;
+    height: 48px;
+    width: auto;
     z-index: 10000000000000!important;
     background: #fac917;
     border: 0!important;
@@ -83,13 +83,13 @@
     color: #312927;
     display: inline-block!important;
     font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,Oxygen,Ubuntu,Cantarell,fira sans,droid sans,helvetica neue,sans-serif!important;
-    font-size: 1em!important;
-    line-height: 48px!important;
+    font-size: 1em;
+    line-height: 48px;
     font-weight: 700!important;
     overflow: hidden!important;
     text-overflow: ellipsis!important;
     vertical-align: top!important;
-    white-space: nowrap!important;
+    white-space: nowrap;
     transition: .6s ease-in-out!important;
 }
 .launchButtonNotice .flyAvatar{
@@ -193,18 +193,33 @@
 @media screen and (max-width: 500px) {
     .launchButtonBox{
         width: 100%;
-        left: 0;
-        right: 0;
-        bottom: 5px;
+        right: 0px;
+        bottom: 100px;
         text-align: center;
+    }
+    .launchButton{
+        width: 43px;
+        height: auto;
+        position: absolute;
+        right: 0px;
+        bottom: 100px;
+        padding: 0 0px;
     }
     .launchButtonNotice{
         width: 90%;
-        left: 0;
-        right: 0;
+        bottom: 245px;
+        right: 2%;
         text-align: left;
     }
+    .launchButtonText{
+        width: 33px;
+        font-size: 18px;
+        line-height: 30px;
+        white-space: normal;
+        word-wrap: break-word;
+        word-break:break-all;
+    }
     .launchButtonNotice:after{
-        right: 49%;
+        right: 4%;
     }
 }
