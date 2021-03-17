@@ -27,7 +27,7 @@
                         :closable="false"
                         type="success">
                 </el-alert>
-                <div class="el-alert el-alert--info is-center is-light el-alert__title" v-show="msgListNum>10" v-on:click="getMesssagesByVisitorId(true)"><i class="el-icon-info" ></i>&nbsp;<{flyLang['moremessage']}></div>
+                <div class="el-alert el-alert--info is-center is-light el-alert__title" v-show="msgListNum>4" v-on:click="getMesssagesByVisitorId(true)"><i class="el-icon-info" ></i>&nbsp;<{flyLang['moremessage']}></div>
 
                 <el-row :gutter="2">
                     <el-col :span="3"><el-avatar shape="square" :size="36" :src="noticeAvatar"></el-avatar></el-col>
