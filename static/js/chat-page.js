@@ -218,8 +218,8 @@ new Vue({
                         _this.msgListNum=data.result.length;
                         let msgList=data.result;
                         _this.msgList=[];
-                        if(!isAll&&msgList.length>4){
-                            var i=msgList.length-4
+                        if(!isAll&&msgList.length>1){
+                            var i=msgList.length-1
                         }else{
                             _this.msgListNum=0;
                             var i=0;
