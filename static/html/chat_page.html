@@ -29,7 +29,7 @@
                 </el-alert>
                 <div class="el-alert el-alert--info is-center is-light el-alert__title" v-show="msgListNum>1" v-on:click="getMesssagesByVisitorId(true)"><i class="el-icon-info" ></i>&nbsp;<{flyLang['moremessage']}></div>
 
-                <el-row :gutter="2">
+                <el-row :gutter="2" v-show="replys.length>0">
                     <el-col :span="3"><el-avatar shape="square" :size="36" :src="noticeAvatar"></el-avatar></el-col>
                     <el-col :span="21">
                         <div class="chatUser"><{noticeName}></div>
