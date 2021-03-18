@@ -211,13 +211,16 @@
         text-align: left;
     }
     .launchButtonText{
-        width: 35px;
-        font-size: 10px;
+        width: 40px;
+        font-size: 8px;
         line-height: 21px;
         white-space: normal;
         word-wrap: break-word;
-        word-break:break-all;
         max-height: 145px;
+    }
+    .launchButtonText .flyAvatar{
+        margin-right: 0px;
+        float: none;
     }
     .launchButtonNotice:after{
         right: 4%;
