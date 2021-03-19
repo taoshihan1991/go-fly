@@ -143,7 +143,32 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `page` (`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`, `desc_cn`, `desc_en`, `css_js`, `html_cn`, `html_en`, `page`) VALUES
-(NULL, '免费开源客服系统GOFLY0.3.6-演示页', 'Free Customer Live Chat GOFLY0.3.6-demo', 'GOFLY，GO-FLY', 'GOFLY，GO-FLY', '一款开箱即用的在线客服系统', 'HELLO GOFLY LIVE CHAT !', '<style>body{color: #333;padding-left: 40px;}h1{font-size: 6em;}h2{font-size: 3em;font-weight: normal;}a{color: #333;}</style>','<h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>','<h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>','index')|
+(NULL, '免费开源客服系统GOFLY0.3.7-演示页',
+'Free Customer Live Chat GOFLY0.3.7-demo',
+'GOFLY，GO-FLY',
+'GOFLY，GO-FLY',
+'一款开箱即用的在线客服系统',
+'a free customer live chat',
+'<style>body{color: #333;padding-left: 40px;}h1{font-size: 6em;}h2{font-size: 3em;font-weight: normal;}a{color: #333;}</style>',
+'<script src="/static/js/gofly-front.js?v=1"></script><script>
+    GOFLY.init({
+        GOFLY_URL:"",
+        GOFLY_KEFU_ID: "kefu2",
+        GOFLY_BTN_TEXT: "GOFLY 在线客服!",
+        GOFLY_LANG:"cn",
+    })
+</script>
+ <h1>:)</h1><h2>你好 <a href="https://gofly.sopans.com">GOFLY0.3.7</a> 在线客服系统 !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
+'<script src="/static/js/gofly-front.js?v=1"></script><script>
+    GOFLY.init({
+        GOFLY_URL:"",
+        GOFLY_KEFU_ID: "kefu2",
+        GOFLY_BTN_TEXT: "GOFLY LIVE CHAT!",
+        GOFLY_LANG:"en",
+    })
+</script>
+ <h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY0.3.7</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
+ 'index')|
 DROP TABLE IF EXISTS `reply_group`|
 CREATE TABLE `reply_group` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -152,6 +177,7 @@ CREATE TABLE `reply_group` (
  PRIMARY KEY (`id`),
  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
+INSERT INTO `reply_group` (`id`, `group_name`, `user_id`) VALUES (NULL, '常见问题', 'kefu2')|
 DROP TABLE IF EXISTS `reply_item`|
 CREATE TABLE `reply_item` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -163,6 +189,7 @@ CREATE TABLE `reply_item` (
  KEY `user_id` (`user_id`),
  KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
+INSERT INTO `reply_item` (`id`, `content`, `group_id`, `user_id`, `item_name`) VALUES (NULL, '在这里[官网]link[https://gofly.sopans.com]!','1','kefu2', '官方地址在哪?')|
 DROP TABLE IF EXISTS `land_page`|
 CREATE TABLE `land_page` (
   `id` int(11) NOT NULL,
