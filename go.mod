@@ -26,6 +26,7 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.5.1
+	github.com/zh-five/xdaemon v0.1.1
 	golang.org/x/net v0.0.0-20200513185701-a91f0712d120
 	golang.org/x/text v0.3.2
 )
