@@ -45,15 +45,6 @@ func PageSettingDeploy(c *gin.Context) {
 	})
 }
 
-//前台js部署
-func PageWebJs(c *gin.Context) {
-	c.HTML(http.StatusOK, "chat_web.js", nil)
-}
-
-//前台css部署
-func PageWebCss(c *gin.Context) {
-	c.HTML(http.StatusOK, "chat_web.css", nil)
-}
 func PageKefuList(c *gin.Context) {
 	c.HTML(http.StatusOK, "setting_kefu_list.html", gin.H{
 		"tab_index": "3-2",
