@@ -219,6 +219,7 @@
         max-height: 145px;
     }
     .launchButtonText .flyAvatar{
+        display: block;
         margin-right: 0px;
         float: none;
     }
