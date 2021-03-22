@@ -331,7 +331,7 @@ new Vue({
                             }
                             content.content = replaceContent(content.content);
                             _this.msgList.push(content);
-                            if(_this.msgList.length>=4){
+                            if(_this.msgList.length>=1){
                                 _this.scrollBottom();
                             }
                             if(i==0){
