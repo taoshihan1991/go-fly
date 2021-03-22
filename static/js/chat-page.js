@@ -261,9 +261,7 @@ new Vue({
         scrollBottom:function(){
             var _this=this;
                 this.$nextTick(function(){
-                    if(_this.msgList.length>=3){
                         $('body').scrollTop($("body")[0].scrollHeight);
-                    }
              });
         },
         //软键盘问题
