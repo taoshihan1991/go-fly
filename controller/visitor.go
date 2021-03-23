@@ -117,7 +117,7 @@ func PostVisitorLogin(c *gin.Context) {
 	//各种通知
 	go SendNoticeEmail(visitor.Name, "来了")
 	go SendAppGetuiPush(kefuInfo.Name, visitor.Name, visitor.Name+"来了")
-	go SendVisitorLoginNotice(kefuInfo.Name, visitor.Name, visitor.Avator, visitor.Name+"来了")
+	go SendVisitorLoginNotice(kefuInfo.Name, visitor.Name, visitor.Avator, visitor.Name+"来了", visitor.VisitorId)
 	go ws.VisitorOnline(kefuInfo.Name, visitor)
 	go SendServerJiang(visitor.Name, "来了", c.Request.Host)
 

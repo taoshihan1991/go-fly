@@ -25,7 +25,11 @@ func SendServerJiang(title string, content string, domain string) string {
 	res := tools.Get(url)
 	return res
 }
-func SendVisitorLoginNotice(kefuName, visitorName, avator, content string) {
+func SendVisitorLoginNotice(kefuName, visitorName, avator, content, visitorId string) {
+	if !tools.LimitFreqSingle("sendnotice:"+visitorId, 1, 120) {
+		log.Println("SendVisitorLoginNotice limit")
+		return
+	}
 	userInfo := make(map[string]string)
 	userInfo["username"] = visitorName
 	userInfo["avator"] = avator

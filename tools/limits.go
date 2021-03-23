@@ -1,9 +1,30 @@
 package tools
 
-import "time"
+import (
+	"log"
+	"time"
+)
 
 var LimitQueue map[string][]int64
 var ok bool
+
+func init() {
+	cleanLimitQueue()
+}
+func cleanLimitQueue() {
+	go func() {
+		for {
+			LimitQueue = nil
+			log.Println("cleanLimitQueue finshed")
+			now := time.Now()
+			// 计算下一个零点
+			next := now.Add(time.Hour * 24)
+			next = time.Date(next.Year(), next.Month(), next.Day(), 0, 0, 0, 0, next.Location())
+			t := time.NewTimer(next.Sub(now))
+			<-t.C
+		}
+	}()
+}
 
 //单机时间滑动窗口限流法
 func LimitFreqSingle(queueName string, count uint, timeWindow int64) bool {
