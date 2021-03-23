@@ -84,6 +84,10 @@ func SendMessageV2(c *gin.Context) {
 		})
 	}
 	if cType == "visitor" {
+		guest, ok := ws.ClientList[vistorInfo.VisitorId]
+		if ok && guest != nil {
+			guest.UpdateTime = time.Now()
+		}
 		//kefuConns, ok := ws.KefuList[kefuInfo.Name]
 		//if kefuConns == nil || !ok {
 		//	c.JSON(200, gin.H{

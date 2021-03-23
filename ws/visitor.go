@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
 	"log"
 	"time"
@@ -26,11 +27,12 @@ func NewVisitorServer(c *gin.Context) {
 		return
 	}
 	user := &User{
-		Conn:   conn,
-		Name:   vistorInfo.Name,
-		Avator: vistorInfo.Avator,
-		Id:     vistorInfo.VisitorId,
-		To_id:  vistorInfo.ToId,
+		Conn:       conn,
+		Name:       vistorInfo.Name,
+		Avator:     vistorInfo.Avator,
+		Id:         vistorInfo.VisitorId,
+		To_id:      vistorInfo.ToId,
+		UpdateTime: time.Now(),
 	}
 	go models.UpdateVisitorStatus(vistorInfo.VisitorId, 1)
 	//go SendServerJiang(vistorInfo.Name, "来了", c.Request.Host)
@@ -169,4 +171,30 @@ func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content s
 		VisitorMessage(vistorInfo.VisitorId, welcome.Content, kefuInfo)
 		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, welcome.Content, "kefu")
 	}
+}
+func cleanVisitorExpire() {
+	go func() {
+		return
+		log.Println("cleanVisitorExpire start...")
+		for {
+			for _, user := range ClientList {
+				diff := time.Now().Sub(user.UpdateTime).Seconds()
+				if diff >= config.VisitorExpire {
+					msg := TypeMessage{
+						Type: "auto_close",
+						Data: user.Id,
+					}
+					str, _ := json.Marshal(msg)
+					if err := user.Conn.WriteMessage(websocket.TextMessage, str); err != nil {
+						user.Conn.Close()
+						delete(ClientList, user.Id)
+					}
+					log.Println(user.Name + ":cleanVisitorExpire finshed")
+				}
+			}
+			// 计算下一个零点
+			t := time.NewTimer(time.Second * 10)
+			<-t.C
+		}
+	}()
 }

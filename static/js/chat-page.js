@@ -100,6 +100,13 @@ new Vue({
                 this.socket.close();
                 this.socketClosed=true;
             }
+            if (redata.type == "auto_close") {
+                this.chatTitle=GOFLY_LANG[LANG]['autoclosemes'];
+                $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+                this.scrollBottom();
+                this.socket.close();
+                this.socketClosed=true;
+            }
             window.parent.postMessage(redata,"*");
         },
         //发送给客户

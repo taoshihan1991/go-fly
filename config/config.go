@@ -9,9 +9,10 @@ import (
 )
 
 var (
-	PageSize        uint = 10
-	VisitorPageSize uint = 8
-	Version              = "0.1.2"
+	PageSize        uint    = 10
+	VisitorPageSize uint    = 8
+	Version                 = "0.1.2"
+	VisitorExpire   float64 = 600
 	GoflyConfig     *Config
 )
 

@@ -15,13 +15,14 @@ import (
 )
 
 type User struct {
-	Conn    *websocket.Conn
-	Name    string
-	Id      string
-	Avator  string
-	To_id   string
-	Role_id string
-	Mux     sync.Mutex
+	Conn       *websocket.Conn
+	Name       string
+	Id         string
+	Avator     string
+	To_id      string
+	Role_id    string
+	Mux        sync.Mutex
+	UpdateTime time.Time
 }
 type Message struct {
 	conn        *websocket.Conn
@@ -65,6 +66,7 @@ func init() {
 		},
 	}
 	go UpdateVisitorStatusCron()
+	cleanVisitorExpire()
 }
 func SendServerJiang(title string, content string, domain string) string {
 	noticeServerJiang, err := strconv.ParseBool(models.FindConfig("NoticeServerJiang"))
