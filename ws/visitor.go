@@ -174,7 +174,6 @@ func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content s
 }
 func cleanVisitorExpire() {
 	go func() {
-		return
 		log.Println("cleanVisitorExpire start...")
 		for {
 			for _, user := range ClientList {
@@ -192,8 +191,7 @@ func cleanVisitorExpire() {
 					log.Println(user.Name + ":cleanVisitorExpire finshed")
 				}
 			}
-			// 计算下一个零点
-			t := time.NewTimer(time.Second * 10)
+			t := time.NewTimer(time.Second * 5)
 			<-t.C
 		}
 	}()
