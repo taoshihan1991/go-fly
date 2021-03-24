@@ -14,8 +14,8 @@ func init() {
 func cleanLimitQueue() {
 	go func() {
 		for {
+			log.Println("cleanLimitQueue start...")
 			LimitQueue = nil
-			log.Println("cleanLimitQueue finshed")
 			now := time.Now()
 			// 计算下一个零点
 			next := now.Add(time.Hour * 24)
