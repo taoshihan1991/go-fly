@@ -150,7 +150,7 @@ GOFLY.getNotice=function(){
         _this.kefuAvator=res.result.avatar;
         _this.kefuName=res.result.username;
         _this.chatPageTitle+="<img src='"+_this.GOFLY_URL+res.result.avatar+"' class='flyAvatar'>"+res.result.username;
-        if(_this.GOFLY_AUTO_OPEN&&res.result.status=='online'&&_this.isIE()<=0){
+        if(_this.GOFLY_AUTO_OPEN&&_this.isIE()<=0){
             _this.showKefu();
             $(".launchButtonBox").show();
             _this.launchButtonFlag=false;
