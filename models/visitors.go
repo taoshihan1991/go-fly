@@ -19,12 +19,6 @@ type Visitor struct {
 }
 
 func CreateVisitor(name, avator, sourceIp, toId, visitorId, refer, city, clientIp, extra string) {
-	old := FindVisitorByVistorId(visitorId)
-	if old.Name != "" {
-		//更新状态上线
-		UpdateVisitor(name, avator, visitorId, 1, clientIp, sourceIp, refer, extra)
-		return
-	}
 	v := &Visitor{
 		Name:      name,
 		Avator:    avator,

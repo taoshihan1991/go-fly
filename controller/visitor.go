@@ -82,7 +82,6 @@ func PostVisitorLogin(c *gin.Context) {
 	client_ip := c.ClientIP()
 	extra := c.PostForm("extra")
 	extraJson := tools.Base64Decode(extra)
-	//log.Println(extra, extraJson, "aaaaaaaaaaaaa")
 	if extraJson != "" {
 		var extraObj VisitorExtra
 		err := json.Unmarshal([]byte(extraJson), &extraObj)
@@ -111,15 +110,26 @@ func PostVisitorLogin(c *gin.Context) {
 		})
 		return
 	}
-	models.CreateVisitor(name, avator, c.ClientIP(), toId, id, refer, city, client_ip, extra)
 	visitor := models.FindVisitorByVistorId(id)
+	if visitor.Name != "" {
+		avator = visitor.Avator
+		//更新状态上线
+		models.UpdateVisitor(name, visitor.Avator, id, 1, c.ClientIP(), c.ClientIP(), refer, extra)
+	} else {
+		models.CreateVisitor(name, avator, c.ClientIP(), toId, id, refer, city, client_ip, extra)
+	}
+	visitor.Name = name
+	visitor.Avator = avator
+	visitor.ToId = toId
+	visitor.ClientIp = c.ClientIP()
+	visitor.VisitorId = id
 
 	//各种通知
 	go SendNoticeEmail(visitor.Name, "来了")
 	go SendAppGetuiPush(kefuInfo.Name, visitor.Name, visitor.Name+"来了")
 	go SendVisitorLoginNotice(kefuInfo.Name, visitor.Name, visitor.Avator, visitor.Name+"来了", visitor.VisitorId)
 	go ws.VisitorOnline(kefuInfo.Name, visitor)
-	go SendServerJiang(visitor.Name, "来了", c.Request.Host)
+	//go SendServerJiang(visitor.Name, "来了", c.Request.Host)
 
 	c.JSON(200, gin.H{
 		"code":   200,
