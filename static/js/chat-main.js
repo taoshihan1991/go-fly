@@ -76,7 +76,7 @@ var app=new Vue({
             },20000)
             setInterval(function(){
                 _this.getOnlineVisitors();
-            },600000);
+            },120000);
         },
         //初始化websocket
         initConn() {
