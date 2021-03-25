@@ -74,6 +74,7 @@ func AddVisitorToList(user *User) {
 		str, _ := json.Marshal(msg)
 		if err := oldUser.Conn.WriteMessage(websocket.TextMessage, str); err != nil {
 			oldUser.Conn.Close()
+			user.UpdateTime = oldUser.UpdateTime
 			delete(ClientList, user.Id)
 		}
 	}
