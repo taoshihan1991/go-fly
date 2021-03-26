@@ -62,7 +62,7 @@ CREATE TABLE `user_role` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8|
 INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUES
-(1, 1, 1),
+(1, 1, 2),
 (2, 2, 2)|
 
 DROP TABLE IF EXISTS `role`|
