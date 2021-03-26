@@ -56,6 +56,7 @@ func run() {
 	engine.LoadHTMLGlob("static/html/*")
 	engine.Static("/static", "./static")
 	engine.Use(tools.Session("gofly"))
+	engine.Use(middleware.CrossSite)
 	//性能监控
 	pprof.Register(engine)
 

@@ -174,7 +174,10 @@ GOFLY.getNotice=function(){
                         "<span id='launchNoticeClose' class='flyClose'>×</span>" +
                         "</div>";
                     welcomeHtml+="<div id='launchNoticeContent'>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
-                    $("#launchButtonNotice").html(welcomeHtml).show();
+
+                    var obj=$("#launchButtonNotice");
+                    obj[0].innerHTML=welcomeHtml;
+                    obj.show();
                     i++;
                     $("#launchIcon").text(i).show();
                 },4000);
