@@ -112,12 +112,16 @@ a:hover {
     font-weight: normal;
     border-left: 2px #3385ff solid;
     background: #e6e6e6;
+    margin: 10px 0px;
 }
 .productContent{
     color: #444;
     font-size: 14px;
     line-height: 30px;
     margin-top: 10px;
+}
+.productContent ol{
+    margin: 0px 15px;
 }
 .productContent a{
     color: #3973ac;
