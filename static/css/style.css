@@ -1,0 +1,153 @@
+*{
+    margin: 0;padding: 0;
+}
+a {
+    text-decoration: none;
+    color: #3973ac;
+}
+a:hover {
+    text-decoration: underline;
+}
+.header{
+    background-color: #fff;
+    color: #fff;
+    width: 100%;
+    z-index: 100;
+}
+.container{
+    width: 1140px;
+    padding: 0;
+    margin: 0 auto;
+}
+.header .logo{
+    margin: 0;
+    float: left;
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.header a{
+    color: #828282;
+    font-weight: bold;
+    font-family: "Microsoft JhengHei";
+    text-decoration: none;
+}
+.header .logo a{
+    font-size: 30px;
+    text-decoration: none;
+}
+.header .logo img{
+    width: 120px;
+}
+.header .navBtn{
+    float: right;
+    margin:30px 0 30px 20px;
+    display: inline-block;
+}
+.banner{
+    text-align: center;
+    color: #fff;
+    background-color: #3385ff;
+    padding: 20px 10px;
+    font-size: 18px;
+    line-height: 28px;
+}
+.banner h1 {
+    font-size: 34px;
+    margin: 20px 0px;
+    line-height: 45px;
+    font-weight: 500;
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+}
+.banner p{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.banner .downloadBtn{margin-top: 20px;}
+.downloadBtn{display:inline-block;text-decoration:none;color:#fff;border:1px solid #fff;padding:10px 15px;border-radius:5px;}
+.downloadBtn:hover{background:#fff;color:#20b2bb;}
+.jumbotron{
+    width: 1000px;
+    margin: 10px auto;
+    box-shadow: 2px 2px 15px rgba(0,0,0,.3);
+    display: block;
+}
+
+
+.copyright{
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    padding: 10px;
+}
+.links{
+    margin-top: 20px;
+}
+.links a{
+    color: #20b2bb;
+    line-height: 23px;
+    margin: 5px;
+}
+.main{
+    background: #ededed;
+    overflow: hidden;
+}
+.mainIntro{
+    background: #fff;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,.05);
+    margin: 20px auto;
+}
+.product{
+    padding: 10px;
+}
+.product h3{
+    color: #333;
+    font-size: 16px;
+    line-height: 36px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.productContent{
+    color: #444;
+    font-size: 14px;
+    line-height: 30px;
+    margin-top: 10px;
+}
+.productContent a{
+    color: #3973ac;
+    text-decoration: none;
+}
+.productContent a:hover{
+    text-decoration: underline;
+}
+@media screen and (max-width: 800px) {
+    .container{
+        width: 100%;
+    }
+    .header .logo{
+        float: none;
+        text-align: center;
+        margin: 20px 0px;
+    }
+    .header .navBtn{
+        margin:5px 0 10px 10px;
+        float: none;
+    }
+    .banner p{
+        text-align: left;
+    }
+    .jumbotron{
+        width: 100%;
+        height: auto;
+    }
+
+
+}
+.clear{clear:both}
+.links{
+    margin-top: 20px;
+}
+.links a{
+    color: #20b2bb;
+    line-height: 23px;
+    margin: 5px;
+}

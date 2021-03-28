@@ -9,7 +9,6 @@ import (
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
-	"log"
 	"os"
 	"path"
 	"strconv"
@@ -115,8 +114,7 @@ func SendMessageV2(c *gin.Context) {
 		go SendAppGetuiPush(kefuInfo.Name, vistorInfo.Name, content)
 		kefus, ok := ws.KefuList[kefuInfo.Name]
 		if !ok || len(kefus) == 0 {
-			log.Println("客服不在线,发送邮件通知")
-			go SendNoticeEmail(content+"|"+vistorInfo.Name, content)
+
 		}
 		go ws.VisitorAutoReply(vistorInfo, kefuInfo, content)
 		c.JSON(200, gin.H{
