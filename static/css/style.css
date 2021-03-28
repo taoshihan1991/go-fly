@@ -106,6 +106,13 @@ a:hover {
     line-height: 36px;
     border-bottom: 1px solid #e6e6e6;
 }
+.product h4{
+    padding: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    border-left: 2px #3385ff solid;
+    background: #e6e6e6;
+}
 .productContent{
     color: #444;
     font-size: 14px;
@@ -119,6 +126,8 @@ a:hover {
 .productContent a:hover{
     text-decoration: underline;
 }
+
+
 @media screen and (max-width: 800px) {
     .container{
         width: 100%;
