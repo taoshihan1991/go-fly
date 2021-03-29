@@ -5,6 +5,8 @@ var GOFLY={
     GOFLY_LANG:"en",
     GOFLY_EXTRA: {},
     GOFLY_AUTO_OPEN:true,
+    GOFLY_AUTO_SHOW:false,
+    GOFLY_WITHOUT_BTN:false,
 };
 GOFLY.launchButtonFlag=false;
 GOFLY.titleTimer=0;
@@ -37,6 +39,12 @@ GOFLY.init=function(config){
     if (typeof config.GOFLY_AUTO_OPEN!="undefined"){
         this.GOFLY_AUTO_OPEN=config.GOFLY_AUTO_OPEN;
     }
+    if (typeof config.GOFLY_AUTO_SHOW!="undefined"){
+        this.GOFLY_AUTO_SHOW=config.GOFLY_AUTO_SHOW;
+    }
+    if (typeof config.GOFLY_WITHOUT_BTN!="undefined"){
+        this.GOFLY_WITHOUT_BTN=config.GOFLY_WITHOUT_BTN;
+    }
     var refer=document.referrer?document.referrer:"无";
     this.GOFLY_EXTRA.refer=refer;
     this.GOFLY_EXTRA.host=document.location.href;
@@ -50,19 +58,55 @@ GOFLY.init=function(config){
         }
         _this.GOFLY_EXTRA=utf8ToB64(_this.GOFLY_EXTRA);
     });
-
     if (typeof $!="function"){
         this.dynamicLoadJs("https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js",function () {
             _this.dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
-                _this.clickBtn();
+                _this.jsCallBack();
             });
         });
     }else{
         this.dynamicLoadJs("https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js",function () {
-            _this.clickBtn();
+            _this.jsCallBack();
         });
     }
+    _this.addEventlisten();
+}
+GOFLY.jsCallBack=function(){
+    this.showKefuBtn();
+    this.addClickEvent();
+    this.getNotice();
+}
+GOFLY.showKefuBtn=function(){
+    var _this=this;
+    if(_this.GOFLY_WITHOUT_BTN){
+        return;
+    }
+    var html="<div class='launchButtonBox'>" +
+        '<div id="launchButton" class="launchButton">' +
+        '<div id="launchIcon" class="launchIcon animateUpDown">1</div> ' +
+        '<div class="launchButtonText">'+_this.GOFLY_BTN_TEXT+'</div></div>' +
+        '<div id="launchButtonNotice" class="launchButtonNotice"></div>' +
+        '</div>';
+    $('body').append(html);
+}
+GOFLY.addClickEvent=function(){
+    var _this=this;
+    $(".launchButton").on("click",function() {
+        _this.showKefu();
+        $("#launchIcon").text(0).hide();
+    });
 
+    $("body").on("click","#launchNoticeClose",function() {
+        $("#launchButtonNotice").hide();
+    });
+
+    $("body").click(function () {
+        clearTimeout(_this.titleTimer);
+        document.title = _this.originTitle;
+    });
+}
+GOFLY.addEventlisten=function(){
+    var _this=this;
     window.addEventListener('message',function(e){
         var msg=e.data;
         if(msg.type=="message"){
@@ -116,27 +160,11 @@ GOFLY.dynamicLoadJs=function(url, callback){
     head.appendChild(script);
 }
 
-GOFLY.clickBtn=function (){
-    var _this=this;
-    var html="<div class='launchButtonBox'>" +
-        '<div id="launchButton" class="launchButton">' +
-        '<div id="launchIcon" class="launchIcon animateUpDown">1</div> ' +
-        '<div class="launchButtonText">'+_this.GOFLY_BTN_TEXT+'</div></div>' +
-        '<div id="launchButtonNotice" class="launchButtonNotice">您好:<br/>极简强大的开源免费Go语言在线客服单页营销系统，来了解一下？</div>' +
-        '</div>';
-    $('body').append(html);
-    $(".launchButton").on("click",function() {
-        _this.showKefu();
-        $("#launchIcon").text(0).hide();
-    });
-
-    $("body").on("click","#launchNoticeClose",function() {
-        $("#launchButtonNotice").hide();
-    });
-    _this.getNotice();
-}
 GOFLY.getNotice=function(){
     var _this=this;
+    if(!_this.GOFLY_AUTO_OPEN){
+        return;
+    }
     $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
         if(res.result.status=='offline'){
             _this.chatPageTitle="<div class='launchPointer offline'></div>";
@@ -176,8 +204,10 @@ GOFLY.getNotice=function(){
                     welcomeHtml+="<div id='launchNoticeContent'>"+replaceContent(content.content,_this.GOFLY_URL)+"</div>";
 
                     var obj=$("#launchButtonNotice");
-                    obj[0].innerHTML=welcomeHtml;
-                    obj.show();
+                    if(obj[0]){
+                        obj[0].innerHTML=welcomeHtml;
+                        obj.show();
+                    }
                     i++;
                     $("#launchIcon").text(i).show();
                 },4000);
@@ -214,6 +244,20 @@ GOFLY.isIE=function(){
         return -1;//不是ie浏览器
     }
 }
+GOFLY.showPanel=function (){
+    var width=$(window).width();
+    this.GOFLY_AUTO_SHOW=true;
+    if(this.isIE()>0){
+        this.windowOpen();
+        return;
+    }
+    if(width<768){
+        this.layerOpen("100%","100%");
+        return;
+    }
+    this.layerOpen("400px","530px");
+    this.launchButtonFlag=true;
+}
 GOFLY.showKefu=function (){
     if (this.launchButtonFlag) return;
     var width=$(window).width();
@@ -228,15 +272,6 @@ GOFLY.showKefu=function (){
     this.layerOpen("400px","530px");
     this.launchButtonFlag=true;
     $(".launchButtonBox").hide();
-    var _this=this;
-    $("body").click(function () {
-        clearTimeout(_this.titleTimer);
-        document.title = _this.originTitle;
-    });
-    window.onfocus = function () {
-        clearTimeout(_this.titleTimer);
-        document.title = _this.originTitle;
-    };
 }
 GOFLY.layerOpen=function (width,height){
     if (this.launchButtonFlag) return;
@@ -258,7 +293,8 @@ GOFLY.layerOpen=function (width,height){
         content: [this.GOFLY_URL+'/chatIndex?kefu_id='+this.GOFLY_KEFU_ID+'&lang='+this.GOFLY_LANG+'&refer='+window.document.title+'&extra='+this.GOFLY_EXTRA , 'yes'], //iframe的url，no代表不显示滚动条
         success:function(){
             var layBox=$("#layui-layer19911116");
-            if(!_this.GOFLY_AUTO_OPEN && layBox.css("display")=="none"){
+            if(_this.GOFLY_AUTO_SHOW&&layBox.css("display")=="none"){
+                _this.launchButtonFlag=true;
                 layBox.show();
             }
         },
