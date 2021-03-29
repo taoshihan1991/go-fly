@@ -1,29 +1,6 @@
 # go-fly
-基于GO语言实现的web客服即时通讯与客服管理系统。
-
-1.使用gin http框架实现restful风格的API和template包的模板语法进行展示界面
-
-2.使用jwt-go配合gin中间件实现无状态的jwt登陆认证
-
-3.数据库实现的rbac权限配合gin中间件实现权限控制
-
-4.通过cobra进行命令行参数解析和执行对应的功能
-
-5.使用go modoule解决依赖问题
-
-6.使用swagger实现文档展示
-
-7.使用go-imap实现邮件的列表展示和读取
-
-8.使用go-smtp实现发送邮件
-
-9.使用github.com/gorilla/websocket实现即时通讯
-
-10.使用gorm配合mysql实现数据存储
-
-11.前端使用elementUI和Vue展示界面
-
-11.充分实践了struct，interface，map，slice，for range,groutine和channel管道等基础知识
+基于Golang语言和MySQL实现的WEB在线客服系统，主要技术栈
+ gin + jwt-go + websocket + go.uuid + gorm + cobra
 
 ### 项目预览
 
@@ -251,6 +228,23 @@ location /
 #PROXY-END/
 ```
 ### 更新日志
+
+
+##### V0.3.7
+
+访客端增加自助服务点击后可以自动回复
+
+访客端手机端咨询按钮移到右侧不遮挡底部
+
+访客端前端修复多个layer冲突问题
+
+后端修改守护进程方式,进程崩溃后可自动重启
+
+后端增加定时清理频限防止内存泄露
+
+后端增加通知频限和访客输入频限防止死锁
+
+编译增加linux-x86_64/linux-i686版本支持
 
 ##### V0.3.6
 
