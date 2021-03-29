@@ -8,6 +8,13 @@ a {
 a:hover {
     text-decoration: underline;
 }
+pre{
+    background:#f9f9f9;
+    color: #d73a49;
+    line-height: 21px;
+    border: 1px solid #e8e8e8;
+    padding: 5px;
+}
 .header{
     background-color: #fff;
     color: #fff;

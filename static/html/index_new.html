@@ -10,11 +10,12 @@
     <meta name="description" content="GOFLY客服,GO-FLY开源客服，一套可独立部署的免费开源客服系统，下载zip解压即可，仅依赖MySQL数据库，是一个开箱即用的网页在线客服，适合PHP程序员使用，同时也是首页完全可以编辑的单页营销系统." />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
     <!--对接客服代码,安装完成后更改成自己的域名或IP，下面js文件路径以及GOFLY_URL都要改-->
-    <script src="http://127.0.0.1:8081/static/js/gofly-front.js?v=1"></script>
+    <script src="https://gofly.sopans.com/static/js/gofly-front.js?v=1"></script>
     <script>
         GOFLY.init({
-            GOFLY_URL:"http://127.0.0.1:8081",
-            GOFLY_KEFU_ID: "kefu2",
+            GOFLY_URL:"https://gofly.sopans.com",
+            GOFLY_KEFU_ID: "kefu2",//对接的客服name
+            GOFLY_WITHOUT_BTN:true,
         })
     </script>
     <!--//对接客服代码-->
@@ -55,6 +56,39 @@
                 <p>1. 代码完全开源免费，托管在github上，可以随时clone/fork</p>
                 <p>2. 每次build打包上传，需要花费一定的时间比较繁琐</p>
                 <p>3. 使用编译版的用户，在安装和使用时可以随时咨询开发者</p>
+            </div>
+        </div>
+        <div class="product">
+            <h3>安装使用</h3>
+            <h4>访客端js引入使用</h4>
+            <div class="productContent">
+                <p>1.引入js并且修改为自己的域名</p>
+                <pre>
+&lt;!--对接客服代码,安装完成后更改成自己的域名或IP，下面js文件路径以及GOFLY_URL都要改--&gt;
+&lt;script src="https://gofly.sopans.com/static/js/gofly-front.js?v=1"&gt;&lt;/script&gt;
+&lt;script&gt;
+    GOFLY.init({
+        GOFLY_URL:"https://gofly.sopans.com",
+        GOFLY_KEFU_ID: "kefu2",//对接的客服name
+    })
+&lt;/script&gt;
+&lt;!--//对接客服代码--&gt;
+                </pre>
+                <p>2.隐藏默认按钮使用自己的按钮</p>
+                <pre>
+&lt;script&gt;
+    GOFLY.init({
+        GOFLY_URL:"https://gofly.sopans.com",
+        GOFLY_KEFU_ID: "kefu2",//对接的客服name
+        GOFLY_WITHOUT_BTN:true,
+    })
+&lt;/script&gt;
+&lt;a  href="javascript:GOFLY.showPanel();"&gt;联系客服&lt;/a&gt;
+                </pre>
+            </div>
+            <h4>服务端安装</h4>
+            <div class="productContent">
+                <p>参考readme.md</p>
             </div>
         </div>
         <div class="product">
