@@ -162,9 +162,6 @@ GOFLY.dynamicLoadJs=function(url, callback){
 
 GOFLY.getNotice=function(){
     var _this=this;
-    if(!_this.GOFLY_AUTO_OPEN){
-        return;
-    }
     $.get(this.GOFLY_URL+"/notice?kefu_id="+this.GOFLY_KEFU_ID,function(res) {
         if(res.result.status=='offline'){
             _this.chatPageTitle="<div class='launchPointer offline'></div>";
