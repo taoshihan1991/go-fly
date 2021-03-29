@@ -92,6 +92,7 @@ GOFLY.showKefuBtn=function(){
 GOFLY.addClickEvent=function(){
     var _this=this;
     $(".launchButton").on("click",function() {
+        _this.GOFLY_AUTO_SHOW=true;
         _this.showKefu();
         $("#launchIcon").text(0).hide();
     });
