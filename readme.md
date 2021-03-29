@@ -95,6 +95,14 @@
    
    windows: go-fly.exe server [可选 -p 8082 -d]
 
+6. 关闭程序
+
+   linux下使用ps命令结合kill命令杀掉进程
+   
+   ps -ef|grep go-fly 看到父子进程id
+   
+   kill 进程父进程id ； kill 进程子进程id
+
 #### 4. 网页使用
 
    1.服务端安装成功后可把域名换成自己的域名或IP
