@@ -338,6 +338,9 @@ var app=new Vue({
                             type: 'error'
                         });
                     }
+                    if(data.code==400){
+                        window.location.href="/login";
+                    }
                 }
             });
         },
