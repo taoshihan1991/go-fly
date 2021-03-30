@@ -64,31 +64,67 @@
             <div class="productContent">
                 <p>1.引入js并且修改为自己的域名</p>
                 <pre>
-&lt;!--对接客服代码,安装完成后更改成自己的域名或IP，下面js文件路径以及GOFLY_URL都要改--&gt;
-&lt;script src="https://gofly.sopans.com/static/js/gofly-front.js?v=1"&gt;&lt;/script&gt;
-&lt;script&gt;
+    script标签引入这段js https://gofly.sopans.com/static/js/gofly-front.js
     GOFLY.init({
         GOFLY_URL:"https://gofly.sopans.com",
         GOFLY_KEFU_ID: "kefu2",//对接的客服name
     })
-&lt;/script&gt;
-&lt;!--//对接客服代码--&gt;
                 </pre>
                 <p>2.隐藏默认按钮使用自己的按钮</p>
                 <pre>
-&lt;script&gt;
+
     GOFLY.init({
         GOFLY_URL:"https://gofly.sopans.com",
         GOFLY_KEFU_ID: "kefu2",//对接的客服name
         GOFLY_WITHOUT_BTN:true,
     })
-&lt;/script&gt;
-&lt;a  href="javascript:GOFLY.showPanel();"&gt;联系客服&lt;/a&gt;
+    在你的按钮点击事件上,调用这个方法 GOFLY.showPanel() [新版添加]
                 </pre>
+            </div>
+            <h4>配置数据库</h4>
+            <div class="productContent">
+                <p>在mysql命令行下或者网页管理面板里 , 创建好空数据库.</p>
+                <pre>
+    mysql命令行下的建库语句如下:
+    create database gofly charset utf8;
+                </pre>
+                <p>编辑config/mysql.json , 更换为自己的数据库host/用户名/密码/数据库名</p>
             </div>
             <h4>服务端安装</h4>
             <div class="productContent">
-                <p>参考readme.md</p>
+                <p>1. linux系统</p>
+                <p>下载zip压缩包,并且解压缩的详细命令如下.</p>
+                <pre>
+    mkdir go-fly
+    cd go-fly
+    wget xxxxxxxxxxx.zip
+    unzip xxxx.zip
+    chmod 0777 -R ./
+    导入数据库( 注意:会删除表并且清空数据 )
+    linux: ./go-fly install
+                </pre>
+                <p>2. windows系统</p>
+                <p>在cmd命令行下进入解压的目录</p>
+                <pre>
+    导入数据库( 注意:会删除表并且清空数据 )
+    windows: go-fly.exe install
+                </pre>
+                <p>3. 运行项目</p>
+                <pre>
+    linux:   ./go-fly server [可选 -p 8082 -d]
+    windows: go-fly.exe server [可选 -p 8082 -d]
+    参数说明
+    -p 指定端口
+    -d linux下是否以daemon守护进程运行
+    -h 查看帮助
+                </pre>
+                <p>4. 关闭程序</p>
+                <pre>
+    linux下使用ps命令结合kill命令杀掉进程,windows下使用任务管理器结束进程
+    ps -ef|grep go-fly 看到父子进程id
+    kill 进程父进程id ； kill 进程子进程id
+                </pre>
+                <p>详细请参考readme.md</p>
             </div>
         </div>
         <div class="product">
