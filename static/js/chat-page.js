@@ -207,7 +207,7 @@ new Vue({
                     }
                     _this.visitor=res.result;
                     _this.setCache("visitor",res.result);
-                    _this.getMesssagesByVisitorId();
+                    //_this.getMesssagesByVisitorId();
                     _this.initConn();
                 });
             // }else{
@@ -363,7 +363,7 @@ new Vue({
                 $.each(faceTitles, function (index, item) {
                     _this.face.push({"name":item,"path":faces[item]});
                 });
-                $(".faceBtn").click(function(e){
+                $(".visitorFaceBtn").click(function(e){
                     var status=$('.faceBox').css("display");
                     if(status=="block"){
                         $('.faceBox').hide();

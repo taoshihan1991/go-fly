@@ -14,6 +14,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/static/css/front.css?v=1.0.0" />
     <link rel="stylesheet" href="/static/css/common.css?v=1.0.0" />
+    <link rel="stylesheet" href="/static/css/icono.min.css" />
 </head>
 <body>
 <div id="app"  class="chatCenter">
@@ -27,8 +28,6 @@
                         :closable="false"
                         type="success">
                 </el-alert>
-                <div class="el-alert el-alert--info is-center is-light el-alert__title" v-show="msgListNum>1" v-on:click="getMesssagesByVisitorId(true)"><i class="el-icon-info" ></i>&nbsp;<{flyLang['moremessage']}></div>
-
                 <el-row :gutter="2" v-show="replys.length>0">
                     <el-col :span="3"><el-avatar shape="square" :size="36" :src="noticeAvatar"></el-avatar></el-col>
                     <el-col :span="21">
@@ -56,9 +55,10 @@
         </div>
         <div class="chatBoxSend">
             <div class="iconBtns">
-                <div class="faceBtn visitorFaceBtn"></div>
-                <div class="imageBtn visitorImageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
-                <div class="folderBtn visitorFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
+                <div class="icono-smile visitorFaceBtn"></div>
+                <div class="icono-image visitorImageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
+                <div class="icono-folder visitorFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
+                <div class="icono-comment visitorHistoryBtn"  v-on:click="getMesssagesByVisitorId(true)"></div>
                 <div class="clear"></div>
             </div>
             <el-input type="textarea" @focus="textareaFocus" @blur="textareaBlur" class="chatArea" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" :placeholder="flyLang.textarea"></el-input>

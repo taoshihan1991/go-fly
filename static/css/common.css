@@ -21,8 +21,12 @@
 }
 .iconBtns{
     border-top:1px solid #e4e4e4;
-    border-bottom:1px solid #e4e4e4;
+    color: #b2b2b2;
     padding: 2px 0;
+}
+.iconBtns div{
+    margin-right: 10px;
+    cursor: pointer;
 }
 .visitorFaceBtn{
     float: left;
