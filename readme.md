@@ -1,5 +1,7 @@
 # go-fly
-基于Golang语言和MySQL实现的WEB在线客服系统，主要技术栈
+基于Golang语言和MySQL实现的WEB在线客服系统
+
+主要技术栈
  gin + jwt-go + websocket + go.uuid + gorm + cobra
 
 ### 项目预览
@@ -323,6 +325,9 @@ location /
 
 
 ### 感谢赞助
+2021年04月01日 **科技  66.66元
+
+2021年03月15日 **无畏  8.88元
 
 2021年03月15日 **彬  77元
 
