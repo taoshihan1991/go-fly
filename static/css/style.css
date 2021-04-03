@@ -137,7 +137,22 @@ pre{
 .productContent a:hover{
     text-decoration: underline;
 }
-
+.productPost{
+    overflow: hidden;
+}
+.productPost li:first-child {
+    border-top: 0;
+}
+.productPost li {
+    float: left;
+    margin-right: 2%;
+    width: 48%;
+    line-height: 36px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    border-top: 1px dashed #e6e6e6;
+}
 
 @media screen and (max-width: 800px) {
     .container{

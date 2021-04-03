@@ -1,44 +1,57 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>开源免费客服系统-极简强大Go语言开发客服单页营销系统 - GOFLY</title>
-    <meta name="keywords" content="GO-FLY,GOFLY客服,开源免费在线客服,GO语言客服,免费客服,开源客服,web客服,go客服,网站客服系统,免费在线客服,网站在线客服,在线客服软件" />
-    <meta name="description" content="GOFLY客服,GO-FLY开源客服，一套可独立部署的免费开源客服系统，下载zip解压即可，仅依赖MySQL数据库，是一个开箱即用的网页在线客服，适合PHP程序员使用，同时也是首页完全可以编辑的单页营销系统." />
+    <title>开源免费客服系统-极简强大Golang语言开发在线客服单页营销系统 - GOFLY</title>
+    <meta name="keywords" content="GO-FLY,GOFLY客服,开源免费在线客服,GO语言客服,免费客服,开源客服,web客服,go客服,网站客服系统,免费在线客服,网站在线客服,在线客服软件,php客服" />
+    <meta name="description" content="GOFLY客服,GO-FLY开源客服，一套可独立部署的免费开源客服系统，网站在线客服系统，下载zip解压即可，仅依赖MySQL数据库，是一个开箱即用的网页在线客服，适合PHP程序员使用，同时也是首页完全可以编辑的单页营销系统." />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
-    <!--对接客服代码,安装完成后更改成自己的域名或IP，下面js文件路径以及GOFLY_URL都要改-->
-    <script src="https://gofly.sopans.com/static/js/gofly-front.js?v=1"></script>
     <script>
-        GOFLY.init({
-            GOFLY_URL:"https://gofly.sopans.com",
-            GOFLY_KEFU_ID: "kefu2",//对接的客服name
-            GOFLY_WITHOUT_BTN:true,
-        })
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?82938760e00806c6c57adee91f39aa5e";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
     </script>
-    <!--//对接客服代码-->
 </head>
 <body>
+<!--对接客服代码,安装完成后更改成自己的域名或IP，下面js文件路径以及GOFLY_URL都要改-->
+<script src="https://jd.sopans.com/static/js/gofly-front.js?v=1"></script>
+<script>
+    GOFLY.init({
+        GOFLY_URL:"https://jd.sopans.com",
+        GOFLY_KEFU_ID: "taoshihan",
+        GOFLY_ENT: "5",
+        GOFLY_BTN_TEXT: "GOFLY在线客服!",
+        GOFLY_LANG:"cn",
+    })
+</script>
+<!--//对接客服代码-->
 <div class="header">
     <div class="container">
         <h1 class="logo"><a href="/"><img src="/static/images/logo.png" alt="GOFLY客服" title="GOFLY客服"/></a></h1>
         <a class="navBtn" href="/index_en">English</a>
         <a class="navBtn" href="/index_cn">中文版</a>
-        <a class="navBtn" href="https://github.com/taoshihan1991/go-fly" target="_blank">Github</a>
-        <a class="navBtn" href="/login">管理员</a>
+
+
         <a class="navBtn" href="/static/h5/" target="_blank">H5版</a>
-        <a class="navBtn" href="https://jd.sopans.com" target="_blank">多商户</a>
-        <a class="navBtn" href="http://china.sopans.com" target="_blank">演示</a>
+        <a class="navBtn" href="https://jd.sopans.com" target="_blank">演示</a>
+
     </div>
 </div>
 <div class="clear"></div>
 <div class="banner">
     <h1>开源 · 免费 · 网页在线客服营销系统</h1>
     <p>GO-FLY，一套可独立部署的免费开源客服系统，基于Golang开发，编译后的二进制文件可直接使用无需搭开发环境，下载zip解压即可，仅依赖MySQL数据库，是一个开箱即用的网页在线客服系统，同时也是首页完全可以编辑的单页营销系统</p>
+    <p><a target="_blank" href="https://github.com/taoshihan1991/go-fly" class="downloadBtn">GOFLY (Github开源)</a>
+        <a target="_blank" href="https://dwz.cn/XFf8o2ym" class="downloadBtn">下载 GOFLY0.3.7 (单商户编译版)</a>
+        <a target="_blank" href="https://dwz.cn/q9Kfrunc" class="downloadBtn">下载 GOFLY-PRO0.3.8 (商务版)</a>
+    </p>
 
-    <p><a target="_blank" href="https://dwz.cn/XFf8o2ym" class="downloadBtn">下载 GOFLY0.3.7 (功能增强)</a></p>
 </div>
 <div class="main">
     <img alt="GOFLY在线客服"  title="GOFLY在线客服" class="jumbotron" src="https://gofly.sopans.com/static/images/admin.jpg"/>
@@ -56,6 +69,7 @@
                 <p>1. 代码完全开源免费，托管在github上，可以随时clone/fork</p>
                 <p>2. 每次build打包上传，需要花费一定的时间比较繁琐</p>
                 <p>3. 使用编译版的用户，在安装和使用时可以随时咨询开发者</p>
+                <p>4. 老用户可联系我微信，单独发送给你，联系方式<a href="javascript:GOFLY.showPanel();">在线客服</a>自助获取.</p>
             </div>
         </div>
         <div class="product">
@@ -141,7 +155,7 @@
                     <li>编译增加linux-x86_64/linux-i686版本支持</li>
                 </ol>
             </div>
-            <h4>v0.3.6 2021-03-01</h4>
+            <h4>v0.3.6 2021-03-16</h4>
             <div class="productContent">
                 <ol>
                     <li>修复访客端标题闪烁问题</li>
@@ -170,6 +184,18 @@
                     <li>客服端新消息提醒标识</li>
                     <li>客服端访客列表展示访客正在输入信息</li>
                 </ol>
+            </div>
+        </div>
+    </div>
+    <div class="container mainIntro">
+        <div class="product">
+            <h3>常见问题</h3>
+            <div class="productContent">
+                <ul class="productPost">
+                    <li><a href="https://www.cnblogs.com/taoshihan/p/14614352.html">如何下载安装GOFLY客服系统</a></li>
+                    <li><a href="https://www.cnblogs.com/taoshihan/p/14612956.html">nginx配置域名和反向代理端口</a></li>
+                    <li><a href="https://www.cnblogs.com/taoshihan/p/14464255.html">解决旧版本跨域问题been blocked by CORS policy</a></li>
+                </ul>
             </div>
         </div>
     </div>
