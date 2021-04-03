@@ -3,19 +3,23 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="description" content="">
     <meta name="author" content="陶士涵">
-    <title>GO-FLY客服系统登录页</title>
+    <title>GOFLY | GO-FLY开源免费在线客服系统登录页</title>
+    <meta name="keywords" content="GO-FLY,GOFLY客服,开源免费在线客服,GO语言客服,免费客服,开源客服,web客服,go客服,网站客服系统,免费在线客服,网站在线客服,在线客服软件,php客服" />
+    <meta name="description" content="GOFLY客服,GO-FLY开源客服，一套可独立部署的免费开源客服系统，网站在线客服系统，下载zip解压即可，仅依赖MySQL数据库，是一个开箱即用的网页在线客服，适合PHP程序员使用，同时也是首页完全可以编辑的单页营销系统." />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
     <style>
         body {
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
+        }
+        a {
+            text-decoration: none;
+            color: #3973ac;
         }
         .signin {
             width: 350px;
@@ -57,47 +61,22 @@
 <body>
 <div id="app" class="signin">
     <template>
-        <div class="loginHtml" v-show="!showRegHtml">
-            <h1 class="loginTitle">账户登录</h1>
-            <h2 class="loginDesc" @click="showRegHtml=true">注册获取新登录账号</h2>
+        <div class="loginHtml">
+            <h1 class="loginTitle">欢迎使用<a href="https://gofly.sopans.com">GOFLY</a></h1>
             <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
                 <el-form-item  prop="username">
                     <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
                 </el-form-item>
                 <el-form-item  prop="password">
-                    <el-input v-model="kefuForm.password" placeholder="密码"></el-input>
+                    <el-input show-password v-on:keyup.enter.native="kefuLogin('kefuForm')" v-model="kefuForm.password" placeholder="密码"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button style="width: 100%" :loading="loading" type="primary" @click="kefuLogin('kefuForm')">登录</el-button>
                 </el-form-item>
             </el-form>
         </div>
-        <div class="regHtml" v-show="showRegHtml">
-            <h1 class="loginTitle">账户注册</h1>
-            <h2 class="loginDesc" @click="showRegHtml=false">立即登录</h2>
-            <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
-                <el-form-item  prop="username">
-                    <el-input v-model="newName" placeholder="用户名"></el-input>
-                </el-form-item>
-                <el-form-item  prop="username">
-                    <el-input v-model="nickname" placeholder="昵称"></el-input>
-                </el-form-item>
-                <el-form-item  prop="password">
-                    <el-input v-model="newPass" placeholder="密码"></el-input>
-                </el-form-item>
-                <el-form-item  prop="password">
-                    <el-input v-model="newRefPass" placeholder="确认密码"></el-input>
-                </el-form-item>
-                <el-form-item  prop="password">
-                    <el-input style="float: left; width: 150px;" v-model="captcha" placeholder="验证码"></el-input>
-                    <img style="float: right;" :src="codeSrc" @click="codeSrc='/captcha?t='+Math.random()">
-                </el-form-item>
-                <el-form-item>
-                    <el-button style="width: 100%" :loading="loading" type="primary" @click="register()">注册</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
-        <p class="copyright">陶士涵版权所有 &copy; 2020 </p>
+
+        <p class="copyright">陶士涵版权所有</p>
 </template>
 </div>
 </body>
@@ -183,32 +162,6 @@
                 this.loading=false;
                 this.$refs[formName].resetFields();
             },
-            //注册
-            register(){
-                var data = {};
-                data.name=this.newName;
-                data.password = this.newPass;
-                data.rePassword = this.newRefPass;
-                data.nickname=this.nickname;
-                data.captcha=this.captcha;
-                this.loading=true;
-                var _this=this;
-                $.post("/register", data, function (data) {
-                    if (data.code == 200) {
-                        _this.$message({
-                            message: data.msg,
-                            type: 'success'
-                        });
-                        window.location.href="/login";
-                    } else {
-                        _this.$message({
-                            message: data.msg,
-                            type: 'error'
-                        });
-                    }
-                    _this.loading=false;
-                });
-            }
 		},
         created: function () {
             if (top.location != location){
