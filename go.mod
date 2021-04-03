@@ -2,13 +2,9 @@ module github.com/taoshihan1991/imaptool
 
 go 1.14
 
-require github.com/emersion/go-imap v1.0.4
-
 require (
-	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/dchest/captcha v0.0.0-20200903113550-03f5f0333e1f
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/emersion/go-message v0.11.2
 	github.com/emersion/go-sasl v0.0.0-20200509203442-7bfe0ed36a21
 	github.com/emersion/go-smtp v0.13.0
 	github.com/gin-contrib/pprof v1.3.0

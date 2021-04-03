@@ -95,7 +95,7 @@ func SendMessageV2(c *gin.Context) {
 		//	})
 		//	return
 		//}
-		msg := TypeMessage{
+		msg := ws.TypeMessage{
 			Type: "message",
 			Data: ws.ClientMessage{
 				Avator:  vistorInfo.Avator,
@@ -133,13 +133,13 @@ func SendVisitorNotice(c *gin.Context) {
 		})
 		return
 	}
-	msg := TypeMessage{
+	msg := ws.TypeMessage{
 		Type: "notice",
 		Data: notice,
 	}
 	str, _ := json.Marshal(msg)
-	for _, visitor := range clientList {
-		visitor.conn.WriteMessage(websocket.TextMessage, str)
+	for _, visitor := range ws.ClientList {
+		visitor.Conn.WriteMessage(websocket.TextMessage, str)
 	}
 	c.JSON(200, gin.H{
 		"code": 200,
@@ -158,7 +158,7 @@ func SendCloseMessageV2(c *gin.Context) {
 
 	oldUser, ok := ws.ClientList[visitorId]
 	if oldUser != nil || ok {
-		msg := TypeMessage{
+		msg := ws.TypeMessage{
 			Type: "force_close",
 			Data: visitorId,
 		}

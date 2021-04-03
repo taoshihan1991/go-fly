@@ -34,7 +34,7 @@ func SendVisitorLoginNotice(kefuName, visitorName, avator, content, visitorId st
 	userInfo["username"] = visitorName
 	userInfo["avator"] = avator
 	userInfo["content"] = content
-	msg := TypeMessage{
+	msg := ws.TypeMessage{
 		Type: "notice",
 		Data: userInfo,
 	}

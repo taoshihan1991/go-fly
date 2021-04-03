@@ -26,7 +26,6 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/userinfo", middleware.JwtApiMiddleware, controller.GetKefuInfoAll)
 	engine.POST("/register", middleware.Ipblack, controller.PostKefuRegister)
 	//前后聊天
-	engine.GET("/chat_server", middleware.Ipblack, controller.NewChatServer)
 	engine.GET("/ws_kefu", middleware.JwtApiMiddleware, ws.NewKefuServer)
 	engine.GET("/ws_visitor", middleware.Ipblack, ws.NewVisitorServer)
 	go ws.WsServerBackend()
@@ -56,8 +55,6 @@ func InitApiRouter(engine *gin.Engine) {
 	//角色列表
 	engine.GET("/roles", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetRoleList)
 	engine.POST("/role", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostRole)
-	//邮件夹列表
-	engine.GET("/folders", controller.GetFolders)
 
 	engine.GET("/mysql", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.MysqlGetConf)
 	engine.POST("/mysql", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.MysqlSetConf)
