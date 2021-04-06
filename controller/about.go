@@ -17,6 +17,14 @@ func GetAbout(c *gin.Context) {
 		"result": about,
 	})
 }
+func GetAbouts(c *gin.Context) {
+	about := models.FindAbouts()
+	c.JSON(200, gin.H{
+		"code":   200,
+		"msg":    "ok",
+		"result": about,
+	})
+}
 func PostAbout(c *gin.Context) {
 	title_cn := c.PostForm("title_cn")
 	title_en := c.PostForm("title_en")

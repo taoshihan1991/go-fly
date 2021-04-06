@@ -11,6 +11,13 @@ type About struct {
 	CssJs      string `json:"css_js"`
 	HtmlCn     string `json:"html_cn"`
 	HtmlEn     string `json:"html_en"`
+	Page       string `json:"page"`
+}
+
+func FindAbouts() []About {
+	var a []About
+	DB.Select("id,title_cn,page").Find(&a)
+	return a
 }
 
 func FindAboutByPage(page interface{}) About {
