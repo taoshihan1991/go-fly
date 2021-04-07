@@ -94,6 +94,7 @@
                 html_cn: "",
                 html_en: "",
             },
+            aboutpages:[],
             modifyPass:{
                 old_pass:"",
                 new_pass:"",
@@ -229,6 +230,11 @@
                 if(ACTION=="setting_pageindex"){
                     this.sendAjax("/about","get",{},function(result){
                         _this.pageindex=result;
+                    });
+                }
+                if(ACTION=="setting_indexpages"){
+                    this.sendAjax("/aboutpages","get",{},function(result){
+                        _this.aboutpages=result;
                     });
                 }
                 if(ACTION=="setting_avator"){
