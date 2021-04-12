@@ -133,13 +133,6 @@
                                         <i class="el-icon-map-location"></i>
                                         <span slot="title">城市：<{visitor.city}></span>
                                     </el-menu-item>
-                                    <el-tooltip :content="visitor.refer" placement="left">
-                                        <el-menu-item  style="padding-left:2px;color: #666;">
-                                            <i class="el-icon-guide"></i>
-                                            <span slot="title" >来源：<{visitor.refer}></span>
-                                        </el-menu-item>
-                                    </el-tooltip>
-
                                     <el-menu-item style="padding-left:2px;color: #666;">
                                         <i class="el-icon-time"></i>
                                         <span slot="title">首次访问：<{visitor.created_at}></span>
@@ -148,10 +141,10 @@
                                         <i class="el-icon-time"></i>
                                         <span slot="title">最后访问：<{visitor.updated_at}></span>
                                     </el-menu-item>
-                                    <el-tooltip content="点击关闭连接" placement="left">
-                                        <el-menu-item v-on:click="closeVisitor(visitor.visitor_id)" style="padding-left:2px;color: #666;">
-                                            <i class="el-icon-circle-close"></i>
-                                            <span slot="title">状态：<{visitor.status}></span>
+                                    <el-tooltip :content="visitor.refer" placement="left">
+                                        <el-menu-item  style="padding-left:2px;color: #666;">
+                                            <i class="el-icon-guide"></i>
+                                            <span slot="title" >来源标题：<{visitor.refer}></span>
                                         </el-menu-item>
                                     </el-tooltip>
                                     <el-tooltip  v-for="v in visitorExtra" :content="v.val" placement="left">
@@ -184,7 +177,7 @@
                             <el-collapse v-show="replySearchList" v-model="replySearchListActive">
                                 <el-collapse-item v-for="reply in replySearchList" :key="reply.group_id" :title="reply.group_name" :name="reply.group_id">
                                     <template slot="title">
-                                        <i class="header-icon el-icon-info"></i>&nbsp;<{reply.group_name}>
+                                        <i class="el-icon-folder"></i>&nbsp;<{reply.group_name}>
                                     </template>
                                     <div class="replyItem" @click="messageContent=item.item_content"  v-for="item in reply.items" ><{item.item_content}> &nbsp;&nbsp;<el-button @click="deleteReplyContent(item.item_id)" type="text">删除</el-button></div>
                                     <el-button @click="replyContentDialog=true;groupName=reply.group_name;groupId=reply.group_id" type="text">+添加回复内容</el-button>
@@ -194,11 +187,12 @@
                             <el-collapse v-show="replySearchList.length==0">
                                 <el-collapse-item v-for="reply in replys" :key="reply.group_id" :title="reply.group_name" :name="reply.group_id">
                                     <template slot="title">
-                                        <i class="header-icon el-icon-info"></i>&nbsp;<{reply.group_name}>
+                                        <i class="el-icon-s-order"></i>&nbsp;<{reply.group_name}>
                                     </template>
                                     <div class="replyItem" @click="messageContent=item.item_content"  v-for="item in reply.items" >
-                                        <div class="replyItemTitle">关键词: <{item.item_name}></div>
-                                        <div class="replyItemContent">回复内容: <{item.item_content}></div>
+                                        <el-tooltip :content="item.item_content"  placement="left" effect="light">
+                                            <div class="replyItemTitle"><i class="header-icon el-icon-document"></i> <{item.item_name}></div>
+                                        </el-tooltip>
                                         <el-button @click="deleteReplyContent(item.item_id)" type="text">删除</el-button></div>
                                     <el-button @click="replyContentDialog=true;groupName=reply.group_name;groupId=reply.group_id" type="text">+添加回复内容</el-button>
                                     <el-button @click="deleteReplyGroup(reply.group_id)" type="text">-删除组</el-button>

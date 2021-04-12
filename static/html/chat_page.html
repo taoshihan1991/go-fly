@@ -1,7 +1,7 @@
 <html lang="cn">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
     <meta name="keywords" content="开源客服系统,golang在线客服,免费客服系统,go语言在线聊天工具,gofly,GOFLY客服系统"/>
     <meta name="description" content="golang开发的开源免费客服系统,可独立部署客服系统,支持文字/表情/图片/文件发送,支持快捷回复,支持IP黑名单,展示访客信息,后台权限控制"/>
     <meta name="author" content="陶士涵">
@@ -61,15 +61,14 @@
                 <div class="icono-comment visitorHistoryBtn"  v-on:click="getMesssagesByVisitorId(true)"></div>
                 <div class="clear"></div>
             </div>
-            <el-input type="textarea" @focus="textareaFocus" @blur="textareaBlur" class="chatArea" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" :placeholder="flyLang.textarea"></el-input>
+            <el-input  @focus="textareaFocus" @blur="textareaBlur" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" :placeholder="flyLang.textarea">
+                <el-button slot="append" :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser"><{flyLang.sent}></el-button>
+            </el-input>
             <div class="faceBox visitorFaceBox">
                 <ul class="faceBoxList">
                     <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
                 </ul>
                 <div class="clear"></div>
-            </div>
-            <div class="btnArea">
-                <el-button :disabled="sendDisabled||messageContent==''" type="primary" class="chatBoxSendBtn" size="small" v-on:click="chatToUser"><{flyLang.sent}></el-button>
             </div>
             <div class="footContact clear">
                 <a href="https://github.com/taoshihan1991/go-fly" target="_blank"><{flyLang.copyright}></a>
