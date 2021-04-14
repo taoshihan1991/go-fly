@@ -72,7 +72,7 @@ pre{
 }
 .banner .downloadBtn{margin-top: 20px;}
 .downloadBtn{display:inline-block;text-decoration:none;color:#fff;border:1px solid #fff;padding:10px 15px;border-radius:5px;}
-.downloadBtn:hover{background:#fff;color:#20b2bb;}
+.downloadBtn:hover{background:#fff;color:#20b2bb;text-decoration: none;}
 .jumbotron{
     width: 1000px;
     margin: 10px auto;
