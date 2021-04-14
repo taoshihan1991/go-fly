@@ -90,7 +90,7 @@ func SuperAdminMessage(str []byte) {
 func OneKefuMessage(toId string, str []byte) {
 	//新版
 	mKefuConns, ok := KefuList[toId]
-	if mKefuConns != nil && ok {
+	if ok && len(mKefuConns) > 0 {
 		for _, kefu := range mKefuConns {
 			log.Println("OneKefuMessage lock")
 			kefu.Mux.Lock()

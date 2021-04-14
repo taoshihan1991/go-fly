@@ -134,7 +134,10 @@ func VisitorNotice(visitorId string, notice string) {
 		Data: notice,
 	}
 	str, _ := json.Marshal(msg)
-	visitor := ClientList[visitorId]
+	visitor, ok := ClientList[visitorId]
+	if !ok || visitor == nil || visitor.Conn == nil {
+		return
+	}
 	visitor.Conn.WriteMessage(websocket.TextMessage, str)
 }
 func VisitorMessage(visitorId, content string, kefuInfo models.User) {
@@ -151,7 +154,10 @@ func VisitorMessage(visitorId, content string, kefuInfo models.User) {
 		},
 	}
 	str, _ := json.Marshal(msg)
-	visitor := ClientList[visitorId]
+	visitor, ok := ClientList[visitorId]
+	if !ok || visitor == nil || visitor.Conn == nil {
+		return
+	}
 	visitor.Conn.WriteMessage(websocket.TextMessage, str)
 }
 func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content string) {

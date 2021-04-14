@@ -56,8 +56,6 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/roles", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetRoleList)
 	engine.POST("/role", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostRole)
 
-	engine.GET("/mysql", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.MysqlGetConf)
-	engine.POST("/mysql", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.MysqlSetConf)
 	engine.GET("/visitors_online", controller.GetVisitorOnlines)
 	engine.GET("/visitors_kefu_online", middleware.JwtApiMiddleware, controller.GetKefusVisitorOnlines)
 	engine.GET("/clear_online_tcp", controller.DeleteOnlineTcp)

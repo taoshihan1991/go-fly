@@ -43,7 +43,7 @@ func run() {
 			}
 		}
 		d := xdaemon.NewDaemon(logFilePath + "go-fly.log")
-		d.MaxCount = 5
+		d.MaxCount = 10
 		d.Run()
 	}
 
