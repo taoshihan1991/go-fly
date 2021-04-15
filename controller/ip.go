@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/models"
 	"strconv"
 )
@@ -44,14 +44,14 @@ func GetIpblacks(c *gin.Context) {
 		page = 1
 	}
 	count := models.CountIps(nil, nil)
-	list := models.FindIps(nil, nil, uint(page), config.VisitorPageSize)
+	list := models.FindIps(nil, nil, uint(page), common.VisitorPageSize)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
 		"result": gin.H{
 			"list":     list,
 			"count":    count,
-			"pagesize": config.PageSize,
+			"pagesize": common.PageSize,
 		},
 	})
 }

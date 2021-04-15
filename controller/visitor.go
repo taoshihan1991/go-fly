@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
@@ -159,7 +159,7 @@ func GetVisitors(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	pagesize, _ := strconv.Atoi(c.Query("pagesize"))
 	if pagesize == 0 {
-		pagesize = int(config.VisitorPageSize)
+		pagesize = int(common.VisitorPageSize)
 	}
 	kefuId, _ := c.Get("kefu_name")
 	vistors := models.FindVisitorsByKefuId(uint(page), uint(pagesize), kefuId.(string))
@@ -170,7 +170,7 @@ func GetVisitors(c *gin.Context) {
 		"result": gin.H{
 			"list":     vistors,
 			"count":    count,
-			"pagesize": config.PageSize,
+			"pagesize": common.PageSize,
 		},
 	})
 }

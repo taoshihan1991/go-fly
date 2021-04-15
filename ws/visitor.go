@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/models"
 	"log"
 	"time"
@@ -185,7 +185,7 @@ func cleanVisitorExpire() {
 		for {
 			for _, user := range ClientList {
 				diff := time.Now().Sub(user.UpdateTime).Seconds()
-				if diff >= config.VisitorExpire {
+				if diff >= common.VisitorExpire {
 					msg := TypeMessage{
 						Type: "auto_close",
 						Data: user.Id,

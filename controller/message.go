@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
@@ -174,7 +174,6 @@ func SendCloseMessageV2(c *gin.Context) {
 	})
 }
 func UploadImg(c *gin.Context) {
-	config := config.CreateConfig()
 	f, err := c.FormFile("imgfile")
 	if err != nil {
 		c.JSON(200, gin.H{
@@ -192,12 +191,12 @@ func UploadImg(c *gin.Context) {
 			})
 			return
 		}
-		isMainUploadExist, _ := tools.IsFileExist(config.Upload)
+		isMainUploadExist, _ := tools.IsFileExist(common.Upload)
 		if !isMainUploadExist {
-			os.Mkdir(config.Upload, os.ModePerm)
+			os.Mkdir(common.Upload, os.ModePerm)
 		}
 		fileName := tools.Md5(fmt.Sprintf("%s%s", f.Filename, time.Now().String()))
-		fildDir := fmt.Sprintf("%s%d%s/", config.Upload, time.Now().Year(), time.Now().Month().String())
+		fildDir := fmt.Sprintf("%s%d%s/", common.Upload, time.Now().Year(), time.Now().Month().String())
 		isExist, _ := tools.IsFileExist(fildDir)
 		if !isExist {
 			os.Mkdir(fildDir, os.ModePerm)
@@ -222,7 +221,6 @@ func UploadFile(c *gin.Context) {
 		})
 		return
 	}
-	config := config.CreateConfig()
 	f, err := c.FormFile("realfile")
 	if err != nil {
 		c.JSON(200, gin.H{
@@ -242,7 +240,7 @@ func UploadFile(c *gin.Context) {
 		}
 
 		fileName := tools.Md5(fmt.Sprintf("%s%s", f.Filename, time.Now().String()))
-		fildDir := fmt.Sprintf("%s%d%s/", config.Upload, time.Now().Year(), time.Now().Month().String())
+		fildDir := fmt.Sprintf("%s%d%s/", common.Upload, time.Now().Year(), time.Now().Month().String())
 		isExist, _ := tools.IsFileExist(fildDir)
 		if !isExist {
 			os.Mkdir(fildDir, os.ModePerm)

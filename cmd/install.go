@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/taoshihan1991/imaptool/config"
+	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"io/ioutil"
@@ -21,8 +21,8 @@ var installCmd = &cobra.Command{
 }
 
 func install() {
-	sqlFile := config.Dir + "go-fly.sql"
-	isExit, _ := tools.IsFileExist(config.MysqlConf)
+	sqlFile := common.Dir + "go-fly.sql"
+	isExit, _ := tools.IsFileExist(common.MysqlConf)
 	dataExit, _ := tools.IsFileExist(sqlFile)
 	if !isExit || !dataExit {
 		fmt.Println("config/mysql.json 数据库配置文件或者数据库文件go-fly.sql不存在")
