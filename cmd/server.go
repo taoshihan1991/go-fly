@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"embed"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -9,7 +10,9 @@ import (
 	"github.com/taoshihan1991/imaptool/router"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/zh-five/xdaemon"
+	"html/template"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -25,6 +28,12 @@ var serverCmd = &cobra.Command{
 		run()
 	},
 }
+
+//go:embed templates/*
+var templatesEmbed embed.FS
+
+//go:embed js/*
+var jsEmbed embed.FS
 
 func init() {
 	serverCmd.PersistentFlags().StringVarP(&Port, "port", "p", "8081", "监听端口号")
@@ -53,7 +62,10 @@ func run() {
 	tools.Logger().Println("start server...\r\ngo：http://" + baseServer)
 
 	engine := gin.Default()
-	engine.LoadHTMLGlob("static/html/*")
+	//engine.LoadHTMLGlob("static/html/*")
+	templ := template.Must(template.New("").ParseFS(templatesEmbed, "templates/*.html"))
+	engine.SetHTMLTemplate(templ)
+	engine.StaticFS("/assets", http.FS(jsEmbed))
 	engine.Static("/static", "./static")
 	engine.Use(tools.Session("gofly"))
 	engine.Use(middleware.CrossSite)

@@ -113,7 +113,7 @@
    
 ```php
     //下面js路径和GOFLY_URL 都要改成自己的
-    <script src="https://gofly.sopans.com/static/js/gofly-front.js"></script>
+    <script src="https://gofly.sopans.com/assets/js/gofly-front.js"></script>
     <script>
         GOFLY.init({
             GOFLY_URL:"https://gofly.sopans.com",
@@ -239,6 +239,15 @@ location /
 ```
 ### 更新日志
 
+##### V0.3.8
+
+访客端输入框以及图标icon按钮修改
+
+客服端界面icon修改
+
+修复后端发消息空指针错误导致的进程退出
+
+增加允许跨域的http头,nginx中的跨域相关http头可以去掉
 
 ##### V0.3.7
 

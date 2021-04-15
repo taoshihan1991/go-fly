@@ -50,7 +50,7 @@ GOFLY.init=function(config){
     this.GOFLY_EXTRA.host=document.location.href;
     this.GOFLY_EXTRA=JSON.stringify(_this.GOFLY_EXTRA);
 
-    this.dynamicLoadJs(this.GOFLY_URL+"/static/js/functions.js?v=1",function(){
+    this.dynamicLoadJs(this.GOFLY_URL+"/assets/js/functions.js?v=1",function(){
         if (typeof config.GOFLY_LANG!="undefined"){
             _this.GOFLY_LANG=config.GOFLY_LANG;
         }else{

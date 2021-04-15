@@ -150,7 +150,7 @@ INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`,
 '一款开箱即用的在线客服系统',
 'a free customer live chat',
 '<style>body{color: #333;padding-left: 40px;}h1{font-size: 6em;}h2{font-size: 3em;font-weight: normal;}a{color: #333;}</style>',
-'<script src="/static/js/gofly-front.js?v=1"></script><script>
+'<script src="/assets/js/gofly-front.js?v=1"></script><script>
     GOFLY.init({
         GOFLY_URL:"",
         GOFLY_KEFU_ID: "kefu2",
@@ -159,7 +159,7 @@ INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`,
     })
 </script>
  <h1>:)</h1><h2>你好 <a href="https://gofly.sopans.com">GOFLY0.3.9</a> 在线客服系统 !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
-'<script src="/static/js/gofly-front.js?v=1"></script><script>
+'<script src="/assets/js/gofly-front.js?v=1"></script><script>
     GOFLY.init({
         GOFLY_URL:"",
         GOFLY_KEFU_ID: "kefu2",
