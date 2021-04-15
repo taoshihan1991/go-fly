@@ -49,7 +49,9 @@ func PageIndex(c *gin.Context) {
 	if c.Request.RequestURI == "/favicon.ico" {
 		return
 	}
-
+	if noExist, _ := tools.IsFileNotExist("./install.lock"); noExist {
+		c.Redirect(302, "/install")
+	}
 	lang, _ := c.Get("lang")
 	language := config.CreateLanguage(lang.(string))
 	about := models.FindAboutByPageLanguage("index", lang.(string))
@@ -89,4 +91,12 @@ func PageMain(c *gin.Context) {
 //客服界面
 func PageChatMain(c *gin.Context) {
 	c.HTML(http.StatusOK, "chat_main.html", nil)
+}
+
+//安装界面
+func PageInstall(c *gin.Context) {
+	if noExist, _ := tools.IsFileNotExist("./install.lock"); !noExist {
+		c.Redirect(302, "/login")
+	}
+	c.HTML(http.StatusOK, "install.html", nil)
 }

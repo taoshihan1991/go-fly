@@ -1,0 +1,162 @@
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="陶士涵">
+    <title>GOFLY客服系统安装页面</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .clear{clear: both;}
+        .signin {
+            width: 500px;
+            padding: 20px;
+            margin:100px auto;
+            background: #fff;
+            -webkit-box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
+            box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
+        }
+        .signin h1,.signin h2,.signin .copyright{
+            font-weight: normal;
+            color: #4d627b;
+            text-align: center;
+        }
+        .signin .loginTitle{
+            font-size: 24px;
+        }
+        .signin .loginDesc{
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .signin .loginDesc .regBtn{
+            float: left;
+        }
+        .signin .loginDesc a{
+            text-decoration: none;
+            cursor: pointer;
+            color: #409EFF;
+        }
+        .signin .copyright{
+            font-size: 12px;
+        }
+        @media (max-width: 768px) {
+            .signin{
+                width: 90%;
+                margin:40px auto;
+                background-color: #f5f5f5;
+                box-shadow:none;
+            }
+        }
+    </style>
+
+</head>
+<body>
+<div id="app" class="signin">
+    <template>
+        <div class="loginHtml">
+            <h1 class="loginTitle">GOFLY客服系统安装</h1>
+            <el-form :model="mysql"  :rules="rules" ref="mysql">
+                <el-form-item  prop="server">
+                    <el-input v-model="mysql.server" placeholder="数据库地址"></el-input>
+                </el-form-item>
+                <el-form-item  prop="port">
+                    <el-input v-model="mysql.port" placeholder="数据库端口"></el-input>
+                </el-form-item>
+                <el-form-item  prop="database">
+                    <el-input v-model="mysql.database" placeholder="数据库名"></el-input>
+                </el-form-item>
+                <el-form-item  prop="username">
+                    <el-input v-model="mysql.username" placeholder="数据库用户名"></el-input>
+                </el-form-item>
+                <el-form-item  prop="password">
+                    <el-input v-model="mysql.password" placeholder="数据库密码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button :disabled="sendDisabled" style="width: 100%" :loading="loading" type="primary" @click="install()">安装</el-button>
+                </el-form-item>
+            </el-form>
+            <div class="clear"></div>
+        </div>
+        <p class="copyright">陶士涵版权所有 &copy; 2020-2021 </p>
+</template>
+</div>
+</body>
+<script>
+	new Vue({
+		el: '#app',
+        delimiters:["<{","}>"],
+		data: {
+            window:window,
+            mysql:{
+                server:'',
+                port:'',
+                database:'',
+                username:'',
+                password:'',
+            },
+            rules: {
+                server: [
+                    { required: true, message: '数据库地址不能为空', trigger: 'blur' },
+                ],
+                port: [
+                    { required: true, message: '数据库端口不能为空', trigger: 'blur' },
+                ],
+                database: [
+                    { required: true, message: '数据库名不能为空', trigger: 'blur' },
+                ],
+                username: [
+                    { required: true, message: '数据库用户名不能为空', trigger: 'blur' },
+                ],
+                password: [
+                    { required: true, message: '数据库密码不能为空', trigger: 'blur' },
+                ],
+            },
+            sendDisabled:false,
+		},
+		methods: {
+            //注册
+            install(){
+                var _this=this;
+                this.$refs['mysql'].validate((valid) => {
+                        if (!valid) {
+                            return false;
+                        } else {
+                            var data = _this.mysql;
+                            _this.loading=true;
+                            _this.sendDisabled=true;
+                            $.post("/install", data, function (data) {
+                                if (data.code == 200) {
+                                    _this.$message({
+                                        message: data.msg,
+                                        type: 'success'
+                                    });
+                                    //window.location.href="/login";
+                                } else {
+                                    _this.$message({
+                                        message: data.msg,
+                                        type: 'error'
+                                    });
+                                }
+                                _this.loading=false;
+                                _this.sendDisabled=false;
+                            });
+                        }
+                });
+            }
+		},
+        created: function () {
+        }
+	})
+
+</script>
+</html>

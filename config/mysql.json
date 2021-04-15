@@ -1,5 +1,5 @@
 {
-	"Server":"127.0.0.1",
+	"Server":"localhost",
 	"Port":"3306",
 	"Database":"go-fly",
 	"Username":"go-fly",

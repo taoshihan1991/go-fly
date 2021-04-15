@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/models"
@@ -21,11 +20,15 @@ var installCmd = &cobra.Command{
 }
 
 func install() {
+	if ok, _ := tools.IsFileNotExist("./install.lock"); !ok {
+		log.Println("请先删除./install.lock")
+		os.Exit(1)
+	}
 	sqlFile := common.Dir + "go-fly.sql"
 	isExit, _ := tools.IsFileExist(common.MysqlConf)
 	dataExit, _ := tools.IsFileExist(sqlFile)
 	if !isExit || !dataExit {
-		fmt.Println("config/mysql.json 数据库配置文件或者数据库文件go-fly.sql不存在")
+		log.Println("config/mysql.json 数据库配置文件或者数据库文件go-fly.sql不存在")
 		os.Exit(1)
 	}
 	sqls, _ := ioutil.ReadFile(sqlFile)
@@ -42,4 +45,6 @@ func install() {
 			os.Exit(1)
 		}
 	}
+	installFile, _ := os.OpenFile("./install.lock", os.O_RDWR|os.O_CREATE, os.ModePerm)
+	installFile.WriteString("gofly live chat")
 }

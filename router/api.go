@@ -25,6 +25,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.POST("/check_auth", middleware.JwtApiMiddleware, controller.MainCheckAuth)
 	engine.GET("/userinfo", middleware.JwtApiMiddleware, controller.GetKefuInfoAll)
 	engine.POST("/register", middleware.Ipblack, controller.PostKefuRegister)
+	engine.POST("/install", controller.PostInstall)
 	//前后聊天
 	engine.GET("/ws_kefu", middleware.JwtApiMiddleware, ws.NewKefuServer)
 	engine.GET("/ws_visitor", middleware.Ipblack, ws.NewVisitorServer)
