@@ -143,8 +143,8 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `page` (`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`, `desc_cn`, `desc_en`, `css_js`, `html_cn`, `html_en`, `page`) VALUES
-(NULL, '免费开源客服系统GOFLY0.3.8-演示页',
-'Free Customer Live Chat GOFLY0.3.8-demo',
+(NULL, '免费开源客服系统GOFLY0.3.9-演示页',
+'Free Customer Live Chat GOFLY0.3.9-demo',
 'GOFLY，GO-FLY',
 'GOFLY，GO-FLY',
 '一款开箱即用的在线客服系统',
