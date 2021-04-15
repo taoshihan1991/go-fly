@@ -158,7 +158,7 @@ INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`,
         GOFLY_LANG:"cn",
     })
 </script>
- <h1>:)</h1><h2>你好 <a href="https://gofly.sopans.com">GOFLY0.3.8</a> 在线客服系统 !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
+ <h1>:)</h1><h2>你好 <a href="https://gofly.sopans.com">GOFLY0.3.9</a> 在线客服系统 !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
 '<script src="/static/js/gofly-front.js?v=1"></script><script>
     GOFLY.init({
         GOFLY_URL:"",
@@ -167,7 +167,7 @@ INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`,
         GOFLY_LANG:"en",
     })
 </script>
- <h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY0.3.8</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
+ <h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY0.3.9</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
  'index')|
 DROP TABLE IF EXISTS `reply_group`|
 CREATE TABLE `reply_group` (

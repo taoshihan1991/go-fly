@@ -2,7 +2,6 @@ package tmpl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/config"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"html"
@@ -53,7 +52,6 @@ func PageIndex(c *gin.Context) {
 		c.Redirect(302, "/install")
 	}
 	lang, _ := c.Get("lang")
-	language := config.CreateLanguage(lang.(string))
 	about := models.FindAboutByPageLanguage("index", lang.(string))
 	cssJs := html.UnescapeString(about.CssJs)
 	title := about.TitleCn
@@ -67,16 +65,12 @@ func PageIndex(c *gin.Context) {
 		content = html.UnescapeString(about.HtmlEn)
 	}
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"OnlineChat": language.IndexOnlineChat,
-		"Notice":     language.Notice,
-		"NowAsk":     language.NowAsk,
-		"LaterAsk":   language.LaterAsk,
-		"Lang":       lang,
-		"Title":      title,
-		"Keywords":   keywords,
-		"Desc":       desc,
-		"Content":    template.HTML(content),
-		"CssJs":      template.HTML(cssJs),
+		"Lang":     lang,
+		"Title":    title,
+		"Keywords": keywords,
+		"Desc":     desc,
+		"Content":  template.HTML(content),
+		"CssJs":    template.HTML(cssJs),
 	})
 }
 

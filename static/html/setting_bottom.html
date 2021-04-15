@@ -285,6 +285,10 @@
                     if (valid) {
                         this.sendAjax("/kefuinfo","POST",_this.kefuForm,function(result){
                             _this.kefuDialog=false;
+                            _this.$message({
+                                message: "修改后台账户名后,后台需重新登录",
+                                type: 'success'
+                            });
                             _this.sendAjax("/kefulist","get",{},function(result){
                                 _this.kefuList=result;
                             });

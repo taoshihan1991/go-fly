@@ -191,7 +191,7 @@ new Vue({
             var to_id=KEFU_ID;
             if(obj){
                 visitor_id=obj.visitor_id;
-                to_id=obj.to_id;
+                //to_id=obj.to_id;
             }
                 let _this=this;
                 var extra=getQuery("extra");
