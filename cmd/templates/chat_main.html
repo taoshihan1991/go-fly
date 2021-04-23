@@ -24,6 +24,7 @@
             white-space: nowrap;
             color: #999;
         }
+
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
         .chatBox{width: 100%;height:calc(100% - 175px);;overflow-y: auto;overflow-x: hidden;}
@@ -31,7 +32,7 @@
     </style>
 </head>
 <body>
-<div id="app">
+<div id="app" class="chatMainPage">
     <template>
             <el-row :gutter="2">
                 <el-col :span="6">
@@ -116,6 +117,7 @@
                             <div class="clear"></div>
                             <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"  placeholder="请输入内容"></el-input>
                         </div>
+
                     </div>
                 </el-col>
                 <el-col :span="6" class="chatRight">
@@ -190,12 +192,29 @@
                                         <i class="el-icon-s-order"></i>&nbsp;<{reply.group_name}>
                                     </template>
                                     <div class="replyItem" @click="messageContent=item.item_content"  v-for="item in reply.items" >
-                                        <el-tooltip :content="item.item_content"  placement="left" effect="light">
-                                            <div class="replyItemTitle"><i class="header-icon el-icon-document"></i> <{item.item_name}></div>
-                                        </el-tooltip>
+                                        <el-popover
+                                                placement="left"
+                                                width="300"
+                                                trigger="hover">
+                                            <div v-html="replaceContent(item.item_content)">
+                                            </div>
+                                            <div class="replyItemTitle" slot="reference"><i class="header-icon el-icon-document"></i> <{item.item_name}></div>
+                                        </el-popover>
+                                        <el-button @click="editReplyContent('no',item.item_id,item.item_name,item.item_content)" type="text">编辑</el-button>
                                         <el-button @click="deleteReplyContent(item.item_id)" type="text">删除</el-button></div>
                                     <el-button @click="replyContentDialog=true;groupName=reply.group_name;groupId=reply.group_id" type="text">+添加回复内容</el-button>
-                                    <el-button @click="deleteReplyGroup(reply.group_id)" type="text">-删除组</el-button>
+                                    <el-popover
+                                            placement="top"
+                                            width="100"
+                                            v-model="visible">
+                                        <p>确定删除吗？</p>
+                                        <div style="text-align: right; margin: 0">
+                                            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+                                            <el-button type="primary" size="mini" @click="visible = false;deleteReplyGroup(reply.group_id)">确定</el-button>
+                                        </div>
+                                        <el-button slot="reference" type="text">-删除组</el-button>
+                                    </el-popover>
+
                                 </el-collapse-item>
                             </el-collapse>
                         </div>
@@ -268,6 +287,19 @@
             <span slot="footer" class="dialog-footer">
                 <el-button @click="addReplyContent">保 存</el-button>
                 <el-button @click="replyContentDialog = false">取 消</el-button>
+              </span>
+        </el-dialog>
+        <el-dialog
+                title="编辑回复内容"
+                :visible.sync="editReplyContentDialog"
+                width="30%"
+                top="0"
+        >
+            <el-input style="margin-bottom: 10px;" placeholder="关键词"  v-model="replyTitle"></el-input>
+            <el-input placeholder="内容" type="textarea"  v-model="replyContent"></el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="editReplyContent('yes')">保 存</el-button>
+                <el-button @click="editReplyContentDialog = false">取 消</el-button>
               </span>
         </el-dialog>
         <!--//回复内容-->
