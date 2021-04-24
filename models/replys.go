@@ -67,6 +67,13 @@ func CreateReplyContent(groupId string, userId string, content, itemName string)
 	}
 	DB.Create(g)
 }
+func UpdateReplyContent(id, userId, title, content string) {
+	r := &ReplyItem{
+		ItemName: title,
+		Content:  content,
+	}
+	DB.Model(&ReplyItem{}).Where("user_id = ? and id = ?", userId, id).Update(r)
+}
 func DeleteReplyContent(id string, userId string) {
 	DB.Where("user_id = ? and id = ?", userId, id).Delete(ReplyItem{})
 }

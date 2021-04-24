@@ -68,6 +68,24 @@ func PostReplyContent(c *gin.Context) {
 		"msg":  "ok",
 	})
 }
+func PostReplyContentSave(c *gin.Context) {
+	kefuId, _ := c.Get("kefu_name")
+	replyId := c.PostForm("reply_id")
+	replyTitle := c.PostForm("reply_title")
+	replyContent := c.PostForm("reply_content")
+	if replyId == "" || replyTitle == "" || replyContent == "" {
+		c.JSON(400, gin.H{
+			"code": 200,
+			"msg":  "参数错误!",
+		})
+		return
+	}
+	models.UpdateReplyContent(replyId, kefuId.(string), replyTitle, replyContent)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+	})
+}
 func DelReplyContent(c *gin.Context) {
 	kefuId, _ := c.Get("kefu_name")
 	id := c.Query("id")

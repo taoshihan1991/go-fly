@@ -2,6 +2,7 @@ var app=new Vue({
     el: '#app',
     delimiters:["<{","}>"],
     data: {
+        visible:false,
         chatTitleType:"info",
         fullscreenLoading:true,
         leftTabActive:"first",
@@ -41,12 +42,14 @@ var app=new Vue({
         otherKefus:[],
         replyGroupDialog:false,
         replyContentDialog:false,
+        editReplyContentDialog:false,
         replySearch:"",
         replySearchList:[],
         replySearchListActive:[],
         groupName:"",
         groupId:"",
         replys:[],
+        replyId:"",
         replyContent:"",
         replyTitle:"",
         ipBlacks:[],
@@ -102,6 +105,7 @@ var app=new Vue({
                 case "userOnline":
                     this.addOnlineUser(redata.data);
 
+
                     break;
                 case "userOffline":
                     this.removeOfflineUser(redata.data);
@@ -118,6 +122,7 @@ var app=new Vue({
                     _this.alertSound();
                     break;
             }
+
 
             if (redata.type == "message") {
                 let msg = redata.data
@@ -148,6 +153,7 @@ var app=new Vue({
                     name:msg.name,
                     body: msg.content,
                     icon: msg.avator
+
                 });
                 _this.alertSound();
                 _this.chatInputing="";
@@ -214,6 +220,7 @@ var app=new Vue({
             // content.is_kefu = true;
             // content.time = '';
             // this.msgList.push(content);
+            _this.sendDisabled=false;
             this.scrollBottom();
         },
         //处理当前在线用户列表
@@ -236,6 +243,9 @@ var app=new Vue({
                     this.visitors[i].status=1;
                     break;
                 }
+            }
+            if(this.visitor.visitor_id==retData.uid){
+                this.getVistorInfo(retData.uid)
             }
 
         },
@@ -386,6 +396,9 @@ var app=new Vue({
                             type: 'error'
                         });
                     }
+                    if(data.code==400){
+                        window.location.href="/login";
+                    }
                 }
             });
         },
@@ -499,6 +512,9 @@ var app=new Vue({
                     }
                 }
             });
+        },
+        replaceContent(content){
+            return replaceContent(content)
         },
         //滚到底部
         scrollBottom(){
@@ -747,6 +763,27 @@ var app=new Vue({
                 _this.getReplys();
             });
         },
+        //编辑回复
+        editReplyContent(save,id,title,content){
+            var _this=this;
+            if(save=='yes'){
+                var data={
+                    reply_id:this.replyId,
+                    reply_title:this.replyTitle,
+                    reply_content:this.replyContent
+                }
+                this.sendAjax("/reply_content_save","post",data,function(result){
+                    _this.editReplyContentDialog=false;
+                    _this.getReplys();
+                });
+            }else{
+                this.editReplyContentDialog=true;
+                this.replyId=id;
+                this.replyTitle=title;
+                this.replyContent=content;
+            }
+
+        },
         //搜索回复
         searchReply(){
             var _this=this;
@@ -779,6 +816,7 @@ var app=new Vue({
         },
         //划词搜索
         selectText(){
+            return false;
             var _this=this;
             $('body').click(function(){
                 try{

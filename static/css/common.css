@@ -321,7 +321,7 @@
     line-height: 21px;
     font-size: 14px;
 }
-.chatContent a{color: #07a9fe;text-decoration: none;}
+a{color: #07a9fe;text-decoration: none;}
 .chatContent:before,.chatContent:after {
     content: "";
     display: block;
