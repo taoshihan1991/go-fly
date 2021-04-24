@@ -8,7 +8,7 @@ import (
 var LimitQueue map[string][]int64
 var ok bool
 
-func init() {
+func NewLimitQueue() {
 	cleanLimitQueue()
 }
 func cleanLimitQueue() {

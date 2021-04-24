@@ -2,27 +2,29 @@ package cmd
 
 import (
 	"embed"
+	"fmt"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
-	"github.com/taoshihan1991/imaptool/controller"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/router"
 	"github.com/taoshihan1991/imaptool/tools"
+	"github.com/taoshihan1991/imaptool/ws"
 	"github.com/zh-five/xdaemon"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 )
 
 var (
-	Port   string
+	port   string
 	daemon bool
 )
 var serverCmd = &cobra.Command{
 	Use:     "server",
-	Short:   "example:go-fly server -p 8081",
+	Short:   "启动http服务",
 	Example: "go-fly server -c config/",
 	Run: func(cmd *cobra.Command, args []string) {
 		run()
@@ -36,7 +38,7 @@ var templatesEmbed embed.FS
 var jsEmbed embed.FS
 
 func init() {
-	serverCmd.PersistentFlags().StringVarP(&Port, "port", "p", "8081", "监听端口号")
+	serverCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "监听端口号")
 	serverCmd.PersistentFlags().BoolVarP(&daemon, "daemon", "d", false, "是否为守护进程模式")
 }
 func run() {
@@ -56,8 +58,7 @@ func run() {
 		d.Run()
 	}
 
-	baseServer := "0.0.0.0:" + Port
-	controller.Port = Port
+	baseServer := "0.0.0.0:" + port
 	log.Println("start server...\r\ngo：http://" + baseServer)
 	tools.Logger().Println("start server...\r\ngo：http://" + baseServer)
 
@@ -76,11 +77,14 @@ func run() {
 	engine.Use(middleware.NewMidLogger())
 	router.InitViewRouter(engine)
 	router.InitApiRouter(engine)
+	//记录pid
+	ioutil.WriteFile("gofly.sock", []byte(fmt.Sprintf("%d,%d", os.Getppid(), os.Getpid())), 0666)
+	//限流类
+	tools.NewLimitQueue()
+	//清理
+	ws.CleanVisitorExpire()
+	//后端websocket
+	go ws.WsServerBackend()
 
-	//logFile, _ := os.OpenFile("./fatal.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0660)
-	//tools.RedirectStderr(logFile)
-
-	//tcp服务
-	//go controller.NewTcpServer(tcpBaseServer)
 	engine.Run(baseServer)
 }

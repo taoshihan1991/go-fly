@@ -66,7 +66,6 @@ func init() {
 		},
 	}
 	go UpdateVisitorStatusCron()
-	cleanVisitorExpire()
 }
 func SendServerJiang(title string, content string, domain string) string {
 	noticeServerJiang, err := strconv.ParseBool(models.FindConfig("NoticeServerJiang"))

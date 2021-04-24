@@ -179,7 +179,7 @@ func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content s
 		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, welcome.Content, "kefu")
 	}
 }
-func cleanVisitorExpire() {
+func CleanVisitorExpire() {
 	go func() {
 		log.Println("cleanVisitorExpire start...")
 		for {

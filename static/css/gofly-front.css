@@ -1,6 +1,6 @@
 .launchButtonBox{
     position: fixed!important;
-    bottom: 10px;
+    bottom: 2px;
     right: 20px;
     left: auto;
     z-index: 999999;
@@ -54,13 +54,13 @@
     display: none;
 }
 .launchButton{
-    height: 48px;
+    height: 42px;
     width: auto;
     z-index: 10000000000000!important;
-    background: #fac917;
+    border-radius: 2px;
     border: 0!important;
-    border-radius: 20px;
-    box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
+    background: rgb(18, 122, 202);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 6px, rgba(0, 0, 0, 0.16) 0px 2px 32px;
     box-sizing: border-box!important;
     padding: 0 25px;
     cursor: pointer!important;
@@ -80,11 +80,11 @@
     height: 48px;
 }
 .launchButtonText {
-    color: #312927;
+    color: #fff;
     display: inline-block!important;
     font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,Oxygen,Ubuntu,Cantarell,fira sans,droid sans,helvetica neue,sans-serif!important;
     font-size: 1em;
-    line-height: 48px;
+    line-height: 42px;
     font-weight: 700!important;
     overflow: hidden!important;
     text-overflow: ellipsis!important;
