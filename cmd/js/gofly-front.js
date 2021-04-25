@@ -169,7 +169,7 @@ GOFLY.getNotice=function(){
         }else{
             _this.chatPageTitle="<div class='launchPointer'></div>";
             setTimeout(function(){
-                var userInfo="<img style='margin-top: 8px;' class='flyAvatar' src='"+_this.GOFLY_URL+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span>"
+                var userInfo="<img style='margin-top: 5px;' class='flyAvatar' src='"+_this.GOFLY_URL+res.result.avatar+"'/> <span class='flyUsername'>"+res.result.username+"</span>"
                 $('.launchButtonText').html(userInfo);
             },3000);
         }
