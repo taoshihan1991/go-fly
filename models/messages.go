@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Message struct {
 	Model
@@ -60,13 +63,26 @@ func FindUnreadMessageNumByVisitorId(visitor_id string) uint {
 //查询最后一条消息
 func FindLastMessage(visitorIds []string) []Message {
 	var messages []Message
-	subQuery := DB.
-		Table("message").
-		Where(" visitor_id in (? )", visitorIds).
-		Order("id desc").
-		Limit(1024).
-		SubQuery()
-	DB.Raw("SELECT ANY_VALUE(visitor_id) visitor_id,ANY_VALUE(id) id,ANY_VALUE(content) content FROM ? message_alia GROUP BY visitor_id", subQuery).Scan(&messages)
+	if len(visitorIds) <= 0 {
+		return messages
+	}
+	var ids []Message
+	DB.Select("MAX(id) id").Where(" visitor_id in (? )", visitorIds).Group("visitor_id").Find(&ids)
+	if len(ids) <= 0 {
+		return messages
+	}
+	var idStr = make([]string, 0, 0)
+	for _, mes := range ids {
+		idStr = append(idStr, fmt.Sprintf("%d", mes.ID))
+	}
+	DB.Select("visitor_id,id,content").Where(" id in (? )", idStr).Find(&messages)
+	//subQuery := DB.
+	//	Table("message").
+	//	Where(" visitor_id in (? )", visitorIds).
+	//	Order("id desc").
+	//	Limit(1024).
+	//	SubQuery()
+	//DB.Raw("SELECT ANY_VALUE(visitor_id) visitor_id,ANY_VALUE(id) id,ANY_VALUE(content) content FROM ? message_alia GROUP BY visitor_id", subQuery).Scan(&messages)
 	//DB.Select("ANY_VALUE(visitor_id) visitor_id,MAX(ANY_VALUE(id)) id,ANY_VALUE(content) content").Group("visitor_id").Find(&messages)
 	return messages
 }
