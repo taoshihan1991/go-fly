@@ -4,6 +4,10 @@
 主要技术栈
  gin + jwt-go + websocket + go.uuid + gorm + cobra
 
+用法
+docker build -t go-fly:master .  
+docker run -p 8081:8081 -v config:/app/config --name go-fly go-fly:master
+
 ### 更新日志
 ##### V0.4.1
 
