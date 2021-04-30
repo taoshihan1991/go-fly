@@ -6,12 +6,12 @@
     <meta name="description" content="golang开发的开源免费客服系统,可独立部署客服系统,支持文字/表情/图片/文件发送,支持快捷回复,支持IP黑名单,展示访客信息,后台权限控制"/>
     <meta name="author" content="陶士涵">
     <title>GO语言开源客服系统-GOFLY</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.15.1/theme-chalk/index.min.css">
+    <script src="https://cdn.staticfile.org/vue/2.6.9/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/element-ui/2.15.1/index.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
     <script src="/assets/js/functions.js?v=0.1.1"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="/assets/js/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap core CSS -->
+    <script src="/assets/js/reconnecting-websocket.min.js"></script>
     <link rel="stylesheet" href="/static/css/front.css?v=1.0.0" />
     <link rel="stylesheet" href="/static/css/common.css?v=1.0.0" />
     <link rel="stylesheet" href="/static/css/icono.min.css" />
@@ -84,7 +84,6 @@
     </template>
 </div>
 </body>
-<script src="https://cdn.bootcss.com/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
 <script>
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
