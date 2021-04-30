@@ -1,5 +1,20 @@
 package tools
 
+import "sort"
+
+func SortMap(youMap map[string]interface{}) []interface{} {
+	keys := make([]string, 0)
+	for k, _ := range youMap {
+		keys = append(keys, k)
+	}
+	myMap := make([]interface{}, 0)
+	sort.Strings(keys)
+	for _, k := range keys {
+		myMap = append(myMap, youMap[k])
+	}
+	return myMap
+}
+
 //划分
 func partition(arr *[]int, left int, right int) int {
 	privot := (*arr)[right]

@@ -14,7 +14,8 @@ func SendSmtp(server string, from string, password string, to []string, subject 
 		"From: " + from + "\r\n" +
 			"To: " + strings.Join(to, ",") + "\r\n" +
 			"Subject: =?UTF-8?B?" + subjectBase + "?=\r\n" +
-			"\r\n" +
+			"Content-Type: text/html; charset=UTF-8" +
+			"\r\n\r\n" +
 			body + "\r\n")
 	err := smtp.SendMail(server, auth, from, to, msg)
 	if err != nil {
