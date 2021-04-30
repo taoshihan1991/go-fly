@@ -1,7 +1,7 @@
 FROM golang:alpine
 WORKDIR /app
 COPY . /app
-ENV GOPROXY https://mirrors.aliyun.com/goproxy
+RUN go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct
 VOLUME ["/app/config"]
 RUN go build go-fly.go
 EXPOSE 8081

@@ -2,10 +2,31 @@ package tools
 
 import (
 	"log"
+	"sync"
 	"time"
 )
 
-var LimitQueue map[string][]int64
+type LimitQueeMap struct {
+	sync.RWMutex
+	LimitQueue map[string][]int64
+}
+
+func (l *LimitQueeMap) readMap(key string) ([]int64, bool) {
+	l.RLock()
+	value, ok := l.LimitQueue[key]
+	l.RUnlock()
+	return value, ok
+}
+
+func (l *LimitQueeMap) writeMap(key string, value []int64) {
+	l.Lock()
+	l.LimitQueue[key] = value
+	l.Unlock()
+}
+
+var LimitQueue = &LimitQueeMap{
+	LimitQueue: make(map[string][]int64),
+}
 var ok bool
 
 func NewLimitQueue() {
@@ -15,7 +36,7 @@ func cleanLimitQueue() {
 	go func() {
 		for {
 			log.Println("cleanLimitQueue start...")
-			LimitQueue = nil
+			LimitQueue.LimitQueue = nil
 			now := time.Now()
 			// 计算下一个零点
 			next := now.Add(time.Hour * 24)
@@ -29,26 +50,28 @@ func cleanLimitQueue() {
 //单机时间滑动窗口限流法
 func LimitFreqSingle(queueName string, count uint, timeWindow int64) bool {
 	currTime := time.Now().Unix()
-	if LimitQueue == nil {
-		LimitQueue = make(map[string][]int64)
+	if LimitQueue.LimitQueue == nil {
+		LimitQueue.LimitQueue = make(map[string][]int64)
 	}
-	if _, ok = LimitQueue[queueName]; !ok {
-		LimitQueue[queueName] = make([]int64, 0)
+	if _, ok = LimitQueue.readMap(queueName); !ok {
+		LimitQueue.writeMap(queueName, make([]int64, 0))
+		return true
 	}
+	q, _ := LimitQueue.readMap(queueName)
 	//队列未满
-	if uint(len(LimitQueue[queueName])) < count {
-		LimitQueue[queueName] = append(LimitQueue[queueName], currTime)
+	if uint(len(q)) < count {
+		LimitQueue.writeMap(queueName, append(q, currTime))
 		return true
 	}
 	//队列满了,取出最早访问的时间
-	earlyTime := LimitQueue[queueName][0]
+	earlyTime := q[0]
 	//说明最早期的时间还在时间窗口内,还没过期,所以不允许通过
 	if currTime-earlyTime <= timeWindow {
 		return false
 	} else {
 		//说明最早期的访问应该过期了,去掉最早期的
-		LimitQueue[queueName] = LimitQueue[queueName][1:]
-		LimitQueue[queueName] = append(LimitQueue[queueName], currTime)
+		q = q[1:]
+		LimitQueue.writeMap(queueName, append(q, currTime))
 	}
 	return true
 }
