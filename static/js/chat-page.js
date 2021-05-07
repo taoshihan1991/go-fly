@@ -358,11 +358,7 @@ new Vue({
                             if(i==0){
                                 _this.alertSound();
                             }
-                            var redata={
-                                type:"message",
-                                data:content
-                            }
-                            window.parent.postMessage(redata,"*");
+      
                             i++;
                         },4000);
                     }
