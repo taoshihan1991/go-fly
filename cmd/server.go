@@ -1,13 +1,14 @@
 package cmd
 
 import (
-	"embed"
 	"fmt"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/router"
+	"github.com/taoshihan1991/imaptool/static"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
 	"github.com/zh-five/xdaemon"
@@ -30,12 +31,6 @@ var serverCmd = &cobra.Command{
 		run()
 	},
 }
-
-//go:embed templates/*
-var templatesEmbed embed.FS
-
-//go:embed js/*
-var jsEmbed embed.FS
 
 func init() {
 	serverCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "监听端口号")
@@ -63,10 +58,15 @@ func run() {
 	tools.Logger().Println("start server...\r\ngo：http://" + baseServer)
 
 	engine := gin.Default()
-	//engine.LoadHTMLGlob("static/html/*")
-	templ := template.Must(template.New("").ParseFS(templatesEmbed, "templates/*.html"))
-	engine.SetHTMLTemplate(templ)
-	engine.StaticFS("/assets", http.FS(jsEmbed))
+	if common.IsCompireTemplate {
+		templ := template.Must(template.New("").ParseFS(static.TemplatesEmbed, "templates/*.html"))
+		engine.SetHTMLTemplate(templ)
+		engine.StaticFS("/assets", http.FS(static.JsEmbed))
+	} else {
+		engine.LoadHTMLGlob("static/templates/*")
+		engine.Static("/assets", "./static")
+	}
+
 	engine.Static("/static", "./static")
 	engine.Use(tools.Session("gofly"))
 	engine.Use(middleware.CrossSite)
