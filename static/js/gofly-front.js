@@ -116,8 +116,10 @@ GOFLY.addEventlisten=function(){
             if(width>768){
                 _this.flashTitle();//标题闪烁
             }
-            if (this.launchButtonFlag) return;
-            var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+_this.GOFLY_URL+_this.kefuAvator+"'/> <span class='flyUsername'>"+_this.kefuName+"</span>" +
+            if (_this.launchButtonFlag){
+                return;
+            }
+            var welcomeHtml="<div class='flyUser'><img class='flyAvatar' src='"+_this.GOFLY_URL+msg.data.avator+"'/> <span class='flyUsername'>"+msg.data.name+"</span>" +
                 "<span id='launchNoticeClose' class='flyClose'>×</span>" +
                 "</div>";
             welcomeHtml+="<div id='launchNoticeContent'>"+replaceContent(msg.data.content,_this.GOFLY_URL)+"</div>";
