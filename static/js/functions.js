@@ -38,7 +38,7 @@ function notify(title, options, callback) {
         }
         setTimeout(function () {
             notification.close();
-        },5000);
+        },3000);
     }
 }
 var titleTimer=0;

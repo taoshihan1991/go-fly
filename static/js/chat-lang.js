@@ -11,6 +11,7 @@ var GOFLY_LANG={
         "closemes":"系统自动关闭连接!点击会重连",
         "forceclosemes":"客服关闭连接!请重新打开页面",
         "autoclosemes":"长时间未回应关闭连接!请刷新页面",
+        "mesBtn":"全部消息记录",
     },
     "en":{
         "sent":"Send",
@@ -24,5 +25,6 @@ var GOFLY_LANG={
         "closemes":"The system automatically closes the connection!",
         "forceclosemes":"Admin closes the connection! please reload",
         "autoclosemes":"session closed!please reload",
+        "mesBtn":"all messages",
     },
 };
