@@ -36,11 +36,15 @@ new Vue({
             this.ping();
         },
         OnOpen:function() {
+            console.log("ws:onopen");
             this.chatTitle=GOFLY_LANG[LANG]['connectok'];
+            this.showTitle(this.chatTitle);
+
             this.socketClosed=false;
             this.focusSendConn=false;
         },
         OnMessage:function(e) {
+            console.log("ws:onmessage");
             this.socketClosed=false;
             this.focusSendConn=false;
             const redata = JSON.parse(e.data);
@@ -54,6 +58,13 @@ new Vue({
                 $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                 this.scrollBottom();
                 this.showKfonline=true;
+            }
+            if (redata.type == "transfer") {
+                var kefuId = redata.data
+                if(!kefuId){
+                    return;
+                }
+                this.visitor.to_id=kefuId;
             }
             if (redata.type == "notice") {
                 let msg = redata.data
@@ -79,6 +90,9 @@ new Vue({
                 notify(msg.name, {
                     body: msg.content,
                     icon: msg.avator
+                },function(notification) {
+                    window.focus();
+                    notification.close();
                 });
                 this.scrollBottom();
                 flashTitle();//标题闪烁
@@ -178,6 +192,7 @@ new Vue({
             this.socket.send(JSON.stringify(message));
         },
         OnClose:function() {
+            console.log("ws:onclose");
             this.focusSendConn=true;
             //this.socketClosed=true;
             // this.chatTitle="连接关闭!请重新打开页面";
@@ -247,12 +262,13 @@ new Vue({
                             content.content = replaceContent(visitorMes["content"]);
                             content.time = visitorMes["time"];
                             _this.msgList.push(content);
-                            if(_this.msgList.length>=4){
-                                _this.scrollBottom();
-                            }
+                            _this.scrollBottom();
                         }
-                        _this.$nextTick(function(){
-                            $(".chatBox").append("<div class=\"chatTime\">"+GOFLY_LANG[LANG]['historymes']+"</div>");
+                    }
+                    if(data.code!=200){
+                        _this.$message({
+                            message: data.msg,
+                            type: 'error'
                         });
                     }
                     if(data.code!=200){
@@ -267,13 +283,13 @@ new Vue({
         //滚动到底部
         scrollBottom:function(){
             var _this=this;
-                this.$nextTick(function(){
-                        $('body').scrollTop($("body")[0].scrollHeight);
-             });
+            this.$nextTick(function(){
+                $('.chatVisitorPage').scrollTop($(".chatVisitorPage")[0].scrollHeight);
+            });
         },
         //软键盘问题
         textareaFocus:function(){
-            $('body').scrollTop($("body")[0].scrollHeight);
+            this.scrollBottom()
             if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
                 $(".chatContext").css("margin-bottom","0");
                 $(".chatBoxSend").css("position","static");
@@ -338,12 +354,15 @@ new Vue({
                             }
                             content.content = replaceContent(content.content);
                             _this.msgList.push(content);
-                            if(_this.msgList.length>=1){
-                                _this.scrollBottom();
-                            }
+                            _this.scrollBottom();
                             if(i==0){
                                 _this.alertSound();
                             }
+                            var redata={
+                                type:"message",
+                                data:content
+                            }
+                            window.parent.postMessage(redata,"*");
                             i++;
                         },4000);
                     }
@@ -376,7 +395,6 @@ new Vue({
                 var windheight = $(window).height();
                 $(window).resize(function(){
                     var docheight = $(window).height();  /*唤起键盘时当前窗口高度*/
-                    console.log(docheight,windheight);
                     //_this.scrollBottom();
                     $('body').scrollTop(99999999);
                     // if(docheight < windheight){            /*当唤起键盘高度小于未唤起键盘高度时执行*/
@@ -419,8 +437,6 @@ new Vue({
                     return;
                 }
                 _this.initConn();
-                _this.chatTitle=_this.flyLang['connectok'];
-                $(".chatBox").append("<div class=\"chatTime\">"+_this.chatTitle+"</div>");
                 _this.scrollBottom();
             }
             var _hmt = _hmt || [];
@@ -577,7 +593,41 @@ new Vue({
                 var p = b.play();
                 p && p.then(function(){}).catch(function(e){});
             }
-        }
+        },
+        sendAjax:function(url,method,params,callback){
+            let _this=this;
+            $.ajax({
+                type: method,
+                url: url,
+                data:params,
+                error:function(res){
+                    var data=JSON.parse(res.responseText);
+                    console.log(data);
+                    if(data.code!=200){
+                        _this.$message({
+                            message: data.msg,
+                            type: 'error'
+                        });
+                    }
+                },
+                success: function(data) {
+                    if(data.code!=200){
+                        _this.$message({
+                            message: data.msg,
+                            type: 'error'
+                        });
+                    }else if(data.result!=null){
+                        callback(data.result);
+                    }else{
+                        callback(data);
+                    }
+                }
+            });
+        },
+        showTitle:function(title){
+            $(".chatBox").append("<div class=\"chatTime\"><span>"+title+"</span></div>");
+            this.scrollBottom();
+        },
     },
     mounted:function() {
         document.addEventListener('paste', this.onPasteUpload)

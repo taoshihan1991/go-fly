@@ -13,7 +13,7 @@ import (
 
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "example:go-fly install",
+	Short: "安装导入数据",
 	Run: func(cmd *cobra.Command, args []string) {
 		install()
 	},

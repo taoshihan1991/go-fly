@@ -256,6 +256,8 @@
     text-align: center;
 }
 /*客服聊天主板*/
+.chatBg{background: #fff;border: solid 1px #e6e6e6;overflow: hidden;}
+.chatLeft{height:100%;overflow:auto;}
 .chatLeft .el-tabs__nav,.chatRight .el-tabs__nav {
     margin-left: 20px;
 }
@@ -265,7 +267,7 @@
     overflow: scroll!important;
 }
 .onlineUsers {
-    padding: 5px;
+    padding: 4px;
     height: 40px;
     line-height: 40px;
     font-size: 14px;
@@ -297,8 +299,11 @@
     background: rgb(245,245,245);
     /*margin-bottom: 80px;*/
 }
+.chatVisitorPage{
+    height: calc(100% - 105px);
+    overflow-y: auto;
+}
 .chatVisitorPage .chatBox{
-    min-height: calc(100% - 105px);
     padding: 0 4px;
 }
 .chatBox .el-col{margin:10px 0;}
@@ -308,6 +313,9 @@
     color: #999;
     text-align: left;
     margin-top: -15px;
+}
+.chatMainPage{
+    margin-top: 1px;
 }
 .chatContent{
     background-color: rgb(255,255,255);
