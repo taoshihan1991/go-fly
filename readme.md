@@ -309,25 +309,8 @@ server{
 **按照图示，将对应代码加入到配置文件中**
 ```shell
 #PROXY-START/
-location  ~* \.(php|jsp|cgi|asp|aspx)$
-{
-	add_header Access-Control-Allow-Origin *;
-	add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
-    proxy_pass http://127.0.0.1:8081;
-	proxy_http_version 1.1;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header REMOTE-HOST $remote_addr;
-    
-	proxy_set_header Upgrade $http_upgrade;
-	proxy_set_header Connection "upgrade";
-	proxy_set_header Origin "";
-}
 location /
 {
-	add_header Access-Control-Allow-Origin *;
-	add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
     proxy_pass http://127.0.0.1:8081;
 	proxy_http_version 1.1;
     proxy_set_header Host $host;
