@@ -249,7 +249,8 @@
 
 2.尽量按照下面的配置处理, 配置独立域名或者二级域名, 不建议在主域名加端口访问, 不建议主域名加目录访问 
 
-3.如果遇到域名跨域错误问题, 检查下面配置中add_header Access-Control-Allow-Origin这俩header头是否添加
+3.<del>如果遇到域名跨域错误问题, 检查下面配置中add_header Access-Control-Allow-Origin这俩header头是否添加.</del>
+代码里已经解决跨域 , nginx里不要加跨域头,否则会冲突报错
 
 ```php
 server {
