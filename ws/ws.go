@@ -139,6 +139,8 @@ func WsServerBackend() {
 	}
 }
 func UpdateVisitorUser(visitorId string, toId string) {
-	guest, _ := ClientList[visitorId]
-	guest.To_id = toId
+	guest, ok := ClientList[visitorId]
+	if ok {
+		guest.To_id = toId
+	}
 }
