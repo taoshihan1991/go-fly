@@ -9,8 +9,7 @@ require (
 	github.com/emersion/go-smtp v0.13.0
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-contrib/sessions v0.0.3
-	github.com/gin-gonic/gin v1.6.3
-	github.com/go-sql-driver/mysql v1.5.0
+	github.com/gin-gonic/gin v1.7.7
 	github.com/gobuffalo/packr/v2 v2.5.1
 	github.com/gorilla/websocket v1.4.2
 	github.com/ipipdotnet/ipdb-go v1.3.0
@@ -21,6 +20,4 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.5
 	github.com/zh-five/xdaemon v0.1.1
-	golang.org/x/net v0.0.0-20200513185701-a91f0712d120
-	golang.org/x/text v0.3.2
 )
