@@ -4,13 +4,13 @@ go 1.16
 
 require (
 	github.com/dchest/captcha v0.0.0-20200903113550-03f5f0333e1f
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/emersion/go-sasl v0.0.0-20200509203442-7bfe0ed36a21
 	github.com/emersion/go-smtp v0.13.0
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.7.7
 	github.com/gobuffalo/packr/v2 v2.5.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/websocket v1.4.2
 	github.com/ipipdotnet/ipdb-go v1.3.0
 	github.com/jinzhu/gorm v1.9.14

@@ -5,6 +5,11 @@
  gin + jwt-go + websocket + go.uuid + gorm + cobra
 
 ### 更新日志
+
+##### ...
+
+作者本人现在全职开发，后续更新转为了商务版，欢迎大家支持商务版 https://gofly.sopans.com
+
 ##### V0.4.1
 
 访客端咨询按钮的样式修改,滚动区域修改
@@ -378,11 +383,12 @@ location /
 
 2020年11月30日 **宇  88元
 
-### 打赏作者
+### 联系作者
 
+QQ: 630892807
 
-<img src="https://gofly.sopans.com/static/images/alipay.jpg" width="280"  alt="支付宝"/>
-<img src="https://gofly.sopans.com/static/images/weixin.jpg" width="280"  alt="微信"/>
+微信：
+<img src="https://gofly.sopans.com/static/images/wechat.jpg" width="280"  alt="微信"/>
 
 ### 版权声明
 
