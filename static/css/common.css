@@ -1,7 +1,9 @@
 *{padding:0;margin:0}
 .floatRight{float: right;}
 .clear{clear: both;}
-
+.visitorBody{
+    background-color: #eef0f6;
+}
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
     font-weight: 500;
@@ -285,12 +287,17 @@
     max-width: 800px;
     margin:0 auto;
 }
-.chatCenter{background: #fff;max-width: 800px;margin: 0 auto;border: 1px solid #d1d1d1;margin-top: 10px;box-shadow: 2px 2px 6px rgba(0,0,0,.3);}
+.chatCenter{
+    background: #fff;
+    margin: 0 auto;
+    box-shadow: 2px 2px 6px rgba(0,0,0,.3);
+    overflow: hidden;
+    width: 100%;
+}
 .chatContext{
     width: 100%;
     text-align: left;
     position: relative;
-    margin-bottom: 105px;
     background: rgb(245,245,245);
 }
 .chatBox{
@@ -300,7 +307,7 @@
     /*margin-bottom: 80px;*/
 }
 .chatVisitorPage{
-    height: calc(100% - 105px);
+    height: calc(100% - 150px);
     overflow-y: auto;
 }
 .chatVisitorPage .chatBox{
@@ -377,7 +384,7 @@ a{color: #07a9fe;text-decoration: none;}
 }
 
 .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
-.chatBoxSend{background: #fff;position: fixed;bottom: 0px;width: 100%;height: 105px;max-width: 800px;z-index: 99;}
+.chatBoxSend{background: #fff;height: 100px;}
 .chatBoxSendBtn{float: right;margin: 12px 4px 0 0;}
 .footContact{text-align: center;}
 .footContact a{font-size: 12px;color: #999;text-decoration: none;}
@@ -448,3 +455,37 @@ a{color: #07a9fe;text-decoration: none;}
 }
 .iconBtnsBox .kefuSendBtn{margin-right: 4px;float: right;}
 .clear{clear:both;}
+
+
+.chatEntTitle {
+    padding: 0 5px;
+    width: 100%;
+    z-index: 9;
+    margin: 0 auto;
+    height: 50px;
+    line-height: 50px;
+    overflow: hidden;
+    font-size: 14px;
+    color: #fff;
+    overflow: hidden;
+    background-color: rgb(11 113 236);
+    align-items: center;
+    justify-content: left;
+    display: flex;
+}
+.chatEntTitleLogo{
+    margin-right: 5px;
+}
+@media screen and (min-width: 900px) {
+    .chatCenter {
+        border-top: none;
+        border-bottom: none;
+        border-radius: 8px;
+        height: 94% !important;
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        margin-left: -450px;
+        max-width: 900px;
+    }
+}
