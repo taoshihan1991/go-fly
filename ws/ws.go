@@ -51,7 +51,7 @@ type ClientMessage struct {
 }
 
 var ClientList = make(map[string]*User)
-var KefuList = make(map[string][]*User)
+var KefuList = make(map[string]*User)
 var message = make(chan *Message, 10)
 var upgrader = websocket.Upgrader{}
 var Mux sync.RWMutex

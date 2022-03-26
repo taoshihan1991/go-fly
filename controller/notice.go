@@ -24,10 +24,8 @@ func GetNotice(c *gin.Context) {
 		result = append(result, h)
 	}
 	status := "online"
-	if kefus, ok := ws.KefuList[kefuId]; !ok {
-		if len(kefus) <= 0 {
+	if _, ok := ws.KefuList[kefuId]; !ok {
 			status = "offline"
-		}
 	}
 	c.JSON(200, gin.H{
 		"code": 200,

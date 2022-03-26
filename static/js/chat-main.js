@@ -12,6 +12,7 @@ var app=new Vue({
         server:getWsBaseUrl()+"/ws_kefu?token="+localStorage.getItem("token"),
         //server:getWsBaseUrl()+"/chat_server",
         socket:null,
+        socketClosed:false,
         messageContent:"",
         currentGuest:"",
         msgList:[],
@@ -94,6 +95,14 @@ var app=new Vue({
         OnMessage(e) {
             const redata = JSON.parse(e.data);
             switch (redata.type){
+                case "close":
+                    this.$message({
+                        message: "客服在其他地方登录，当前登录状态退出",
+                        type: 'error'
+                    });
+                    localStorage.removeItem("token");
+                    this.socket.close();
+                    break;
                 case "inputing":
                     this.handleInputing(redata.data);
                     //this.sendKefuOnline();
@@ -162,8 +171,6 @@ var app=new Vue({
         //接手客户
         talkTo(guestId,name) {
             this.currentGuest = guestId;
-            //this.chatTitle=name+"|"+guestId+",正在处理中...";
-
             //发送给客户
             let mes = {}
             mes.type = "kfConnect";

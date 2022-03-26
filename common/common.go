@@ -8,5 +8,5 @@ var (
 	Upload            string  = "static/upload/"
 	Dir               string  = "config/"
 	MysqlConf         string  = Dir + "mysql.json"
-	IsCompireTemplate bool    = true //是否编译静态模板到二进制
+	IsCompireTemplate bool    = false //是否编译静态模板到二进制
 )

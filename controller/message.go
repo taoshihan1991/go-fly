@@ -112,8 +112,8 @@ func SendMessageV2(c *gin.Context) {
 		//ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
 		go ws.SendServerJiang(vistorInfo.Name+"说", content, c.Request.Host)
 		go SendAppGetuiPush(kefuInfo.Name, vistorInfo.Name, content)
-		kefus, ok := ws.KefuList[kefuInfo.Name]
-		if !ok || len(kefus) == 0 {
+		kefu, ok := ws.KefuList[kefuInfo.Name]
+		if !ok || kefu == nil{
 			go SendNoticeEmail(content+"|"+vistorInfo.Name, content)
 		}
 		go ws.VisitorAutoReply(vistorInfo, kefuInfo, content)

@@ -113,9 +113,6 @@ func GetStatistics(c *gin.Context) {
 	message := models.CountMessage()
 	session := len(ws.ClientList)
 	kefuNum := 0
-	for _, kefus := range ws.KefuList {
-		kefuNum += len(kefus)
-	}
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "ok",
