@@ -34,10 +34,19 @@
     float: left;
     margin-left: 5px;
 }
+
 .visitorFaceBox{
     position: absolute;
     bottom: 105px;
 }
+.visitorIconBtns{
+    margin-right: 8px;
+    transform: scale(0.8);
+}
+.visitorIconBtns:hover{
+    color:#484848;
+}
+
 .kefuFaceBox{
     position: absolute;
     bottom: 0px;
@@ -307,7 +316,7 @@
     /*margin-bottom: 80px;*/
 }
 .chatVisitorPage{
-    height: calc(100% - 150px);
+    height: calc(100% - 100px);
     overflow-y: auto;
 }
 .chatVisitorPage .chatBox{
@@ -471,7 +480,7 @@ a{color: #07a9fe;text-decoration: none;}
     background-color: rgb(11 113 236);
     align-items: center;
     justify-content: left;
-    display: flex;
+    display: none;
 }
 .chatEntTitleLogo{
     margin-right: 5px;
@@ -488,6 +497,10 @@ a{color: #07a9fe;text-decoration: none;}
         margin-left: -450px;
         max-width: 900px;
     }
+    .chatVisitorPage{
+        height: calc(100% - 150px);
+    }
+    .chatEntTitle{display: flex;}
 }
 .visitorEditorArea{
     margin: 0 5px;
@@ -500,4 +513,7 @@ a{color: #07a9fe;text-decoration: none;}
 .visitorEditor{
     display: flex;
     align-items: center;
+}
+.visitorSendBtn{
+    margin-right: 2px;
 }
