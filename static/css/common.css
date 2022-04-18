@@ -489,3 +489,15 @@ a{color: #07a9fe;text-decoration: none;}
         max-width: 900px;
     }
 }
+.visitorEditorArea{
+    margin: 0 5px;
+}
+.visitorEditorArea  textarea {
+    padding: 7px 0 7px 8px;
+    font-size:16px;
+    line-height: 21px;
+}
+.visitorEditor{
+    display: flex;
+    align-items: center;
+}

@@ -45,9 +45,11 @@
                 <div class="icono-comment visitorHistoryBtn"  v-on:click="getMesssagesByVisitorId(true)"></div>
                 <div class="clear"></div>
             </div>
-            <el-input  @focus="textareaFocus" @blur="textareaBlur" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" :placeholder="flyLang.textarea">
-                <el-button slot="append" :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser"><{flyLang.sent}></el-button>
-            </el-input>
+            <div class="visitorEditor">
+                <el-input class="visitorEditorArea" :rows="1" type="textarea" resize="none"  @focus="textareaFocus" @blur="textareaBlur" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser" >
+                </el-input>
+                <el-button :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser" type="success" size="small"><{flyLang.sent}></el-button>
+            </div>
             <div class="faceBox visitorFaceBox">
                 <ul class="faceBoxList">
                     <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
@@ -55,7 +57,7 @@
                 <div class="clear"></div>
             </div>
             <div class="footContact clear">
-                <a href="https://github.com/taoshihan1991/go-fly" target="_blank"><{flyLang.copyright}></a>
+                <a href="https://github.com/taoshihan1991/go-fly" target="_blank">GO-FLY0.4.2开源客服系统</a>
             </div>
         </div>
         <!--//客服代码-->

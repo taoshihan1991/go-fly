@@ -22,6 +22,8 @@ new Vue({
         replys:[],
         noticeName:"",
         noticeAvatar:"",
+        showIconBtns:false,
+        showFaceIcon:false,
     },
     methods: {
         //初始化websocket
