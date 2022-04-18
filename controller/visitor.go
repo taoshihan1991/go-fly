@@ -2,13 +2,11 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
-	"math/rand"
 	"strconv"
 )
 
@@ -60,7 +58,14 @@ import (
 //}
 func PostVisitorLogin(c *gin.Context) {
 	ipcity := tools.ParseIp(c.ClientIP())
-	avator := fmt.Sprintf("/static/images/%d.jpg", rand.Intn(14))
+	avator:=""
+	userAgent := c.GetHeader("User-Agent")
+	if tools.IsMobile(userAgent) {
+		avator = "/static/images/phone.png"
+	} else {
+		avator = "/static/images/computer.png"
+	}
+
 	toId := c.PostForm("to_id")
 	id := c.PostForm("visitor_id")
 

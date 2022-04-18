@@ -393,7 +393,10 @@ a{color: #07a9fe;text-decoration: none;}
 }
 
 .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
-.chatBoxSend{background: #fff;height: 100px;}
+.chatBoxSend{
+    background: #fff;height: 100px;
+    position: relative;
+}
 .chatBoxSendBtn{float: right;margin: 12px 4px 0 0;}
 .footContact{text-align: center;}
 .footContact a{font-size: 12px;color: #999;text-decoration: none;}

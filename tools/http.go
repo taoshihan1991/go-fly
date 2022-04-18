@@ -3,6 +3,7 @@ package tools
 import (
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
@@ -49,4 +50,12 @@ func PostHeader(url string, msg []byte, headers map[string]string) (string, erro
 		return "", err
 	}
 	return string(body), nil
+}
+func IsMobile(userAgent string) bool {
+	mobileRe, _ := regexp.Compile("(?i:Mobile|iPod|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP)")
+	str := mobileRe.FindString(userAgent)
+	if str != "" {
+		return true
+	}
+	return false
 }
