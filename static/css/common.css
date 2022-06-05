@@ -228,15 +228,13 @@
     margin-left: 5px;
     font-size: 12px;
 }
-.el-submenu__title i{
-    color: #fff;
-}
+
 .el-container{
     height: 100%;
 }
-.el-aside{
+.el-aside {
     height: 100%;
-    background: #222d32;
+    background: #fff;
 }
 .textDark {color: #343a40;}
 .bgInfo {background-color: #17a2b8}
@@ -548,4 +546,40 @@ a{color: #07a9fe;text-decoration: none;}
 }
 .visitorSendBtn{
     margin-right: 2px;
+}
+.mainLeftMenu {
+    width: 70px;
+    float: left;
+    height: 100%;
+    text-align: center;
+    background-color: #0a2f5a;
+    position: relative;
+}
+.menuLeftItem {
+    height: 55px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    padding-top: 12px;
+    width: 100%;
+}
+.menuLeftItem i, .menuLeftItem .el-badge {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 20px;
+}
+.menuLeftItem span {
+    font-size: 12px;
+}
+.mainRight {
+    width: calc(100% - 70px);
+    height: 100%;
+    float: left;
+}
+.mainIframe {
+    width: 100%;
+    height: 100%;
+}
+.menuLeftItem:active, .menuLeftItem.active {
+    background: #2b5a96;
 }

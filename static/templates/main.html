@@ -41,10 +41,6 @@
             margin-left: 10px;
             margin-bottom: 60px;
         }
-        .mainIframe{
-            width: 100%;
-            height:  calc(100% - 60px);
-        }
         .el-card__body{
             cursor: pointer;
         }
@@ -56,7 +52,10 @@
 <div id="app">
     <template>
         {{template "nav" }}
-        <iframe  class="mainIframe"  v-bind:src="iframeUrl" frameborder="0"></iframe>
+        <div class="mainRight">
+
+            <iframe class="mainIframe"  v-bind:src="iframeUrl" frameborder="0"></iframe>
+        </div>
     </template>
 </div>
 </body>
@@ -66,10 +65,12 @@
         delimiters:["<{","}>"],
         data: {
             window:window,
-            iframeUrl:"",
             mailTotal:0,
             adminAvator:"",
             adminRole:"",
+            onlineType:"success",
+            haveNewMessage:"",
+            iframeUrl:"/chat_main",
         },
         methods: {
             focusWindow(){
@@ -130,22 +131,19 @@
         created: function () {
             this.checkAuth();
             this.focusWindow();
+            $(function(){
+                $("body").on("click",".menuLeftItem",function(){
+                    $(".menuLeftItem").removeClass("active");
+                    $(this).addClass("active");
+                });
+            })
         }
     })
     $(window).bind("focus",function(e){
         //alert(1);
     });
 </script>
-<script src="https://gofly.sopans.com/static/js/gofly-front.js"></script>
-<script>
-    GOFLY.init({
-        GOFLY_URL:"https://gofly.sopans.com",//必填
-        GOFLY_KEFU_ID: "taoshihan",//必填
-        GOFLY_ENT: "5",//必填
-        GOFLY_AUTO_OPEN:false,//是否自动展开
-        GOFLY_SHOW_TYPES:2,
-    })
-</script>
+
 <script>
     var _hmt = _hmt || [];
     (function() {

@@ -1,24 +1,50 @@
 {{define "nav"}}
-<el-menu
-        class="el-menu-demo"
-        background-color="#3c8dbc"
-        text-color="#fff"
-        active-text-color="#fff"
-        default-active="3"
-        mode="horizontal">
-    <el-menu-item  class="mainLogo" v-on:click="openUrl('/main')">GOFLY<span class="mainVersion">开源版</span></el-menu-item>
-    <el-menu-item style="display:none" index="2" v-on:click="openIframeUrl('/list')">邮箱<el-badge class="mark" :value="mailTotal" style="margin-bottom: 20px;"/>
-    </el-menu-item>
-    <el-menu-item index="3" v-on:click="openIframeUrl('/chat_main')">聊天</el-menu-item>
-    <el-menu-item index="4" v-on:click="openIframeUrl('/setting')">设置</el-menu-item>
-    <el-submenu style="float: right" index="10">
-        <template slot="title">
-            <el-avatar :size="30" :src="adminAvator"></el-avatar>
-            <span v-html="adminRole"></span>
-        </template>
-        <el-menu-item  v-on:click="logout()">
-            退出
-        </el-menu-item>
-    </el-submenu>
-</el-menu>
+    <div class="mainLeftMenu">
+        <div style="margin: 20px auto;">
+            <el-badge :type="onlineType" is-dot class="item">
+                <el-avatar   class="mainLogo"  title="智能客服" :size="45" src="/static/images/1.jpg"></el-avatar>
+            </el-badge>
+        </div>
+        <div style="display: none" class="menuLeftItem" v-on:click="openIframeUrl('/mainGuide')">
+            <i class="el-icon-house"></i>
+            <span slot="title">首页</span>
+        </div>
+
+        <div class="menuLeftItem" v-on:click="haveNewMessage='';openIframeUrl('/chat_main')">
+            <el-badge :value="haveNewMessage" class="item">
+                <i class="el-icon-chat-dot-round"></i>
+            </el-badge>
+            <span slot="title">对话</span>
+        </div>
+
+
+        <div style="display: none" class="menuLeftItem" v-on:click="openIframeUrl('/setting_deploy')">
+            <i class="el-icon-notebook-2"></i>
+            <span slot="title">对接</span>
+        </div>
+
+
+        <div  class="menuLeftItem"  v-on:click="openIframeUrl('/setting')">
+            <i class="el-icon-setting"></i>
+            <span slot="title">设置</span>
+        </div>
+
+
+        <div style="display: none" class="menuLeftItem" v-on:click="openIframeUrl('/setting_welcome')">
+            <i class="el-icon-timer"></i>
+            <span slot="title">欢迎</span>
+        </div>
+
+        <div style="display: none" class="menuLeftItem" v-on:click="openIframeUrl('/setting')">
+            <i class="el-icon-menu"></i>
+            <span slot="title">菜单</span>
+        </div>
+
+        <div  class="menuLeftItem menuLeftItemLogout" v-on:click="logout()">
+            <i class="el-icon-switch-button"></i>
+            <span slot="title">退出</span>
+        </div>
+
+    </div>
+
 {{end}}
