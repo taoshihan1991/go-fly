@@ -17,6 +17,10 @@
 .el-menu--horizontal>.el-menu-item.is-active{
     border-bottom: 3px solid #409EFF;
 }
+#app {
+    width: 100%;
+    height: 100%;
+}
 .chatBg .el-tabs__header{margin: 0;}
 .faceBtn, .faceBtn:after, .faceBtn {
     border: 1px solid;
@@ -296,12 +300,13 @@
     max-width: 800px;
     margin:0 auto;
 }
-.chatCenter{
+.chatCenter {
     background: #fff;
+    max-width: 960px;
     margin: 0 auto;
     box-shadow: 2px 2px 6px rgba(0,0,0,.3);
+    border-top: none;
     overflow: hidden;
-    width: 100%;
 }
 .chatContext{
     width: 100%;
@@ -316,7 +321,7 @@
     /*margin-bottom: 80px;*/
 }
 .chatVisitorPage{
-    height: calc(100% - 100px);
+    height: calc(100% - 95px);
     overflow-y: auto;
 }
 .chatVisitorPage .chatBox{
@@ -333,10 +338,11 @@
 .chatMainPage{
     margin-top: 1px;
 }
-.chatContent{
+.chatContent {
     background-color: rgb(255,255,255);
     color: #000;
     border: 1px solid rgb(237,237,237);
+    min-height: 20px;
     padding: 8px 15px;
     word-break: break-all;
     position: relative;
@@ -345,39 +351,19 @@
     line-height: 21px;
     font-size: 14px;
 }
+.chatContent2 {
+    border-radius: 0px 8px 8px 8px;
+    padding: 10px 15px;
+}
+.chatBoxMe .chatContent2 {
+    border-radius: 8px 0px 8px 8px;
+    background-color: rgb(0, 145, 255);
+    color: rgb(255, 255, 255);
+}
 a{color: #07a9fe;text-decoration: none;}
-.chatContent:before,.chatContent:after {
-    content: "";
-    display: block;
-    position: absolute;
-    width:0;
-    height: 0;
-    border: 6px solid transparent;
-    border-right-color: rgba(255,255,255,1);
-    left: -11px;
-    top: 10px;
-    z-index:1;
-}
-.chatContent:after {
-    left: -12px;
-    border-right-color: rgb(237,237,237);
-    z-index:0;
-}
-/*.chatContent:after {*/
-/*    content: '';*/
-/*    position: absolute;*/
-/*    left: -10px;*/
-/*    top: 13px;*/
-/*    width: 0;*/
-/*    height: 0;*/
-/*    border-style: dashed;*/
-/*    border-color: transparent;*/
-/*    overflow: hidden;*/
-/*    border-width: 10px;*/
-/*    border-top-style: solid;*/
-/*    border-top-color: rgb(255,255,255);*/
-/*}*/
-.chatBoxMe .chatContent{float: right;background-color: rgb(152,225,101);border: 1px solid rgb(145, 215, 96);}
+
+
+.chatBoxMe .chatContent{float: right;}
 .chatBoxMe .chatContent:after{border-left-color: rgba(152,225,101,1);border-right:none;left:auto;right: -5px;}
 .chatBoxMe .chatContent:before{border-left-color: rgb(152,225,101);border-right:none;right: -5px;left: auto;}
 .chatBoxMe .el-col-3{float: right;text-align: right;}
@@ -470,40 +456,49 @@ a{color: #07a9fe;text-decoration: none;}
 
 
 .chatEntTitle {
-    padding: 0 5px;
+    display: none;
     width: 100%;
     z-index: 9;
     margin: 0 auto;
-    height: 50px;
-    line-height: 50px;
+    height: 70px;
     overflow: hidden;
-    font-size: 14px;
+    font-size: 16px;
     color: #fff;
     overflow: hidden;
     background-color: rgb(11 113 236);
+    background-image: url(../images/visitor_title_bg.png);
+    background-size: auto 72px;
+    background-position: center 0;
     align-items: center;
-    justify-content: left;
-    display: none;
 }
-.chatEntTitleLogo{
-    margin-right: 5px;
+.chatEntTitle span {
+    margin-right: 10px;
+}
+.chatEntTitle .el-badge__content.is-fixed.is-dot {
+    right: 17px;
+    bottom: -5px;
+    top: unset;
 }
 @media screen and (min-width: 900px) {
     .chatCenter {
-        border-top: none;
-        border-bottom: none;
-        border-radius: 8px;
-        height: 94% !important;
-        position: absolute;
-        top: 18px;
-        left: 50%;
-        margin-left: -450px;
-        max-width: 900px;
+        max-height: 800px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.15);
+        border-radius: 4px;
     }
-    .chatVisitorPage{
-        height: calc(100% - 150px);
+    .chatVisitorPage {
+        height: calc(100% - 165px);
     }
     .chatEntTitle{display: flex;}
+    .chatEntTitleLogo {
+        margin-left: 15px;
+    }
+    .visitorBody {
+        display: flex;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
 }
 .visitorEditorArea{
     margin: 0 5px;

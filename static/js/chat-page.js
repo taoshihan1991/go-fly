@@ -24,6 +24,7 @@ new Vue({
         noticeAvatar:"",
         showIconBtns:false,
         showFaceIcon:false,
+        isIframe:false,
     },
     methods: {
         //初始化websocket
