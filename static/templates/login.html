@@ -7,10 +7,11 @@
     <title>GOFLY客服-免费在线客服系统源码-网站开源在线客服系统-私有化部署网页在线客服软件代码下载</title>
     <meta name="keywords" content="网页在线客服软件代码,网站在线客服系统,免费在线客服系统源码" />
     <meta name="description" content="GOFLY客服,GO-FLY开源客服，一套可独立部署的免费开源客服系统，网站在线客服系统，下载zip解压即可，仅依赖MySQL数据库，是一个开箱即用的网页在线客服，适合PHP程序员使用，同时也是首页完全可以编辑的单页营销系统." />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/theme-chalk/index.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/element-ui@2.13.1/lib/index.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.15.1/theme-chalk/index.min.css">
+    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/element-ui/2.15.1/index.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+
     <style>
         body {
             background-color: #f5f5f5;
@@ -62,7 +63,7 @@
 <div id="app" class="signin">
     <template>
         <div class="loginHtml">
-            <h1 class="loginTitle">欢迎使用GOFLY开源客服系统</h1>
+            <h1 class="loginTitle">智能在线客服系统</h1>
             <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
                 <el-form-item  prop="username">
                     <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
@@ -76,20 +77,7 @@
             </el-form>
         </div>
 
-        <p class="copyright">GOFLY开源客服版权所有</p>
-        <el-alert
-                description="使用GOFLY在线客服产品期间，不得危害国家安全、泄露国家秘密，不得侵犯国家社会集体和公民的合法权益。"
-                type="warning"
-                :closable="false"
-        >
-        </el-alert>
-        <el-alert
-                description="
- GOFLY在线客服产品禁止用于含有木马、病毒、色情、赌博、诈骗等违法违规业务。一经发现，GOFLY在线客服有权立即停止服务，并协助相关行政执法机关进行清查。"
-                type="warning"
-                :closable="false"
-        >
-        </el-alert>
+        <p class="copyright">智能在线客服系统</p>
 </template>
 </div>
 </body>
