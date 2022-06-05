@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/taoshihan1991/imaptool/common"
-	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 	"time"
 )
@@ -28,15 +27,14 @@ func Connect() error {
 	DB, err = gorm.Open("mysql", dsn)
 	if err != nil {
 		log.Println(err)
-		tools.Logger().Println(err)
+		panic("数据库连接失败!")
 		return err
-		//panic("数据库连接失败!")
 	}
 	DB.SingularTable(true)
 	DB.LogMode(true)
-	DB.SetLogger(tools.Logger())
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
+	DB.DB().SetConnMaxLifetime(59 * time.Second)
 	InitConfig()
 	return nil
 }
