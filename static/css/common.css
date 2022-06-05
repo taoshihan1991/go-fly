@@ -484,6 +484,13 @@ a{color: #07a9fe;text-decoration: none;}
     bottom: -5px;
     top: unset;
 }
+.chatEntBox{
+    height: 100%;
+    position: relative;
+}
+.chatArticle{
+    display: none;
+}
 @media screen and (min-width: 900px) {
     .chatCenter {
         max-height: 800px;
@@ -503,6 +510,28 @@ a{color: #07a9fe;text-decoration: none;}
         justify-content: center;
         -ms-flex-align: center;
         align-items: center;
+    }
+    .chatEntBox {
+        width: calc(100% - 270px);
+        float: left;
+        border-right: 1px solid #e6e6e6;
+    }
+    .chatArticle {
+        display: block;
+        width: 260px;
+        float: right;
+        overflow-y: auto;
+    }
+    .hotQuestionTitle {
+        padding: 15px 10px 10px 10px;
+        border-bottom: 1px solid rgba(0,0,0,.09);
+        font-size: 16px;
+        display: flex;
+    }
+    .hotQuestionTitle .fire {
+        width: 20px;
+        margin-right: 10px;
+        color: rgb(250, 84, 28);
     }
 }
 .visitorEditorArea{
