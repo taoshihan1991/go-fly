@@ -41,7 +41,8 @@ func NewKefuServer(c *gin.Context) {
 		var receive []byte
 		messageType, receive, err := conn.ReadMessage()
 		if err != nil {
-			log.Println(err)
+			log.Println("ws/user.go ", err)
+			conn.Close()
 			return
 		}
 
