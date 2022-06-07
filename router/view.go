@@ -7,12 +7,13 @@ import (
 )
 
 func InitViewRouter(engine *gin.Engine) {
-	engine.GET("/index_:lang", middleware.SetLanguage, tmpl.PageIndex)
+	engine.GET("/", tmpl.PageIndex)
+	engine.GET("/index_:lang", tmpl.PageIndex)
 	engine.GET("/install", tmpl.PageInstall)
-	engine.GET("/detail_:page", middleware.SetLanguage, tmpl.PageDetail)
+	engine.GET("/detail_:page",tmpl.PageDetail)
 	engine.GET("/login", tmpl.PageLogin)
-	engine.GET("/chat_page", middleware.SetLanguage, tmpl.PageChat)
-	engine.GET("/chatIndex", middleware.SetLanguage, tmpl.PageChat)
+	engine.GET("/chat_page",tmpl.PageChat)
+	engine.GET("/chatIndex",tmpl.PageChat)
 	engine.GET("/chatKfIndex", tmpl.PageKfChat)
 	engine.GET("/main", middleware.JwtPageMiddleware, tmpl.PageMain)
 	engine.GET("/chat_main", middleware.JwtPageMiddleware, tmpl.PageChatMain)

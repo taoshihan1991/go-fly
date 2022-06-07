@@ -12,9 +12,8 @@ CREATE TABLE `user` (
  UNIQUE KEY `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 TRUNCATE TABLE `user`|
-INSERT INTO `user` (`id`, `name`, `password`, `nickname`, `created_at`, `updated_at`, `deleted_at`, `avator`) VALUES
-(1, 'kefu2', '202cb962ac59075b964b07152d234b70', '小白菜', '2020-06-27 19:32:41', '2020-07-04 09:32:20', NULL, '/static/images/4.jpg'),
-(2, 'kefu3', '202cb962ac59075b964b07152d234b70', '中白菜', '2020-07-02 14:36:46', '2020-07-05 08:46:57', NULL, '/static/images/11.jpg')|
+INSERT INTO `user` (`id`, `name`, `password`, `nickname`, `created_at`, `updated_at`, `deleted_at`, `avator`) VALUE
+(1, 'kefu2', '202cb962ac59075b964b07152d234b70', '智能客服系统', '2020-06-27 19:32:41', '2020-07-04 09:32:20', NULL, '/static/images/4.jpg')|
 
 DROP TABLE IF EXISTS `visitor`|
 CREATE TABLE `visitor` (
@@ -61,9 +60,8 @@ CREATE TABLE `user_role` (
  `role_id` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8|
-INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUES
-(1, 1, 2),
-(2, 2, 2)|
+INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUE
+(1, 1, 2)|
 
 DROP TABLE IF EXISTS `role`|
 CREATE TABLE `role` (
@@ -74,8 +72,7 @@ CREATE TABLE `role` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
-(1, '普通客服', 'GET', 'GET:/kefuinfo,GET:/kefulist,GET:/roles,POST:/notice_save,POST:/notice'),
-(2, '管理员', '*', '*')|
+(1, '普通客服', 'GET', 'GET:/kefuinfo,GET:/kefulist,GET:/roles,POST:/notice_save,POST:/notice')|
 
 DROP TABLE IF EXISTS `welcome`|
 CREATE TABLE `welcome` (
@@ -113,19 +110,9 @@ CREATE TABLE `config` (
  PRIMARY KEY (`id`),
  UNIQUE KEY `conf_key` (`conf_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '是否开启Server酱微信提醒', 'NoticeServerJiang', 'false')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'Server酱API', 'ServerJiangAPI', '')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '微信小程序Token', 'WeixinToken', '')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '当前小程序审核状态', 'MiniAppAudit', 'yes')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '是否允许上传附件', 'SendAttachment', 'true')|
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '发送通知邮件(SMTP地址)', 'NoticeEmailSmtp', '')|
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '发送通知邮件(邮箱)', 'NoticeEmailAddress', '')|
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '发送通知邮件(密码)', 'NoticeEmailPassword', '')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'App个推(Token)', 'GetuiToken', '')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'App个推(AppID)', 'GetuiAppID', '')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'App个推(AppKey)', 'GetuiAppKey', '')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'App个推(AppSecret)', 'GetuiAppSecret', '')|
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, 'App个推(AppMasterSecret)', 'GetuiMasterSecret', '')|
 DROP TABLE IF EXISTS `about`|
 CREATE TABLE `about` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -142,33 +129,6 @@ CREATE TABLE `about` (
 PRIMARY KEY (`id`),
 UNIQUE KEY `page` (`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
-INSERT INTO `about` (`id`, `title_cn`, `title_en`, `keywords_cn`, `keywords_en`, `desc_cn`, `desc_en`, `css_js`, `html_cn`, `html_en`, `page`) VALUES
-(NULL, '免费开源客服系统GOFLY0.4.1-演示页',
-'Free Customer Live Chat GOFLY0.4.1-demo',
-'GOFLY，GO-FLY',
-'GOFLY，GO-FLY',
-'一款开箱即用的在线客服系统',
-'a free customer live chat',
-'<style>body{color: #333;padding-left: 40px;}h1{font-size: 6em;}h2{font-size: 3em;font-weight: normal;}a{color: #333;}</style>',
-'<script src="/assets/js/gofly-front.js?v=1"></script><script>
-    GOFLY.init({
-        GOFLY_URL:"",
-        GOFLY_KEFU_ID: "kefu2",
-        GOFLY_BTN_TEXT: "GOFLY 在线客服!",
-        GOFLY_LANG:"cn",
-    })
-</script>
- <h1>:)</h1><h2>你好 <a href="https://gofly.sopans.com">GOFLY0.4.1</a> 在线客服系统 !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
-'<script src="/assets/js/gofly-front.js?v=1"></script><script>
-    GOFLY.init({
-        GOFLY_URL:"",
-        GOFLY_KEFU_ID: "kefu2",
-        GOFLY_BTN_TEXT: "GOFLY LIVE CHAT!",
-        GOFLY_LANG:"en",
-    })
-</script>
- <h1>:)</h1><h2>HELLO <a href="https://gofly.sopans.com">GOFLY0.4.1</a> LIVE CHAT !</h2><h3><a href="/login">Administrator</a>&nbsp;<a href="/index_en">English</a>&nbsp;<a href="/index_cn">中文</a></h3>',
- 'index')|
 DROP TABLE IF EXISTS `reply_group`|
 CREATE TABLE `reply_group` (
  `id` int(11) NOT NULL AUTO_INCREMENT,

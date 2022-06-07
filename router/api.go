@@ -8,8 +8,6 @@ import (
 )
 
 func InitApiRouter(engine *gin.Engine) {
-	//首页
-	engine.GET("/", controller.Index)
 	//路由分组
 	v2 := engine.Group("/2")
 	{
@@ -68,7 +66,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/about", controller.GetAbout)
 	engine.POST("/about", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostAbout)
 	engine.GET("/aboutpages", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.GetAbouts)
-	engine.GET("/notice", middleware.SetLanguage, controller.GetNotice)
+	engine.GET("/notice",controller.GetNotice)
 	engine.POST("/notice", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostNotice)
 	engine.DELETE("/notice", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.DelNotice)
 	engine.POST("/notice_save", middleware.JwtApiMiddleware, middleware.RbacAuth, controller.PostNoticeSave)
