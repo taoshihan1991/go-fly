@@ -96,12 +96,15 @@ var app=new Vue({
             const redata = JSON.parse(e.data);
             switch (redata.type){
                 case "close":
-                    this.$message({
-                        message: "客服在其他地方登录，当前登录状态退出",
-                        type: 'error'
-                    });
-                    localStorage.removeItem("token");
                     this.socket.close();
+                    this.$alert('客服在其他地方登录，当前登录状态退出', '通知', {
+                        confirmButtonText: '确定',
+                        callback:function () {
+                            localStorage.removeItem("token");
+                            window.location.href="/login";
+                        }
+                    });
+
                     break;
                 case "inputing":
                     this.handleInputing(redata.data);
