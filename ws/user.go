@@ -111,7 +111,8 @@ func SendPingToKefuClient() {
 		kefu.Mux.Lock()
 		defer kefu.Mux.Unlock()
 		err := kefu.Conn.WriteMessage(websocket.TextMessage, str)
-		if err == nil {
+		if err != nil {
+			log.Println("定时发送ping给客服，失败",err.Error())
 			delete(KefuList, kefuId)
 		}
 	}

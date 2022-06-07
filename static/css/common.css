@@ -583,3 +583,18 @@ a{color: #07a9fe;text-decoration: none;}
 .menuLeftItem:active, .menuLeftItem.active {
     background: #2b5a96;
 }
+.chatNotice {
+    text-align: center;
+    margin: 12px 0px;
+}
+.chatNoticeContent {
+    display: inline-block;
+    word-break: break-all;
+    color: rgba(0,0,0,.45);
+    margin: 0 24px;
+    max-width: calc(100% - 48px);
+    background-color: #fff;
+    border-radius: 16px;
+    font-size: 12px;
+    padding: 4px 16px;
+}

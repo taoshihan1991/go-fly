@@ -61,7 +61,7 @@ CREATE TABLE `user_role` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8|
 INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUE
-(1, 1, 2)|
+(1, 1, 1)|
 
 DROP TABLE IF EXISTS `role`|
 CREATE TABLE `role` (
@@ -72,7 +72,7 @@ CREATE TABLE `role` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
 INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
-(1, '普通客服', 'GET', 'GET:/kefuinfo,GET:/kefulist,GET:/roles,POST:/notice_save,POST:/notice')|
+(1, '普通客服', '*', '*')|
 
 DROP TABLE IF EXISTS `welcome`|
 CREATE TABLE `welcome` (
@@ -89,7 +89,7 @@ CREATE TABLE `welcome` (
 INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
 (NULL, 'kefu2', '我暂时离线，留言已转发到我的邮箱，稍后回复~', 1, '2020-08-24 02:57:49','offline')|
 INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
-(NULL, 'kefu2', '本客服代码开源,欢迎star,开源地址:https://github.com/taoshihan1991/go-fly', 0, '2020-08-24 02:57:49','welcome')|
+(NULL, 'kefu2', '请问有什么可以帮您？', 0, '2020-08-24 02:57:49','welcome')|
 
 DROP TABLE IF EXISTS `ipblack`|
 CREATE TABLE `ipblack` (

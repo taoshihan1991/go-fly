@@ -57,8 +57,7 @@ new Vue({
                     return;
                 }
                 this.visitor.to_id=msg.id;
-                this.chatTitle=msg.name+","+GOFLY_LANG[LANG]['chating'];
-                $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
+                this.showTitle(msg.name+","+GOFLY_LANG[LANG]['chating']);
                 this.scrollBottom();
                 this.showKfonline=true;
             }
@@ -624,7 +623,7 @@ new Vue({
             });
         },
         showTitle:function(title){
-            $(".chatBox").append("<div class=\"chatTime\"><span>"+title+"</span></div>");
+            $(".chatBox").append("<div class='chatNotice'><div class=\"chatNoticeContent\"><span>"+title+"</span></div></div>");
             this.scrollBottom();
         },
     },
