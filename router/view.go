@@ -13,7 +13,7 @@ func InitViewRouter(engine *gin.Engine) {
 	engine.GET("/detail_:page",tmpl.PageDetail)
 	engine.GET("/login", tmpl.PageLogin)
 	engine.GET("/bind", tmpl.PageBind)
-	engine.GET("/chatIndex",middleware.DomainLimitMiddleware,tmpl.PageChat)
+	engine.GET("/chatIndex",tmpl.PageChat)
 	engine.GET("/main", middleware.JwtPageMiddleware, tmpl.PageMain)
 	engine.GET("/chat_main", middleware.JwtPageMiddleware,middleware.DomainLimitMiddleware, tmpl.PageChatMain)
 	engine.GET("/setting",middleware.DomainLimitMiddleware, tmpl.PageSetting)
