@@ -10,7 +10,7 @@
             <span slot="title">首页</span>
         </div>
 
-        <div class="menuLeftItem" v-on:click="haveNewMessage='';openIframeUrl('/chat_main')">
+        <div class="menuLeftItem active" v-on:click="haveNewMessage='';openIframeUrl('/chat_main')">
             <el-badge :value="haveNewMessage" class="item">
                 <i class="el-icon-chat-dot-round"></i>
             </el-badge>

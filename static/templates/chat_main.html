@@ -43,7 +43,7 @@
                                     <div :title="item.last_message" style="cursor:pointer" class="onlineUsers hasLastMsg" v-bind:class="{'cur': item.uid==currentGuest }" v-on:click="talkTo(item.uid,item.username)">
                                         <el-col :span="4">
                                             <el-badge value="new" :hidden="item.hidden_new_message" class="item">
-                                                <el-avatar shape="square" :size="40" :src="item.avator"></el-avatar>
+                                                <el-avatar  :size="40" :src="item.avator"></el-avatar>
                                             </el-badge>
                                         </el-col>
                                         <el-col :span="16">
@@ -57,7 +57,7 @@
                                 <el-row  v-for="item in visitors" :key="item.uid" class="">
                                     <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': item.visitor_id==currentGuest }" v-on:click="talkTo(item.visitor_id,item.name)">
                                         <el-col :span="4">
-                                            <el-avatar shape="square" v-bind:class="{'imgGray': item.status==0 }" :size="40" :src="item.avator"></el-avatar>
+                                            <el-avatar  v-bind:class="{'imgGray': item.status==0 }" :size="40" :src="item.avator"></el-avatar>
                                         </el-col>
                                         <el-col style="height:40px;overflow: hidden" :span="16" v-bind:class="{'imgGray': item.status==0 }">
                                             <{item.name}>
@@ -94,11 +94,14 @@
                         <div class="chatBox">
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                                 <div class="chatTime"><{v.time}></div>
-                                <el-col :span="3"><el-avatar shape="square" :size="48" :src="v.avator"></el-avatar></el-col>
-                                <el-col :span="21">
-                                    <div class="chatUser"><{v.name}></div>
-                                    <div class="chatContent" v-html="v.content"></div>
-                                </el-col>
+                                <div class="chatRow">
+                                    <el-avatar v-if="v.is_kefu==false" class="chatRowAvator" shape="square" :size="48" :src="v.avator"></el-avatar>
+                                    <div class="chatMsgContent">
+                                        <div class="chatUser"><{v.name}></div>
+                                        <div class="chatContent" v-html="v.content"></div>
+                                    </div>
+                                    <el-avatar v-if="v.is_kefu==true" class="chatRowAvator" shape="square" :size="48" :src="v.avator"></el-avatar>
+                                </div>
                             </el-row>
                         </div>
                         <div class="kefuFuncBox">
