@@ -13,3 +13,7 @@ func PageLogin(c *gin.Context) {
 	}
 	c.HTML(http.StatusOK, "login.html", nil)
 }
+//绑定界面
+func PageBind(c *gin.Context) {
+	c.HTML(http.StatusOK, "bind.html", gin.H{})
+}

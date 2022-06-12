@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.15.1/theme-chalk/index.min.css">
+    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/element-ui/2.15.1/index.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        body {
+            background-color: #2d3a4b;
+            margin: 0;
+            padding: 0;
+        }
+        .clear{clear: both;}
+        .signin {
+            width: 430px;
+            padding: 25px;
+            background: #fff;
+            margin:0 auto;
+            margin-top: 160px;
+            box-shadow: 0 25px 30px -13px rgba(40,40,40,.4);
+            border-radius: 10px;
+        }
+        .signin h1,.signin h2,.signin .copyright{
+            font-weight: normal;
+            color: #4d627b;
+            text-align: center;
+        }
+        .signin .loginTitle{
+            font-size: 24px;
+            margin: 10px 0px;
+        }
+        .signin .loginDesc{
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .signin .loginDesc .regBtn{
+            float: left;
+        }
+        .signin .loginDesc a{
+            text-decoration: none;
+            cursor: pointer;
+            color: #409EFF;
+        }
+        .signin .copyright{
+            font-size: 12px;
+        }
+        @media (max-width: 768px) {
+            body{
+                background-color: #fff;
+            }
+            .signin{
+                width: 90%;
+                margin:100px auto;
+                background-color: #fff;
+                box-shadow:none;
+            }
+        }
+    </style>
+    <link rel="icon" href="/static/images/favicon.ico">
+</head>
+<body>
+<div id="app" class="signin">
+    <template>
+        <el-alert
+                title="请在官网注册账户并绑定手机，在此进行授权验证！"
+                type="warning">
+        </el-alert>
+        <div class="loginHtml">
+            <h1 class="loginTitle">官网账户验证</h1>
+            <el-form :model="kefuForm">
+                <el-form-item  prop="phone">
+                    <el-input v-model="kefuForm.phone" placeholder="手机号"></el-input>
+                </el-form-item>
+                <el-form-item  prop="password">
+                    <el-input show-password v-model="kefuForm.password" placeholder="密码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="success" style="width: 100%" :loading="loading" @click="kefuLogin('kefuForm')">登录</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+    </template>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        delimiters:["<{","}>"],
+        data: {
+            window:window,
+            loading:false,
+            kefuForm:{
+                phone:"",
+                password:""
+            }
+        },
+        methods: {
+            kefuLogin(){
+                var _this=this;
+                var data={
+                    phone:this.kefuForm.phone,
+                    password:this.kefuForm.password,
+                };
+                $.post("/2/bindOfficial", data, function (data) {
+                    if (data == "success") {
+                        _this.$message({
+                            message: "认证成功！",
+                            type: 'success'
+                        });
+                    } else {
+                        _this.$message({
+                            message: "认证失败！",
+                            type: 'error'
+                        });
+                    }
+                    _this.loading = false;
+                });
+            }
+        },
+        created: function () {
+
+        }
+    })
+
+</script>
+
+
+</html>

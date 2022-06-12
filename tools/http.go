@@ -3,6 +3,7 @@ package tools
 import (
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
 )
@@ -58,4 +59,17 @@ func IsMobile(userAgent string) bool {
 		return true
 	}
 	return false
+}
+//发送http post请求数据为form
+func PostForm(url string, data url.Values) (string, error) {
+	resp, err := http.PostForm(url, data)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	content, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	return string(content), nil
 }
