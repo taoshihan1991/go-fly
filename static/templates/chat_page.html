@@ -63,14 +63,9 @@
                     </ul>
                     <div class="clear"></div>
                 </div>
-                <div class="visitorEditor">
-                    <el-input show-word-limit maxlength="100" :rows="1" type="textarea" resize="none" class="visitorEditorArea"  @focus="scrollBottom;showIconBtns=false" @blur="scrollBottom;showIconBtns=false" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser">
+                 <el-input show-word-limit maxlength="100" :rows="2" type="textarea" resize="none" class="visitorEditorArea"  @focus="scrollBottom;showIconBtns=false" @blur="scrollBottom;showIconBtns=false" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser">
                     </el-input>
-                    <el-button type="primary" size="mini"  class="visitorEditorBtn"   :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser();showIconBtns=false"><{flyLang.sent}></el-button>
-                </div>
-                <div class="footContact clear">
-                    <a href="{{.CopyrightUrl}}" target="_blank">智能在线客服系统版权所有 © 2020-2022</a>
-                </div>
+                <el-button type="primary" size="mini"  class="visitorEditorBtn"   :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser();showIconBtns=false"><{flyLang.sent}></el-button>
             </div>
         </div>
         <div class="chatArticle">

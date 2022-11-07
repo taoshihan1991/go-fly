@@ -27,7 +27,7 @@
 
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
-        .chatBox{width: 100%;height:calc(100% - 175px);;overflow-y: auto;overflow-x: hidden;}
+        .chatBox{width: 100%;height:calc(100% - 130px);;overflow-y: auto;overflow-x: hidden;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
     </style>
 </head>
@@ -86,7 +86,7 @@
                                 :title="chatTitle+chatInputing"
                                 >
                         </el-alert>
-                        <div class="kefuFuncBtns" v-if="visitor.visitor_id">
+                        <div class="kefuFuncBtns" v-if="visitor.visitor_id" style="display: none">
                             <el-button v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" size="small" type="success" plain icon="el-icon-user">加载全部</el-button>
                             <el-button v-on:click="transKefu" size="small" type="success" plain icon="el-icon-position">转接</el-button>
                             <el-button v-on:click="closeVisitor(visitor.visitor_id)" size="small" type="success" plain icon="el-icon-close">结束</el-button>
@@ -106,16 +106,27 @@
                         </div>
                         <div class="kefuFuncBox">
                             <div class="iconBtnsBox">
+
                                 <div class="faceBox kefuFaceBox">
                                     <ul class="faceBoxList">
                                         <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
                                     </ul>
                                     <div class="clear"></div>
                                 </div>
-                                <div class="faceBtn"></div>
-                                <div class="imageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
-                                <div class="folderBtn kefuFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
-                                <el-button class="kefuSendBtn" :disabled="sendDisabled" size="small" type="primary" v-on:click="chatToUser">发送</el-button>
+                                <el-tooltip content="发送表情" placement="top">
+                                    <div class="iconBtn faceBtn el-icon-s-shop" style="font-size: 24px;"></div>
+                                </el-tooltip>
+
+                                <el-tooltip content="上传图片" placement="top">
+                                    <div class="iconBtn el-icon-picture" id="uploadImg" v-on:click="uploadImg('/uploadimg')" style="font-size: 24px;"></div>
+                                </el-tooltip>
+                                <el-tooltip content="上传附件" placement="top">
+                                    <div  class="iconBtn el-icon-upload" id="uploadFile" v-on:click="uploadFile('/2/uploadFile')" style="font-size: 26px;"></div>
+                                </el-tooltip>
+                                <el-tooltip content="消息记录" placement="top">
+                                    <div  class="iconBtn el-icon-chat-line-round" v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" style="font-size: 24px;"></div>
+                                </el-tooltip>
+                                <el-button class="kefuSendBtn" :disabled="sendDisabled" size="mini" type="primary" v-on:click="chatToUser">发送</el-button>
                             </div>
                             <div class="clear"></div>
                             <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"  placeholder="请输入内容"></el-input>
