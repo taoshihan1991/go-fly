@@ -27,7 +27,7 @@
 
         .chatBoxMe .el-col-3{float: right;text-align: right;}
         .chatBoxMe .chatUser{text-align: right}
-        .chatBox{width: 100%;height:calc(100% - 130px);;overflow-y: auto;overflow-x: hidden;}
+        .chatBox{width: 100%;height:calc(100% - 170px);;overflow-y: auto;overflow-x: hidden;}
         .chatTime{text-align: center;color: #bbb;margin: 5px 0;font-size: 12px;}
     </style>
 </head>
@@ -121,7 +121,7 @@
                                     <div class="iconBtn el-icon-picture" id="uploadImg" v-on:click="uploadImg('/uploadimg')" style="font-size: 24px;"></div>
                                 </el-tooltip>
                                 <el-tooltip content="上传附件" placement="top">
-                                    <div  class="iconBtn el-icon-upload" id="uploadFile" v-on:click="uploadFile('/2/uploadFile')" style="font-size: 26px;"></div>
+                                    <div  class="iconBtn el-icon-upload" id="uploadFile" v-on:click="uploadFile('/uploadfile')" style="font-size: 26px;"></div>
                                 </el-tooltip>
                                 <el-tooltip content="消息记录" placement="top">
                                     <div  class="iconBtn el-icon-chat-line-round" v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" style="font-size: 24px;"></div>
@@ -129,7 +129,7 @@
                                 <el-button class="kefuSendBtn" :disabled="sendDisabled" size="mini" type="primary" v-on:click="chatToUser">发送</el-button>
                             </div>
                             <div class="clear"></div>
-                            <el-input type="textarea" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"  placeholder="请输入内容"></el-input>
+                            <el-input type="textarea" :rows="4" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"  placeholder="请输入内容"></el-input>
                         </div>
 
                     </div>

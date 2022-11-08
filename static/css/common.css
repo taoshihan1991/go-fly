@@ -309,15 +309,8 @@ a{color: #07a9fe;text-decoration: none;}
 .chatBoxMe .chatContent:before{border-left-color: rgb(152,225,101);border-right:none;right: -5px;left: auto;}
 .chatBoxMe .el-col-3{float: right;text-align: right;}
 .chatBoxMe .chatUser{text-align: right}
-.chatArea{float: left;width: 85%;margin: 4px 0 0 4px;}
-.chatArea .el-textarea__inner{padding: 1px 5px}
 .btnArea{width: 10%;float: right;}
-@media screen and (max-width: 500px) {
-    body{background: #fff}
-    .chatCenter{border: none;box-shadow:none;margin-top: 0px;}
-    .chatArea {width: 70%;}
-    .btnArea{width: 20%;}
-}
+
 
 .chatTitle{height: 30px;line-height: 30px;color: #1989fa}
 .chatBoxSend{
@@ -378,6 +371,7 @@ a{color: #07a9fe;text-decoration: none;}
     display: flex;
     align-items: center;
     color: #7e7e7e;
+    height: 35px;
 }
 .iconBtnsBox .iconBtn{
     margin-right: 10px;
@@ -388,12 +382,13 @@ a{color: #07a9fe;text-decoration: none;}
 
 .kefuFuncBox{
     position: absolute;
+    height: 135px;
     bottom: 0px;
     width: 100%;
-    padding-bottom: 10px;
     background: #fff;
+    border-top: 1px solid #e5e5e5;
 }
-.kefuFuncBox .el-textarea{width: 99%;}
+
 .kefuFolderBtn{vertical-align: middle;}
 .visitorReply{
     font-size: 14px;
@@ -408,6 +403,7 @@ a{color: #07a9fe;text-decoration: none;}
 }
 .iconBtnsBox .kefuSendBtn{
     margin-left: auto;
+    margin-right: 2px;
 }
 .clear{clear:both;}
 
