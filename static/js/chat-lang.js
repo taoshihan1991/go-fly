@@ -6,7 +6,7 @@ var GOFLY_LANG={
         "chating":"正在与您沟通!",
         "historymes":"—— 以上是历史消息 ——",
         "moremessage":" 点击加载更多记录",
-        "copyright":"GO-FLY0.4.1客服陶士涵提供技术支持",
+        "copyright":"",
         "textarea":"请输入内容",
         "closemes":"系统自动关闭连接!点击会重连",
         "forceclosemes":"客服关闭连接!请重新打开页面",
