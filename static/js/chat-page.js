@@ -20,8 +20,6 @@ new Vue({
         flyLang:GOFLY_LANG[LANG],
         textareaFocused:false,
         replys:[],
-        noticeName:"",
-        noticeAvatar:"",
         showIconBtns:false,
         showFaceIcon:false,
         isIframe:false,
@@ -31,7 +29,6 @@ new Vue({
         //初始化websocket
         initConn:function() {
             let socket = new ReconnectingWebSocket(this.server+"?visitor_id="+this.visitor.visitor_id);//创建Socket实例
-            socket.maxReconnectAttempts = 30;
             this.socket = socket
             this.socket.onmessage = this.OnMessage;
             this.socket.onopen = this.OnOpen;
@@ -41,9 +38,8 @@ new Vue({
         },
         OnOpen:function() {
             console.log("ws:onopen");
-            this.chatTitle=GOFLY_LANG[LANG]['connectok'];
-            this.showTitle(this.chatTitle);
-
+            //获取欢迎
+            this.getNotice();
             this.socketClosed=false;
             this.focusSendConn=false;
         },
@@ -227,8 +223,6 @@ new Vue({
                     _this.setCache("visitor",res.result);
                     //_this.getMesssagesByVisitorId();
                     _this.initConn();
-                    //获取欢迎
-                    _this.getNotice();
                 });
             // }else{
             //     this.visitor=obj;
@@ -343,13 +337,13 @@ new Vue({
                 var code=res.code;
                 if(code!=200) return;
                 _this.kefuInfo=res.result;
-                var welcome=res.result.welcome;
-                if(!welcome) return;
+                _this.showTitle(_this.kefuInfo.nickname+" 为您服务");
+                if(!_this.kefuInfo.welcome) return;
                 var msg={
-                    content:replaceContent(welcome),
-                    avator:res.result.avatar,
-                    name :res.result.nickname,
-                    time:new Date(),
+                    content:replaceContent(_this.kefuInfo.welcome),
+                    avator:_this.kefuInfo.avatar,
+                    name :_this.kefuInfo.nickname,
+                    time:_this.getNowDate(),
                 }
                 _this.msgList.push(msg);
                 _this.scrollBottom();

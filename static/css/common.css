@@ -460,7 +460,7 @@ a{color: #07a9fe;text-decoration: none;}
         align-items: center;
     }
     .chatEntBox {
-        width: calc(100% - 270px);
+        width: calc(100% - 265px);
         float: left;
         border-right: 1px solid #e6e6e6;
     }
