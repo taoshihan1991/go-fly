@@ -1,5 +1,10 @@
 {{template "header" }}
-<div id="app" style="width:100%">
+<style>
+    .el-table .cell{
+        font-size: 12px;
+    }
+</style>
+<div id="app" style="width:100%;">
     <template>
         <el-container v-loading.fullscreen.lock="fullscreenLoading">
 
@@ -10,18 +15,21 @@
                         border
                         style="width: 100%">
                     <el-table-column
+                            width="150"
                             prop="conf_name"
                             label="配置参数">
                     </el-table-column>
                     <el-table-column
                             prop="conf_key"
-                            label="配置key">
+                            label="配置key"
+                            width="150"
+                    >
                     </el-table-column>
                     <el-table-column
                             prop="id"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-input @change="setConfigItem(scope.row.conf_key,scope.row.conf_value)" v-model="scope.row.conf_value"></el-input>
+                            <el-input type="textarea" @change="setConfigItem(scope.row.conf_key,scope.row.conf_value)" v-model="scope.row.conf_value"></el-input>
                         </template>
                     </el-table-column>
                 </el-table>
