@@ -25,6 +25,7 @@ new Vue({
         showIconBtns:false,
         showFaceIcon:false,
         isIframe:false,
+        kefuInfo:{},
     },
     methods: {
         //初始化websocket
@@ -226,6 +227,8 @@ new Vue({
                     _this.setCache("visitor",res.result);
                     //_this.getMesssagesByVisitorId();
                     _this.initConn();
+                    //获取欢迎
+                    _this.getNotice();
                 });
             // }else{
             //     this.visitor=obj;
@@ -337,35 +340,20 @@ new Vue({
         getNotice : function (){
             let _this=this;
             $.get("/notice?kefu_id="+KEFU_ID,function(res) {
-                //debugger;
-                _this.noticeName=res.result.username;
-                _this.noticeAvatar=res.result.avatar;
-                if (res.result.welcome != null) {
-                    let msg = res.result.welcome;
-                    var len=msg.length;
-                    var i=0;
-                    if(len>0){
-                        _this.timer=setInterval(function(){
-                            if(i>=len||typeof msg[i]=="undefined"||msg[i]==null){
-                                clearInterval(_this.timer);
-                                return;
-                            }
-                            let content = msg[i];
-                            if(typeof content.content =="undefined"){
-                                return;
-                            }
-                            content.content = replaceContent(content.content);
-                            _this.msgList.push(content);
-                            _this.scrollBottom();
-                            if(i==0){
-                                _this.alertSound();
-                            }
-      
-                            i++;
-                        },4000);
-                    }
-
+                var code=res.code;
+                if(code!=200) return;
+                _this.kefuInfo=res.result;
+                var welcome=res.result.welcome;
+                if(!welcome) return;
+                var msg={
+                    content:replaceContent(welcome),
+                    avator:res.result.avatar,
+                    name :res.result.nickname,
+                    time:new Date(),
                 }
+                _this.msgList.push(msg);
+                _this.scrollBottom();
+                _this.alertSound();
             });
         },
         initCss:function(){
@@ -638,8 +626,7 @@ new Vue({
         //this.msgList=this.getHistory();
         //滚动底部
         //this.scrollBottom();
-        //获取欢迎
-        this.getNotice();
+
         this.getAutoReply();
     }
 })

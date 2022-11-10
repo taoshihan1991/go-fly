@@ -559,3 +559,9 @@ a{color: #07a9fe;text-decoration: none;}
 .chatBoxMe .chatRowAvator {
     margin-left: 10px;
 }
+.allNotice{
+    font-size: 12px;
+    margin: 10px 0px;
+    line-height: 23px;
+    color: #666;
+}

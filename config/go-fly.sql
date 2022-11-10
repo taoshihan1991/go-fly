@@ -113,6 +113,7 @@ CREATE TABLE `config` (
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '发送通知邮件(SMTP地址)', 'NoticeEmailSmtp', '')|
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '发送通知邮件(邮箱)', 'NoticeEmailAddress', '')|
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '发送通知邮件(密码)', 'NoticeEmailPassword', '')|
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '发送通知邮件(密码)', 'NoticeEmailPassword', '')|
 DROP TABLE IF EXISTS `about`|
 CREATE TABLE `about` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,

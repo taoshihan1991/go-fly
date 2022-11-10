@@ -110,8 +110,6 @@ func SendMessageV2(c *gin.Context) {
 		str, _ := json.Marshal(msg)
 		ws.OneKefuMessage(kefuInfo.Name, str)
 		//ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
-		go ws.SendServerJiang(vistorInfo.Name+"说", content, c.Request.Host)
-		go SendAppGetuiPush(kefuInfo.Name, vistorInfo.Name, content)
 		kefu, ok := ws.KefuList[kefuInfo.Name]
 		if !ok || kefu == nil{
 			go SendNoticeEmail(content+"|"+vistorInfo.Name, content)

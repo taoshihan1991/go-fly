@@ -23,10 +23,10 @@
         <!--客服代码-->
         <div class="chatEntTitle" v-show="!isIframe">
             <el-badge type="success" is-dot class="item">
-                <el-avatar class="chatEntTitleLogo" :size="35" src="/static/images/1.jpg"></el-avatar>
+                <el-avatar class="chatEntTitleLogo" :size="35" :src="kefuInfo.avatar"></el-avatar>
             </el-badge>
             <div>
-                <div>智能在线客服系统</div>
+                <div><{kefuInfo.nickname}></div>
             </div>
         </div>
         <div class="chatEntBox">
@@ -71,6 +71,7 @@
         <div class="chatArticle">
             <h3 class="hotQuestionTitle"><img src="/static/images/fire.svg" class="fire">公告通知
             </h3>
+            <div class="allNotice" v-html><{kefuInfo.allNotice}></div>
         </div>
 
 

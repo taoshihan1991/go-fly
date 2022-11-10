@@ -24,7 +24,7 @@ func install() {
 		log.Println("请先删除./install.lock")
 		os.Exit(1)
 	}
-	sqlFile := common.Dir + "go-fly.sql"
+	sqlFile := "import.sql"
 	isExit, _ := tools.IsFileExist(common.MysqlConf)
 	dataExit, _ := tools.IsFileExist(sqlFile)
 	if !isExit || !dataExit {
@@ -32,8 +32,9 @@ func install() {
 		os.Exit(1)
 	}
 	sqls, _ := ioutil.ReadFile(sqlFile)
-	sqlArr := strings.Split(string(sqls), "|")
+	sqlArr := strings.Split(string(sqls), ";")
 	for _, sql := range sqlArr {
+		sql = strings.TrimSpace(sql)
 		if sql == "" {
 			continue
 		}
@@ -41,7 +42,7 @@ func install() {
 		if err == nil {
 			log.Println(sql, "\t success!")
 		} else {
-			log.Println(sql, err, "\t failed!")
+			log.Println(sql, err, "\t failed!", "数据库导入失败")
 			os.Exit(1)
 		}
 	}
