@@ -29,9 +29,15 @@
         <el-container>
 
             <el-main class="mainMain">
-                <el-form :model="modifyPass" label-width="100px">
+                <el-form :model="modifyPass" label-width="80px">
+                    <el-form-item label="账户">
+                        <el-input v-model="kefuInfo.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="昵称">
+                        <el-input v-model="kefuInfo.nickname"></el-input>
+                    </el-form-item>
                     <el-form-item label="原头像">
-                        <el-avatar  :size="120" :src="avatarUrl"></el-avatar>
+                        <el-avatar  :size="120" :src="kefuInfo.avator"></el-avatar>
                     </el-form-item>
                     <el-form-item label="新头像">
                         <el-upload

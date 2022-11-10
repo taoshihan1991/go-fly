@@ -9,6 +9,7 @@
         data: {
             iframeUrl:"/setting_statistics",
             fullscreenLoading:false,
+            kefuInfo:{},
             openIndex:[1],
             account: {
                 username: "",
@@ -239,7 +240,7 @@
                 }
                 if(ACTION=="setting_avator"){
                     this.sendAjax("/kefuinfo","get",{},function(result){
-                        _this.avatarUrl=result.avator;
+                        _this.kefuInfo=result;
                     });
                 }
             },
@@ -439,9 +440,14 @@
             //修改密码
             setModifyAvatar(){
                 let _this=this;
-                this.sendAjax("/modifyavator","POST",{avator:_this.avatarUrl},function(result){
+                this.sendAjax("/kefuinfo","POST",{
+                    id:_this.kefuInfo.uid,
+                    name:_this.kefuInfo.username,
+                    nickname:_this.kefuInfo.nickname,
+                    avator:_this.kefuInfo.avator,
+                },function(result){
                     _this.$message({
-                        message: "修改成功",
+                        message: "操作成功：注意，如果修改账户名,后台需重新登录",
                         type: 'success'
                     });
                 });
@@ -455,7 +461,7 @@
                     });
                     return;
                 }
-                this.avatarUrl = '/'+res.result.path;
+                this.kefuInfo.avator = '/'+res.result.path;
             },
             beforeAvatarUpload(file) {
                 var isLt2M = file.size / 1024 / 1024 < 1;

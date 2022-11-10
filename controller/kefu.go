@@ -7,7 +7,6 @@ import (
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
-	"strconv"
 )
 
 func PostKefuAvator(c *gin.Context) {
@@ -83,6 +82,9 @@ func GetKefuInfo(c *gin.Context) {
 	info["name"] = user.Nickname
 	info["id"] = user.Name
 	info["avator"] = user.Avator
+	info["username"] = user.Name
+	info["nickname"] = user.Nickname
+	info["uid"] = user.ID
 	c.JSON(200, gin.H{
 		"code":   200,
 		"msg":    "ok",
@@ -235,14 +237,6 @@ func PostKefuInfo(c *gin.Context) {
 	password := c.PostForm("password")
 	avator := c.PostForm("avator")
 	nickname := c.PostForm("nickname")
-	roleId := c.PostForm("role_id")
-	if roleId == "" {
-		c.JSON(200, gin.H{
-			"code": 400,
-			"msg":  "请选择角色!",
-		})
-		return
-	}
 	//插入新用户
 	if id == "" {
 		uid := models.CreateUser(name, tools.Md5(password), avator, nickname)
@@ -254,18 +248,12 @@ func PostKefuInfo(c *gin.Context) {
 			})
 			return
 		}
-		roleIdInt, _ := strconv.Atoi(roleId)
-		models.CreateUserRole(uid, uint(roleIdInt))
 	} else {
 		//更新用户
 		if password != "" {
 			password = tools.Md5(password)
 		}
 		models.UpdateUser(id, name, password, avator, nickname)
-		roleIdInt, _ := strconv.Atoi(roleId)
-		uid, _ := strconv.Atoi(id)
-		models.DeleteRoleByUserId(uid)
-		models.CreateUserRole(uint(uid), uint(roleIdInt))
 	}
 
 	c.JSON(200, gin.H{
