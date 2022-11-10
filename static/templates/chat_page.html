@@ -51,13 +51,23 @@
             </div>
             <div class="chatBoxSend">
 
-                <div class="iconBtns visitorIconBox" v-show="showIconBtns">
-                    <div style="display: none" :title="flyLang.emotions" class="icono-smile visitorIconBtns visitorFaceBtn"></div>
-                    <div :title="flyLang.photo" class="icono-image visitorIconBtns visitorImageBtn" id="uploadImg" v-on:click="uploadImg('/uploadimg')"></div>
-                    <div :title="flyLang.file" class="icono-folder visitorIconBtns visitorFolderBtn" id="uploadFile" v-on:click="uploadFile('/uploadfile')"></div>
+                <div class="visitorIconBox">
+                    <el-tooltip content="发送表情" placement="top">
+                        <div class="iconBtn faceBtn el-icon-s-shop" style="font-size: 24px;" @click.stop="showFaceIcon==true?showFaceIcon=false:showFaceIcon=true"></div>
+                    </el-tooltip>
+
+                    <el-tooltip content="上传图片" placement="top">
+                        <div class="iconBtn el-icon-picture" id="uploadImg" v-on:click="uploadImg('/uploadimg')" style="font-size: 24px;"></div>
+                    </el-tooltip>
+                    <el-tooltip content="上传附件" placement="top">
+                        <div  class="iconBtn el-icon-upload" id="uploadFile" v-on:click="uploadFile('/uploadfile')" style="font-size: 26px;"></div>
+                    </el-tooltip>
+
+                    <div  style="display: none" :title="flyLang.emotions" class="icono-smile visitorIconBtns visitorFaceBtn"></div>
+
                     <div class="clear"></div>
                 </div>
-                <div class="faceBox visitorFaceBox" v-if="showFaceIcon">
+                <div class="faceBox visitorFaceBox" v-show="showFaceIcon">
                     <ul class="faceBoxList">
                         <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
                     </ul>

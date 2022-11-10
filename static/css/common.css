@@ -31,7 +31,7 @@
 
 .visitorFaceBox{
     position: absolute;
-    bottom: 105px;
+    bottom: 85px;
 }
 .visitorIconBtns{
     margin-right: 8px;
@@ -46,88 +46,11 @@
     bottom: 0px;
     z-index: 999;
 }
-.imageBtn {
-    width: 32px;
-    height: 23px;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-    font-style: normal;
-    color: #9da0a0;
-    text-align: left;
-    text-indent: -9999px;
-    direction: ltr;
-    border: 1px solid;
-}
-.imageBtn:before {
-    content: '';
-    position: absolute;
-    width: 17px;
-    height: 16px;
-    left: -2px;
-    top: 10px;
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-    box-shadow: inset 0 0 0 32px, 10px -6px 0 0;
-}
-.imageBtn:after {
-    content: '';
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    box-shadow: inset 0 0 0 32px;
-    top: 5px;
-    right: 5px
-}
-.visitorFolderBtn{
-    float: left;
-    margin-left: 20px;
-}
-.folderBtn {
-    display: inline-block;
-    background-color: transparent;
-    overflow: hidden;
-    font-size: 1px;
-}
-.folderBtn:before {
-    content: '';
-    float: left;
-    background-color: #9da0a0;
-    width: 15px;
-    height: 3px;
-    margin-left: 2px;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    box-shadow: 2px 2px 0 0 #9da0a0;
-}
-.folderBtn:after {
-    content: '';
-    float: left;
-    clear: left;
-    background-color: #d4d6d6;
-    width: 33px;
-    height: 22px;
-    border-radius: 1px;
-}
-.visitorImageBtn{
-    float: left;
-    margin-left: 20px;
-    margin-top: 2px;
-}
 .faceBox{
     width: 100%;
     background: #fff;
     z-index: 99999999;
     padding: 2px;
-    display: none;
 }
 .faceBoxList{
     list-style: none;
@@ -262,7 +185,7 @@
     /*margin-bottom: 80px;*/
 }
 .chatVisitorPage{
-    height: calc(100% - 71px);
+    height: calc(100% - 86px);
     overflow-y: auto;
 }
 .chatVisitorPage .chatBox{
@@ -318,7 +241,7 @@ a{color: #07a9fe;text-decoration: none;}
     padding-top: 5px;
     background: #fff;
     width: 100%;
-    height: 65px;
+    height: 80px;
     z-index: 99;
     border-top: 1px solid #e4e4e4;
 }
@@ -439,6 +362,15 @@ a{color: #07a9fe;text-decoration: none;}
 .chatArticle{
     display: none;
 }
+.visitorIconBox{
+    display: flex;
+    align-items: center;
+    color: rgb(126, 126, 126);
+}
+.visitorIconBox .iconBtn{
+    margin-right: 10px;
+    cursor: pointer;
+}
 @media screen and (min-width: 900px) {
     .chatCenter {
         max-height: 800px;
@@ -446,7 +378,7 @@ a{color: #07a9fe;text-decoration: none;}
         border-radius: 4px;
     }
     .chatVisitorPage {
-        height: calc(100% - 140px);
+        height: calc(100% - 156px);
     }
     .chatEntTitle{display: flex;}
     .chatEntTitleLogo {

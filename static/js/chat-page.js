@@ -362,15 +362,7 @@ new Vue({
                 $.each(faceTitles, function (index, item) {
                     _this.face.push({"name":item,"path":faces[item]});
                 });
-                $(".visitorFaceBtn").click(function(e){
-                    var status=$('.faceBox').css("display");
-                    if(status=="block"){
-                        $('.faceBox').hide();
-                    }else{
-                        $('.faceBox').show();
-                    }
-                    return false;
-                });
+
 
                 var windheight = $(window).height();
                 $(window).resize(function(){
