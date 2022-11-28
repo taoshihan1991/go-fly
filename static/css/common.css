@@ -46,6 +46,7 @@
     bottom: 0px;
     z-index: 999;
 }
+
 .faceBox{
     width: 100%;
     background: #fff;
@@ -311,7 +312,10 @@ a{color: #07a9fe;text-decoration: none;}
     background: #fff;
     border-top: 1px solid #e5e5e5;
 }
-
+.kefuFuncBox .faceBox{
+    position: absolute;
+    bottom:100px;
+}
 .kefuFolderBtn{vertical-align: middle;}
 .visitorReply{
     font-size: 14px;

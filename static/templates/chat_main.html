@@ -8,7 +8,7 @@
     <script src="https://cdn.staticfile.org/vue/2.6.9/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/element-ui/2.15.1/index.js"></script>
     <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="/static/css/common.css?v=0.3.8">
+    <link rel="stylesheet" href="/static/css/common.css?v=dgftr65ujhfg">
     <script src="/assets/js/functions.js"></script>
     <script src="/assets/js/reconnecting-websocket.min.js"></script>
     <style>
@@ -107,14 +107,14 @@
                         <div class="kefuFuncBox">
                             <div class="iconBtnsBox">
 
-                                <div class="faceBox kefuFaceBox">
+                                <div class="faceBox kefuFaceBox" v-show="showFaceIcon">
                                     <ul class="faceBoxList">
                                         <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
                                     </ul>
                                     <div class="clear"></div>
                                 </div>
                                 <el-tooltip content="发送表情" placement="top">
-                                    <div class="iconBtn faceBtn el-icon-s-shop" style="font-size: 24px;"></div>
+                                    <div class="iconBtn faceBtn el-icon-s-shop" style="font-size: 24px;" @click.stop="showFaceIcon==true?showFaceIcon=false:showFaceIcon=true"></div>
                                 </el-tooltip>
 
                                 <el-tooltip content="上传图片" placement="top">

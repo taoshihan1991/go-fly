@@ -55,6 +55,7 @@ var app=new Vue({
         replyTitle:"",
         ipBlacks:[],
         sendDisabled:false,
+        showFaceIcon:false,
     },
     methods: {
         //跳转
@@ -542,15 +543,7 @@ var app=new Vue({
                     $.each(faceTitles, function (index, item) {
                         _this.face.push({"name":item,"path":faces[item]});
                     });
-                    $(".faceBtn").click(function(){
-                        var status=$('.faceBox').css("display");
-                        if(status=="block"){
-                            $('.faceBox').hide();
-                        }else{
-                            $('.faceBox').show();
-                        }
-                        return false;
-                    });
+
                 });
             });
             var _hmt = _hmt || [];
@@ -563,7 +556,7 @@ var app=new Vue({
         },
         //表情点击事件
         faceIconClick(index){
-            $('.faceBox').hide();
+            this.showFaceIcon=false;
             this.messageContent+="face"+this.face[index].name;
         },
         //上传图片
