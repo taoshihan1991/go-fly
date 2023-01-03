@@ -78,7 +78,7 @@ The server installation is complete and the service is running, and the client c
 
 The default port is 8081. If you use the -p parameter to specify the port, you can access it through the browser http://127.0.0.1:port.
 
-The default user name and password are admin and admin. You can use the -u and -p parameters to specify the user name and password when installing the service.
+The default user name and password are kefu2 and 123
    
 
 
