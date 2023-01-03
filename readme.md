@@ -1,10 +1,8 @@
 # <b>GOFLY</b> [唯一客服]基于Golang语言和MySQL实现的WEB在线客服系统。
 
-<p align="center">
 <a href="readme.md">中文</a> |
 <a href="readme_en.md">English</a> |
 <a href="https://gitee.com/taoshihan/go-fly">Gitee</a>
-</p>
 
 
 ### 请注意当前项目仅供个人学习测试，禁止一切线上商用行为，禁止一切违法使用！！！

@@ -1,13 +1,7 @@
-# <b>GOFLY</b> [V1KF] GOFLY LIVE CHAT FOR Customer Service
-
-GOFLY is a web-based customer service system implemented in Golang and MySQL.
-
-<p align="center">
+# <b>GOFLY</b> [V1KF] GOFLY LIVE CHAT FOR CUSTOMER SUPPORT SERVICE
 <a href="readme.md">中文</a> |
 <a href="readme_en.md">English</a> |
 <a href="https://gofly.v1kf.com">The official website</a>
-</p>
-
 
 ### Please note that this project is for personal learning and testing only, and is prohibited for all online commercial use and illegal use!
 
@@ -134,6 +128,7 @@ server{
 }
 ```
 
+#### GOFLY is a live chat system for customer support service that is implemented using the Golang programming language and MySQL database. It is designed to allow businesses to communicate with their customers in real-time through a web-based platform. GOFLY provides a range of features and tools to help businesses manage customer inquiries and interactions, including support for multiple channels (e.g. chat, email, phone), customizable templates for responses, and the ability to track and analyze customer conversations.
 
 ### Copyright 
 
