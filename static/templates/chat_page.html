@@ -73,7 +73,7 @@
                     </ul>
                     <div class="clear"></div>
                 </div>
-                 <el-input show-word-limit maxlength="100" :rows="2" type="textarea" resize="none" class="visitorEditorArea"  @focus="scrollBottom;showIconBtns=false" @blur="scrollBottom;showIconBtns=false" v-model="messageContent"  @keyup.native="inputNextText" v-on:keyup.enter.native="chatToUser">
+                 <el-input show-word-limit maxlength="100" :rows="2" type="textarea" resize="none" class="visitorEditorArea"  @focus="scrollBottom;showIconBtns=false" @blur="scrollBottom;showIconBtns=false" v-model="messageContent" v-on:keyup.enter.native="chatToUser">
                     </el-input>
                 <el-button type="primary" size="mini"  class="visitorEditorBtn"   :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser();showIconBtns=false"><{flyLang.sent}></el-button>
             </div>
@@ -87,10 +87,8 @@
 
         <!--//客服代码-->
         <audio id="chatMessageAudio">
-            <source id="chatMessageAudioSource"  />
         </audio>
         <audio id="chatMessageSendAudio">
-            <source id="chatMessageSendAudioSource"  />
         </audio>
     </template>
 </div>

@@ -128,7 +128,7 @@ server{
 }
 ```
 
-#### GOFLY is a live chat system for customer support service that is implemented using the Golang programming language and MySQL database. It is designed to allow businesses to communicate with their customers in real-time through a web-based platform. GOFLY provides a range of features and tools to help businesses manage customer inquiries and interactions, including support for multiple channels (e.g. chat, email, phone), customizable templates for responses, and the ability to track and analyze customer conversations.
+#### If you encounter a pop-up window requiring authentication after logging into the backend, please go to the official website to register an account and bind your phone. Entering your bound phone number + your own password will allow you to pass the authentication. If you do not have a Chinese phone number, please contact me on the official website to obtain a test phone number and password.
 
 ### Copyright 
 

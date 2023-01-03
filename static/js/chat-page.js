@@ -175,21 +175,6 @@ new Vue({
             });
 
         },
-        //正在输入
-        inputNextText:function(){
-            if(this.socketClosed||!this.socket){
-                return;
-            }
-            //console.log(this.messageContent);
-            var message = {}
-            message.type = "inputing";
-            message.data = {
-                from : this.visitor.visitor_id,
-                to : this.visitor.to_id,
-                content:this.messageContent
-            };
-            this.socket.send(JSON.stringify(message));
-        },
         OnClose:function() {
             console.log("ws:onclose");
             this.focusSendConn=true;
@@ -547,24 +532,10 @@ new Vue({
         },
         //提示音
         alertSound:function(){
-            var b = document.getElementById("chatMessageAudio");
-            if (b.canPlayType('audio/ogg; codecs="vorbis"')) {
-                b.type= 'audio/mpeg';
-                b.src= '/static/images/alert2.ogg';
-                var p = b.play();
-                p && p.then(function () {
-                }).catch(function (e) {
-                });
-            }
+            alertSound("chatMessageAudio",'/static/images/alert2.ogg');
         },
         sendSound:function(){
-            var b = document.getElementById("chatMessageSendAudio");
-            if (b.canPlayType('audio/ogg; codecs="vorbis"')) {
-                b.type= 'audio/mpeg';
-                b.src= '/static/images/sent.ogg';
-                var p = b.play();
-                p && p.then(function(){}).catch(function(e){});
-            }
+            alertSound("chatMessageSendAudio",'/static/images/sent.ogg');
         },
         sendAjax:function(url,method,params,callback){
             let _this=this;

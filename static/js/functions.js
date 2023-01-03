@@ -154,4 +154,13 @@ function utf8ToB64(str) {
 function b64ToUtf8(str) {
     return decodeURIComponent(escape(window.atob(str)));
 }
+//播放声音
+function alertSound(id,src){
+    var b = document.getElementById(id);
+    if(src!=""){
+        b.src=src;
+    }
+    var p = b.play();
+    p && p.then(function(){}).catch(function(e){});
+}
 ;

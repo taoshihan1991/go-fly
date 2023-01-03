@@ -198,7 +198,7 @@
     white-space: nowrap;
     color: #999;
     text-align: left;
-    margin-top: -15px;
+    margin: -5px 0px 3px 0px;
 }
 .chatMainPage{
     margin-top: 1px;
@@ -219,6 +219,9 @@
 .chatContent2 {
     border-radius: 0px 8px 8px 8px;
     padding: 10px 15px;
+}
+.chatBoxMe{
+    margin-top: 10px;
 }
 .chatBoxMe .chatContent2 {
     border-radius: 8px 0px 8px 8px;
