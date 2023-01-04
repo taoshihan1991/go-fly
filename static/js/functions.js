@@ -18,28 +18,52 @@ function getWsBaseUrl() {
     }
     return url;
 }
+//除去html标签
+function replaceHtml(str){
+    return str.replace(/<[^>]*>/g, '');
+}
+//浏览器桌面通知
 function notify(title, options, callback) {
+
     // 先检查浏览器是否支持
     if (!window.Notification) {
+        console.log("浏览器不支持notify");
         return;
     }
-    var notification;
+    options.body=replaceHtml(options.body);
+    console.log("浏览器notify权限:", Notification.permission);
     // 检查用户曾经是否同意接受通知
     if (Notification.permission === 'granted') {
-        notification = new Notification(title, options); // 显示通知
-
-    } else {
-        var promise = Notification.requestPermission();
-    }
-
-    if (notification && callback) {
-        notification.onclick = function(event) {
-            callback(notification, event);
+        var notification = new Notification(title, options); // 显示通知
+        if (notification && callback) {
+            notification.onclick = function(event) {
+                callback(notification, event);
+            }
+            setTimeout(function () {
+                notification.close();
+            },3000);
         }
-        setTimeout(function () {
-            notification.close();
-        },3000);
+    } else {
+        Notification.requestPermission().then( (permission) =>function(){
+            console.log("请求浏览器notify权限:", permission);
+            if (permission === 'granted') {
+                notification = new Notification(title, options); // 显示通知
+                if (notification && callback) {
+                    notification.onclick = function (event) {
+                        callback(notification, event);
+                    }
+                    setTimeout(function () {
+                        notification.close();
+                    }, 3000);
+                }
+            } else if (permission === 'default') {
+                console.log('用户关闭授权 可以再次请求授权');
+            } else {
+                console.log('用户拒绝授权 不能显示通知');
+            }
+        });
     }
+
 }
 var titleTimer=0;
 var titleNum=0;
