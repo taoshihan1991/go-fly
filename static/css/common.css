@@ -504,3 +504,21 @@ a{color: #07a9fe;text-decoration: none;}
     line-height: 23px;
     color: #666;
 }
+/* 定义滚动条的宽度、高度和背景色 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+    background-color: #f5f5f5;
+}
+
+/* 定义滚动条滑块的样式 */
+::-webkit-scrollbar-thumb {
+    background-color: #c5c5c5;
+}
+
+
+
+/* 定义滚动条滑块在 hover 状态下的样式 */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+}
