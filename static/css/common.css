@@ -2,7 +2,7 @@
 .floatRight{float: right;}
 .clear{clear: both;}
 .visitorBody{
-    background-color: #eef0f6;
+    background-color: #4c4c4c;
 }
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
@@ -167,7 +167,7 @@
 }
 .chatCenter {
     background: #fff;
-    max-width: 960px;
+    max-width: 840px;
     margin: 0 auto;
     box-shadow: 2px 2px 6px rgba(0,0,0,.3);
     border-top: none;
@@ -225,8 +225,8 @@
 }
 .chatBoxMe .chatContent2 {
     border-radius: 8px 0px 8px 8px;
-    background-color: rgb(0, 145, 255);
-    color: rgb(255, 255, 255);
+    background-color: #cde0ff;
+    color: #000;
 }
 a{color: #07a9fe;text-decoration: none;}
 
@@ -343,7 +343,7 @@ a{color: #07a9fe;text-decoration: none;}
     width: 100%;
     z-index: 9;
     margin: 0 auto;
-    height: 70px;
+    height: 56px;
     overflow: hidden;
     font-size: 16px;
     color: #fff;
@@ -380,9 +380,9 @@ a{color: #07a9fe;text-decoration: none;}
 }
 @media screen and (min-width: 900px) {
     .chatCenter {
-        max-height: 800px;
+        max-height: 650px;
         box-shadow: 0 2px 8px rgba(0,0,0,.15);
-        border-radius: 4px;
+        border-radius: 8px;
     }
     .chatVisitorPage {
         height: calc(100% - 156px);
@@ -410,7 +410,7 @@ a{color: #07a9fe;text-decoration: none;}
         overflow-y: auto;
     }
     .hotQuestionTitle {
-        padding: 15px 10px 10px 10px;
+        padding: 10px 10px 10px 10px;
         border-bottom: 1px solid rgba(0,0,0,.09);
         font-size: 16px;
         display: flex;
