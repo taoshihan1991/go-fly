@@ -95,12 +95,12 @@
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                                 <div class="chatTime"><{v.time}></div>
                                 <div class="chatRow">
-                                    <el-avatar v-if="v.is_kefu==false" class="chatRowAvator" shape="square" :size="48" :src="v.avator"></el-avatar>
+                                    <el-avatar v-if="v.is_kefu==false" class="chatRowAvator" :size="48" :src="v.avator"></el-avatar>
                                     <div class="chatMsgContent">
                                         <div class="chatUser"><{v.name}></div>
                                         <div class="chatContent" v-html="v.content"></div>
                                     </div>
-                                    <el-avatar v-if="v.is_kefu==true" class="chatRowAvator" shape="square" :size="48" :src="v.avator"></el-avatar>
+                                    <el-avatar v-if="v.is_kefu==true" class="chatRowAvator" :size="48" :src="v.avator"></el-avatar>
                                 </div>
                             </el-row>
                         </div>
