@@ -331,9 +331,11 @@ a{color: #07a9fe;text-decoration: none;}
     color:#007aff;
     cursor: pointer;
 }
-.iconBtnsBox .kefuSendBtn{
-    margin-left: auto;
-    margin-right: 2px;
+.kefuSendBtn{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 2;
 }
 .clear{clear:both;}
 
@@ -504,7 +506,10 @@ a{color: #07a9fe;text-decoration: none;}
     line-height: 23px;
     color: #666;
 }
-/* 定义滚动条的宽度、高度和背景色 */
+.chatArea .el-textarea__inner{
+    border: none;
+}
+    /* 定义滚动条的宽度、高度和背景色 */
 ::-webkit-scrollbar {
     width: 8px;
     height: 10px;

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/static/css/common.css?v=dgftr65ujhfg">
     <script src="/assets/js/functions.js"></script>
     <script src="/assets/js/reconnecting-websocket.min.js"></script>
+    <link rel="stylesheet" href="/static/css/icon/iconfont.css?v=fgjlgfda"/>
     <style>
         html, body {overflow:hidden;height: 100%;padding: 0;margin: 0;background-color: #f5f5f5;}
         .el-row{width:100%}
@@ -114,7 +115,7 @@
                                     <div class="clear"></div>
                                 </div>
                                 <el-tooltip content="发送表情" placement="top">
-                                    <div class="iconBtn faceBtn el-icon-s-shop" style="font-size: 24px;" @click.stop="showFaceIcon==true?showFaceIcon=false:showFaceIcon=true"></div>
+                                    <div class="iconBtn iconfont icon-xiaolian" style="font-size: 24px;" @click.stop="showFaceIcon==true?showFaceIcon=false:showFaceIcon=true"></div>
                                 </el-tooltip>
 
                                 <el-tooltip content="上传图片" placement="top">
@@ -126,10 +127,11 @@
                                 <el-tooltip content="消息记录" placement="top">
                                     <div  class="iconBtn el-icon-chat-line-round" v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" style="font-size: 24px;"></div>
                                 </el-tooltip>
-                                <el-button class="kefuSendBtn" :disabled="sendDisabled" size="mini" type="primary" v-on:click="chatToUser">发送</el-button>
+
                             </div>
                             <div class="clear"></div>
-                            <el-input type="textarea" :rows="4" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"  placeholder="请输入内容"></el-input>
+                            <el-button class="kefuSendBtn" :disabled="sendDisabled" size="mini" type="primary" v-on:click="chatToUser">发送</el-button>
+                            <el-input type="textarea" :autosize="{ minRows: 8, maxRows: 12}" class="chatArea" v-model="messageContent"  v-on:keyup.enter.native="chatToUser"  placeholder="请输入内容"></el-input>
                         </div>
 
                     </div>
