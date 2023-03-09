@@ -61,9 +61,9 @@ func PostVisitorLogin(c *gin.Context) {
 	avator:=""
 	userAgent := c.GetHeader("User-Agent")
 	if tools.IsMobile(userAgent) {
-		avator = "/static/images/phone.png"
+		avator = "/static/images/1.png"
 	} else {
-		avator = "/static/images/computer.png"
+		avator = "/static/images/2.png"
 	}
 
 	toId := c.PostForm("to_id")
