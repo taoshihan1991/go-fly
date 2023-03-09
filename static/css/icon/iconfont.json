@@ -1,0 +1,72 @@
+{
+  "id": "3864484",
+  "name": "我的客服",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "18991683",
+      "name": "more",
+      "font_class": "more",
+      "unicode": "e867",
+      "unicode_decimal": 59495
+    },
+    {
+      "icon_id": "8817897",
+      "name": "增加添加加号",
+      "font_class": "zengjiatianjiajiahao",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "608294",
+      "name": "减少",
+      "font_class": "jianshaominimize3",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "6151130",
+      "name": "folder-fill",
+      "font_class": "folder-fill",
+      "unicode": "e7c4",
+      "unicode_decimal": 59332
+    },
+    {
+      "icon_id": "13397103",
+      "name": "截图",
+      "font_class": "jietu",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "10598085",
+      "name": "language,多语言",
+      "font_class": "duoyuyan",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "5387527",
+      "name": "加号",
+      "font_class": "jiahao",
+      "unicode": "eaf3",
+      "unicode_decimal": 60147
+    },
+    {
+      "icon_id": "6337465",
+      "name": "笑脸",
+      "font_class": "xiaolian",
+      "unicode": "ec80",
+      "unicode_decimal": 60544
+    },
+    {
+      "icon_id": "1418205",
+      "name": "发送",
+      "font_class": "fasong",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    }
+  ]
+}
