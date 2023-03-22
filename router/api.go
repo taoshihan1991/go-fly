@@ -19,6 +19,8 @@ func InitApiRouter(engine *gin.Engine) {
 		v2.GET("/message_close", controller.SendCloseMessageV2)
 		//绑定
 		v2.POST("/bindOfficial", controller.PostBindOfficial)
+		//分页查询消息
+		v2.GET("/messagesPages", controller.GetMessagespages)
 	}
 	engine.GET("/captcha", controller.GetCaptcha)
 	engine.POST("/check", controller.LoginCheckPass)

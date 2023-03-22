@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
-    <meta name="keywords" content="开源客服系统,golang在线客服,免费客服系统,go语言在线聊天工具,gofly,GOFLY客服系统"/>
+    <meta name="keywords" content="开源客服系统"/>
     <meta name="description" content="golang开发的开源免费客服系统,可独立部署客服系统,支持文字/表情/图片/文件发送,支持快捷回复,支持IP黑名单,展示访客信息,后台权限控制"/>
     <title>开源智能在线客服系统</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.15.1/theme-chalk/index.min.css">
@@ -32,6 +32,9 @@
         <div class="chatEntBox">
             <div class="chatContext chatVisitorPage">
                 <div class="chatBox">
+                    <div class="chatNotice" v-on:click="loadMoreMessages" v-show="showLoadMore">
+                        <a class="chatNoticeContent">点击加载更多记录</a>
+                    </div>
                     <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                         <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><span><{v.time}></span></div>
                         <div v-if="v.is_kefu!=true" style="display: flex;">
@@ -78,7 +81,7 @@
             </div>
         </div>
         <div class="chatArticle">
-            <h3 class="hotQuestionTitle"><img src="/static/images/fire.svg" class="fire">公告通知
+            <h3 class="hotQuestionTitle">公告通知
             </h3>
             <div class="allNotice" v-html><{kefuInfo.allNotice}></div>
         </div>

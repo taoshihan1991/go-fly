@@ -150,7 +150,6 @@ CREATE TABLE `reply_item` (
  KEY `user_id` (`user_id`),
  KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8|
-INSERT INTO `reply_item` (`id`, `content`, `group_id`, `user_id`, `item_name`) VALUES (NULL, '在这里[官网]link[https://gofly.sopans.com]!','1','kefu2', '官方地址在哪?')|
 DROP TABLE IF EXISTS `land_page`|
 CREATE TABLE `land_page` (
   `id` int(11) NOT NULL,

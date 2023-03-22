@@ -110,7 +110,7 @@ func MainCheckAuth(c *gin.Context) {
 }
 func GetStatistics(c *gin.Context) {
 	visitors := models.CountVisitors()
-	message := models.CountMessage()
+	message := models.CountMessage(nil,nil)
 	session := len(ws.ClientList)
 	kefuNum := 0
 	c.JSON(200, gin.H{

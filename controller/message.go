@@ -111,7 +111,7 @@ func SendMessageV2(c *gin.Context) {
 		ws.OneKefuMessage(kefuInfo.Name, str)
 		//ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
 		kefu, ok := ws.KefuList[kefuInfo.Name]
-		if !ok || kefu == nil{
+		if !ok || kefu == nil {
 			go SendNoticeEmail(content+"|"+vistorInfo.Name, content)
 		}
 		go ws.VisitorAutoReply(vistorInfo, kefuInfo, content)
@@ -285,5 +285,25 @@ func GetMessagesV2(c *gin.Context) {
 		"code":   200,
 		"msg":    "ok",
 		"result": chatMessages,
+	})
+}
+func GetMessagespages(c *gin.Context) {
+	visitorId := c.Query("visitor_id")
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("pagesize", "10"))
+	if pageSize > 20 {
+		pageSize = 20
+	}
+	count := models.CountMessage("visitor_id = ?", visitorId)
+	list := models.FindMessageByPage(uint(page), uint(pageSize), "message.visitor_id = ?", visitorId)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+		"result": gin.H{
+			"count":    count,
+			"page":     page,
+			"list":     list,
+			"pagesize": pageSize,
+		},
 	})
 }

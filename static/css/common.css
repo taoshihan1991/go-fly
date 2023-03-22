@@ -217,14 +217,14 @@
     font-size: 14px;
 }
 .chatContent2 {
-    border-radius: 0px 8px 8px 8px;
+    border-radius: 8px 8px 8px 0px;
     padding: 10px 15px;
 }
 .chatBoxMe{
     margin-top: 10px;
 }
 .chatBoxMe .chatContent2 {
-    border-radius: 8px 0px 8px 8px;
+    border-radius: 8px 8px 0px 8px;
     background-color: #cde0ff;
     color: #000;
 }

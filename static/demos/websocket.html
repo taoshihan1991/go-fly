@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    // 设置重连时间间隔（单位：毫秒）
+    const RECONNECT_INTERVAL = 1000;
+
+    // 设置最大重连次数
+    const MAX_RECONNECT_TIMES = 3;
+
+    let reconnectTimes = 0;
+    let ws;
+
+    // 尝试连接 WebSocket
+    function connect() {
+        ws = new WebSocket('wss://gofly.v1kf.com/ws_visitor?visitor_id=5|a780d122-daa3-4315-a413-f93b29b026d0&to_id=taoshihan');
+
+        ws.onopen = function () {
+            console.log('WebSocket 连接已打开');
+            reconnectTimes = 0;
+        };
+
+        ws.onclose = function () {
+            console.log('WebSocket 连接已关闭');
+            // 尝试重连
+            reconnect();
+        };
+        ws.onmessage = function (event) {
+            console.log(`收到服务器的消息：${event.data}`);
+
+            // // 解析消息
+            // const message = JSON.parse(event.data);
+            // if (message.type === 'message') {
+            //     console.log(`收到消息：${message.data}`);
+            // }
+        };
+    }
+
+    // 尝试重连
+    function reconnect() {
+        if (reconnectTimes >= MAX_RECONNECT_TIMES) {
+            console.log('重连失败');
+            return;
+        }
+
+        reconnectTimes++;
+        console.log(`正在尝试重连（第 ${reconnectTimes} 次）`);
+
+        setTimeout(function () {
+            connect();
+        }, RECONNECT_INTERVAL);
+    }
+
+    connect();
+</script>
+</html>

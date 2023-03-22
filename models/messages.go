@@ -100,8 +100,21 @@ func FindMessageByWhere(query interface{}, args ...interface{}) []MessageKefu {
 }
 
 //查询条数
-func CountMessage() uint {
+func CountMessage(query interface{}, args ...interface{}) uint {
 	var count uint
-	DB.Model(&Message{}).Count(&count)
+	DB.Model(&Message{}).Where(query, args...).Count(&count)
 	return count
+}
+//分页查询
+func FindMessageByPage(page uint, pagesize uint, query interface{}, args ...interface{}) []*MessageKefu {
+	offset := (page - 1) * pagesize
+	if offset < 0 {
+		offset = 0
+	}
+	var messages []*MessageKefu
+	DB.Table("message").Select("message.*,visitor.avator visitor_avator,visitor.name visitor_name,user.avator kefu_avator,user.nickname kefu_name").Offset(offset).Joins("left join user on message.kefu_id=user.name").Joins("left join visitor on visitor.visitor_id=message.visitor_id").Where(query, args...).Limit(pagesize).Order("message.id desc").Find(&messages)
+	for _, mes := range messages {
+		mes.CreateTime = mes.CreatedAt.Format("2006-01-02 15:04:05")
+	}
+	return messages
 }

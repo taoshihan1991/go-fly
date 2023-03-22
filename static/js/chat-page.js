@@ -24,6 +24,7 @@ new Vue({
         showFaceIcon:false,
         isIframe:false,
         kefuInfo:{},
+        showLoadMore:false,
     },
     methods: {
         //初始化websocket
@@ -215,54 +216,8 @@ new Vue({
             // }
         },
         //获取信息列表
-        getMesssagesByVisitorId:function(isAll){
-            let _this=this;
-            $.ajax({
-                type:"get",
-                url:"/messages?visitorId="+this.visitor.visitor_id,
-                success: function(data) {
-                    if(data.code==200 && data.result!=null&&data.result.length!=0){
-                        _this.msgListNum=data.result.length;
-                        let msgList=data.result;
-                        _this.msgList=[];
-                        if(!isAll&&msgList.length>1){
-                            var i=msgList.length-1
-                        }else{
-                            _this.msgListNum=0;
-                            var i=0;
-                        }
-                        for(;i<msgList.length;i++){
-                            let visitorMes=msgList[i];
-                            let content = {}
-                            if(visitorMes["mes_type"]=="kefu"){
-                                content.is_kefu = false;
-                                content.avator = visitorMes["kefu_avator"];
-                                content.name = visitorMes["kefu_name"];
-                            }else{
-                                content.is_kefu = true;
-                                content.avator = visitorMes["visitor_avator"];
-                                content.name = visitorMes["visitor_name"];
-                            }
-                            content.content = replaceContent(visitorMes["content"]);
-                            content.time = visitorMes["time"];
-                            _this.msgList.push(content);
-                            _this.scrollBottom();
-                        }
-                    }
-                    if(data.code!=200){
-                        _this.$message({
-                            message: data.msg,
-                            type: 'error'
-                        });
-                    }
-                    if(data.code!=200){
-                        _this.$message({
-                            message: data.msg,
-                            type: 'error'
-                        });
-                    }
-                }
-            });
+        loadMoreMessages:function(){
+
         },
         //滚动到底部
         scrollBottom:function(){
