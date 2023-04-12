@@ -32,18 +32,18 @@
         <div class="chatEntBox">
             <div class="chatContext chatVisitorPage">
                 <div class="chatBox">
-                    <div class="chatNotice" v-on:click="loadMoreMessages" v-show="showLoadMore">
-                        <a class="chatNoticeContent">点击加载更多记录</a>
+                    <div class="chatNotice" v-on:click="getHistoryMessage" v-show="showLoadMore">
+                        <a href="javascript:;" class="chatNoticeContent" style="color: #07a9fe;">点击加载更多记录</a>
                     </div>
-                    <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
+                    <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==false}">
                         <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><span><{v.time}></span></div>
-                        <div v-if="v.is_kefu!=true" style="display: flex;">
+                        <div v-if="v.is_kefu==true" style="display: flex;">
                             <el-avatar style="margin-right:10px;flex-shrink: 0;"  :size="36" :src="v.avator"></el-avatar>
                             <div class="chatMsgContent">
                                 <div class="chatContent chatContent2 replyContentBtn" v-html="v.content"></div>
                             </div>
                         </div>
-                        <div class="kefuMe" v-if="v.is_kefu==true" style="display: flex;justify-content: flex-end;">
+                        <div class="kefuMe" v-if="v.is_kefu==false" style="display: flex;justify-content: flex-end;">
                             <div class="chatContent chatContent2 replyContentBtn" v-html="v.content"></div>
                             <el-avatar style="margin-left:10px;flex-shrink: 0;"  :size="36" :src="v.avator"></el-avatar>
                         </div>

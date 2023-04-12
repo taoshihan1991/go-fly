@@ -18,13 +18,16 @@ new Vue({
         timer:null,
         sendDisabled:false,
         flyLang:GOFLY_LANG[LANG],
-        textareaFocused:false,
-        replys:[],
         showIconBtns:false,
         showFaceIcon:false,
         isIframe:false,
         kefuInfo:{},
         showLoadMore:false,
+        messages:{
+            page:1,
+            pagesize:5,
+            list:[],
+        },
     },
     methods: {
         //初始化websocket
@@ -83,7 +86,7 @@ new Vue({
                 content.avator = msg.avator;
                 content.name = msg.name;
                 content.content =replaceContent(msg.content);
-                content.is_kefu = false;
+                content.is_kefu = true;
                 content.time = msg.time;
                 this.msgList.push(content);
 
@@ -147,7 +150,7 @@ new Vue({
             content.avator=_this.visitor.avator;
             content.content = replaceContent(_this.messageContent);
             content.name = _this.visitor.name;
-            content.is_kefu = true;
+            content.is_kefu = false;
             content.time = _this.getNowDate();
             content.show_time=false;
             _this.msgList.push(content);
@@ -206,6 +209,7 @@ new Vue({
                         return;
                     }
                     _this.visitor=res.result;
+                    _this.getHistoryMessage();
                     _this.setCache("visitor",res.result);
                     //_this.getMesssagesByVisitorId();
                     _this.initConn();
@@ -216,8 +220,39 @@ new Vue({
             // }
         },
         //获取信息列表
-        loadMoreMessages:function(){
+        getHistoryMessage:function(){
+            let params={
+                page:this.messages.page,
+                pagesize: this.messages.pagesize,
+                visitor_id: this.visitor.visitor_id,
+            }
+            let _this=this;
+            $.get("/2/messagesPages",params,function(res){
+                let msgList=res.result.list;
+                if(msgList.length>=_this.messages.pagesize){
+                    _this.showLoadMore=true;
+                }else{
+                    _this.showLoadMore=false;
+                }
+                for(let i in msgList){
+                    let item = msgList[i];
+                    let content = {}
+                    if (item["mes_type"] == "kefu") {
+                        item.is_kefu = true;
+                        item.avator=item["kefu_avator"];
 
+                    } else {
+                        item.is_kefu = false;
+                        item.avator=item["visitor_avator"];
+                    }
+                    item.time = item["create_time"];
+                    _this.msgList.unshift(item);
+                }
+                if(_this.messages.page==1){
+                    _this.scrollBottom();
+                }
+                _this.messages.page++;
+            });
         },
         //滚动到底部
         scrollBottom:function(){
@@ -225,31 +260,6 @@ new Vue({
             this.$nextTick(function(){
                 $('.chatVisitorPage').scrollTop($(".chatVisitorPage")[0].scrollHeight);
             });
-        },
-        //软键盘问题
-        textareaFocus:function(){
-            this.scrollBottom()
-            if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
-                $(".chatContext").css("margin-bottom","0");
-                $(".chatBoxSend").css("position","static");
-                this.textareaFocused=true;
-            }
-        },
-        textareaBlur:function(){
-            if(this.textareaFocused&&/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)) {
-                var chatBoxSendObj=$(".chatBoxSend");
-                var chatContextObj=$(".chatContext");
-                if(this.textareaFocused&&chatBoxSendObj.css("position")!="fixed"){
-                    chatContextObj.css("margin-bottom","105px");
-                    chatBoxSendObj.css("position","fixed");
-                    this.textareaFocused=false;
-                }
-
-            }
-        },
-        sendReply:function(title){
-            this.messageContent=title;
-            this.chatToUser();
         },
         //获取日期
         getNowDate : function() {// 获取日期
@@ -284,6 +294,7 @@ new Vue({
                     avator:_this.kefuInfo.avatar,
                     name :_this.kefuInfo.nickname,
                     time:_this.getNowDate(),
+                    is_kefu:true,
                 }
                 _this.msgList.push(msg);
                 _this.scrollBottom();
@@ -470,15 +481,6 @@ new Vue({
                 }
             });
         },
-        //自动
-        getAutoReply:function(){
-            var _this=this;
-            $.get("/autoreply?kefu_id="+KEFU_ID,function(res) {
-                if(res.code==200){
-                    _this.replys=res.result;
-                }
-            });
-        },
         //提示音
         alertSound:function(){
             alertSound("chatMessageAudio",'/static/images/alert2.ogg');
@@ -533,6 +535,5 @@ new Vue({
         //滚动底部
         //this.scrollBottom();
 
-        this.getAutoReply();
     }
 })

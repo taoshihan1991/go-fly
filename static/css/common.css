@@ -190,7 +190,7 @@
     overflow-y: auto;
 }
 .chatVisitorPage .chatBox{
-    padding: 0 4px;
+    padding: 5px 4px;
 }
 .chatBox .el-col{margin:10px 0;}
 .chatUser{
@@ -372,7 +372,7 @@ a{color: #07a9fe;text-decoration: none;}
 .visitorIconBox{
     display: flex;
     align-items: center;
-    color: rgb(126, 126, 126);
+    color:#9c9c9c;
 }
 .visitorIconBox .iconBtn{
     margin-right: 10px;
