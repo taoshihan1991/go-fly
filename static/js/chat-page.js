@@ -246,6 +246,7 @@ new Vue({
                         item.avator=item["visitor_avator"];
                     }
                     item.time = item["create_time"];
+                    item.content=replaceContent(item["content"]);
                     _this.msgList.unshift(item);
                 }
                 if(_this.messages.page==1){

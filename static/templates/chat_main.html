@@ -92,6 +92,9 @@
                             <el-button v-on:click="closeVisitor(visitor.visitor_id)" size="small" type="success" plain icon="el-icon-close">结束</el-button>
                         </div>
                         <div class="chatBox">
+                            <div style="text-align: center;" v-on:click="getHistoryMessage" v-show="showLoadMore">
+                                <a href="javascript:;" class="chatNoticeContent" style="color: #07a9fe;">点击加载更多记录</a>
+                            </div>
                             <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==true}">
                                 <div class="chatTime"><{v.time}></div>
                                 <div class="chatRow">
@@ -122,9 +125,6 @@
                                 </el-tooltip>
                                 <el-tooltip content="上传附件" placement="top">
                                     <div  class="iconBtn el-icon-upload" id="uploadFile" v-on:click="uploadFile('/uploadfile')" style="font-size: 26px;"></div>
-                                </el-tooltip>
-                                <el-tooltip content="消息记录" placement="top">
-                                    <div  class="iconBtn el-icon-chat-line-round" v-on:click="getMesssagesByVisitorId(visitor.visitor_id,true)" style="font-size: 24px;"></div>
                                 </el-tooltip>
 
                             </div>

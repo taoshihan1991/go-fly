@@ -56,6 +56,12 @@ var app=new Vue({
         ipBlacks:[],
         sendDisabled:false,
         showFaceIcon:false,
+        showLoadMore:false,
+        messages:{
+            page:1,
+            pagesize:15,
+            list:[],
+        },
     },
     methods: {
         //跳转
@@ -185,7 +191,10 @@ var app=new Vue({
             //获取当前访客信息
             this.getVistorInfo(guestId);
             //获取当前客户消息
-            this.getMesssagesByVisitorId(guestId);
+            this.messages.page=1;
+            this.msgList=[];
+            this.getHistoryMessage();
+            //this.getMesssagesByVisitorId(guestId);
             for(var i=0;i<this.users.length;i++){
                 if(this.users[i].uid==guestId){
                     this.$set(this.users[i],'hidden_new_message',true);
@@ -363,6 +372,42 @@ var app=new Vue({
                         window.location.href="/login";
                     }
                 }
+            });
+        },
+        getHistoryMessage(){
+            let params={
+                page:this.messages.page,
+                pagesize: this.messages.pagesize,
+                visitor_id: this.currentGuest,
+            }
+            let _this=this;
+            $.get("/2/messagesPages",params,function(res){
+                let msgList=res.result.list;
+                if(msgList.length>=_this.messages.pagesize){
+                    _this.showLoadMore=true;
+                }else{
+                    _this.showLoadMore=false;
+                }
+                for(let i in msgList){
+                    let item = msgList[i];
+                    //let content = {}
+                    if (item["mes_type"] == "kefu") {
+                        item.is_kefu = true;
+                        item.avator=item["kefu_avator"];
+                        item.name=item["kefu_name"];
+                    } else {
+                        item.is_kefu = false;
+                        item.avator=item["visitor_avator"];
+                        item.name=item["visitor_name"];
+                    }
+                    item.content=replaceContent(item["content"]);
+                    item.time = item["create_time"];
+                    _this.msgList.unshift(item);
+                }
+                if(_this.messages.page==1){
+                    _this.scrollBottom();
+                }
+                _this.messages.page++;
             });
         },
         //获取信息列表
