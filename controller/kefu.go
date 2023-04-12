@@ -237,6 +237,13 @@ func PostKefuInfo(c *gin.Context) {
 	password := c.PostForm("password")
 	avator := c.PostForm("avator")
 	nickname := c.PostForm("nickname")
+	if name == "" {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "客服账号不能为空",
+		})
+		return
+	}
 	//插入新用户
 	if id == "" {
 		uid := models.CreateUser(name, tools.Md5(password), avator, nickname)
@@ -253,7 +260,14 @@ func PostKefuInfo(c *gin.Context) {
 		if password != "" {
 			password = tools.Md5(password)
 		}
-		models.UpdateUser(id, name, password, avator, nickname)
+		message := &models.Message{
+			KefuId: name,
+		}
+		models.DB.Model(&models.Message{}).Update(message)
+		visitor := &models.Visitor{
+			ToId: name,
+		}
+		models.DB.Model(&models.Visitor{}).Update(visitor)
 	}
 
 	c.JSON(200, gin.H{
