@@ -208,4 +208,13 @@ function formatDate(dateString, format = 'yyyy-MM-dd HH:mm:ss') {
 
     return formattedDate;
 }
+function copyText(text) {
+    var target = document.createElement('input')
+    target.value = text
+    document.body.appendChild(target)
+    target.select()
+    document.execCommand("copy");
+    document.body.removeChild(target);
+    return true;
+}
 ;

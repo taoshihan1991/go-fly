@@ -44,27 +44,23 @@
    在任意目录 git clone https://github.com/taoshihan1991/go-fly.git
    
    进入go-fly 目录
+   
+2. 导入数据库 go run go-fly.go install
 
-2. 源码运行 go run go-fly.go server
+3. 源码运行 go run go-fly.go server
 
-3. 源码打包 go build go-fly.go 会生成go-fly可以执行文件
+3. 源码打包 go build -o kefu  会生成kefu可以执行文件
 
-4. 导入数据库(会删除表清空数据) ./go-fly install
 
 5. 二进制文件运行
  
-   linux:   ./go-fly server [可选 -p 8082 -d]
+   linux:   ./kefu server [可选 -p 8082 -d]
    
-   windows: go-fly.exe server [可选 -p 8082 -d]
+   windows: kefu.exe server [可选 -p 8082 -d]
 
 6. 关闭程序
-   ./go-fly stop  
 
-   linux下使用ps命令结合kill命令杀掉进程
-   
-   ps -ef|grep go-fly 看到父子进程id
-   
-   kill 进程父进程id ； kill 进程子进程id
+   killall kefu
 
    
 ### nginx部署

@@ -4,34 +4,17 @@
         <el-container>
 
             <el-main class="mainMain">
-                <el-tabs>
-                    <el-tab-pane label="默认JS模式">
-                        <el-alert
-                                :closable="false"
-                                title="例如: 服务器搭建完成后可以把域名替换为自己的IP或域名 , GOFLY_KEFU_ID为自己添加的客服名称"
-                                type="success"
-                                effect="dark">
-                        </el-alert>
-                       <textarea style="width:100%;color:green;margin-top:10px;font-size:12px;height:290px;">
-<script src="https://自己域名/static/js/gofly-front.js"></script>
-<script>
-    GOFLY.init({
-        GOFLY_URL:"https://自己域名",
-        GOFLY_KEFU_ID: "kefu1",
-        GOFLY_BTN_TEXT: "客服在线 欢迎咨询",
-        GOFLY_LANG:"cn"
-    })
-</script>
-                       </textarea>
+                <el-tabs type="border-card" >
+                    <el-tab-pane label="普通模式">
+                        <el-descriptions style="margin-bottom: 10px;" direction="vertical" :column="1" border>
+                            <el-descriptions-item label="通用聊天链接">
+                                <a style="margin-right: 10px"><{host}>/chatIndex?kefu_id=kefu2</a>
+                                <el-button  size="mini" v-on:click="copyText(host+'/chatIndex?kefu_id=kefu2')">复制</el-button>
+                            </el-descriptions-item>
+                        </el-descriptions>
                     </el-tab-pane>
-                    <el-tab-pane label="超链接模式">
-                        <el-alert
-                                :closable="false"
-                                title="例如: 服务器搭建完成后可以把域名替换为自己的IP或域名 , GOFLY_KEFU_ID为自己添加的客服名称"
-                                type="success"
-                                effect="dark">
-                        </el-alert>
-                        <el-input style="margin-top:10px;" value="https://自己域名/chatIndex?kefu_id=kefu1"></el-input>
+                    <el-tab-pane label="弹窗模式">
+
                     </el-tab-pane>
                 </el-tabs>
             </el-main>
