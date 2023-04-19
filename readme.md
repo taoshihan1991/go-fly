@@ -1,24 +1,18 @@
-# <b>GOFLY</b> [唯一客服]基于Golang语言和MySQL实现的WEB在线客服系统。
+### 郑重提示
+禁止将本项目用于含病毒、木马、色情、赌博、诈骗、违禁用品、假冒产品、虚假信息、数字货币、金融等违法违规业务
+
+当前项目仅供个人学习测试，禁止一切线上商用行为，禁止一切违法使用！！！
+
+### <b>GOFLY</b> 基于Golang语言和MySQL实现的WEB在线客服系统。
 
 <a href="readme.md">中文</a> |
 <a href="readme_en.md">English</a> |
 <a href="https://gitee.com/taoshihan/go-fly">Gitee</a>
 
 
-### 请注意当前项目仅供个人学习测试，禁止一切线上商用行为，禁止一切违法使用！！！
+### 前言
 
-
-## 主要技术栈
-gin + jwt-go + websocket + go.uuid + gorm + cobra + VueJS + ElementUI + MySQL
-
-### 项目预览
-
-![Image text](https://img2022.cnblogs.com/blog/726254/202211/726254-20221108002459990-32759129.png)
-
-![Image text](https://img2022.cnblogs.com/blog/726254/202211/726254-20221108002516168-1465488645.png)
-
-![Image text](https://img2022.cnblogs.com/blog/726254/202211/726254-20221108002619691-1817390882.png)
-
+此项目源于2019年学习golang时的练习作品，主要使用了gin + jwt-go + websocket + go.uuid + gorm + cobra + VueJS + ElementUI + MySQL等技术
 
 
 ### 安装使用
@@ -71,25 +65,6 @@ gin + jwt-go + websocket + go.uuid + gorm + cobra + VueJS + ElementUI + MySQL
    ps -ef|grep go-fly 看到父子进程id
    
    kill 进程父进程id ； kill 进程子进程id
-
-#### 3. 网页使用
-
-   1.服务端安装成功后可把域名换成自己的域名或IP
-   
-   2.默认访问本地http://127.0.0.1:8081
-   
-```php
-    //下面js路径和GOFLY_URL 都要改成自己的
-    <script src="https://gofly.sopans.com/assets/js/gofly-front.js"></script>
-    <script>
-        GOFLY.init({
-            GOFLY_URL:"https://gofly.sopans.com",
-            GOFLY_KEFU_ID: "kefu2",
-            GOFLY_BTN_TEXT: "客服在线 欢迎咨询",
-            GOFLY_LANG:"cn"
-        })
-    </script>
-```
 
    
 ### nginx部署
@@ -184,8 +159,6 @@ location /
 
 #PROXY-END/
 ```
-
-### 如果在登录到后台后，出现了需要认证的弹窗，请前往官网注册账户并绑定手机。填入绑定的手机+自己的密码可以通过认证。如果没有中国手机号，请在官网联系我获取测试手机号和密码
 
 
 ### 版权声明

@@ -1,5 +1,5 @@
 var GOFLY={
-    GOFLY_URL:"https://gofly.sopans.com",
+    GOFLY_URL:"",
     GOFLY_KEFU_ID:"",
     GOFLY_BTN_TEXT:"Chat with me",
     GOFLY_LANG:"en",
