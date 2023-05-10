@@ -103,32 +103,103 @@ function replaceContent (content,baseUrl) {// 转义聊天内容中的特殊字�
         baseUrl="";
     }
     var faces=placeFace();
-    var html = function (end) {
-        return new RegExp('\\n*\\[' + (end || '') + '(pre|div|span|p|table|thead|th|tbody|tr|td|ul|li|ol|li|dl|dt|dd|h2|h3|h4|h5)([\\s\\S]*?)\\]\\n*', 'g');
-    };
-    content = (content || '').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
-        .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;') // XSS
-        .replace(/face\[([^\s\[\]]+?)\]/g, function (face) {  // 转义表情
+    content = (content || '')
+        .replace(/face\[(.*?)\]/g, function (face) {  // 转义表情
             var alt = face.replace(/^face/g, '');
             return '<img alt="' + alt + '" title="' + alt + '" src="'+baseUrl + faces[alt] + '">';
         })
-        .replace(/img\[([^\s\[\]]+?)\]/g, function (face) {  // 转义图片
+        .replace(/img\[(.*?)\]/g, function (face) {  // 转义图片
             var src = face.replace(/^img\[/g, '').replace(/\]/g, '');;
-            return '<img onclick="bigPic(src,true)" src="' +baseUrl+ src + '" style="max-width: 100%"/></div>';
+            return '<img onclick="bigPic(src,true)" src="' +baseUrl+ src + '" style="max-width: 150px"/></div>';
         })
-        .replace(/file\[([^\s\[\]]+?)\]/g, function (face) {  // 转义图片
-            var src = face.replace(/^file\[/g, '').replace(/\]/g, '');;
-            return '<div class="folderBtn" onclick="window.open(\''+baseUrl+src+'\')"  style="font-size:25px;"/></div>';
-        })
-        .replace(/\[([^\s\[\]]+?)\]+link\[([^\s\[\]]+?)\]/g, function (face) {  // 转义超链接
-            var text = face.replace(/link\[.*?\]/g, '').replace(/\[|\]/g, '');
-            var src = face.replace(/^\[([^\s\[\]]+?)\]+link\[/g, '').replace(/\]/g, '');
-            return '<a href="'+src+'" target="_blank" />【'+text+'】</a>';
-        })
-        .replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') // 转移HTML代码
-        .replace(/\n/g, '<br>') // 转义换行
-
+        .replace(/\n/g, '<br>'); // 转义换行
+    content=replaceAttachment(content);
     return content;
+}
+//替换附件展示
+function replaceAttachment(str){
+    return str.replace(/attachment\[(.*?)\]/g, function (result) {
+        var mutiFiles=result.match(/attachment\[(.*?)\]/)
+        if (mutiFiles.length<2){
+            return result;
+        }
+        //return result;
+
+        var info=JSON.parse(mutiFiles[1])
+        var imgSrc="";
+        switch(info.ext){
+            case ".mp3":
+                imgSrc="/static/images/ext/MP3.png";
+                break;
+            case ".zip":
+                imgSrc="/static/images/ext/ZIP.png";
+                break;
+            case ".txt":
+                imgSrc="/static/images/ext/TXT.png";
+                break;
+            case ".7z":
+                imgSrc="/static/images/ext/7z.png";
+                break;
+            case ".bpm":
+                imgSrc="/static/images/ext/BMP.png";
+                break;
+            case ".png":
+                imgSrc="/static/images/ext/PNG.png";
+                break;
+            case ".jpg":
+                imgSrc="/static/images/ext/JPG.png";
+                break;
+            case ".jpeg":
+                imgSrc="/static/images/ext/JPEG.png";
+                break;
+            case ".pdf":
+                imgSrc="/static/images/ext/PDF.png";
+                break;
+            case ".doc":
+                imgSrc="/static/images/ext/DOC.png";
+                break;
+            case ".docx":
+                imgSrc="/static/images/ext/DOCX.png";
+                break;
+            case ".rar":
+                imgSrc="/static/images/ext/RAR.png";
+                break;
+            case ".xlsx":
+                imgSrc="/static/images/ext/XLSX.png";
+                break;
+            case ".csv":
+                imgSrc="/static/images/ext/XLSX.png";
+                break;
+            default:
+                imgSrc="/static/images/ext/default.png";
+                break;
+        }
+        var html= `<div onclick="window.open('`+info.path+`')" class="productCard">
+                        <div><img src='`+imgSrc+`' style='width: 38px;height: 38px;' /></div>
+                        <div class="productCardTitle">
+                            <div class="productCardTitle">`+info.name+`</div>
+                            <div style="font-size: 12px;color: #666">`+formatFileSize(info.size)+`</div>
+                        </div>
+                    </div>`;
+        return html;
+    })
+}
+function formatFileSize(fileSize) {
+    if (fileSize < 1024) {
+        return fileSize + 'B';
+    } else if (fileSize < (1024*1024)) {
+        var temp = fileSize / 1024;
+        temp = temp.toFixed(2);
+        return temp + 'KB';
+    } else if (fileSize < (1024*1024*1024)) {
+        var temp = fileSize / (1024*1024);
+        temp = temp.toFixed(2);
+        return temp + 'MB';
+    } else {
+        var temp = fileSize / (1024*1024*1024);
+        temp = temp.toFixed(2);
+        return temp + 'GB';
+    }
 }
 function bigPic(src,isVisitor){
     if (isVisitor) {

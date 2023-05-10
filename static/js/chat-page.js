@@ -430,7 +430,13 @@ new Vue({
                                 type: 'error'
                             });
                         }else{
-                            _this.messageContent+='file[/' + res.result.path + ']';
+                            var data=JSON.stringify({
+                                name:res.result.name,
+                                ext:res.result.ext,
+                                size:res.result.size,
+                                path:'/' + res.result.path,
+                            })
+                            _this.messageContent+='attachment['+data+']';
                             _this.chatToUser();
                         }
                     },

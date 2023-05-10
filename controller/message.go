@@ -211,14 +211,6 @@ func UploadImg(c *gin.Context) {
 	}
 }
 func UploadFile(c *gin.Context) {
-	SendAttachment, err := strconv.ParseBool(models.FindConfig("SendAttachment"))
-	if !SendAttachment || err != nil {
-		c.JSON(200, gin.H{
-			"code": 400,
-			"msg":  "禁止上传附件!",
-		})
-		return
-	}
 	f, err := c.FormFile("realfile")
 	if err != nil {
 		c.JSON(200, gin.H{
@@ -250,6 +242,9 @@ func UploadFile(c *gin.Context) {
 			"msg":  "上传成功!",
 			"result": gin.H{
 				"path": filepath,
+				"ext":  fileExt,
+				"size": f.Size,
+				"name": f.Filename,
 			},
 		})
 	}

@@ -378,6 +378,29 @@ a{color: #07a9fe;text-decoration: none;}
     margin-right: 10px;
     cursor: pointer;
 }
+.productCard{
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 2px;
+    width: auto;
+    max-width: 730px;
+    display: flex;
+    border-radius: 5px;
+}
+.productCard img{
+    width: 100px;
+    height: 100px;
+    margin-right: 15px;
+}
+.productCard .productCardPrice{
+    color: #ff7736;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.productCard .productCardTitle{
+    color: #333;
+}
 @media screen and (min-width: 900px) {
     .chatCenter {
         max-height: 650px;
