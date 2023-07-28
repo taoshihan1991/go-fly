@@ -481,6 +481,10 @@ a{color: #07a9fe;text-decoration: none;}
 .menuLeftItem span {
     font-size: 12px;
 }
+.menuLeftItemLogout {
+    position: absolute;
+    bottom: 0px;
+}
 .mainRight {
     width: calc(100% - 70px);
     height: 100%;

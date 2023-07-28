@@ -1,6 +1,8 @@
 {{define "setting_bottom"}}
 <script>
-    var ACTION="{{.action}}";
+    if (typeof ACTION=="undefined"){
+        ACTION="{{.action}}";
+    }
 </script>
 <script>
     var app=new Vue({
@@ -244,6 +246,9 @@
                         _this.kefuInfo=result;
                     });
                 }
+                if(ACTION=="pannel"){
+                    this.showStatistics();
+                }
             },
             sendAjax(url,method,params,callback){
                 let _this=this;
@@ -471,13 +476,52 @@
                 }
                 return isLt2M;
             },
-            //生成部署js
-            createDeployJs(){
-                let domain=window.location.host;
-                this.$alert('    <script type="text/javascript">\n' +
-                    '    var GOFLY_KEFU_ID="'+this.kefuForm.name+'";\n' +
-                    '    <\/script>\n'+
-                    ' <script type="text/javascript" src="http://'+domain+'/webjs"><\/script>', '网页部署');
+            //展示图表
+            showStatistics(){
+                let _this=this;
+                this.sendAjax("/kefu/chartStatistics","get",{},function(data) {
+                        var result=data;
+                        var days=[];
+                        var nums=[];
+                        if(result.length<=0){
+                            return;
+                        }
+                        for(var i=result.length-1;i>=0;i--){
+                            days.push(result[i].day);
+                            nums.push(result[i].num)
+                        }
+                        // 基于准备好的dom，初始化echarts实例
+                        $(function () {
+                            var myChart = echarts.init($('#visitorNums')[0],null, {
+                                width: document.documentElement.clientWidth,
+                                height: 500
+                            });
+                            // 指定图表的配置项和数据
+                            var option = {
+                                title: {
+                                    text: "每日访客接待情况"
+                                },
+                                tooltip: {},
+                                legend: {
+                                    data: ['数量']
+                                },
+                                xAxis: {
+                                    data: days
+                                },
+                                yAxis: {},
+                                series: [
+                                    {
+                                        name: 'nums',
+                                        type: 'line',
+                                        data: nums,
+                                        barCategoryGap: '40%',
+                                    }
+                                ]
+                            };
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(option);
+                        });
+                });
             },
             GetRequest() {
                 var str = location.href

@@ -99,3 +99,17 @@ func CountVisitorsByKefuId(kefuId string) uint {
 	DB.Model(&Visitor{}).Where("to_id=?", kefuId).Count(&count)
 	return count
 }
+
+//查询每天条数
+type EveryDayNum struct {
+	Day string `json:"day"`
+	Num int64  `json:"num"`
+}
+
+func CountVisitorsEveryDay(toId string) []EveryDayNum {
+	var results []EveryDayNum
+	DB.Raw("select DATE_FORMAT(created_at,'%y-%m-%d') as day ,"+
+		"count(*) as num from visitor where to_id=? group by day order by day desc limit 30",
+		toId).Scan(&results)
+	return results
+}

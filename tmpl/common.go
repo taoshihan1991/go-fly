@@ -49,8 +49,7 @@ func PageIndex(c *gin.Context) {
 	if noExist, _ := tools.IsFileNotExist("./install.lock"); noExist {
 		c.Redirect(302, "/install")
 	}
-	c.HTML(http.StatusOK, "index.html", gin.H{
-	})
+	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
 //登陆界面
@@ -72,4 +71,9 @@ func PageInstall(c *gin.Context) {
 		c.Redirect(302, "/login")
 	}
 	c.HTML(http.StatusOK, "install.html", nil)
+}
+
+//面板界面
+func PagePannel(c *gin.Context) {
+	c.HTML(http.StatusOK, "pannel.html", nil)
 }

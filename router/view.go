@@ -8,15 +8,13 @@ import (
 
 func InitViewRouter(engine *gin.Engine) {
 	engine.GET("/", tmpl.PageIndex)
-	engine.GET("/index_:lang", tmpl.PageIndex)
-	engine.GET("/install", tmpl.PageInstall)
-	engine.GET("/detail_:page",tmpl.PageDetail)
+
 	engine.GET("/login", tmpl.PageLogin)
-	engine.GET("/bind", tmpl.PageBind)
-	engine.GET("/chatIndex",tmpl.PageChat)
+	engine.GET("/pannel", tmpl.PagePannel)
+	engine.GET("/chatIndex", tmpl.PageChat)
 	engine.GET("/main", middleware.JwtPageMiddleware, tmpl.PageMain)
-	engine.GET("/chat_main", middleware.JwtPageMiddleware,middleware.DomainLimitMiddleware, tmpl.PageChatMain)
-	engine.GET("/setting",middleware.DomainLimitMiddleware, tmpl.PageSetting)
+	engine.GET("/chat_main", middleware.JwtPageMiddleware, middleware.DomainLimitMiddleware, tmpl.PageChatMain)
+	engine.GET("/setting", middleware.DomainLimitMiddleware, tmpl.PageSetting)
 	engine.GET("/setting_statistics", tmpl.PageSettingStatis)
 	engine.GET("/setting_indexpage", tmpl.PageSettingIndexPage)
 	engine.GET("/setting_indexpages", tmpl.PageSettingIndexPages)

@@ -58,3 +58,6 @@ func NilChannel() {
 	var ch chan int
 	ch <- 1
 }
+func Int2Str(i interface{}) string {
+	return fmt.Sprintf("%v", i)
+}
