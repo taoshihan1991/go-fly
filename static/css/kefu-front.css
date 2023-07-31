@@ -1,0 +1,743 @@
+.launchButtonBox{
+    position: fixed!important;
+    bottom: 25px;
+    right: 30px;
+    left: auto;
+    z-index: 999999;
+}
+.launchButtonNotice{
+    width: 270px;
+    padding: 10px;
+    margin: 0 auto;
+    clear: both;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    z-index: 999999;
+    color: #545454;
+    line-height: 1.5;
+    font-size: 14px;
+    display: none;
+}
+.launchNoticeContent{
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #f7f7f9;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+    padding: 10px;
+}
+.flexBox{
+    display: flex;
+    align-items: flex-end;
+    margin-top: 10px;
+}
+
+.launchButtonNotice a{
+    color: #07a9fe;!important;
+    text-decoration: none;
+}
+.launchIcon{
+    background: #ff305f;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+    position: absolute;
+    top: -2px;
+    left: 14px;
+    color: #fff;
+    display: none;
+}
+.launchButton{
+    border-radius: 30px;
+    z-index: 10000000000000!important;
+    background: #2d8cf0;
+    box-shadow: rgb(0 0 0 / 6%) 0px 1px 6px, rgb(0 0 0 / 16%) 0px 2px 32px;
+    box-sizing: border-box!important;
+    padding: 15px 20px;
+    cursor: pointer!important;
+    outline: 0!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0!important;
+    -webkit-font-smoothing: antialiased!important;
+    -webkit-tap-highlight-color: transparent!important;
+    color: #ffffff;
+    position: relative;
+}
+.launchButton:hover {
+    box-shadow: 0 8px 32px rgb(0 0 0 / 40%) !important;
+}
+.launchButton svg{
+    width: 28px;
+    height: 48px;
+}
+.launchButtonText {
+    display: inline-block;
+    /*font-size: 14px;*/
+    letter-spacing:1px;
+    text-overflow: ellipsis!important;
+    vertical-align: top!important;
+    white-space: nowrap;
+}
+.launchButtonText img{
+    width: 26px;
+    display: inline-block;
+}
+.launchButtonNotice .flyAvatar{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+.flyAvatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    border:2px solid #fff;
+    margin-right: 5px;
+}
+.layui-layer-title .flyAvatar{
+    margin-top: 5px;
+}
+.launchButtonNotice .flyUsername{
+    font-weight: bold;
+    float: left;
+    margin-left: 4px;
+}
+.launchButtonNotice .flyUser{
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-right: 4px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+    border-radius: 50%;
+}
+.launchButtonNotice .flyClose {
+
+    text-align: center;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #464646;
+    cursor: pointer;
+    position: absolute;
+    top: -25px;
+    right: 0px;
+    background-color: #fff;
+    border: 1px solid #f7f7f9;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+}
+#layui-layer19911116{
+    /*display: none;*/
+    box-shadow: 0 5px 40px rgb(0 0 0 / 16%);
+    border-radius: 12px;
+    border: none;
+    animation: up 0.5s ease-in-out both
+}
+#layui-layer-iframe19911116{
+    border-radius: 0 0 12px 12px;
+}
+.launchPointer{
+    background: #3cc51f;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px;
+    left: 42px;
+    border:2px solid #fff;
+}
+.launchPointer.offline{
+    background: #ce3c39;
+}
+.folderBtn {
+    display: inline-block;
+    background-color: transparent;
+    overflow: hidden;
+    font-size: 1px;
+}
+.folderBtn:before {
+    content: '';
+    float: left;
+    background-color: #9da0a0;
+    width: 15px;
+    height: 3px;
+    margin-left: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    box-shadow: 2px 2px 0 0 #9da0a0;
+}
+.folderBtn:after {
+    content: '';
+    float: left;
+    clear: left;
+    background-color: #d4d6d6;
+    width: 33px;
+    height: 22px;
+    border-radius: 1px;
+}
+@-webkit-keyframes bounce-up {
+    25% {-webkit-transform: translateY(4px);}
+    50%, 100% {-webkit-transform: translateY(0);}
+    75% {-webkit-transform: translateY(-4px);}
+}
+
+@keyframes bounce-up {
+    25% {transform: translateY(4px);}
+    50%, 100% {transform: translateY(0);}
+    75% {transform: translateY(-4px);}
+}
+.animateUpDown{
+    -webkit-animation: bounce-up 0.5s linear infinite;
+    animation: bounce-up 0.5s linear infinite;
+}
+@keyframes up {
+    0% {
+        -webkit-transform: translateY(20px);
+        transform: translateY(20px);
+        opacity: 0
+    }
+
+    to {
+        -webkit-transform: translateY(-20px);
+        transform: translateY(-20px);
+        opacity: 1
+    }
+}
+@media screen and (max-width: 500px) {
+    .launchButtonBox{
+        width: 100%;
+        right: 0px;
+    }
+    .launchButton{
+        width: 43px;
+        height: auto;
+        position: absolute;
+        right: 6px;
+        bottom: 140px;
+        padding: 10px 0px;
+    }
+    .launchButtonNotice{
+        bottom: 120px;
+        right: 42px;
+    }
+    .launchButtonText{
+        white-space: normal;
+        word-wrap: break-word;
+        text-align: center;
+        writing-mode: vertical-lr;
+        text-orientation: mixed;
+        text-align: center;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        letter-spacing: 2px;
+    }
+    .launchButtonText img{margin-bottom: 5px;}
+    .launchButtonText .flyAvatar{
+        display: block;
+        margin-right: 0px;
+        float: none;
+    }
+    .launchButtonNotice:after{
+        right: 4%;
+    }
+}
+/*看板娘*/
+.waifu-toggle {
+    background-color: #fa0;
+    border-radius: 5px;
+    bottom: 66px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    left: 0;
+    margin-left: -100px;
+    padding: 5px 2px 5px 5px;
+    position: fixed;
+    transition: margin-left 1s;
+    width: 60px;
+    writing-mode: vertical-rl;
+}
+
+.waifu-toggle.waifu-toggle-active {
+    margin-left: -50px;
+}
+
+.waifu-toggle.waifu-toggle-active:hover {
+    margin-left: -30px;
+}
+
+.waifu {
+    bottom: -1000px;
+    left: 0;
+    line-height: 0;
+    margin-bottom: -10px;
+    position: fixed;
+    transform: translateY(3px);
+    transition: transform .3s ease-in-out, bottom 3s ease-in-out;
+    z-index: 1;
+}
+.waifu:hover {
+    transform: translateY(0);
+}
+.waifu-tips {
+    top:-50px;
+    animation: shake 50s ease-in-out 5s infinite;
+    background-color: rgba(236, 217, 188, .5);
+    border: 1px solid rgba(224, 186, 140, .62);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px 2px rgba(191, 158, 118, .2);
+    font-size: 14px;
+    line-height: 24px;
+    margin: 0px 20px;
+    min-height: 70px;
+    opacity: 0;
+    overflow: hidden;
+    padding: 5px 10px;
+    position: absolute;
+    text-overflow: ellipsis;
+    transition: opacity 1s;
+    width: 250px;
+    word-break: break-all;
+}
+
+.waifu-tips.waifu-tips-active {
+    opacity: 1;
+    transition: opacity .2s;
+    background-color: rgba(236, 217, 188, 0.8);
+}
+
+.waifu-tips span {
+    color: #0099cc;
+}
+
+.waifu #live2d {
+    cursor: grab;
+    height: 300px;
+    position: relative;
+    width: 300px;
+}
+
+.waifu #live2d:active {
+    cursor: grabbing;
+}
+
+.waifu-tool {
+    color: #aaa;
+    opacity: 0;
+    position: absolute;
+    right: -10px;
+    top: 70px;
+    transition: opacity 1s;
+}
+
+.waifu:hover #waifu-tool {
+    opacity: 1;
+}
+
+.waifu-tool span {
+    color: #7b8c9d;
+    cursor: pointer;
+    display: block;
+    line-height: 30px;
+    text-align: center;
+    transition: color .3s;
+}
+
+.waifu-tool span:hover {
+    color: #0684bd; /* #34495e */
+}
+.waifu-input{
+    background-color: rgba(236, 217, 188, .9);
+    border: 1px solid rgba(224, 186, 140, .8);
+    border-radius: 12px;
+    box-shadow:0 3px 15px 2px rgba(191, 158, 118, .4);
+    left: 20px;
+    bottom: 30px;
+    width: 250px;
+    position: absolute;
+    padding: 6px;
+    z-index: 2;
+}
+@keyframes shake {
+    2% {
+        transform: translate(.5px, -1.5px) rotate(-.5deg);
+    }
+
+    4% {
+        transform: translate(.5px, 1.5px) rotate(1.5deg);
+    }
+
+    6% {
+        transform: translate(1.5px, 1.5px) rotate(1.5deg);
+    }
+
+    8% {
+        transform: translate(2.5px, 1.5px) rotate(.5deg);
+    }
+
+    10% {
+        transform: translate(.5px, 2.5px) rotate(.5deg);
+    }
+
+    12% {
+        transform: translate(1.5px, 1.5px) rotate(.5deg);
+    }
+
+    14% {
+        transform: translate(.5px, .5px) rotate(.5deg);
+    }
+
+    16% {
+        transform: translate(-1.5px, -.5px) rotate(1.5deg);
+    }
+
+    18% {
+        transform: translate(.5px, .5px) rotate(1.5deg);
+    }
+
+    20% {
+        transform: translate(2.5px, 2.5px) rotate(1.5deg);
+    }
+
+    22% {
+        transform: translate(.5px, -1.5px) rotate(1.5deg);
+    }
+
+    24% {
+        transform: translate(-1.5px, 1.5px) rotate(-.5deg);
+    }
+
+    26% {
+        transform: translate(1.5px, .5px) rotate(1.5deg);
+    }
+
+    28% {
+        transform: translate(-.5px, -.5px) rotate(-.5deg);
+    }
+
+    30% {
+        transform: translate(1.5px, -.5px) rotate(-.5deg);
+    }
+
+    32% {
+        transform: translate(2.5px, -1.5px) rotate(1.5deg);
+    }
+
+    34% {
+        transform: translate(2.5px, 2.5px) rotate(-.5deg);
+    }
+
+    36% {
+        transform: translate(.5px, -1.5px) rotate(.5deg);
+    }
+
+    38% {
+        transform: translate(2.5px, -.5px) rotate(-.5deg);
+    }
+
+    40% {
+        transform: translate(-.5px, 2.5px) rotate(.5deg);
+    }
+
+    42% {
+        transform: translate(-1.5px, 2.5px) rotate(.5deg);
+    }
+
+    44% {
+        transform: translate(-1.5px, 1.5px) rotate(.5deg);
+    }
+
+    46% {
+        transform: translate(1.5px, -.5px) rotate(-.5deg);
+    }
+
+    48% {
+        transform: translate(2.5px, -.5px) rotate(.5deg);
+    }
+
+    50% {
+        transform: translate(-1.5px, 1.5px) rotate(.5deg);
+    }
+
+    52% {
+        transform: translate(-.5px, 1.5px) rotate(.5deg);
+    }
+
+    54% {
+        transform: translate(-1.5px, 1.5px) rotate(.5deg);
+    }
+
+    56% {
+        transform: translate(.5px, 2.5px) rotate(1.5deg);
+    }
+
+    58% {
+        transform: translate(2.5px, 2.5px) rotate(.5deg);
+    }
+
+    60% {
+        transform: translate(2.5px, -1.5px) rotate(1.5deg);
+    }
+
+    62% {
+        transform: translate(-1.5px, .5px) rotate(1.5deg);
+    }
+
+    64% {
+        transform: translate(-1.5px, 1.5px) rotate(1.5deg);
+    }
+
+    66% {
+        transform: translate(.5px, 2.5px) rotate(1.5deg);
+    }
+
+    68% {
+        transform: translate(2.5px, -1.5px) rotate(1.5deg);
+    }
+
+    70% {
+        transform: translate(2.5px, 2.5px) rotate(.5deg);
+    }
+
+    72% {
+        transform: translate(-.5px, -1.5px) rotate(1.5deg);
+    }
+
+    74% {
+        transform: translate(-1.5px, 2.5px) rotate(1.5deg);
+    }
+
+    76% {
+        transform: translate(-1.5px, 2.5px) rotate(1.5deg);
+    }
+
+    78% {
+        transform: translate(-1.5px, 2.5px) rotate(.5deg);
+    }
+
+    80% {
+        transform: translate(-1.5px, .5px) rotate(-.5deg);
+    }
+
+    82% {
+        transform: translate(-1.5px, .5px) rotate(-.5deg);
+    }
+
+    84% {
+        transform: translate(-.5px, .5px) rotate(1.5deg);
+    }
+
+    86% {
+        transform: translate(2.5px, 1.5px) rotate(.5deg);
+    }
+
+    88% {
+        transform: translate(-1.5px, .5px) rotate(1.5deg);
+    }
+
+    90% {
+        transform: translate(-1.5px, -.5px) rotate(-.5deg);
+    }
+
+    92% {
+        transform: translate(-1.5px, -1.5px) rotate(1.5deg);
+    }
+
+    94% {
+        transform: translate(.5px, .5px) rotate(-.5deg);
+    }
+
+    96% {
+        transform: translate(2.5px, -.5px) rotate(-.5deg);
+    }
+
+    98% {
+        transform: translate(-1.5px, -1.5px) rotate(-.5deg);
+    }
+
+    0%, 100% {
+        transform: translate(0, 0) rotate(0);
+    }
+}
+.flySimpleIconBox{
+    position: fixed;
+    bottom: 150px;
+    right: 10px;
+    z-index: 999999;
+}
+.flySimpleIcon{
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 14px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.flySimpleIcon .flySimpleDefaultImg{
+    display: inline-block;
+    margin-top: 12px;
+    width: 35px;
+}
+.flySimpleIcon .flySimpleUserImg{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+.flySimpleIconTip{
+    display: none;
+    width: 250px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    position: absolute;
+    top:5px;
+    right: 70px;
+    border-radius: 4px;
+    box-shadow: 0 3px 15px 0 rgba(0,0,0,.25)!important;
+    padding: 14px;
+    font-size: 14px;
+}
+.flySimpleIconBox .flyClose{
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    top: 2px;
+}
+.chatImagePic{
+    max-width: 100%;
+}
+.lineBox{
+    position: fixed!important;
+    bottom: 30%;
+    right: 0px;
+    left: auto;
+    z-index: 999999;
+}
+.lineBox .lineItem{
+    cursor: pointer;
+    width: 50px;
+    height: 55px;
+    background: #2d8cf0;
+    margin-bottom: 1px;
+    color: #fff;
+    line-height: 55px;
+    text-align: center;
+    position: relative;
+}
+.lineItem .layui-icon{
+    font-size: 26px;
+}
+.lineItem:hover{
+    opacity: 0.8;
+}
+.lineTop{
+    margin-top: 4px;
+}
+.lineTip{
+    border-radius: 2px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.2);
+    position: absolute;
+    top:0px;
+    right: 59px;
+    color: #000;
+    padding: 0 10px;
+    background: #fff;
+    display: none;
+}
+.lineTip:before, .lineTip:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-left-color: rgba(255,255,255,1);
+    right: -16px;
+    top: 10px;
+    z-index: 1;
+}
+
+.lineTip:after{
+    right: -18px;
+    border-left-color: rgb(237,237,237);
+    z-index: 0;
+}
+.lineWechat{
+    width: 100px;
+    height: 100px;
+    padding: 0px;
+}
+.kfLayer .layui-layer-title{
+    background-color: #3369FF;
+    background-image: linear-gradient(to right, #0d6efd, #2aadeb);
+    height: 60px;
+    border: 0px;
+    color: #fff;
+    padding: 0px;
+    line-height: normal;
+    border-radius: 12px 12px 0 0;
+}
+.kfLayer .kfBar{
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+.kfLayer .kfBarLogo{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.kfLayer  .kfBarText{
+    float: left;
+    margin:0px 0px 0px 10px;
+    max-width: 220px;
+}
+.kfLayer .kfBarBtn{
+    margin-right: 40px;
+    margin-left: auto;
+    margin-bottom: 7px;
+}
+.kfLayer .kfBarBtn .cursor{
+    cursor: pointer;
+}
+.kfLayer  .kfDesc{
+    font-size: 12px;
+    margin-top: 5px;
+}
+.kfLayer .layui-layer-setwin .layui-layer-close1{
+    background: url("../images/zoom_out.png") no-repeat 0;
+    width: 22px;
+}
+.kfBarAvator{
+    width: 40px;
+    height: 40px;
+    position: relative;
+    margin: 0 0px 0 15px;
+}
+.kfBarStatus{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    --bg-opacity: 1;
+    background-color: #00c41d;
+    background-color: rgba(0,196,29,var(--bg-opacity));
+    border:1px solid #fff;
+    display: inline-block;
+}
+.kfBarAvator i.offline{
+    background: #f56c6c;
+}
