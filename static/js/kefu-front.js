@@ -291,6 +291,10 @@ KEFU.layerOpen=function (width,height,offset){
     }
     var title=`
     <div class="kfBar">
+        <div class="kfBarAvator">
+            <img src="`+this.KEFU_URL+`/static/images/4.jpg" class="kfBarLogo">
+
+        </div>
         <div class="kfBarText">
             <div class="kfName">在线客服系统</div>
          </div>

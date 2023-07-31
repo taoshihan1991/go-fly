@@ -19,10 +19,24 @@
             margin: 15px 0px!important;
             padding: 15px 0px!important;
         }
+        ul,pre{
+            margin: 10px!important;
+            padding: 10px!important;
+        }
+        pre{
+            border: 1px solid #e7eaed;
+            background-color: #f8f8f8;
+        }
+        a {
+            color: #4183C4;
+        }
+        p{
+            line-height: 30px;
+        }
         .main{
             max-width: 900px;
             width: 100%;
-            margin-top: 30px;
+            margin:30px 0px;
         }
     </style>
 </head>
@@ -36,9 +50,11 @@
     <p>Golang语言开源客服系统，主要使用了gin + jwt-go + websocket + go.uuid + gorm + cobra + VueJS + ElementUI + MySQL等技术</p>
     <h3 id="安装使用">安装使用</h3>
     <ul>
-        <li>先安装和运行mysql数据库 ，版本&gt;=5.5 ，创建数据库</li>
+        <li>先安装和运行mysql数据库 ，版本&gt;=5.5 ，创建数据库
+            <pre><code> create database gofly charset utf8mb4;</code></pre>
+        </li>
     </ul>
-    <pre><code> create database gofly charset utf8mb4;</code></pre>
+
     <ul>
         <li><p>配置数据库链接信息，在config目录mysql.json中</p>
             <pre><code class="language-php">{
@@ -80,6 +96,25 @@ go env -w GOPROXY=https://goproxy.cn,direct</code></pre>
     </ul>
     <p>程序正常运行后，监听端口8081，可以直接ip+端口8081访问</p>
     <p>也可以配置域名访问，反向代理到8081端口，就能隐藏端口号</p>
+
+    <h3 id="客服对接">客服对接</h3>
+    <p>聊天链接</p>
+    <p><a href="http://127.0.0.1:8081/chatIndex?kefu_id=kefu2">http://127.0.0.1:8081/chatIndex?kefu_id=kefu2</a></p>
+    <p>弹窗使用</p>
+    <pre><code>    (function(a, b, c, d) {
+        let h = b.getElementsByTagName(&#39;head&#39;)[0];let s = b.createElement(&#39;script&#39;);
+        s.type = &#39;text/javascript&#39;;s.src = c+&quot;/static/js/kefu-front.js&quot;;s.onload = s.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === &quot;loaded&quot; || this.readyState === &quot;complete&quot;) d(c);
+        };h.appendChild(s);
+    })(window, document,&quot;http://127.0.0.1:8081&quot;,function(u){
+        KEFU.init({
+            KEFU_URL:u,
+            KEFU_KEFU_ID: &quot;kefu2&quot;,
+        })
+    });
+</code></pre>
+
+
     <h3 id="版权声明">版权声明</h3>
     <p>当前项目是完整功能代码 , 但是仍然仅支持个人演示测试 , 不包含线上使用 ，禁止一切商用行为。
         使用本软件时,请遵守当地法律法规,任何违法用途一切后果请自行承担.</p>

@@ -68,7 +68,27 @@ go env -w GOPROXY=https://goproxy.cn,direct
 程序正常运行后，监听端口8081，可以直接ip+端口8081访问
 
 也可以配置域名访问，反向代理到8081端口，就能隐藏端口号
+### 客服对接
+聊天链接
 
+http://127.0.0.1:8081/chatIndex?kefu_id=kefu2
+
+弹窗使用
+
+```
+    (function(a, b, c, d) {
+        let h = b.getElementsByTagName('head')[0];let s = b.createElement('script');
+        s.type = 'text/javascript';s.src = c+"/static/js/kefu-front.js";s.onload = s.onreadystatechange = function () {
+            if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") d(c);
+        };h.appendChild(s);
+    })(window, document,"http://127.0.0.1:8081",function(u){
+        KEFU.init({
+            KEFU_URL:u,
+            KEFU_KEFU_ID: "kefu2",
+        })
+    });
+
+```
 ### 版权声明
 
 当前项目是完整功能代码 , 但是仍然仅支持个人演示测试 , 不包含线上使用 ，禁止一切商用行为。
