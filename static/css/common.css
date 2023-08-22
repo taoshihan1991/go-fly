@@ -534,6 +534,38 @@ a{color: #07a9fe;text-decoration: none;}
 .chatArea .el-textarea__inner{
     border: none;
 }
+.tongji{
+    display: flex;
+}
+.tongji .tongjiItem{
+    background: #fff;
+    margin: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+.tongji .tongjiHeader{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e8eaec;
+    color:#17233d;
+}
+.tongji .tongjiBody{
+    font-size: 30px;
+    margin: 0px 10px;
+    padding: 10px 0px;
+    border-bottom: 1px solid #e8eaec;
+    color: #515a6e;
+}
+.tongji .tongjiFooter{
+    font-size: 14px;
+    margin: 10px 10px;
+    color: #515a6e;
+}
+.tongji .tongjiFooter span{
+    color: red;
+    padding: 0 3px;
+}
     /* 定义滚动条的宽度、高度和背景色 */
 ::-webkit-scrollbar {
     width: 8px;
