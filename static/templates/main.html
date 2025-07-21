@@ -1,8 +1,8 @@
-<html lang="cn">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
-    <title>开源智能客服系统</title>
+    <title>Open Source Customer Support System</title>
     <link rel="stylesheet" href="/static/cdn/element-ui/2.15.1/theme-chalk/index.min.css">
     <script src="/static/cdn/vue/2.6.11/vue.min.js"></script>
     <script src="/static/cdn/element-ui/2.15.1/index.js"></script>
@@ -49,10 +49,41 @@
 <body class="text-center">
 <div id="app">
     <template>
-        {{template "nav" }}
-        <div class="mainRight">
+        <div class="mainLeftMenu">
+            <div style="margin: 20px auto;">
+                <el-badge :type="onlineType" is-dot class="item">
+                    <el-avatar class="mainLogo" title="Customer Support" :size="45" src="/static/images/1.jpg"></el-avatar>
+                </el-badge>
+            </div>
+            <div class="menuLeftItem" v-on:click="openIframeUrl('/pannel')">
+                <i class="el-icon-platform-eleme"></i>
+                <span slot="title">Dashboard</span>
+            </div>
 
-            <iframe class="mainIframe"  v-bind:src="iframeUrl" frameborder="0"></iframe>
+            <div class="menuLeftItem active" v-on:click="haveNewMessage='';openIframeUrl('/chat_main')">
+                <el-badge :value="haveNewMessage" class="item">
+                    <i class="el-icon-chat-dot-round"></i>
+                </el-badge>
+                <span slot="title">Chat</span>
+            </div>
+
+            <div style="display: none" class="menuLeftItem" v-on:click="openIframeUrl('/setting_deploy')">
+                <i class="el-icon-notebook-2"></i>
+                <span slot="title">Integration</span>
+            </div>
+
+            <div class="menuLeftItem" v-on:click="openIframeUrl('/setting')">
+                <i class="el-icon-setting"></i>
+                <span slot="title">Settings</span>
+            </div>
+
+            <div class="menuLeftItem menuLeftItemLogout" v-on:click="logout()">
+                <i class="el-icon-switch-button"></i>
+                <span slot="title">Logout</span>
+            </div>
+        </div>
+        <div class="mainRight">
+            <iframe class="mainIframe" v-bind:src="iframeUrl" frameborder="0"></iframe>
         </div>
     </template>
 </div>
@@ -82,7 +113,6 @@
                         body: redata.body,
                         icon: redata.icon
                     }, function(notification) {
-                        //可直接打开通知notification相关联的tab窗口
                         window.focus();
                         notification.close();
                         _this.openIframeUrl("/chat_main");
@@ -92,12 +122,10 @@
             openIframeUrl(url){
                 this.iframeUrl=url;
             },
-            //退出
             logout(){
                 localStorage.removeItem("token");
                 this.openIframeUrl('/login');
             },
-            //跳转
             openUrl(url){
                 window.location.href=url;
             },
@@ -123,7 +151,7 @@
                             _this.iframeUrl = "/chat_main";
                         }
                     }
-                    });
+                });
             }
         },
         created: function () {
@@ -141,5 +169,4 @@
         //alert(1);
     });
 </script>
-
 </html>
