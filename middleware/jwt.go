@@ -21,7 +21,7 @@ func JwtApiMiddleware(c *gin.Context) {
 		token = c.Query("token")
 	}
 	userinfo := tools.ParseToken(token)
-	if userinfo == nil || userinfo["name"] == nil || userinfo["create_time"] == nil {
+	if userinfo == nil || userinfo["kefu_name"] == nil || userinfo["create_time"] == nil {
 		c.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "验证失败",
@@ -39,11 +39,7 @@ func JwtApiMiddleware(c *gin.Context) {
 		})
 		c.Abort()
 	}
-	c.Set("user", userinfo["name"])
-	//log.Println(userinfo)
-	//if userinfo["type"]=="kefu"{
 	c.Set("kefu_id", userinfo["kefu_id"])
-	c.Set("kefu_name", userinfo["name"])
-	c.Set("role_id", userinfo["role_id"])
-	//}
+	c.Set("kefu_name", userinfo["kefu_name"])
+
 }

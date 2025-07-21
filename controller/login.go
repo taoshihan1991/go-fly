@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"log"
 	"net/url"
@@ -17,14 +18,12 @@ import (
 // @Success 200 {object} controller.Response
 // @Failure 200 {object} controller.Response
 // @Router /check [post]
-//验证接口
+// 验证接口
 func LoginCheckPass(c *gin.Context) {
 	password := c.PostForm("password")
 	username := c.PostForm("username")
-
-	info, uRole, ok := CheckKefuPass(username, password)
-	userinfo := make(map[string]interface{})
-	if !ok {
+	info := models.FindUser(username)
+	if info.Name == "" || info.Password != tools.Md5(password) {
 		c.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "验证失败",
@@ -32,30 +31,23 @@ func LoginCheckPass(c *gin.Context) {
 		return
 	}
 
-	userinfo["name"] = info.Name
-	userinfo["kefu_id"] = info.ID
-	userinfo["type"] = "kefu"
-	if uRole.RoleId != 0 {
-		userinfo["role_id"] = uRole.RoleId
-	} else {
-		userinfo["role_id"] = 2
-	}
-	userinfo["create_time"] = time.Now().Unix()
+	userinfo := make(map[string]interface{})
 
+	userinfo["kefu_name"] = info.Name
+	userinfo["kefu_id"] = info.ID
+	userinfo["create_time"] = time.Now().Unix()
 	token, _ := tools.MakeToken(userinfo)
-	userinfo["ref_token"] = true
-	refToken, _ := tools.MakeToken(userinfo)
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "验证成功,正在跳转",
 		"result": gin.H{
 			"token":       token,
-			"ref_token":   refToken,
 			"create_time": userinfo["create_time"],
 		},
 	})
 }
-//远程请求
+
+// 远程请求
 func PostBindOfficial(c *gin.Context) {
 	api := "https://gofly.v1kf.com/2/officialBindIp"
 

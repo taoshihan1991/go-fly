@@ -75,8 +75,8 @@ func PostKefuClient(c *gin.Context) {
 	})
 }
 func GetKefuInfo(c *gin.Context) {
-	kefuId, _ := c.Get("kefu_id")
-	user := models.FindUserById(kefuId)
+	kefuName, _ := c.Get("kefu_name")
+	user := models.FindUser(kefuName.(string))
 	info := make(map[string]interface{})
 	info["name"] = user.Nickname
 	info["id"] = user.Name

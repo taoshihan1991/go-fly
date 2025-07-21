@@ -96,21 +96,20 @@ func install() (bool, error) {
 	return true, nil
 }
 func MainCheckAuth(c *gin.Context) {
-	id, _ := c.Get("kefu_id")
-	userinfo := models.FindUserRole("user.avator,user.name,user.id, role.name role_name", id)
+	kefuName, _ := c.Get("kefu_name")
+	userinfo := models.FindUser(kefuName.(string))
 	c.JSON(200, gin.H{
 		"code": 200,
 		"msg":  "验证成功",
 		"result": gin.H{
-			"avator":    userinfo.Avator,
-			"name":      userinfo.Name,
-			"role_name": userinfo.RoleName,
+			"avator": userinfo.Avator,
+			"name":   userinfo.Name,
 		},
 	})
 }
 func GetStatistics(c *gin.Context) {
 	visitors := models.CountVisitors()
-	message := models.CountMessage(nil,nil)
+	message := models.CountMessage(nil, nil)
 	session := len(ws.ClientList)
 	kefuNum := 0
 	c.JSON(200, gin.H{

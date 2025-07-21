@@ -91,6 +91,7 @@ func InitApiRouter(engine *gin.Engine) {
 	kefuGroup.Use(middleware.JwtApiMiddleware)
 	{
 		kefuGroup.GET("/chartStatistics", controller.GetChartStatistic)
+		kefuGroup.POST("/message", controller.SendKefuMessage)
 	}
 	//微信接口
 	engine.GET("/micro_program", middleware.JwtApiMiddleware, controller.GetCheckWeixinSign)

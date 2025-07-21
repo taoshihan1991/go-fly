@@ -122,6 +122,55 @@ func SendMessageV2(c *gin.Context) {
 	}
 
 }
+
+func SendKefuMessage(c *gin.Context) {
+	fromId, _ := c.Get("kefu_name")
+	toId := c.PostForm("to_id")
+	content := c.PostForm("content")
+	cType := c.PostForm("type")
+	if content == "" {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "内容不能为空",
+		})
+		return
+	}
+	//限流
+	if !tools.LimitFreqSingle("sendmessage:"+c.ClientIP(), 1, 2) {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  c.ClientIP() + "发送频率过快",
+		})
+		return
+	}
+	var kefuInfo models.User
+	var vistorInfo models.Visitor
+	kefuInfo = models.FindUser(fromId.(string))
+	vistorInfo = models.FindVisitorByVistorId(toId)
+
+	if kefuInfo.ID == 0 || vistorInfo.ID == 0 {
+		c.JSON(200, gin.H{
+			"code": 400,
+			"msg":  "用户不存在",
+		})
+		return
+	}
+
+	models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, content, cType)
+	//var msg TypeMessage
+
+	guest, ok := ws.ClientList[vistorInfo.VisitorId]
+
+	if guest != nil && ok {
+		ws.VisitorMessage(vistorInfo.VisitorId, content, kefuInfo)
+	}
+	ws.KefuMessage(vistorInfo.VisitorId, content, kefuInfo)
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "ok",
+	})
+
+}
 func SendVisitorNotice(c *gin.Context) {
 	notice := c.Query("msg")
 	if notice == "" {
