@@ -4,7 +4,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-const SECRET = "taoshihan"
+const SECRET = "golivechat"
 
 func MakeToken(obj map[string]interface{}) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims(obj))

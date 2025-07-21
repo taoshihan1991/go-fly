@@ -3,11 +3,11 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>智能开源客服系统</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.15.1/theme-chalk/index.min.css">
-    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
-    <script src="https://cdn.staticfile.org/element-ui/2.15.1/index.js"></script>
-    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+    <title>Golang Open Source LiveChat Software</title>
+    <link rel="stylesheet" href="/static/cdn/element-ui/2.15.1/theme-chalk/index.min.css">
+    <script src="/static/cdn/vue/2.6.11/vue.min.js"></script>
+    <script src="/static/cdn/element-ui/2.15.1/index.js"></script>
+    <script src="/static/cdn/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
         body {
@@ -60,21 +60,21 @@
 <div id="app" class="signin">
     <template>
         <div class="loginHtml">
-            <h1 class="loginTitle">智能在线客服系统</h1>
+            <h1 class="loginTitle">Open Source LiveChat Software</h1>
             <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
                 <el-form-item  prop="username">
-                    <el-input v-model="kefuForm.username" placeholder="用户名"></el-input>
+                    <el-input v-model="kefuForm.username" placeholder="account"></el-input>
                 </el-form-item>
                 <el-form-item  prop="password">
-                    <el-input show-password v-on:keyup.enter.native="kefuLogin('kefuForm')" v-model="kefuForm.password" placeholder="密码"></el-input>
+                    <el-input show-password v-on:keyup.enter.native="kefuLogin('kefuForm')" v-model="kefuForm.password" placeholder="password"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button style="width: 100%" :loading="loading" type="primary" @click="kefuLogin('kefuForm')">登录</el-button>
+                    <el-button style="width: 100%" :loading="loading" type="primary" @click="kefuLogin('kefuForm')">Log in</el-button>
                 </el-form-item>
             </el-form>
         </div>
 
-        <p class="copyright">智能在线客服系统</p>
+        <p class="copyright">Golang Open Source LiveChat Software</p>
 </template>
 </div>
 </body>
@@ -100,17 +100,11 @@
                 password:'',
             },
             rules: {
-                server: [
-                    { required: true, message: 'IMAP服务器如"imap.sina.net:143"包含端口号', trigger: 'blur' },
-                ],
-                email: [
-                    { required: true, message: '邮箱地址', trigger: 'blur' },
-                ],
                 username: [
-                    { required: true, message: '用户名不能为空', trigger: 'blur' },
+                    { required: true, message: 'account cannot be empty', trigger: 'blur' },
                 ],
                 password: [
-                    { required: true, message: '密码不能为空', trigger: 'blur' },
+                    { required: true, message: 'password cannot be empty', trigger: 'blur' },
                 ],
             },
             showRegHtml:false,

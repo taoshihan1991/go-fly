@@ -1,7 +1,7 @@
 {
 	"Server":"localhost",
 	"Port":"3306",
-	"Database":"go-fly",
-	"Username":"go-fly",
-	"Password":"go-fly"
+	"Database":"goflychat",
+	"Username":"goflychat",
+	"Password":"goflychat"
 }
