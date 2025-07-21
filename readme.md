@@ -1,12 +1,7 @@
-### Important Notice  
-The use of this project for illegal or non-compliant purposes, including but not limited to viruses, trojans, pornography, gambling, fraud, prohibited items, counterfeit products, false information, cryptocurrencies, and financial violations, is strictly prohibited.  
-
-This project is intended solely for personal learning and testing purposes. Any commercial use or illegal activities are explicitly forbidden!!!  
-
----
+## GOFLY LIVE CHAT
+An open-source customer service system developed in Golang
 
 ### Project Overview  
-An open-source customer service system developed in Golang, utilizing the following technologies:  
 - Backend: `gin`, `jwt-go`, `websocket`, `go.uuid`, `gorm`, `cobra`  
 - Frontend: `VueJS`, `ElementUI`  
 - Database: `MySQL`  
@@ -27,9 +22,9 @@ An open-source customer service system developed in Golang, utilizing the follow
 {
 	"Server":"127.0.0.1",
 	"Port":"3306",
-	"Database":"gofly",
-	"Username":"go-fly",
-	"Password":"go-fly"
+	"Database":"goflychat",
+	"Username":"goflychat",
+	"Password":"goflychat"
 }
 ```
 * Install and Configure Golang
@@ -65,15 +60,15 @@ cd go-fly
  go build -o kefu
 ```
 * ​​Run binary​​:
-
+```php
   Linux: ./kefu server (optional flags: -p 8082 -d)
   
   Windows: kefu.exe server (optional flags: -p 8082 -d)
-   
+```  
 * Terminate the Process
-
+```php
    killall kefu
-
+``` 
 
 Once running, the service listens on port 8081. Access via http://[your-ip]:8081.
 
@@ -99,6 +94,13 @@ Popup Integration
     });
 
 ```
+### Important Notice  
+The use of this project for illegal or non-compliant purposes, including but not limited to viruses, trojans, pornography, gambling, fraud, prohibited items, counterfeit products, false information, cryptocurrencies, and financial violations, is strictly prohibited.  
+
+This project is intended solely for personal learning and testing purposes. Any commercial use or illegal activities are explicitly forbidden!!!  
+
+
+
 ### Copyright Notice
 This project provides full-featured code but is intended ​​only for personal demonstration and testing​​. Commercial use is strictly prohibited.
 
