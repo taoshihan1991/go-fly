@@ -1,15 +1,14 @@
-<html lang="cn">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
     <meta name="keywords" content="Golang Open Source LiveChat Software"/>
     <meta name="description" content="Golang Open Source LiveChat Software"/>
-    <title>Golang Open Source LiveChat Software</title>
+    <title>Live Chat Support</title>
     <link rel="stylesheet" href="/static/cdn/element-ui/2.15.1/theme-chalk/index.min.css">
     <script src="/static/cdn/vue/2.6.11/vue.min.js"></script>
     <script src="/static/cdn/element-ui/2.15.1/index.js"></script>
     <script src="/static/cdn/jquery/3.6.0/jquery.min.js"></script>
-
 
     <script src="/assets/js/functions.js?v=fgffdwersdccvcbv"></script>
     <script src="/assets/js/reconnecting-websocket.min.js"></script>
@@ -18,89 +17,81 @@
     <link rel="stylesheet" href="/static/css/icon/iconfont.css?v=fgjlgfda"/>
 </head>
 <body class="visitorBody">
-<div id="app"  class="chatCenter">
+<div id="app" class="chatCenter">
     <template>
-        <!--客服代码-->
+        <!--Customer Service Code-->
         <div class="chatEntTitle" v-show="!isIframe">
             <el-badge type="success" is-dot class="item">
                 <el-avatar class="chatEntTitleLogo" :size="35" :src="kefuInfo.avatar"></el-avatar>
             </el-badge>
             <div>
-                <div><{kefuInfo.nickname}></div>
+                <div>Live Chat Support</div>
             </div>
         </div>
         <div class="chatEntBox">
             <div class="chatContext chatVisitorPage">
                 <div class="chatBox">
                     <div class="chatNotice" v-on:click="getHistoryMessage" v-show="showLoadMore">
-                        <a href="javascript:;" class="chatNoticeContent" style="color: #07a9fe;">点击加载更多记录</a>
+                        <a href="javascript:;" class="chatNoticeContent" style="color: #07a9fe;">Load more messages</a>
                     </div>
                     <el-row :gutter="2" v-for="v in msgList" v-bind:class="{'chatBoxMe': v.is_kefu==false}">
                         <div class="chatTime" v-bind:class="{'chatTimeHide': v.show_time==false}"><span><{v.time}></span></div>
                         <div v-if="v.is_kefu==true" style="display: flex;">
-                            <el-avatar style="margin-right:10px;flex-shrink: 0;"  :size="36" :src="v.avator"></el-avatar>
+                            <el-avatar style="margin-right:10px;flex-shrink: 0;" :size="36" :src="v.avator"></el-avatar>
                             <div class="chatMsgContent">
                                 <div class="chatContent chatContent2 replyContentBtn" v-html="v.content"></div>
                             </div>
                         </div>
                         <div class="kefuMe" v-if="v.is_kefu==false" style="display: flex;justify-content: flex-end;">
                             <div class="chatContent chatContent2 replyContentBtn" v-html="v.content"></div>
-                            <el-avatar style="margin-left:10px;flex-shrink: 0;"  :size="36" :src="v.avator"></el-avatar>
+                            <el-avatar style="margin-left:10px;flex-shrink: 0;" :size="36" :src="v.avator"></el-avatar>
                         </div>
                         <div class="clear"></div>
                     </el-row>
                 </div>
             </div>
             <div class="chatBoxSend">
-
                 <div class="visitorIconBox">
-                    <el-tooltip content="发送表情" placement="top">
+                    <el-tooltip content="Send emoji" placement="top">
                         <div class="iconBtn iconfont icon-xiaolian" style="margin-left:10px;font-size: 24px;cursor: pointer;" @click.stop="showFaceIcon==true?showFaceIcon=false:showFaceIcon=true"></div>
                     </el-tooltip>
 
-                    <el-tooltip content="上传图片" placement="top">
+                    <el-tooltip content="Upload image" placement="top">
                         <div class="iconBtn el-icon-picture" id="uploadImg" v-on:click="uploadImg('/uploadimg')" style="font-size: 24px;"></div>
                     </el-tooltip>
-                    <el-tooltip content="上传附件" placement="top">
-                        <div  class="iconBtn el-icon-upload" id="uploadFile" v-on:click="uploadFile('/uploadfile')" style="font-size: 26px;"></div>
+                    <el-tooltip content="Upload file" placement="top">
+                        <div class="iconBtn el-icon-upload" id="uploadFile" v-on:click="uploadFile('/uploadfile')" style="font-size: 26px;"></div>
                     </el-tooltip>
 
-                    <div  style="display: none" :title="flyLang.emotions" class="icono-smile visitorIconBtns visitorFaceBtn"></div>
+                    <div style="display: none" title="Emoji" class="icono-smile visitorIconBtns visitorFaceBtn"></div>
 
                     <div class="clear"></div>
                 </div>
                 <div class="faceBox visitorFaceBox" v-show="showFaceIcon">
                     <ul class="faceBoxList">
-                        <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face"  :title="v.name"><img :src=v.path></li>
+                        <li v-on:click="faceIconClick(i)" class="faceIcon" v-for="(v,i) in face" :title="v.name"><img :src=v.path></li>
                     </ul>
                     <div class="clear"></div>
                 </div>
-                 <el-input show-word-limit maxlength="100" :rows="2" type="textarea" resize="none" class="visitorEditorArea"  @focus="scrollBottom;showIconBtns=false" @blur="scrollBottom;showIconBtns=false" v-model="messageContent" v-on:keyup.enter.native="chatToUser">
-                    </el-input>
-                <el-button type="primary" size="mini"  class="visitorEditorBtn"   :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser();showIconBtns=false"><{flyLang.sent}></el-button>
+                <el-input show-word-limit maxlength="100" :rows="2" type="textarea" resize="none" class="visitorEditorArea" @focus="scrollBottom;showIconBtns=false" @blur="scrollBottom;showIconBtns=false" v-model="messageContent" v-on:keyup.enter.native="chatToUser">
+                </el-input>
+                <el-button type="primary" size="mini" class="visitorEditorBtn" :disabled="sendDisabled||messageContent==''" v-on:click="chatToUser();showIconBtns=false">Send</el-button>
             </div>
         </div>
         <div class="chatArticle">
-            <h3 class="hotQuestionTitle">公告通知
-            </h3>
+            <h3 class="hotQuestionTitle">Announcements</h3>
             <div class="allNotice" v-html><{kefuInfo.allNotice}></div>
         </div>
 
-
-        <!--//客服代码-->
-        <audio id="chatMessageAudio">
-        </audio>
-        <audio id="chatMessageSendAudio">
-        </audio>
+        <audio id="chatMessageAudio"></audio>
+        <audio id="chatMessageSendAudio"></audio>
     </template>
 </div>
 </body>
 <script>
     var KEFU_ID='{{.KEFU_ID}}';
     var REFER='{{.Refer}}';
-    var LANG=checkLang();
 </script>
-<script src="/assets/js/chat-lang.js?v=0.3.7"></script>
 <script>
     KEFU_ID=KEFU_ID!=""? KEFU_ID:"kefu2";
     new Vue({
@@ -113,7 +104,7 @@
             msgList:[],
             msgListNum:[],
             messageContent:"",
-            chatTitle:GOFLY_LANG[LANG]['connecting'],
+            chatTitle:"Connecting...",
             visitor:{},
             face:[],
             showKfonline:false,
@@ -121,7 +112,6 @@
             focusSendConn:false,
             timer:null,
             sendDisabled:false,
-            flyLang:GOFLY_LANG[LANG],
             showIconBtns:false,
             showFaceIcon:false,
             isIframe:false,
@@ -134,19 +124,16 @@
             },
         },
         methods: {
-            //初始化websocket
             initConn:function() {
-                let socket = new ReconnectingWebSocket(this.server+"?visitor_id="+this.visitor.visitor_id);//创建Socket实例
+                let socket = new ReconnectingWebSocket(this.server+"?visitor_id="+this.visitor.visitor_id);
                 this.socket = socket
                 this.socket.onmessage = this.OnMessage;
                 this.socket.onopen = this.OnOpen;
                 this.socket.onclose = this.OnClose;
-                //心跳
                 this.ping();
             },
             OnOpen:function() {
                 console.log("ws:onopen");
-                //获取欢迎
                 this.getNotice();
                 this.socketClosed=false;
                 this.focusSendConn=false;
@@ -162,7 +149,7 @@
                         return;
                     }
                     this.visitor.to_id=msg.id;
-                    this.showTitle(msg.name+","+GOFLY_LANG[LANG]['chating']);
+                    this.showTitle(msg.name+", is chatting with you");
                     this.scrollBottom();
                     this.showKfonline=true;
                 }
@@ -202,27 +189,26 @@
                         notification.close();
                     });
                     this.scrollBottom();
-                    flashTitle();//标题闪烁
+                    flashTitle();
                     clearInterval(this.timer);
-                    this.alertSound();//提示音
+                    this.alertSound();
                 }
                 if (redata.type == "close") {
-                    this.chatTitle=GOFLY_LANG[LANG]['closemes'];
+                    this.chatTitle="The conversation has ended";
                     $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                     this.scrollBottom();
                     this.socket.close();
-                    //this.socketClosed=true;
                     this.focusSendConn=true;
                 }
                 if (redata.type == "force_close") {
-                    this.chatTitle=GOFLY_LANG[LANG]['forceclosemes'];
+                    this.chatTitle="The conversation was terminated by the agent";
                     $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                     this.scrollBottom();
                     this.socket.close();
                     this.socketClosed=true;
                 }
                 if (redata.type == "auto_close") {
-                    this.chatTitle=GOFLY_LANG[LANG]['autoclosemes'];
+                    this.chatTitle="The conversation timed out due to inactivity";
                     $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
                     this.scrollBottom();
                     this.socket.close();
@@ -230,7 +216,6 @@
                 }
                 window.parent.postMessage(redata,"*");
             },
-            //发送给客户
             chatToUser:function() {
                 var messageContent=this.messageContent.trim("\r\n");
                 messageContent=messageContent.replace("\n","");
@@ -242,7 +227,7 @@
                 this.messageContent=messageContent;
                 if(this.socketClosed){
                     this.$message({
-                        message: '连接关闭!请重新打开页面',
+                        message: 'Connection closed! Please refresh the page',
                         type: 'warning'
                     });
                     return;
@@ -266,7 +251,6 @@
                 mes.from_id = this.visitor.visitor_id;
                 mes.to_id = this.visitor.to_id;
                 mes.content = this.messageContent;
-                //发送消息
                 $.post("/2/message",mes,function(res){
                     _this.sendDisabled=false;
                     if(res.code!=200){
@@ -286,23 +270,16 @@
             OnClose:function() {
                 console.log("ws:onclose");
                 this.focusSendConn=true;
-                //this.socketClosed=true;
-                // this.chatTitle="连接关闭!请重新打开页面";
-                // $(".chatBox").append("<div class=\"chatTime\">"+this.chatTitle+"</div>");
-                // this.scrollBottom();
             },
-            //获取当前用户信息
             getUserInfo:function(){
-                let obj=this.getCache("visitor");
+                let obj=this.getCache("visitor_"+KEFU_ID);
                 var visitor_id=""
                 var to_id=KEFU_ID;
                 if(obj){
                     visitor_id=obj.visitor_id;
-                    //to_id=obj.to_id;
                 }
                 let _this=this;
                 var extra=getQuery("extra");
-                //发送消息
                 $.post("/visitor_login",{visitor_id:visitor_id,refer:REFER,to_id:to_id,extra:extra},function(res){
                     if(res.code!=200){
                         _this.$message({
@@ -314,16 +291,10 @@
                     }
                     _this.visitor=res.result;
                     _this.getHistoryMessage();
-                    _this.setCache("visitor",res.result);
-                    //_this.getMesssagesByVisitorId();
+                    _this.setCache("visitor_"+KEFU_ID,res.result);
                     _this.initConn();
                 });
-                // }else{
-                //     this.visitor=obj;
-                //     this.initConn();
-                // }
             },
-            //获取信息列表
             getHistoryMessage:function(){
                 let params={
                     page:this.messages.page,
@@ -359,20 +330,17 @@
                     _this.messages.page++;
                 });
             },
-            //滚动到底部
             scrollBottom:function(){
                 var _this=this;
                 this.$nextTick(function(){
                     $('.chatVisitorPage').scrollTop($(".chatVisitorPage")[0].scrollHeight);
                 });
             },
-            //获取日期
-            getNowDate : function() {// 获取日期
+            getNowDate : function() {
                 var d = new Date(new Date());
                 return d.getFullYear() + '-' + this.digit(d.getMonth() + 1) + '-' + this.digit(d.getDate())
                     + ' ' + this.digit(d.getHours()) + ':' + this.digit(d.getMinutes()) + ':' + this.digit(d.getSeconds());
             },
-            //补齐数位
             digit : function (num) {
                 return num < 10 ? '0' + (num | 0) : num;
             },
@@ -380,19 +348,19 @@
                 if(navigator.cookieEnabled&&typeof window.localStorage !== 'undefined'){
                     localStorage.setItem(key, JSON.stringify(obj));
                 }
-            },getCache : function (key){
+            },
+            getCache : function (key){
                 if(navigator.cookieEnabled&&typeof window.localStorage !== 'undefined') {
                     return JSON.parse(localStorage.getItem(key));
                 }
             },
-            //获取自动欢迎语句
             getNotice : function (){
                 let _this=this;
                 $.get("/notice?kefu_id="+KEFU_ID,function(res) {
                     var code=res.code;
                     if(code!=200) return;
                     _this.kefuInfo=res.result;
-                    _this.showTitle(_this.kefuInfo.nickname+" 为您服务");
+                    _this.showTitle(_this.kefuInfo.nickname+" is ready to help");
                     if(!_this.kefuInfo.welcome) return;
                     var msg={
                         content:replaceContent(_this.kefuInfo.welcome),
@@ -409,31 +377,18 @@
             initCss:function(){
                 var _this=this;
                 $(function () {
-                    //$(".chatContext").css("max-height",$(window).height());
-                    // if (top.location != location){
-                    //     $(".chatContext").css("max-height",$(window).height()-65);
-                    // }
-                    //展示表情
                     var faces=placeFace();
                     $.each(faceTitles, function (index, item) {
                         _this.face.push({"name":item,"path":faces[item]});
                     });
 
-
                     var windheight = $(window).height();
                     $(window).resize(function(){
-                        var docheight = $(window).height();  /*唤起键盘时当前窗口高度*/
-                        //_this.scrollBottom();
+                        var docheight = $(window).height();
                         $('body').scrollTop(99999999);
-                        // if(docheight < windheight){            /*当唤起键盘高度小于未唤起键盘高度时执行*/
-                        //     $(".chatBoxSend").css("position","static");
-                        // }else{
-                        //     $(".chatBoxSend").css("position","fixed");
-                        // }
                     });
                 });
             },
-            //心跳
             ping:function(){
                 let _this=this;
                 let mes = {}
@@ -445,7 +400,6 @@
                     }
                 },10000);
             },
-            //初始化
             init:function(){
                 var _this=this;
                 this.initCss();
@@ -455,7 +409,6 @@
                     $('.faceBox').hide();
                 });
                 window.onfocus = function () {
-                    //_this.scrollBottom();
                     clearFlashTitle();
                     window.parent.postMessage({type:"focus"},"*");
                     if(_this.socketClosed){
@@ -467,14 +420,11 @@
                     _this.initConn();
                     _this.scrollBottom();
                 }
-
             },
-            //表情点击事件
             faceIconClick:function(index){
                 $('.faceBox').hide();
                 this.messageContent+="face"+this.face[index].name;
             },
-            //上传图片
             uploadImg:function (url){
                 let _this=this;
                 $('#uploadImg').after('<input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" id="uploadImgFile" name="file" style="display:none" >');
@@ -482,7 +432,7 @@
                 $("#uploadImgFile").change(function (e) {
                     var formData = new FormData();
                     var file = $("#uploadImgFile")[0].files[0];
-                    formData.append("imgfile",file); //传给后台的file的key值是可以自己定义的
+                    formData.append("imgfile",file);
                     filter(file) && $.ajax({
                         url: url || '',
                         type: "post",
@@ -508,15 +458,14 @@
                     });
                 });
             },
-            //上传文件
             uploadFile:function (url){
                 let _this=this;
-                $('#uploadFile').after('<input type="file"  id="uploadRealFile" name="file2" style="display:none" >');
+                $('#uploadFile').after('<input type="file" id="uploadRealFile" name="file2" style="display:none" >');
                 $("#uploadRealFile").click();
                 $("#uploadRealFile").change(function (e) {
                     var formData = new FormData();
                     var file = $("#uploadRealFile")[0].files[0];
-                    formData.append("realfile",file); //传给后台的file的key值是可以自己定义的
+                    formData.append("realfile",file);
                     console.log(formData);
                     $.ajax({
                         url: url || '',
@@ -527,7 +476,6 @@
                         dataType: 'JSON',
                         mimeType: "multipart/form-data",
                         success: function (res) {
-
                             if(res.code!=200){
                                 _this.$message({
                                     message: res.msg,
@@ -550,12 +498,10 @@
                     });
                 });
             },
-            //粘贴上传图片
             onPasteUpload:function(event){
                 let items = event.clipboardData && event.clipboardData.items;
                 let file = null
                 if (items && items.length) {
-                    // 检索剪切板items
                     for (var i = 0; i < items.length; i++) {
                         if (items[i].type.indexOf('image') !== -1) {
                             file = items[i].getAsFile()
@@ -592,7 +538,6 @@
                     }
                 });
             },
-            //提示音
             alertSound:function(){
                 alertSound("chatMessageAudio",'/static/images/alert2.ogg');
             },
@@ -641,13 +586,7 @@
         created: function () {
             this.init();
             this.getUserInfo();
-            //加载历史记录
-            //this.msgList=this.getHistory();
-            //滚动底部
-            //this.scrollBottom();
-
         }
     })
-
 </script>
 </html>

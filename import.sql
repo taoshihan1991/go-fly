@@ -13,7 +13,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 TRUNCATE TABLE `user`;
 INSERT INTO `user` (`id`, `name`, `password`, `nickname`, `created_at`, `updated_at`, `deleted_at`, `avator`) VALUE
-(1, 'kefu2', '202cb962ac59075b964b07152d234b70', 'Open Source LiveChat Software', '2020-06-27 19:32:41', '2020-07-04 09:32:20', NULL, '/static/images/4.jpg');
+(1, 'kefu2', '202cb962ac59075b964b07152d234b70', 'Open Source LiveChat Support', '2020-06-27 19:32:41', '2020-07-04 09:32:20', NULL, '/static/images/4.jpg');
 
 DROP TABLE IF EXISTS `visitor`;
 CREATE TABLE `visitor` (
@@ -55,11 +55,11 @@ CREATE TABLE `message` (
 
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
- `id` int(11) NOT  NULL AUTO_INCREMENT,
+ `id` int(11) NOT NULL AUTO_INCREMENT,
  `user_id` int(11) NOT NULL DEFAULT '0',
  `role_id` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUE
 (1, 1, 1);
 
@@ -72,7 +72,7 @@ CREATE TABLE `role` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
-(1, '普通客服', '*', '*');
+(1, 'Customer Support', '*', '*');
 
 DROP TABLE IF EXISTS `welcome`;
 CREATE TABLE `welcome` (
@@ -87,9 +87,9 @@ CREATE TABLE `welcome` (
  KEY `keyword` (`keyword`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
-(NULL, 'kefu2', '我暂时离线，留言已转发到我的邮箱，稍后回复~', 1, '2020-08-24 02:57:49','offline');
+(NULL, 'kefu2', 'I am currently offline. Your message has been forwarded to my email and I will reply soon.', 1, '2020-08-24 02:57:49','offline');
 INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
-(NULL, 'kefu2', '请问有什么可以帮您？', 0, '2020-08-24 02:57:49','welcome');
+(NULL, 'kefu2', 'How may I help you today?', 0, '2020-08-24 02:57:49','welcome');
 
 DROP TABLE IF EXISTS `ipblack`;
 CREATE TABLE `ipblack` (
@@ -110,29 +110,32 @@ CREATE TABLE `config` (
  PRIMARY KEY (`id`),
  UNIQUE KEY `conf_key` (`conf_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '公告信息', 'AllNotice', '开源智能客服系统为您服务');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '离线消息', 'OfflineMessage', '我现在离线，稍后回复您！');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '欢迎消息', 'WelcomeMessage', '有什么可以帮您？');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '邮箱地址(SMTP地址)', 'NoticeEmailSmtp', '');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '邮箱账户', 'NoticeEmailAddress', '');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES (NULL, '邮箱密码(SMTP密码)', 'NoticeEmailPassword', '');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
+(NULL, 'Announcement', 'AllNotice', 'Open source customer support system at your service');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
+(NULL, 'Offline Message', 'OfflineMessage', 'I am currently offline and will reply to you later!');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
+(NULL, 'Welcome Message', 'WelcomeMessage', 'How may I help you?');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
+(NULL, 'Email Address (SMTP)', 'NoticeEmailSmtp', '');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
+(NULL, 'Email Account', 'NoticeEmailAddress', '');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
+(NULL, 'Email Password (SMTP)', 'NoticeEmailPassword', '');
 
 DROP TABLE IF EXISTS `about`;
 CREATE TABLE `about` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title_cn` varchar(255) NOT NULL DEFAULT '',
   `title_en` varchar(255) NOT NULL DEFAULT '',
-  `keywords_cn` varchar(255) NOT NULL DEFAULT '',
   `keywords_en` varchar(255) NOT NULL DEFAULT '',
-  `desc_cn` varchar(1024) NOT NULL DEFAULT '',
   `desc_en` varchar(1024) NOT NULL DEFAULT '',
   `css_js` text NOT NULL,
-  `html_cn` text NOT NULL,
   `html_en` text NOT NULL,
   `page` varchar(50) NOT NULL DEFAULT '',
-PRIMARY KEY (`id`),
-UNIQUE KEY `page` (`page`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `page` (`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `reply_group`;
 CREATE TABLE `reply_group` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -141,7 +144,9 @@ CREATE TABLE `reply_group` (
  PRIMARY KEY (`id`),
  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `reply_group` (`id`, `group_name`, `user_id`) VALUES (NULL, '常见问题', 'kefu2');
+INSERT INTO `reply_group` (`id`, `group_name`, `user_id`) VALUES
+(NULL, 'Frequently Asked Questions', 'kefu2');
+
 DROP TABLE IF EXISTS `reply_item`;
 CREATE TABLE `reply_item` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -153,7 +158,7 @@ CREATE TABLE `reply_item` (
  KEY `user_id` (`user_id`),
  KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `reply_item` (`id`, `content`, `group_id`, `user_id`, `item_name`) VALUES (NULL, '在这里[官网]link[https://gofly.sopans.com]!','1','kefu2', '官方地址在哪?');
+
 DROP TABLE IF EXISTS `land_page`;
 CREATE TABLE `land_page` (
   `id` int(11) NOT NULL,
@@ -162,18 +167,24 @@ CREATE TABLE `land_page` (
   `content` text NOT NULL,
   `language` varchar(50) NOT NULL DEFAULT '',
   `page_id` varchar(50) NOT NULL DEFAULT '',
-   PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 DROP TABLE IF EXISTS `language`;
 CREATE TABLE `language` (
   `id` int(11) NOT NULL,
   `country` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `short_key` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (1, '中文简体', 'zh-cn');
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (2, '正體中文', 'zh-tw');
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (3, 'English', 'en_us');
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES (4, '日本語', 'ja_jp');
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
+(1, 'Simplified Chinese', 'zh-cn');
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
+(2, 'Traditional Chinese', 'zh-tw');
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
+(3, 'English', 'en-us');
+INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
+(4, 'Japanese', 'ja-jp');
+
 DROP TABLE IF EXISTS `user_client`;
 CREATE TABLE `user_client` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
