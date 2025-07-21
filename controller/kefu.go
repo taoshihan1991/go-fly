@@ -1,12 +1,11 @@
 package controller
 
 import (
-	"github.com/dchest/captcha"
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
+	"net/http"
 )
 
 func PostKefuAvator(c *gin.Context) {
@@ -161,74 +160,45 @@ func GetKefuInfoSetting(c *gin.Context) {
 	})
 }
 func PostKefuRegister(c *gin.Context) {
-	name := c.PostForm("name")
+	name := c.PostForm("username")
 	password := c.PostForm("password")
-	rePassword := c.PostForm("rePassword")
-	avator := "/static/images/4.jpg"
-	nickname := c.PostForm("nickname")
-	captchaCode := c.PostForm("captcha")
-	roleId := 1
-	if name == "" || password == "" || rePassword == "" || nickname == "" || captchaCode == "" {
-		c.JSON(200, gin.H{
-			"code":   400,
-			"msg":    "参数不能为空",
-			"result": "",
-		})
-		return
-	}
-	if password != rePassword {
-		c.JSON(200, gin.H{
-			"code":   400,
-			"msg":    "密码不一致",
-			"result": "",
-		})
-		return
-	}
-	oldUser := models.FindUser(name)
-	if oldUser.Name != "" {
-		c.JSON(200, gin.H{
-			"code":   400,
-			"msg":    "用户名已经存在",
-			"result": "",
-		})
-		return
-	}
-	session := sessions.Default(c)
-	if captchaId := session.Get("captcha"); captchaId != nil {
-		session.Delete("captcha")
-		_ = session.Save()
-		if !captcha.VerifyString(captchaId.(string), captchaCode) {
-			c.JSON(200, gin.H{
-				"code":   400,
-				"msg":    "验证码验证失败",
-				"result": "",
-			})
-			return
-		}
-	} else {
-		c.JSON(200, gin.H{
-			"code":   400,
-			"msg":    "验证码失效",
-			"result": "",
-		})
-		return
-	}
-	//插入新用户
-	uid := models.CreateUser(name, tools.Md5(password), avator, nickname)
-	if uid == 0 {
-		c.JSON(200, gin.H{
-			"code":   400,
-			"msg":    "增加用户失败",
-			"result": "",
-		})
-		return
-	}
-	models.CreateUserRole(uid, uint(roleId))
+	avatar := "/static/images/4.jpg"
 
-	c.JSON(200, gin.H{
-		"code":   200,
-		"msg":    "注册完成",
-		"result": "",
+	if name == "" || password == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"code":   400,
+			"msg":    "All fields are required",
+			"result": nil,
+		})
+		return
+	}
+
+	existingUser := models.FindUser(name)
+	if existingUser.Name != "" {
+		c.JSON(http.StatusOK, gin.H{
+			"code":   409,
+			"msg":    "Username already exists",
+			"result": nil,
+		})
+		return
+	}
+
+	userID := models.CreateUser(name, tools.Md5(password), avatar, "")
+	if userID == 0 {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":   500,
+			"msg":    "Registration Failed",
+			"result": nil,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "Registration successful",
+		"result": gin.H{
+			"user_id": userID,
+		},
 	})
 }
 func PostKefuInfo(c *gin.Context) {

@@ -1,9 +1,9 @@
-<html lang="cn">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Golang Open Source LiveChat Software</title>
+    <title>Go Open Source Live Chat Software</title>
     <link rel="stylesheet" href="/static/cdn/element-ui/2.15.1/theme-chalk/index.min.css">
     <script src="/static/cdn/vue/2.6.11/vue.min.js"></script>
     <script src="/static/cdn/element-ui/2.15.1/index.js"></script>
@@ -14,153 +14,204 @@
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
-        }
-        a {
-            text-decoration: none;
-            color: #3973ac;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
         .signin {
             width: 350px;
             padding: 20px;
-            margin:100px auto;
             background: #fff;
             -webkit-box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
             box-shadow: 0 1px 2px 0 rgba(101,129,156,.08);
+            border-radius: 4px;
         }
-        .signin h1,.signin h2,.signin .copyright{
+        .signin h1, .signin h2, .signin .copyright {
             font-weight: normal;
             color: #4d627b;
             text-align: center;
         }
-        .signin .loginTitle{
-            font-size: 24px;
+        .signin .loginTitle {
+            font-size: 22px;
+            margin: 20px 0px;
         }
-        .signin .loginDesc{
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #409EFF;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .signin .copyright{
+        .signin .copyright {
             font-size: 12px;
+            margin-top: 20px;
         }
         @media (max-width: 768px) {
-            .signin{
+            .signin {
                 width: 90%;
-                margin:40px auto;
-                background-color: #f5f5f5;
-                box-shadow:none;
+                box-shadow: none;
             }
         }
     </style>
-
 </head>
 <body>
 <div id="app" class="signin">
     <template>
         <div class="loginHtml">
-            <h1 class="loginTitle">Open Source LiveChat Software</h1>
-            <el-form :model="kefuForm"  :rules="rules" ref="kefuForm">
-                <el-form-item  prop="username">
-                    <el-input v-model="kefuForm.username" placeholder="account"></el-input>
+            <h1 class="loginTitle">Open Source Live Chat</h1>
+            <el-form :model="form" :rules="rules" ref="loginForm" v-show="!showRegHtml">
+                <el-form-item prop="account">
+                    <el-input v-model="form.account" placeholder="Username"></el-input>
                 </el-form-item>
-                <el-form-item  prop="password">
-                    <el-input show-password v-on:keyup.enter.native="kefuLogin('kefuForm')" v-model="kefuForm.password" placeholder="password"></el-input>
+                <el-form-item prop="password">
+                    <el-input show-password v-on:keyup.enter.native="handleLogin('loginForm')" v-model="form.password" placeholder="Password"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button style="width: 100%" :loading="loading" type="primary" @click="kefuLogin('kefuForm')">Log in</el-button>
+                    <el-button style="width: 100%" type="primary" @click="handleLogin('loginForm')">Sign In</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button style="width: 100%" @click="showRegHtml=true">Create Account</el-button>
+                </el-form-item>
+            </el-form>
+
+            <el-form :model="form" :rules="rules" ref="registerForm" v-show="showRegHtml">
+                <el-form-item prop="account">
+                    <el-input v-model="form.account" placeholder="Username"></el-input>
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-input show-password v-model="form.password" placeholder="Password"></el-input>
+                </el-form-item>
+                <el-form-item prop="rePassword">
+                    <el-input show-password v-on:keyup.enter.native="handleRegister('registerForm')" v-model="form.rePassword" placeholder="Confirm Password"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button style="width: 100%" type="primary" @click="handleRegister('registerForm')">Register</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button style="width: 100%" @click="showRegHtml=false">Back to Login</el-button>
                 </el-form-item>
             </el-form>
         </div>
 
-        <p class="copyright">Golang Open Source LiveChat Software</p>
-</template>
+        <p class="copyright">Go Open Source Live Chat Software</p>
+    </template>
 </div>
 </body>
 <script>
-	new Vue({
-		el: '#app',
-        delimiters:["<{","}>"],
-		data: {
-            window:window,
-            activeName:"second",
-			loading:false,
-            localAuth:{
-                username:'',
-                password:'',
-            },
-            ruleForm:{
-                server:'',
-                email:'',
-                password:'',
-            },
-            kefuForm:{
-                username:'',
-                password:'',
+    new Vue({
+        el: '#app',
+        delimiters: ["<{", "}>"],
+        data: {
+            form: {
+                account: "",
+                password: "",
+                rePassword: ""
             },
             rules: {
-                username: [
-                    { required: true, message: 'account cannot be empty', trigger: 'blur' },
+                account: [
+                    { required: true, message: 'Please input your username', trigger: 'blur' },
+                    { min: 2, max: 20, message: 'Length should be 2 to 20 characters', trigger: 'blur' }
                 ],
                 password: [
-                    { required: true, message: 'password cannot be empty', trigger: 'blur' },
+                    { required: true, message: 'Please input your password', trigger: 'blur' },
+                    { min: 2, message: 'Password must be at least 2 characters', trigger: 'blur' }
                 ],
+                rePassword: [
+                    { required: true, message: 'Please confirm your password', trigger: 'blur' },
+                    { validator: this.validatePasswordMatch, trigger: 'blur' }
+                ]
             },
-            showRegHtml:false,
-            newName:"",
-            nickname:"",
-            newPass:"",
-            newRefPass:"",
-            captcha:"",
-            codeSrc:"/captcha",
-		},
-		methods: {
-            //提交表单
-            kefuLogin(formName){
-                let _this=this;
+            showRegHtml: false,
+        },
+        methods: {
+            validatePasswordMatch(rule, value, callback) {
+                if (value !== this.form.password) {
+                    callback(new Error('Passwords do not match!'));
+                } else {
+                    callback();
+                }
+            },
+
+            handleLogin(formName) {
                 this.$refs[formName].validate((valid) => {
-                    if (!valid) {
-                        return false;
-                    } else {
-                        let data = {};
-                        data.type="kefu";
-                        data.username = _this.kefuForm.username;
-                        data.password = _this.kefuForm.password;
-                        _this.loading = true;
-                        $.post("/check", data, function (data) {
-                            if (data.code == 200) {
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'success'
-                                });
-                                localStorage.setItem("token",data.result.token);
-                                localStorage.setItem("ref_token",data.result.ref_token);
-                                localStorage.setItem("create_time",data.result.create_time);
-                                window.location.href="/main";
-                            } else {
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'error'
-                                });
-                            }
-                            _this.loading = false;
-                        });
+                    if (valid) {
+                        this.login();
                     }
                 });
-			},
-            //重置表单
-            resetForm(formName) {
-                this.loading=false;
-                this.$refs[formName].resetFields();
             },
-		},
-        created: function () {
-            if (top.location != location){
+
+            handleRegister(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.register();
+                    }
+                });
+            },
+
+            login() {
+                let data = {
+                    "username": this.form.account,
+                    "password": this.form.password,
+                };
+
+                $.post("/check", data, (response) => {
+                    if (response.code === 200) {
+                        this.$message({
+                            message: 'Login successful',
+                            type: 'success'
+                        });
+                        localStorage.setItem("token", response.result.token);
+                        localStorage.setItem("ref_token", response.result.ref_token);
+                        localStorage.setItem("create_time", response.result.create_time);
+                        window.location.href = "/main";
+                    } else {
+                        this.$message({
+                            message: response.msg || 'Login failed',
+                            type: 'error'
+                        });
+                    }
+                }).fail(() => {
+                    this.$message({
+                        message: 'Network error',
+                        type: 'error'
+                    });
+                });
+            },
+
+            register() {
+                if (this.form.password !== this.form.rePassword) {
+                    this.$message({
+                        message: 'Passwords do not match',
+                        type: 'error'
+                    });
+                    return;
+                }
+
+                let data = {
+                    "username": this.form.account,
+                    "password": this.form.password,
+                };
+
+                $.post("/register", data, (response) => {
+                    if (response.code === 200) {
+                        this.$message({
+                            message: 'Registration successful',
+                            type: 'success'
+                        });
+                        this.showRegHtml = false;
+                    } else {
+                        this.$message({
+                            message: response.msg || 'Registration failed',
+                            type: 'error'
+                        });
+                    }
+                }).fail(() => {
+                    this.$message({
+                        message: 'Network error',
+                        type: 'error'
+                    });
+                });
+            }
+        },
+        created: function() {
+            if (top.location != location) {
                 top.location.href = location.href;
             }
         }
-	})
-
+    });
 </script>
 </html>
