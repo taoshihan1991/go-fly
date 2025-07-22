@@ -95,18 +95,7 @@ func install() (bool, error) {
 	}
 	return true, nil
 }
-func MainCheckAuth(c *gin.Context) {
-	kefuName, _ := c.Get("kefu_name")
-	userinfo := models.FindUser(kefuName.(string))
-	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "验证成功",
-		"result": gin.H{
-			"avator": userinfo.Avator,
-			"name":   userinfo.Name,
-		},
-	})
-}
+
 func GetStatistics(c *gin.Context) {
 	visitors := models.CountVisitors()
 	message := models.CountMessage(nil, nil)

@@ -137,8 +137,8 @@
             checkAuth(){
                 let _this=this;
                 $.ajax({
-                    type:"post",
-                    url:"/check_auth",
+                    type:"GET",
+                    url:"/kefuinfo",
                     headers:{
                         "token":localStorage.getItem("token")
                     },
@@ -147,7 +147,6 @@
                             window.location.href="/login";
                         } else {
                             _this.adminAvator=data.result.avator;
-                            _this.adminRole=data.result.role_name;
                             _this.iframeUrl = "/pannel";
                         }
                     }
