@@ -55,12 +55,12 @@
                     <el-avatar class="mainLogo" title="Customer Support" :size="45" src="/static/images/1.jpg"></el-avatar>
                 </el-badge>
             </div>
-            <div class="menuLeftItem" v-on:click="openIframeUrl('/pannel')">
+            <div class="menuLeftItem active" v-on:click="openIframeUrl('/pannel')">
                 <i class="el-icon-platform-eleme"></i>
                 <span slot="title">Dashboard</span>
             </div>
 
-            <div class="menuLeftItem active" v-on:click="haveNewMessage='';openIframeUrl('/chat_main')">
+            <div class="menuLeftItem" v-on:click="haveNewMessage='';openIframeUrl('/chat_main')">
                 <el-badge :value="haveNewMessage" class="item">
                     <i class="el-icon-chat-dot-round"></i>
                 </el-badge>
@@ -99,7 +99,7 @@
             adminRole:"",
             onlineType:"success",
             haveNewMessage:"",
-            iframeUrl:"/chat_main",
+            iframeUrl:"/pannel",
         },
         methods: {
             focusWindow(){
@@ -148,7 +148,7 @@
                         } else {
                             _this.adminAvator=data.result.avator;
                             _this.adminRole=data.result.role_name;
-                            _this.iframeUrl = "/chat_main";
+                            _this.iframeUrl = "/pannel";
                         }
                     }
                 });

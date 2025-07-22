@@ -105,6 +105,7 @@
                 confirm_new_pass:""
             },
             avatarUrl:"",
+            chatEndpoint: "",
         },
 
         methods: {
@@ -539,6 +540,29 @@
                     type: 'success'
                 });
             },
+            //获取客服信息
+            getKefuInfo(){
+                let _this=this;
+                $.ajax({
+                    type:"get",
+                    url:"/kefuinfo",
+                    headers:{
+                        "token":localStorage.getItem("token")
+                    },
+                    success: function(data) {
+                        if(data.code==200 && data.result!=null){
+                            _this.kefuInfo=data.result;
+                            _this.chatEndpoint=window.location.origin + '/chatIndex?kefu_id='+_this.kefuInfo.username;
+                        }
+                        if(data.code!=200){
+                            _this.$message({
+                                message: data.msg,
+                                type: 'error'
+                            });
+                        }
+                    }
+                });
+            },
         },
 
         mounted:function(){
@@ -548,9 +572,7 @@
             }
         },
         created: function () {
-            // if(ACTION=="setting"){
-            //     this.showNotice();
-            // }
+            this.getKefuInfo();
             this.initInfo();
         }
     })

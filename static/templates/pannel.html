@@ -1,61 +1,87 @@
-{{template "header" }}
-<div id="app" style="width:100%;background: #eef0f6">
+{{template "header"}}
+<style>
+    .deployment-guide {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 24px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    }
+    .deployment-section {
+        margin: 30px 0;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+    .el-input {
+        width: 100%;
+    }
+    .el-input__inner {
+        height: 40px;
+        font-size: 14px;
+        padding: 0 12px;
+    }
+    .el-step__title {
+        font-size: 14px;
+    }
+    .el-step__description {
+        font-size: 12px;
+    }
+    h2 {
+        color: #303133;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    h3 {
+        color: #606266;
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+    #app {
+        background: #f5f7fa;
+        padding: 20px;
+        min-height: calc(100vh - 40px);
+    }
+    .el-card {
+        border-radius: 8px;
+    }
+    .el-card__header {
+        padding: 18px 20px;
+    }
+</style>
+<div id="app" style="width:100%;background: #f5f7fa">
     <template>
-        <div class="tongji">
-            <div class="tongjiItem">
-                <div class="tongjiHeader">
-                    全部客户
-                </div>
-                <div class="tongjiBody">
-                    33
-                </div>
-                <div class="tongjiFooter">
-                    累计客户数量<span>xx</span>人
-                </div>
+        <el-card class="deployment-guide">
+            <div slot="header" class="clearfix">
+                <h2>System Deployment Guide</h2>
             </div>
-            <div class="tongjiItem">
-                <div class="tongjiHeader">
-                    日新增客户
-                </div>
-                <div class="tongjiBody">
-                    33
-                </div>
-                <div class="tongjiFooter">
-                    累计客户数量<span>xx</span>人
-                </div>
-            </div>
-            <div class="tongjiItem">
-                <div class="tongjiHeader">
-                    月新增客户
-                </div>
-                <div class="tongjiBody">
-                    33
-                </div>
-                <div class="tongjiFooter">
-                    累计客户数量<span>xx</span>人
-                </div>
-            </div>
-            <div class="tongjiItem">
-                <div class="tongjiHeader">
-                    年新增客户
-                </div>
-                <div class="tongjiBody">
-                    33
-                </div>
-                <div class="tongjiFooter">
-                    累计客户数量<span>xx</span>人
-                </div>
-            </div>
-        </div>
-        <div style="background: #fff;margin: 10px;padding: 10px" id="visitorNums">
 
-        </div>
+            <el-steps :active="3" align-center>
+                <el-step title="Server Setup" description="Prepare your hosting environment"></el-step>
+                <el-step title="System Installation" description="Deploy the application"></el-step>
+                <el-step title="Configuration" description="Set up system parameters"></el-step>
+                <el-step title="Go Live" description="Launch your chat system"></el-step>
+            </el-steps>
+
+            <div class="deployment-section">
+                <h3>Quick Start via Chat Link</h3>
+                <p>To immediately access your customer support chat interface:</p>
+                <p>Your live chat endpoint is available at:</p>
+                <el-input v-model="chatEndpoint" readonly style="width: 100%; margin-top: 10px;">
+                    <el-button slot="append" icon="el-icon-document-copy"
+                               v-on:click="copyText(chatEndpoint)"></el-button>
+                </el-input>
+            </div>
+
+        </el-card>
+
     </template>
 
 </div>
 </body>
 <script src="/static/js/echarts.min.js?v=1.0.0"></script>
 <script>
-const ACTION="pannel";
+    const ACTION="pannel";
 </script>
 {{template "setting_bottom" .}}

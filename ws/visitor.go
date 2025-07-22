@@ -86,7 +86,7 @@ func AddVisitorToList(user *User) {
 	userInfo["avator"] = user.Avator
 	userInfo["last_message"] = lastMessage.Content
 	if userInfo["last_message"] == "" {
-		userInfo["last_message"] = "新访客"
+		userInfo["last_message"] = "new visitor"
 	}
 	msg := TypeMessage{
 		Type: "userOnline",
@@ -105,7 +105,7 @@ func VisitorOnline(kefuId string, visitor models.Visitor) {
 	userInfo["avator"] = visitor.Avator
 	userInfo["last_message"] = lastMessage.Content
 	if userInfo["last_message"] == "" {
-		userInfo["last_message"] = "新访客"
+		userInfo["last_message"] = "new visitor"
 	}
 	msg := TypeMessage{
 		Type: "userOnline",
