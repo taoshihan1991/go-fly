@@ -190,15 +190,7 @@
             //初始化数据
             initInfo(){
                 let _this=this;
-                if(ACTION=="setting_mysql"){
-                    this.sendAjax("/mysql","get",{},function(result){
-                        _this.mysql.username=result.Username;
-                        _this.mysql.password=result.Password;
-                        _this.mysql.database=result.Database;
-                        _this.mysql.server=result.Server;
-                        _this.mysql.port=result.Port;
-                    });
-                }
+
                 if(ACTION=="setting_kefu_list"){
                     this.sendAjax("/kefulist","get",{},function(result){
                         _this.kefuList=result;
@@ -227,11 +219,9 @@
                         _this.ipblackList=result.list;
                     });
                 }
-                if(ACTION=="setting_config"){
-                    this.sendAjax("/configs","get",{},function(result){
-                        _this.configList=result;
-                    });
-                }
+                this.sendAjax("/configs","get",{},function(result){
+                    _this.configList=result;
+                });
                 if(ACTION=="setting_pageindex"){
                     this.sendAjax("/about","get",{},function(result){
                         _this.pageindex=result;
@@ -445,16 +435,17 @@
                 });
             },
             //修改密码
-            setModifyAvatar(){
+            setUser(){
                 let _this=this;
                 this.sendAjax("/kefuinfo","POST",{
                     id:_this.kefuInfo.uid,
                     name:_this.kefuInfo.username,
                     nickname:_this.kefuInfo.nickname,
                     avator:_this.kefuInfo.avator,
+                    password:_this.kefuInfo.password,
                 },function(result){
                     _this.$message({
-                        message: "操作成功：注意，如果修改账户名,后台需重新登录",
+                        message: "success",
                         type: 'success'
                     });
                 });
@@ -552,7 +543,7 @@
                     success: function(data) {
                         if(data.code==200 && data.result!=null){
                             _this.kefuInfo=data.result;
-                            _this.chatEndpoint=window.location.origin + '/chatIndex?kefu_id='+_this.kefuInfo.username;
+                            _this.chatEndpoint=window.location.origin + '/livechat?kefu_id='+_this.kefuInfo.username;
                         }
                         if(data.code!=200){
                             _this.$message({

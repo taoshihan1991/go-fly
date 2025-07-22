@@ -202,11 +202,13 @@ func PostKefuRegister(c *gin.Context) {
 	})
 }
 func PostKefuInfo(c *gin.Context) {
-	id := c.PostForm("id")
-	name := c.PostForm("name")
+	name, _ := c.Get("kefu_name")
 	password := c.PostForm("password")
 	avator := c.PostForm("avator")
 	nickname := c.PostForm("nickname")
+	if password != "" {
+		password = tools.Md5(password)
+	}
 	if name == "" {
 		c.JSON(200, gin.H{
 			"code": 400,
@@ -214,31 +216,7 @@ func PostKefuInfo(c *gin.Context) {
 		})
 		return
 	}
-	//插入新用户
-	if id == "" {
-		uid := models.CreateUser(name, tools.Md5(password), avator, nickname)
-		if uid == 0 {
-			c.JSON(200, gin.H{
-				"code":   400,
-				"msg":    "增加用户失败",
-				"result": "",
-			})
-			return
-		}
-	} else {
-		//更新用户
-		if password != "" {
-			password = tools.Md5(password)
-		}
-		message := &models.Message{
-			KefuId: name,
-		}
-		models.DB.Model(&models.Message{}).Update(message)
-		visitor := &models.Visitor{
-			ToId: name,
-		}
-		models.DB.Model(&models.Visitor{}).Update(visitor)
-	}
+	models.UpdateUser(name.(string), password, avator, nickname)
 
 	c.JSON(200, gin.H{
 		"code":   200,

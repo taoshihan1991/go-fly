@@ -1,13 +1,152 @@
-{{template "header" }}
-<div id="app" style="width:100%">
+{{template "header"}}
+<style>
+    /* Enhanced Uploader Styles */
+    .avatar-uploader .el-upload {
+        border: 2px dashed #dcdfe6;
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+        box-shadow: 0 2px 12px 0 rgba(64, 158, 255, 0.2);
+    }
+    .avatar-uploader-icon {
+        font-size: 32px;
+        color: #c0c4cc;
+        width: 180px;
+        height: 180px;
+        line-height: 180px;
+        text-align: center;
+    }
+    .avatar {
+        width: 180px;
+        height: 180px;
+        display: block;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    /* Form Styling */
+    .profile-form {
+        margin: 0 auto;
+        padding: 24px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .form-section {
+        margin-bottom: 32px;
+    }
+
+    .form-title {
+        font-size: 18px;
+        color: #303133;
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #ebeef5;
+    }
+
+    .el-form-item__label {
+        font-weight: 500;
+        color: #606266;
+    }
+
+    /* Table Styling */
+    .config-table {
+        margin-top: 32px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .config-textarea .el-textarea__inner {
+        min-height: 80px !important;
+        font-family: monospace;
+    }
+</style>
+<div id="app" style="width:100%; background: #f5f7fa; padding: 20px;">
     <template>
-        <el-container v-loading.fullscreen.lock="fullscreenLoading">
+        <div class="profile-form">
+            <h3 class="form-title">Profile Settings</h3>
 
-            {{template "setting_left" .}}
-            <iframe  class="mainIframe"  v-bind:src="iframeUrl" frameborder="0"></iframe>
-        </el-container>
+            <el-form :model="modifyPass" label-width="180px" label-position="left">
+                <el-form-item label="Username">
+                    <el-input v-model="kefuInfo.username" placeholder="Enter your username"></el-input>
+                </el-form-item>
+
+                <el-form-item label="Display Name">
+                    <el-input v-model="kefuInfo.nickname" placeholder="Enter your display name"></el-input>
+                </el-form-item>
+
+                <el-form-item label="New Password">
+                    <el-input
+                            v-model="kefuInfo.password"
+                            type="password"
+                            placeholder="Enter new password"
+                            show-password>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item label="Current Avatar">
+                    <el-avatar :size="120" :src="kefuInfo.avator"></el-avatar>
+                </el-form-item>
+
+                <el-form-item label="Upload New Avatar">
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/uploadimg"
+                            :show-file-list="false"
+                            name="imgfile"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload">
+                        <i class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                    <div class="el-upload__tip">JPG/PNG files with size less than 2MB</div>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="setUser()">Save Changes</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+
+        <div class="profile-form" style="margin-top: 20px">
+            <h3 class="form-title">System Configuration</h3>
+            <el-table
+                    :data="configList"
+                    class="config-table"
+                    stripe
+                    style="width: 100%">
+                <el-table-column
+                        width="180"
+                        prop="conf_name"
+                        label="Parameter Name">
+                </el-table-column>
+                <el-table-column
+                        prop="conf_key"
+                        label="Configuration Key"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="id"
+                        label="Value">
+                    <template slot-scope="scope">
+                        <el-input
+                                type="textarea"
+                                class="config-textarea"
+                                @change="setConfigItem(scope.row.conf_key,scope.row.conf_value)"
+                                v-model="scope.row.conf_value"
+                                :autosize="{ minRows: 1, maxRows: 4 }">
+                        </el-input>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
     </template>
-
 </div>
 </body>
 {{template "setting_bottom" .}}

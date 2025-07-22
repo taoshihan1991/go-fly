@@ -26,9 +26,8 @@ func CreateUser(name string, password string, avator string, nickname string) ui
 	DB.Create(user)
 	return user.ID
 }
-func UpdateUser(id string, name string, password string, avator string, nickname string) {
+func UpdateUser(name string, password string, avator string, nickname string) {
 	user := &User{
-		Name:     name,
 		Avator:   avator,
 		Nickname: nickname,
 	}
@@ -36,7 +35,7 @@ func UpdateUser(id string, name string, password string, avator string, nickname
 	if password != "" {
 		user.Password = password
 	}
-	DB.Model(&User{}).Where("id = ?", id).Update(user)
+	DB.Model(&User{}).Where("name = ?", name).Update(user)
 }
 func UpdateUserPass(name string, pass string) {
 	user := &User{
