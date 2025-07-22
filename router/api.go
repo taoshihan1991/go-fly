@@ -17,8 +17,6 @@ func InitApiRouter(engine *gin.Engine) {
 		v2.POST("/message", middleware.Ipblack, controller.SendMessageV2)
 		//关闭连接
 		v2.GET("/message_close", controller.SendCloseMessageV2)
-		//绑定
-		v2.POST("/bindOfficial", controller.PostBindOfficial)
 		//分页查询消息
 		v2.GET("/messagesPages", controller.GetMessagespages)
 	}

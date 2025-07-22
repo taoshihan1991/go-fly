@@ -4,63 +4,59 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/taoshihan1991/imaptool/models"
 	"github.com/taoshihan1991/imaptool/tools"
-	"log"
-	"net/url"
 	"time"
 )
 
-// @Summary 登陆验证接口
-// @Produce  json
+// @Summary User Authentication API
+// @Description Validates user credentials and returns access token
+// @Tags Authentication
+// @Produce json
 // @Accept multipart/form-data
-// @Param username formData   string true "用户名"
-// @Param password formData   string true "密码"
-// @Param type formData   string true "类型"
-// @Success 200 {object} controller.Response
-// @Failure 200 {object} controller.Response
+// @Param username formData string true "Registered username"
+// @Param password formData string true "Account password"
+// @Param type formData string true "Auth type (e.g., 'admin' or 'user')"
+// @Success 200 {object} Response
+// @Failure 401 {object} Response
+// @Failure 500 {object} Response
 // @Router /check [post]
-// 验证接口
 func LoginCheckPass(c *gin.Context) {
 	password := c.PostForm("password")
 	username := c.PostForm("username")
 	info := models.FindUser(username)
+
+	// Authentication failed case
 	if info.Name == "" || info.Password != tools.Md5(password) {
 		c.JSON(200, gin.H{
-			"code": 400,
-			"msg":  "验证失败",
+			"code":    401,
+			"message": "Incorrect username or password", // User-friendly message
 		})
 		return
 	}
 
-	userinfo := make(map[string]interface{})
+	// Prepare user session data
+	userinfo := map[string]interface{}{
+		"kefu_name":   info.Name,
+		"kefu_id":     info.ID,
+		"create_time": time.Now().Unix(),
+	}
 
-	userinfo["kefu_name"] = info.Name
-	userinfo["kefu_id"] = info.ID
-	userinfo["create_time"] = time.Now().Unix()
-	token, _ := tools.MakeToken(userinfo)
+	// Token generation
+	token, err := tools.MakeToken(userinfo)
+	if err != nil {
+		c.JSON(200, gin.H{
+			"code":    500,
+			"message": "Login temporarily unavailable",
+		})
+		return
+	}
+
+	// Successful response
 	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "验证成功,正在跳转",
+		"code":    200,
+		"message": "Login successful",
 		"result": gin.H{
-			"token":       token,
-			"create_time": userinfo["create_time"],
+			"token":      token,
+			"created_at": userinfo["create_time"],
 		},
 	})
-}
-
-// 远程请求
-func PostBindOfficial(c *gin.Context) {
-	api := "https://gofly.v1kf.com/2/officialBindIp"
-
-	phone := c.PostForm("phone")
-	password := c.PostForm("password")
-	host := c.Request.Host
-	data := url.Values{}
-	data.Set("phone", phone)
-	data.Set("password", password)
-	data.Set("host", host)
-	res, err := tools.PostForm(api, data)
-	if err != nil {
-		log.Println("绑定官网账户发送认证连接错误")
-	}
-	c.Writer.Write([]byte(res))
 }

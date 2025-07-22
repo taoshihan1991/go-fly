@@ -155,12 +155,10 @@
                             type: 'success'
                         });
                         localStorage.setItem("token", response.result.token);
-                        localStorage.setItem("ref_token", response.result.ref_token);
-                        localStorage.setItem("create_time", response.result.create_time);
                         window.location.href = "/main";
                     } else {
                         this.$message({
-                            message: response.msg || 'Login failed',
+                            message: response.message || 'Login failed',
                             type: 'error'
                         });
                     }
