@@ -45,7 +45,7 @@ go env -w GOPROXY=https://goproxy.cn,direct
   Clone the repository in any directory:
 ```php
 git clone https://github.com/taoshihan1991/go-fly.git 
-cd go-fly  
+cd gofly  
  ```  
 * Initialize the Database
  ```php
@@ -76,7 +76,7 @@ For domain access, configure a reverse proxy to port 8081 to hide the port numbe
 ### Customer Service Integration
 Chat Link
 
-http://127.0.0.1:8081/chatIndex?kefu_id=kefu2
+http://127.0.0.1:8081/chatIndex?kefu_id=agent
 
 Popup Integration
 
@@ -89,7 +89,7 @@ Popup Integration
     })(window, document,"http://127.0.0.1:8081",function(u){
         KEFU.init({
             KEFU_URL:u,
-            KEFU_KEFU_ID: "kefu2",
+            KEFU_KEFU_ID: "agent",
         })
     });
 

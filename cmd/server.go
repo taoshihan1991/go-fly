@@ -2,20 +2,14 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
-	"github.com/taoshihan1991/imaptool/common"
 	"github.com/taoshihan1991/imaptool/middleware"
 	"github.com/taoshihan1991/imaptool/router"
-	"github.com/taoshihan1991/imaptool/static"
 	"github.com/taoshihan1991/imaptool/tools"
 	"github.com/taoshihan1991/imaptool/ws"
 	"github.com/zh-five/xdaemon"
-	"html/template"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 )
 
@@ -26,7 +20,7 @@ var (
 var serverCmd = &cobra.Command{
 	Use:     "server",
 	Short:   "启动http服务",
-	Example: "go-fly server -c config/",
+	Example: "gofly server -p 8082",
 	Run: func(cmd *cobra.Command, args []string) {
 		run()
 	},
@@ -58,27 +52,20 @@ func run() {
 	tools.Logger().Println("start server...\r\ngo：http://" + baseServer)
 
 	engine := gin.Default()
-	if common.IsCompireTemplate {
-		templ := template.Must(template.New("").ParseFS(static.TemplatesEmbed, "templates/*.html"))
-		engine.SetHTMLTemplate(templ)
-		engine.StaticFS("/assets", http.FS(static.JsEmbed))
-	} else {
-		engine.LoadHTMLGlob("static/templates/*")
-		engine.Static("/assets", "./static")
-	}
-
+	engine.LoadHTMLGlob("static/templates/*")
+	engine.Static("/assets", "./static")
 	engine.Static("/static", "./static")
 	engine.Use(tools.Session("gofly"))
 	engine.Use(middleware.CrossSite)
 	//性能监控
-	pprof.Register(engine)
+	//pprof.Register(engine)
 
 	//记录日志
 	engine.Use(middleware.NewMidLogger())
 	router.InitViewRouter(engine)
 	router.InitApiRouter(engine)
 	//记录pid
-	ioutil.WriteFile("gofly.sock", []byte(fmt.Sprintf("%d,%d", os.Getppid(), os.Getpid())), 0666)
+	os.WriteFile("gofly.sock", []byte(fmt.Sprintf("%d,%d", os.Getppid(), os.Getpid())), 0666)
 	//限流类
 	tools.NewLimitQueue()
 	//清理

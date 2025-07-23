@@ -13,7 +13,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 TRUNCATE TABLE `user`;
 INSERT INTO `user` (`id`, `name`, `password`, `nickname`, `created_at`, `updated_at`, `deleted_at`, `avator`) VALUE
-(1, 'kefu2', '202cb962ac59075b964b07152d234b70', 'Open Source LiveChat Support', '2020-06-27 19:32:41', '2020-07-04 09:32:20', NULL, '/static/images/4.jpg');
+(1, 'agent', 'b33aed8f3134996703dc39f9a7c95783', 'Open Source LiveChat Support', '2020-06-27 19:32:41', '2020-07-04 09:32:20', NULL, '/static/images/4.jpg');
 
 DROP TABLE IF EXISTS `visitor`;
 CREATE TABLE `visitor` (
@@ -53,44 +53,6 @@ CREATE TABLE `message` (
  KEY `visitor_id` (`visitor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `user_role`;
-CREATE TABLE `user_role` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
- `user_id` int(11) NOT NULL DEFAULT '0',
- `role_id` int(11) NOT NULL DEFAULT '0',
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `user_role` (`id`, `user_id`, `role_id`) VALUE
-(1, 1, 1);
-
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL DEFAULT '',
-  `method` varchar(100) NOT NULL DEFAULT '',
-  `path` varchar(2048) NOT NULL DEFAULT '',
-   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `role` (`id`, `name`, `method`, `path`) VALUES
-(1, 'Customer Support', '*', '*');
-
-DROP TABLE IF EXISTS `welcome`;
-CREATE TABLE `welcome` (
- `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
- `user_id` varchar(100) NOT NULL DEFAULT '',
- `keyword` varchar(100) NOT NULL DEFAULT '',
- `content` varchar(500) NOT NULL DEFAULT '',
- `is_default` tinyint(3) unsigned NOT NULL DEFAULT '0',
- `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- PRIMARY KEY (`id`),
- KEY `user_id` (`user_id`),
- KEY `keyword` (`keyword`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
-(NULL, 'kefu2', 'I am currently offline. Your message has been forwarded to my email and I will reply soon.', 1, '2020-08-24 02:57:49','offline');
-INSERT INTO `welcome` (`id`, `user_id`, `content`, `is_default`, `ctime`, `keyword`) VALUES
-(NULL, 'kefu2', 'How may I help you today?', 0, '2020-08-24 02:57:49','welcome');
-
 DROP TABLE IF EXISTS `ipblack`;
 CREATE TABLE `ipblack` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -107,34 +69,23 @@ CREATE TABLE `config` (
  `conf_name` varchar(255) NOT NULL DEFAULT '',
  `conf_key` varchar(255) NOT NULL DEFAULT '',
  `conf_value` varchar(255) NOT NULL DEFAULT '',
+ `user_id` varchar(500) NOT NULL DEFAULT '',
  PRIMARY KEY (`id`),
  UNIQUE KEY `conf_key` (`conf_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
-(NULL, 'Announcement', 'AllNotice', 'Open source customer support system at your service');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
-(NULL, 'Offline Message', 'OfflineMessage', 'I am currently offline and will reply to you later!');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
-(NULL, 'Welcome Message', 'WelcomeMessage', 'How may I help you?');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
-(NULL, 'Email Address (SMTP)', 'NoticeEmailSmtp', '');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
-(NULL, 'Email Account', 'NoticeEmailAddress', '');
-INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`) VALUES
-(NULL, 'Email Password (SMTP)', 'NoticeEmailPassword', '');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`, `user_id`) VALUES
+(NULL, 'Announcement', 'AllNotice', 'Open source customer support system at your service','agent');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`, `user_id`) VALUES
+(NULL, 'Offline Message', 'OfflineMessage', 'I am currently offline and will reply to you later!','agent');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`, `user_id`) VALUES
+(NULL, 'Welcome Message', 'WelcomeMessage', 'How may I help you?','agent');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`, `user_id`) VALUES
+(NULL, 'Email Address (SMTP)', 'NoticeEmailSmtp', '','agent');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`, `user_id`) VALUES
+(NULL, 'Email Account', 'NoticeEmailAddress', '','agent');
+INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`, `user_id`) VALUES
+(NULL, 'Email Password (SMTP)', 'NoticeEmailPassword', '','agent');
 
-DROP TABLE IF EXISTS `about`;
-CREATE TABLE `about` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title_en` varchar(255) NOT NULL DEFAULT '',
-  `keywords_en` varchar(255) NOT NULL DEFAULT '',
-  `desc_en` varchar(1024) NOT NULL DEFAULT '',
-  `css_js` text NOT NULL,
-  `html_en` text NOT NULL,
-  `page` varchar(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `page` (`page`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `reply_group`;
 CREATE TABLE `reply_group` (
@@ -145,7 +96,7 @@ CREATE TABLE `reply_group` (
  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `reply_group` (`id`, `group_name`, `user_id`) VALUES
-(NULL, 'Frequently Asked Questions', 'kefu2');
+(NULL, 'Frequently Asked Questions', 'agent');
 
 DROP TABLE IF EXISTS `reply_item`;
 CREATE TABLE `reply_item` (
@@ -157,40 +108,4 @@ CREATE TABLE `reply_item` (
  PRIMARY KEY (`id`),
  KEY `user_id` (`user_id`),
  KEY `group_id` (`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `land_page`;
-CREATE TABLE `land_page` (
-  `id` int(11) NOT NULL,
-  `title` varchar(125) NOT NULL DEFAULT '',
-  `keyword` varchar(255) NOT NULL DEFAULT '',
-  `content` text NOT NULL,
-  `language` varchar(50) NOT NULL DEFAULT '',
-  `page_id` varchar(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-DROP TABLE IF EXISTS `language`;
-CREATE TABLE `language` (
-  `id` int(11) NOT NULL,
-  `country` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  `short_key` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
-(1, 'Simplified Chinese', 'zh-cn');
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
-(2, 'Traditional Chinese', 'zh-tw');
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
-(3, 'English', 'en-us');
-INSERT INTO `language` (`id`, `country`, `short_key`) VALUES
-(4, 'Japanese', 'ja-jp');
-
-DROP TABLE IF EXISTS `user_client`;
-CREATE TABLE `user_client` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
- `kefu` varchar(100) NOT NULL DEFAULT '',
- `client_id` varchar(100) NOT NULL DEFAULT '',
- `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- UNIQUE KEY `idx_user` (`kefu`,`client_id`),
- PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
