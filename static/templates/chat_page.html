@@ -360,7 +360,7 @@
                     var code=res.code;
                     if(code!=200) return;
                     _this.kefuInfo=res.result;
-                    _this.showTitle(_this.kefuInfo.nickname+" is ready to help");
+                    _this.showTitle(_this.kefuInfo.nickname+" at your service.");
                     if(!_this.kefuInfo.welcome) return;
                     var msg={
                         content:replaceContent(_this.kefuInfo.welcome),

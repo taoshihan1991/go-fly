@@ -604,7 +604,7 @@
                 this.usersMap=[];
                 for(let i=0;i<retData.length;i++){
                     this.usersMap[retData[i].uid]=retData[i].username;
-                    retData[i].last_message="新访客";
+                    retData[i].last_message="new visitor";
                 }
                 if(this.users.length==0){
                     this.users = retData;

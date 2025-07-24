@@ -7,6 +7,7 @@ type Config struct {
 	ConfName  string `json:"conf_name"`
 	ConfKey   string `json:"conf_key"`
 	ConfValue string `json:"conf_value"`
+	UserId    string `json:"user_id"`
 }
 
 func UpdateConfig(key string, value string) {
@@ -27,6 +28,14 @@ func InitConfig() {
 func FindConfig(key string) string {
 	for _, config := range CustomConfigs {
 		if key == config.ConfKey {
+			return config.ConfValue
+		}
+	}
+	return ""
+}
+func FindConfigByUserId(userId, key string) string {
+	for _, config := range CustomConfigs {
+		if key == config.ConfKey && config.UserId == userId {
 			return config.ConfValue
 		}
 	}

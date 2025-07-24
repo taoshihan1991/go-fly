@@ -79,17 +79,17 @@ func PostVisitorLogin(c *gin.Context) {
 	)
 
 	if ipcity != nil {
-
 		city = ipcity.CountryName + ipcity.RegionName + ipcity.CityName
 		name = ipcity.CountryName + ipcity.RegionName + ipcity.CityName
+		if ipcity.CityName == "本机地址" || ipcity.RegionName == "本机地址" || ipcity.CountryName == "本机地址" {
+			city = "local address"
+		}
 	} else {
-		city = "未识别地区"
-		name = "匿名网友"
+		city = "​​Unrecognized Region​​"
+		name = "visitor"
 	}
-	if city == "本机地址本机地址" {
-		name = "local address"
-	}
-	if ipcity.CountryName == "本机地址本机地址" {
+
+	if name == "本机地址本机地址" {
 		name = "local visitor"
 	}
 	client_ip := c.ClientIP()
@@ -138,9 +138,9 @@ func PostVisitorLogin(c *gin.Context) {
 	visitor.VisitorId = id
 
 	//各种通知
-	go SendNoticeEmail(visitor.Name, "来了")
-	go SendAppGetuiPush(kefuInfo.Name, visitor.Name, visitor.Name+"来了")
-	go SendVisitorLoginNotice(kefuInfo.Name, visitor.Name, visitor.Avator, visitor.Name+"来了", visitor.VisitorId)
+	go SendNoticeEmail(visitor.Name, " incoming!")
+	go SendAppGetuiPush(kefuInfo.Name, visitor.Name, visitor.Name+" incoming!")
+	go SendVisitorLoginNotice(kefuInfo.Name, visitor.Name, visitor.Avator, visitor.Name+" incoming!", visitor.VisitorId)
 	go ws.VisitorOnline(kefuInfo.Name, visitor)
 	//go SendServerJiang(visitor.Name, "来了", c.Request.Host)
 
@@ -294,7 +294,7 @@ func GetKefusVisitorOnlines(c *gin.Context) {
 	for _, user := range users {
 		user.LastMessage = temp[user.Uid]
 		if user.LastMessage == "" {
-			user.LastMessage = "新访客"
+			user.LastMessage = "new visitor"
 		}
 	}
 

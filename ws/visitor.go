@@ -171,7 +171,7 @@ func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content s
 	}
 	if !ok || kefu == nil {
 		time.Sleep(1 * time.Second)
-		welcome := models.FindConfig("OfflineMessage")
+		welcome := models.FindConfigByUserId(kefuInfo.Name, "OfflineMessage")
 		if welcome == "" || reply.Content != "" {
 			return
 		}

@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Go Open Source Live Chat Software</title>
+    <title>GoflyLiveChat - Open Source Live Chat</title>
     <link rel="stylesheet" href="/static/cdn/element-ui/2.15.1/theme-chalk/index.min.css">
     <script src="/static/cdn/vue/2.6.11/vue.min.js"></script>
     <script src="/static/cdn/element-ui/2.15.1/index.js"></script>
@@ -52,34 +52,34 @@
 <div id="app" class="signin">
     <template>
         <div class="loginHtml">
-            <h1 class="loginTitle">Open Source Live Chat</h1>
+            <h1 class="loginTitle">Welcome to GoflyLiveChat</h1>
             <el-form :model="form" :rules="rules" ref="loginForm" v-show="!showRegHtml">
                 <el-form-item prop="account">
-                    <el-input v-model="form.account" placeholder="Username"></el-input>
+                    <el-input v-model="form.account" placeholder="Enter your username"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input show-password v-on:keyup.enter.native="handleLogin('loginForm')" v-model="form.password" placeholder="Password"></el-input>
+                    <el-input show-password v-on:keyup.enter.native="handleLogin('loginForm')" v-model="form.password" placeholder="Enter your password"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button style="width: 100%" type="primary" @click="handleLogin('loginForm')">Sign In</el-button>
+                    <el-button style="width: 100%" type="primary" @click="handleLogin('loginForm')">Log In</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button style="width: 100%" @click="showRegHtml=true">Create Account</el-button>
+                    <el-button style="width: 100%" @click="showRegHtml=true">Create New Account</el-button>
                 </el-form-item>
             </el-form>
 
             <el-form :model="form" :rules="rules" ref="registerForm" v-show="showRegHtml">
                 <el-form-item prop="account">
-                    <el-input v-model="form.account" placeholder="Username"></el-input>
+                    <el-input v-model="form.account" placeholder="Choose a username"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input show-password v-model="form.password" placeholder="Password"></el-input>
+                    <el-input show-password v-model="form.password" placeholder="Create a password"></el-input>
                 </el-form-item>
                 <el-form-item prop="rePassword">
-                    <el-input show-password v-on:keyup.enter.native="handleRegister('registerForm')" v-model="form.rePassword" placeholder="Confirm Password"></el-input>
+                    <el-input show-password v-on:keyup.enter.native="handleRegister('registerForm')" v-model="form.rePassword" placeholder="Confirm password"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button style="width: 100%" type="primary" @click="handleRegister('registerForm')">Register</el-button>
+                    <el-button style="width: 100%" type="primary" @click="handleRegister('registerForm')">Sign Up</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button style="width: 100%" @click="showRegHtml=false">Back to Login</el-button>
@@ -87,7 +87,7 @@
             </el-form>
         </div>
 
-        <p class="copyright">Go Open Source Live Chat Software</p>
+        <p class="copyright">GoflyLiveChat - Open Source Live Chat Platform</p>
     </template>
 </div>
 </body>
@@ -103,11 +103,11 @@
             },
             rules: {
                 account: [
-                    { required: true, message: 'Please input your username', trigger: 'blur' },
-                    { min: 2, max: 20, message: 'Length should be 2 to 20 characters', trigger: 'blur' }
+                    { required: true, message: 'Username is required', trigger: 'blur' },
+                    { min: 2, max: 20, message: 'Username must be 2-20 characters', trigger: 'blur' }
                 ],
                 password: [
-                    { required: true, message: 'Please input your password', trigger: 'blur' },
+                    { required: true, message: 'Password is required', trigger: 'blur' },
                     { min: 2, message: 'Password must be at least 2 characters', trigger: 'blur' }
                 ],
                 rePassword: [
@@ -120,7 +120,7 @@
         methods: {
             validatePasswordMatch(rule, value, callback) {
                 if (value !== this.form.password) {
-                    callback(new Error('Passwords do not match!'));
+                    callback(new Error('Passwords don\'t match'));
                 } else {
                     callback();
                 }
@@ -151,20 +151,20 @@
                 $.post("/check", data, (response) => {
                     if (response.code === 200) {
                         this.$message({
-                            message: 'Login successful',
+                            message: 'Welcome back!',
                             type: 'success'
                         });
                         localStorage.setItem("token", response.result.token);
                         window.location.href = "/main";
                     } else {
                         this.$message({
-                            message: response.message || 'Login failed',
+                            message: response.message || 'Invalid credentials',
                             type: 'error'
                         });
                     }
                 }).fail(() => {
                     this.$message({
-                        message: 'Network error',
+                        message: 'Connection error',
                         type: 'error'
                     });
                 });
@@ -173,7 +173,7 @@
             register() {
                 if (this.form.password !== this.form.rePassword) {
                     this.$message({
-                        message: 'Passwords do not match',
+                        message: 'Passwords don\'t match',
                         type: 'error'
                     });
                     return;
@@ -187,7 +187,7 @@
                 $.post("/register", data, (response) => {
                     if (response.code === 200) {
                         this.$message({
-                            message: 'Registration successful',
+                            message: 'Account created successfully!',
                             type: 'success'
                         });
                         this.showRegHtml = false;
@@ -199,7 +199,7 @@
                     }
                 }).fail(() => {
                     this.$message({
-                        message: 'Network error',
+                        message: 'Connection error',
                         type: 'error'
                     });
                 });
