@@ -1,7 +1,14 @@
 ## GOFLY LIVE CHAT
-An open-source customer service system developed in Golang
+Open-source live chat support system, built for modern customer service
 
-### Project Overview  
+​​Real-time messaging​​ - Instant connection between customers and support teams
+
+Lightning-fast performance​​ - Powered by Golang for high-concurrency handling
+
+### Technical Architecture​
+
+A modern stack built for performance and scalability​
+ 
 - Backend: `gin`, `jwt-go`, `websocket`, `go.uuid`, `gorm`, `cobra`  
 - Frontend: `VueJS`, `ElementUI`  
 - Database: `MySQL`  
@@ -13,9 +20,9 @@ An open-source customer service system developed in Golang
 #### 1. Set Up MySQL Database  
 - Install and run MySQL (version ≥ 5.5).  
 - Create a database:  
-  ```sql
+```sql
   CREATE DATABASE goflychat CHARSET utf8mb4;
-   
+ ```  
 *  Configure Database Connection
    Edit mysql.json in the config directory:
 ```php
