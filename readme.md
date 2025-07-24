@@ -14,7 +14,7 @@ An open-source customer service system developed in Golang
 - Install and run MySQL (version ≥ 5.5).  
 - Create a database:  
   ```sql
-  CREATE DATABASE gofly CHARSET utf8mb4;
+  CREATE DATABASE goflychat CHARSET utf8mb4;
    
 *  Configure Database Connection
    Edit mysql.json in the config directory:
@@ -44,30 +44,30 @@ go env -w GOPROXY=https://goproxy.cn,direct
 
   Clone the repository in any directory:
 ```php
-git clone https://github.com/taoshihan1991/go-fly.git 
-cd gofly  
+git clone https://github.com/taoshihan1991/goflylivechat.git
+cd goflylivechat  
  ```  
 * Initialize the Database
  ```php
- go run go-fly.go install
+ go run gofly.go install
  ```  
 * Run the Application
 ```php
- go run go-fly.go server
+ go run gofly.go server
  ```
 * ​​Build executable
 ```php
- go build -o kefu
+ go build -o gochat
 ```
 * ​​Run binary​​:
 ```php
-  Linux: ./kefu server (optional flags: -p 8082 -d)
+  Linux: ./gochat server (optional flags: -p 8082 -d)
   
-  Windows: kefu.exe server (optional flags: -p 8082 -d)
+  Windows: gochat.exe server (optional flags: -p 8082 -d)
 ```  
 * Terminate the Process
 ```php
-   killall kefu
+   killall gochat
 ``` 
 
 Once running, the service listens on port 8081. Access via http://[your-ip]:8081.
@@ -76,7 +76,7 @@ For domain access, configure a reverse proxy to port 8081 to hide the port numbe
 ### Customer Service Integration
 Chat Link
 
-http://127.0.0.1:8081/chatIndex?kefu_id=agent
+http://127.0.0.1:8081/livechat?kefu_id=agent
 
 Popup Integration
 
