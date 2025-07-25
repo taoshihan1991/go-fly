@@ -171,12 +171,12 @@ func VisitorAutoReply(vistorInfo models.Visitor, kefuInfo models.User, content s
 	}
 	if !ok || kefu == nil {
 		time.Sleep(1 * time.Second)
-		welcome := models.FindConfigByUserId(kefuInfo.Name, "OfflineMessage")
-		if welcome == "" || reply.Content != "" {
+		config := models.FindConfigByUserId(kefuInfo.Name, "OfflineMessage")
+		if config.ConfValue == "" || reply.Content != "" {
 			return
 		}
-		VisitorMessage(vistorInfo.VisitorId, welcome, kefuInfo)
-		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, welcome, "kefu")
+		VisitorMessage(vistorInfo.VisitorId, config.ConfValue, kefuInfo)
+		models.CreateMessage(kefuInfo.Name, vistorInfo.VisitorId, config.ConfValue, "kefu")
 	}
 }
 func CleanVisitorExpire() {

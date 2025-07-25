@@ -78,8 +78,6 @@ func GetKefuInfo(c *gin.Context) {
 	kefuName, _ := c.Get("kefu_name")
 	user := models.FindUser(kefuName.(string))
 	info := make(map[string]interface{})
-	info["name"] = user.Nickname
-	info["id"] = user.Name
 	info["avator"] = user.Avator
 	info["username"] = user.Name
 	info["nickname"] = user.Nickname
@@ -162,6 +160,7 @@ func GetKefuInfoSetting(c *gin.Context) {
 func PostKefuRegister(c *gin.Context) {
 	name := c.PostForm("username")
 	password := c.PostForm("password")
+	nickname := c.PostForm("nickname")
 	avatar := "/static/images/4.jpg"
 
 	if name == "" || password == "" {
@@ -183,7 +182,7 @@ func PostKefuRegister(c *gin.Context) {
 		return
 	}
 
-	userID := models.CreateUser(name, tools.Md5(password), avatar, "")
+	userID := models.CreateUser(name, tools.Md5(password), avatar, nickname)
 	if userID == 0 {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":   500,

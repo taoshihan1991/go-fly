@@ -73,7 +73,7 @@
         <div class="profile-form">
             <h3 class="form-title">Profile Settings</h3>
 
-            <el-form :model="modifyPass" label-width="180px" label-position="left">
+            <el-form  label-width="180px" label-position="left">
                 <el-form-item label="Username">
                     <el-input v-model="kefuInfo.username" placeholder="Enter your username"></el-input>
                 </el-form-item>
@@ -126,11 +126,7 @@
                         prop="conf_name"
                         label="Parameter Name">
                 </el-table-column>
-                <el-table-column
-                        prop="conf_key"
-                        label="Configuration Key"
-                        width="180">
-                </el-table-column>
+
                 <el-table-column
                         prop="id"
                         label="Value">

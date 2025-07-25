@@ -72,6 +72,9 @@
                 <el-form-item prop="account">
                     <el-input v-model="form.account" placeholder="Choose a username"></el-input>
                 </el-form-item>
+                <el-form-item prop="nickname">
+                    <el-input v-model="form.nickname" placeholder="Create a display name"></el-input>
+                </el-form-item>
                 <el-form-item prop="password">
                     <el-input show-password v-model="form.password" placeholder="Create a password"></el-input>
                 </el-form-item>
@@ -99,12 +102,17 @@
             form: {
                 account: "",
                 password: "",
-                rePassword: ""
+                rePassword: "",
+                nickname:"",
             },
             rules: {
                 account: [
                     { required: true, message: 'Username is required', trigger: 'blur' },
                     { min: 2, max: 20, message: 'Username must be 2-20 characters', trigger: 'blur' }
+                ],
+                nickname: [
+                    { required: true, message: 'DisplayName is required', trigger: 'blur' },
+                    { min: 1, max: 60, message: 'DisplayName must be 1-60 characters', trigger: 'blur' }
                 ],
                 password: [
                     { required: true, message: 'Password is required', trigger: 'blur' },
@@ -182,6 +190,7 @@
                 let data = {
                     "username": this.form.account,
                     "password": this.form.password,
+                    "nickname": this.form.nickname,
                 };
 
                 $.post("/register", data, (response) => {

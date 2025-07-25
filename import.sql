@@ -71,7 +71,8 @@ CREATE TABLE `config` (
  `conf_value` varchar(255) NOT NULL DEFAULT '',
  `user_id` varchar(500) NOT NULL DEFAULT '',
  PRIMARY KEY (`id`),
- UNIQUE KEY `conf_key` (`conf_key`)
+ KEY `conf_key` (`conf_key`),
+ KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `config` (`id`, `conf_name`, `conf_key`, `conf_value`, `user_id`) VALUES
 (NULL, 'Announcement', 'AllNotice', 'Open source customer support system at your service','agent');

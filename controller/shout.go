@@ -147,7 +147,7 @@ func getGetuiToken() string {
 		json.Unmarshal([]byte(res), &pushRes)
 		if pushRes.Code == 0 {
 			token := pushRes.Data["token"].(string)
-			models.UpdateConfig("GetuiToken", token)
+			//models.UpdateConfig("GetuiToken", token)
 			return token
 		}
 	}

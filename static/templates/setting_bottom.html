@@ -10,58 +10,12 @@
         delimiters:["<{","}>"],
         data: {
             host:getBaseUrl(),
-            iframeUrl:"/setting_statistics",
-            fullscreenLoading:false,
             kefuInfo:{},
-            openIndex:[1],
             account: {
                 username: "",
                 password: "",
             },
-            mysql: {
-                server: "",
-                port: "",
-                database: "",
-                username: "",
-                password: "",
-            },
-            rules: {
-                server: [
-                    { required: true, message: '请输入服务地址', trigger: 'blur' },
-                ],
-                port: [
-                    { required: true, message: '请输入端口号', trigger: 'blur' },
-                ],
-                database: [
-                    { required: true, message: '请输入数据库名', trigger: 'blur' },
-                ],
-                username: [
-                    { required: true, message: '请输入用户名', trigger: 'blur' },
-                ],
-                name: [
-                    { required: true, message: '请输入用户名', trigger: 'blur' },
-                ],
-                avator: [
-                    { required: true, message: '请选择头像', trigger: 'blur' },
-                ],
-                role_id: [
-                    { required: true, message: '请选择角色', trigger: 'blur' },
-                ],
-                password: [
-                    { required: true, message: '请输入密码', trigger: 'blur' },
-                ],
-                nickname: [
-                    { required: true, message: '请输入昵称', trigger: 'blur' },
-                ],
-                method: [
-                    { required: true, message: '请输入允许的方法', trigger: 'blur' },
-                ],
-                path: [
-                    { required: true, message: '请输入允许的路径', trigger: 'blur' },
-                ],
-            },
-            kefuList:[],
-            kefuDialog:false,
+
             kefuForm:{
                 id:"",
                 name:"",
@@ -71,175 +25,58 @@
                 role_name:"",
                 role_id:"",
             },
-            roleList:[],
-            configList:[],
-            roleDialog:false,
-            noticeList:[],
-            welcomeDialog:false,
-            ipblackList:[],
-            welcomeForm: {
-                content: "",
-            },
-            roleForm:{
-                id:"",
-                name:"",
-                method:"",
-                path:"",
-            },
-            statistics:{},
-            pageindex: {
-                title_cn: "",
-                title_en: "",
-                keywords_cn: "",
-                keywords_en: "",
-                desc_cn: "",
-                desc_en: "",
-                css_js: "",
-                html_cn: "",
-                html_en: "",
-            },
-            aboutpages:[],
-            modifyPass:{
-                old_pass:"",
-                new_pass:"",
-                confirm_new_pass:""
-            },
+
             avatarUrl:"",
             chatEndpoint: "",
+            configList:[
+                    {
+                        "conf_name": "Announcement",
+                        "conf_key": "AllNotice",
+                        "conf_value":"",
+                    },
+                    {
+
+                        "conf_name": "Offline Message",
+                        "conf_key": "OfflineMessage",
+                        "conf_value":"",
+                    },
+                    {
+
+                        "conf_name": "Welcome Message",
+                        "conf_key": "WelcomeMessage",
+                        "conf_value":"",
+                    },
+                    {
+
+                        "conf_name": "Email Address (SMTP)",
+                        "conf_key": "NoticeEmailSmtp",
+                        "conf_value":"",
+                    },
+                    {
+
+                        "conf_name": "Email Account",
+                        "conf_key": "NoticeEmailAddress",
+                        "conf_value":"",
+                    },
+                    {
+
+                        "conf_name": "Email Password (SMTP)",
+                        "conf_key": "NoticeEmailPassword",
+                        "conf_value":"",
+                    }
+            ],
         },
 
         methods: {
-            //提交表单
-            setAccount(formName){
-                let _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        $.post("/setting_account",_this.account,function(data){
-                            if(data.code==200){
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'success'
-                                });
-                            }else{
-                                _this.$message({
-                                    message: data.msg,
-                                    type: 'error'
-                                });
-                            }
-                        });
-                    } else {
-                        return false;
-                    }
-                });
-            },
-            //设置mysql
-            setMysql(formName){
-                let _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        $.ajax({
-                            type:"POST",
-                            url:"/mysql",
-                            data:_this.mysql,
-                            headers:{
-                                "token":localStorage.getItem("token")
-                            },
-                            success: function(data) {
-                                if(data.code==200){
-                                    _this.$message({
-                                        message: data.msg,
-                                        type: 'success'
-                                    });
-                                }else{
-                                    _this.$message({
-                                        message: data.msg,
-                                        type: 'error'
-                                    });
-                                }
-                            }
-                        });
-                    } else {
-                        return false;
-                    }
-                });
-            },
-            //重置表单
-            resetForm(formName) {
-                this.loading=false;
-                this.$refs[formName].resetFields();
-            },
             //跳转
             openUrl(url){
                 //window.location.href=url;
                 this.iframeUrl=url;
             },
-            //展示提示
-            showNotice(){
-                this.fullscreenLoading=false;
-                this.$message({
-                    message: '配置信息写入同级config目录，目录不存在会自动创建！',
-                    type: 'warning',
-                    duration:'8000',
-                    showClose:true,
-                });
-            },
-            addWelcome(){
-                this.welcomeForm.content="";
-                this.welcomeDialog=true;
-            },
+
             //初始化数据
             initInfo(){
-                let _this=this;
-
-                if(ACTION=="setting_kefu_list"){
-                    this.sendAjax("/kefulist","get",{},function(result){
-                        _this.kefuList=result;
-                    });
-                    this.sendAjax("/roles","get",{},function(result){
-                        _this.roleList=result;
-                    });
-                }
-                if(ACTION=="roles_list"){
-                    this.sendAjax("/roles","get",{},function(result){
-                        _this.roleList=result;
-                    });
-                }
-                if(ACTION=="setting_statistics"){
-                    this.sendAjax("/statistics","get",{},function(result) {
-                        _this.statistics = result;
-                    });
-                }
-                if(ACTION=="setting_welcome"){
-                    this.sendAjax("/notices","get",{},function(result){
-                        _this.noticeList=result;
-                    });
-                }
-                if(ACTION=="setting_ipblack"){
-                    this.sendAjax("/ipblacks_all","get",{},function(result){
-                        _this.ipblackList=result.list;
-                    });
-                }
-                this.sendAjax("/configs","get",{},function(result){
-                    _this.configList=result;
-                });
-                if(ACTION=="setting_pageindex"){
-                    this.sendAjax("/about","get",{},function(result){
-                        _this.pageindex=result;
-                    });
-                }
-                if(ACTION=="setting_indexpages"){
-                    this.sendAjax("/aboutpages","get",{},function(result){
-                        _this.aboutpages=result;
-                    });
-                }
-                if(ACTION=="setting_avator"){
-                    this.sendAjax("/kefuinfo","get",{},function(result){
-                        _this.kefuInfo=result;
-                    });
-                }
-                if(ACTION=="pannel"){
-                    this.showStatistics();
-                }
+                this.getConfigList();
             },
             sendAjax(url,method,params,callback){
                 let _this=this;
@@ -266,175 +103,30 @@
                     }
                 });
             },
-            //添加客服的dialog
-            addKefu(){
-                this.kefuForm={
-                    id:"",
-                    name:"",
-                    password:"",
-                    avator:"",
-                };
-                this.kefuDialog=true;
-            },
-            //提交客服表单
-            submitKefuForm(formName){
+            getConfigList(){
                 let _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.sendAjax("/kefuinfo","POST",_this.kefuForm,function(result){
-                            _this.kefuDialog=false;
-                            _this.$message({
-                                message: "修改后台账户名后,后台需重新登录",
-                                type: 'success'
-                            });
-                            _this.sendAjax("/kefulist","get",{},function(result){
-                                _this.kefuList=result;
-                            });
-                        });
-                    } else {
-                        return false;
+                this.sendAjax("/configs","get",{},function(result){
+                    for(let index in _this.configList){
+                        for(let item of result){
+                            if(_this.configList[index]['conf_key']==item['conf_key']){
+                                _this.configList[index]["conf_value"]=item["conf_value"];
+                            }
+                        }
                     }
                 });
-            },
-            //提交欢迎表单
-            submitWelcomeForm(formName){
-                let _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.sendAjax("/notice","POST",_this.welcomeForm,function(result){
-                            _this.welcomeDialog=false;
-                            _this.sendAjax("/notices","get",{},function(result){
-                                _this.noticeList=result;
-                            });
-                        });
-                    } else {
-                        return false;
-                    }
-                });
-            },
-            //编辑客服表单
-            editKefuForm(formName){
-                let _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                            _this.sendAjax("/kefulist","PUT",_this.kefuForm,function(result){
-                                _this.kefuList=result;
-                            });
-                    } else {
-                        return false;
-                    }
-                });
-            },
-            //获取客服
-            getKefu(kefuId){
-                let _this=this;
-                this.sendAjax("/kefuinfo_setting","GET",{kefu_id:kefuId},function(result){
-                    _this.kefuDialog=true;
-                    _this.kefuForm=result;
-                    _this.kefuForm.password="";
-                });
-            },
-            //删除客服
-            deleteKefu(kefuId){
-                let _this=this;
-                this.sendAjax("/kefuinfo?id="+kefuId,"DELETE",{id:kefuId},function(result){
-                    _this.kefuDialog=false;
-                    _this.sendAjax("/kefulist","get",{},function(result){
-                        _this.kefuList=result;
-                    });
-                });
-            },
-            //删除欢迎
-            deleteWelcome(id){
-                let _this=this;
-                this.sendAjax("/notice?id="+id,"DELETE",{id:id},function(result){
-                    _this.kefuDialog=false;
-                    _this.sendAjax("/notices","get",{},function(result){
-                        _this.noticeList=result;
-                    });
-                });
-            },
-            //删除ip
-            deleteIpblack(ip){
-                let _this=this;
-                this.sendAjax("/ipblack?ip="+ip,"DELETE",{ip:ip},function(result){
-                    _this.sendAjax("/ipblacks_all","get",{},function(result){
-                        _this.ipblackList=result.list;
-                    });
-                });
-            },
-            //配置角色权限
-            showAuthDialog(id,name,method,path){
-                this.roleForm.id=id
-                this.roleForm.name=name
-                this.roleForm.method=method
-                this.roleForm.path=path
-                this.roleDialog=true;
             },
             //设置配置项
             setConfigItem(key,value){
                 let _this=this;
                 this.sendAjax("/config","POST",{key:key,value:value},function(result){
-                    _this.sendAjax("/configs","get",{},function(result){
-                        _this.configList=result;
-                        _this.$message({
-                            message: "配置成功！",
-                            type: 'success'
-                        });
-                    });
-                });
-            },
-            //设置配置项
-            setWelcomeItem(id,content){
-                let _this=this;
-                this.sendAjax("/notice_save","POST",{id:id,content:content},function(result){
-                    _this.sendAjax("/notices","get",{},function(result){
-                        _this.noticeList=result;
-                    });
-                });
-            },
-            //提交角色表单
-            submitRoleForm(formName){
-                let _this=this;
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.sendAjax("/role","POST",_this.roleForm,function(result){
-                            _this.roleDialog=false;
-                            _this.sendAjax("/roles","get",{},function(result){
-                                _this.roleList=result;
-                            });
-                            _this.$message({
-                                message: result.msg,
-                                type: 'success'
-                            });
-                        });
-                    } else {
-                        return false;
-                    }
-                });
-            },
-            //提交首页表单
-            setPageIndex(){
-                let _this=this;
-                this.sendAjax("/about","POST",this.pageindex,function(result){
+                    _this.getConfigList();
                     _this.$message({
-                        message: "编辑成功",
+                        message: "success！",
                         type: 'success'
                     });
                 });
             },
-            //修改密码
-            setModifyPass(){
-                let _this=this;
-                this.sendAjax("/modifypass","POST",_this.modifyPass,function(result){
-                    _this.$message({
-                        message: "修改成功",
-                        type: 'success'
-                    });
-                    _this.modifyPass.new_pass=_this.modifyPass.old_pass=_this.modifyPass.confirm_new_pass=""
-                });
-            },
-            //修改密码
+
             setUser(){
                 let _this=this;
                 this.sendAjax("/kefuinfo","POST",{
@@ -468,53 +160,6 @@
                 }
                 return isLt2M;
             },
-            //展示图表
-            showStatistics(){
-                let _this=this;
-                this.sendAjax("/kefu/chartStatistics","get",{},function(data) {
-                        var result=data;
-                        var days=[];
-                        var nums=[];
-                        if(result.length<=0){
-                            return;
-                        }
-                        for(var i=result.length-1;i>=0;i--){
-                            days.push(result[i].day);
-                            nums.push(result[i].num)
-                        }
-                        // 基于准备好的dom，初始化echarts实例
-                        $(function () {
-                            var myChart = echarts.init($('#visitorNums')[0],null, {
-                                width: document.documentElement.clientWidth,
-                                height: 500
-                            });
-                            // 指定图表的配置项和数据
-                            var option = {
-                                title: {
-                                    text: "每日访客接待情况"
-                                },
-                                tooltip: {},
-                                legend: {
-                                    data: ['数量']
-                                },
-                                xAxis: {
-                                    data: days
-                                },
-                                yAxis: {},
-                                series: [
-                                    {
-                                        name: 'nums',
-                                        type: 'line',
-                                        data: nums,
-                                        barCategoryGap: '40%',
-                                    }
-                                ]
-                            };
-                            // 使用刚指定的配置项和数据显示图表。
-                            myChart.setOption(option);
-                        });
-                });
-            },
             GetRequest() {
                 var str = location.href
                 var num = str.indexOf("#");
@@ -541,16 +186,14 @@
                         "token":localStorage.getItem("token")
                     },
                     success: function(data) {
+                        if(data.result.username==""){
+                            window.location.href="/login";
+                        }
                         if(data.code==200 && data.result!=null){
                             _this.kefuInfo=data.result;
                             _this.chatEndpoint=window.location.origin + '/livechat?kefu_id='+_this.kefuInfo.username;
                         }
-                        if(data.code!=200){
-                            _this.$message({
-                                message: data.msg,
-                                type: 'error'
-                            });
-                        }
+
                     }
                 });
             },
@@ -561,10 +204,12 @@
             if(urlParam!=""){
                 this.iframeUrl=urlParam;
             }
-        },
-        created: function () {
+
             this.getKefuInfo();
             this.initInfo();
+        },
+        created: function () {
+
         }
     })
 

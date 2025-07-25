@@ -10,21 +10,34 @@ type Config struct {
 	UserId    string `json:"user_id"`
 }
 
-func UpdateConfig(key string, value string) {
-	c := &Config{
-		ConfValue: value,
+func UpdateConfig(userid interface{}, key string, value string) {
+	config := FindConfigByUserId(userid, key)
+	if config.ID != 0 {
+		config.ConfValue = value
+		DB.Where("user_id = ? and conf_key = ?", userid, key).Update(config)
+	} else {
+		newConfig := &Config{
+			ID:        0,
+			ConfName:  "",
+			ConfKey:   key,
+			ConfValue: value,
+			UserId:    userid.(string),
+		}
+		DB.Create(newConfig)
 	}
-	DB.Model(c).Where("conf_key = ?", key).Update(c)
-	InitConfig()
+
 }
 func FindConfigs() []Config {
 	var config []Config
 	DB.Find(&config)
 	return config
 }
-func InitConfig() {
-	CustomConfigs = FindConfigs()
+func FindConfigsByUserId(userid interface{}) []Config {
+	var config []Config
+	DB.Where("user_id = ?", userid).Find(&config)
+	return config
 }
+
 func FindConfig(key string) string {
 	for _, config := range CustomConfigs {
 		if key == config.ConfKey {
@@ -33,11 +46,8 @@ func FindConfig(key string) string {
 	}
 	return ""
 }
-func FindConfigByUserId(userId, key string) string {
-	for _, config := range CustomConfigs {
-		if key == config.ConfKey && config.UserId == userId {
-			return config.ConfValue
-		}
-	}
-	return ""
+func FindConfigByUserId(userId interface{}, key string) Config {
+	var config Config
+	DB.Where("user_id = ? and conf_key = ?", userId, key).Find(&config)
+	return config
 }

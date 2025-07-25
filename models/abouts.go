@@ -50,5 +50,4 @@ func UpdateAbout(page string, title_cn string, title_en string, keywords_cn stri
 		HtmlEn:     html_en,
 	}
 	DB.Model(c).Where("page = ?", page).Update(c)
-	InitConfig()
 }

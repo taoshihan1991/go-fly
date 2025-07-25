@@ -6,7 +6,8 @@ import (
 )
 
 func GetConfigs(c *gin.Context) {
-	configs := models.FindConfigs()
+	kefuName, _ := c.Get("kefu_name")
+	configs := models.FindConfigsByUserId(kefuName)
 	c.JSON(200, gin.H{
 		"code":   200,
 		"msg":    "ok",
@@ -25,6 +26,7 @@ func GetConfig(c *gin.Context) {
 func PostConfig(c *gin.Context) {
 	key := c.PostForm("key")
 	value := c.PostForm("value")
+	kefuName, _ := c.Get("kefu_name")
 	if key == "" || value == "" {
 		c.JSON(200, gin.H{
 			"code": 400,
@@ -32,7 +34,7 @@ func PostConfig(c *gin.Context) {
 		})
 		return
 	}
-	models.UpdateConfig(key, value)
+	models.UpdateConfig(kefuName, key, value)
 
 	c.JSON(200, gin.H{
 		"code":   200,

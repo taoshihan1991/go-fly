@@ -35,7 +35,6 @@ func Connect() error {
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
 	DB.DB().SetConnMaxLifetime(59 * time.Second)
-	InitConfig()
 	return nil
 }
 func Execute(sql string) error {

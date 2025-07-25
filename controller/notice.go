@@ -22,11 +22,11 @@ func GetNotice(c *gin.Context) {
 		"code": 200,
 		"msg":  "ok",
 		"result": gin.H{
-			"welcome":   welcomeMessage,
-			"offline":   offlineMessage,
+			"welcome":   welcomeMessage.ConfValue,
+			"offline":   offlineMessage.ConfValue,
 			"avatar":    user.Avator,
 			"nickname":  user.Nickname,
-			"allNotice": allNotice,
+			"allNotice": allNotice.ConfValue,
 		},
 	})
 }
