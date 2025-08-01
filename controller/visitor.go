@@ -3,10 +3,10 @@ package controller
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/common"
-	"github.com/taoshihan1991/imaptool/models"
-	"github.com/taoshihan1991/imaptool/tools"
-	"github.com/taoshihan1991/imaptool/ws"
+	"goflylivechat/common"
+	"goflylivechat/models"
+	"goflylivechat/tools"
+	"goflylivechat/ws"
 	"strconv"
 )
 

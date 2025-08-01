@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/common"
-	"github.com/taoshihan1991/imaptool/models"
+	"goflylivechat/common"
+	"goflylivechat/models"
 	"strconv"
 )
 

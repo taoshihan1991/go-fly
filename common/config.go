@@ -2,7 +2,7 @@ package common
 
 import (
 	"encoding/json"
-	"github.com/taoshihan1991/imaptool/tools"
+	"goflylivechat/tools"
 	"io/ioutil"
 )
 

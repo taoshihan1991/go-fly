@@ -3,9 +3,9 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/taoshihan1991/imaptool/models"
-	"github.com/taoshihan1991/imaptool/tools"
-	"github.com/taoshihan1991/imaptool/ws"
+	"goflylivechat/models"
+	"goflylivechat/tools"
+	"goflylivechat/ws"
 	"log"
 	"strconv"
 	"time"

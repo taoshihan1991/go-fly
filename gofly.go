@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/taoshihan1991/imaptool/cmd"
+	"goflylivechat/cmd"
 )
 
 func main() {

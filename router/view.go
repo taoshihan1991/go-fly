@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/middleware"
-	"github.com/taoshihan1991/imaptool/tmpl"
+	"goflylivechat/middleware"
+	"goflylivechat/tmpl"
 )
 
 func InitViewRouter(engine *gin.Engine) {

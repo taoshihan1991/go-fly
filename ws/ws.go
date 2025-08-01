@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"github.com/taoshihan1991/imaptool/models"
-	"github.com/taoshihan1991/imaptool/tools"
+	"goflylivechat/models"
+	"goflylivechat/tools"
 	"log"
 	"net/http"
 	"strconv"
@@ -85,7 +85,7 @@ func SendFlyServerJiang(title string, content string, domain string) string {
 	return ""
 }
 
-//定时给更新数据库状态
+// 定时给更新数据库状态
 func UpdateVisitorStatusCron() {
 	for {
 		visitors := models.FindVisitorsOnline()
@@ -103,7 +103,7 @@ func UpdateVisitorStatusCron() {
 	}
 }
 
-//后端广播发送消息
+// 后端广播发送消息
 func WsServerBackend() {
 	for {
 		message := <-message

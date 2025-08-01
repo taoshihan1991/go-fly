@@ -2,7 +2,7 @@ package tmpl
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/tools"
+	"goflylivechat/tools"
 	"html/template"
 	"net/http"
 )
@@ -41,7 +41,7 @@ func (obj *CommonHtml) Display(file string, data interface{}) {
 	t.Execute(obj.Rw, data)
 }
 
-//首页
+// 首页
 func PageIndex(c *gin.Context) {
 	if c.Request.RequestURI == "/favicon.ico" {
 		return
@@ -52,7 +52,7 @@ func PageIndex(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
-//登陆界面
+// 登陆界面
 func PageMain(c *gin.Context) {
 	nav := tools.FileGetContent("html/nav.html")
 	c.HTML(http.StatusOK, "main.html", gin.H{
@@ -60,12 +60,12 @@ func PageMain(c *gin.Context) {
 	})
 }
 
-//客服界面
+// 客服界面
 func PageChatMain(c *gin.Context) {
 	c.HTML(http.StatusOK, "chat_main.html", nil)
 }
 
-//安装界面
+// 安装界面
 func PageInstall(c *gin.Context) {
 	if noExist, _ := tools.IsFileNotExist("./install.lock"); !noExist {
 		c.Redirect(302, "/login")
@@ -73,7 +73,7 @@ func PageInstall(c *gin.Context) {
 	c.HTML(http.StatusOK, "install.html", nil)
 }
 
-//面板界面
+// 面板界面
 func PagePannel(c *gin.Context) {
 	c.HTML(http.StatusOK, "pannel.html", nil)
 }

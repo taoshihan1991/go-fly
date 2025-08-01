@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/taoshihan1991/imaptool/models"
-	"github.com/taoshihan1991/imaptool/tools"
+	"goflylivechat/models"
+	"goflylivechat/tools"
 	"log"
 	"os"
 	"strings"

@@ -4,7 +4,7 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
-	"github.com/taoshihan1991/imaptool/models"
+	"goflylivechat/models"
 	"log"
 	"sort"
 )
