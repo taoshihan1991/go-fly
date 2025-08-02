@@ -16,21 +16,24 @@ var (
 	port   string
 	daemon bool
 )
+
 var serverCmd = &cobra.Command{
 	Use:     "server",
-	Short:   "启动http服务",
-	Example: "gofly server -p 8082",
+	Short:   "Start HTTP service",
+	Example: "gochat server -p 8082",
 	Run: func(cmd *cobra.Command, args []string) {
 		run()
 	},
 }
 
 func init() {
-	serverCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "监听端口号")
-	serverCmd.PersistentFlags().BoolVarP(&daemon, "daemon", "d", false, "是否为守护进程模式")
+	serverCmd.PersistentFlags().StringVarP(&port, "port", "p", "8081", "Port to listen on")
+	serverCmd.PersistentFlags().BoolVarP(&daemon, "daemon", "d", false, "Run as daemon process")
 }
+
 func run() {
-	if daemon == true {
+	// Daemon mode setup
+	if daemon {
 		logFilePath := ""
 		if dir, err := os.Getwd(); err == nil {
 			logFilePath = dir + "/logs/"
@@ -41,36 +44,35 @@ func run() {
 				log.Println(err.Error())
 			}
 		}
-		d := xdaemon.NewDaemon(logFilePath + "go-fly.log")
+		d := xdaemon.NewDaemon(logFilePath + "gofly.log")
 		d.MaxCount = 10
 		d.Run()
 	}
 
 	baseServer := "0.0.0.0:" + port
-	log.Println("start server...\r\ngo：http://" + baseServer)
-	tools.Logger().Println("start server...\r\ngo：http://" + baseServer)
+	log.Println("Starting server...\nURL: http://" + baseServer)
+	tools.Logger().Println("Starting server...\nURL: http://" + baseServer)
 
+	// Gin engine setup
 	engine := gin.Default()
 	engine.LoadHTMLGlob("static/templates/*")
 	engine.Static("/assets", "./static")
 	engine.Static("/static", "./static")
 	engine.Use(tools.Session("gofly"))
 	engine.Use(middleware.CrossSite)
-	//性能监控
-	//pprof.Register(engine)
 
-	//记录日志
+	// Middlewares
 	engine.Use(middleware.NewMidLogger())
+
+	// Routers
 	router.InitViewRouter(engine)
 	router.InitApiRouter(engine)
-	//记录pid
-	//os.WriteFile("gofly.sock", []byte(fmt.Sprintf("%d,%d", os.Getppid(), os.Getpid())), 0666)
-	//限流类
+
+	// Background services
 	tools.NewLimitQueue()
-	//清理
 	ws.CleanVisitorExpire()
-	//后端websocket
 	go ws.WsServerBackend()
 
+	// Start server
 	engine.Run(baseServer)
 }

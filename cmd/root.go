@@ -3,34 +3,37 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "go-fly",
-	Short: "go-fly",
-	Long:  `简洁快速的GO语言WEB在线客服 https://gofly.sopans.com`,
+	Use:   "gochat",
+	Short: "GoChat CLI",                              // Changed from just "gochat"
+	Long:  `Fast and lightweight Go web chat system`, // More descriptive
 	Args:  args,
 	Run: func(cmd *cobra.Command, args []string) {
-
+		// Original logic preserved
 	},
 }
 
 func args(cmd *cobra.Command, args []string) error {
 	if len(args) < 1 {
-
-		return errors.New("至少需要一个参数!")
+		return errors.New("requires at least one argument") // More standard error message
 	}
 	return nil
 }
+
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, "Error:", err) // Better error output format
 		os.Exit(1)
 	}
 }
+
 func init() {
+	// Original command adding logic preserved
 	rootCmd.AddCommand(serverCmd)
 	rootCmd.AddCommand(installCmd)
 	rootCmd.AddCommand(stopCmd)
