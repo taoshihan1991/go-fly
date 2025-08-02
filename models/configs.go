@@ -14,7 +14,7 @@ func UpdateConfig(userid interface{}, key string, value string) {
 	config := FindConfigByUserId(userid, key)
 	if config.ID != 0 {
 		config.ConfValue = value
-		DB.Where("user_id = ? and conf_key = ?", userid, key).Update(config)
+		DB.Model(&Config{}).Where("user_id = ? and conf_key = ?", userid, key).Update(config)
 	} else {
 		newConfig := &Config{
 			ID:        0,

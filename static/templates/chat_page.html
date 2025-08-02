@@ -89,11 +89,10 @@
 </div>
 </body>
 <script>
-    var KEFU_ID='{{.KEFU_ID}}';
+    var KEFU_ID=getQuery("user_id");
     var REFER='{{.Refer}}';
 </script>
 <script>
-    KEFU_ID=KEFU_ID!=""? KEFU_ID:"kefu2";
     new Vue({
         el: '#app',
         delimiters:["<{","}>"],

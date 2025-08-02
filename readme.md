@@ -83,7 +83,7 @@ For domain access, configure a reverse proxy to port 8081 to hide the port numbe
 ### Customer Service Integration
 Chat Link
 
-http://127.0.0.1:8081/livechat?kefu_id=agent
+http://127.0.0.1:8081/livechat?user_id=agent
 
 Popup Integration
 
