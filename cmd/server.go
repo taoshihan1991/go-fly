@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/zh-five/xdaemon"
@@ -65,7 +64,7 @@ func run() {
 	router.InitViewRouter(engine)
 	router.InitApiRouter(engine)
 	//记录pid
-	os.WriteFile("gofly.sock", []byte(fmt.Sprintf("%d,%d", os.Getppid(), os.Getpid())), 0666)
+	//os.WriteFile("gofly.sock", []byte(fmt.Sprintf("%d,%d", os.Getppid(), os.Getpid())), 0666)
 	//限流类
 	tools.NewLimitQueue()
 	//清理

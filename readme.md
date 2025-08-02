@@ -56,11 +56,11 @@ cd goflylivechat
  ```  
 * Initialize the Database
  ```php
- go run gofly.go install
+ go run main.go install
  ```  
 * Run the Application
 ```php
- go run gofly.go server
+ go run main.go server
  ```
 * ​​Build executable
 ```php
