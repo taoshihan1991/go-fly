@@ -3,9 +3,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var rootCmd = &cobra.Command{
@@ -36,5 +35,4 @@ func init() {
 	// Original command adding logic preserved
 	rootCmd.AddCommand(serverCmd)
 	rootCmd.AddCommand(installCmd)
-	rootCmd.AddCommand(stopCmd)
 }
