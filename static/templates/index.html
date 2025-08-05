@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GOFLY LIVE CHAT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .notice {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        .demo-btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 15px 0;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .demo-btn:hover {
+            color: white;
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .demo-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>GOFLY LIVE CHAT</h1>
+<p>Open-source live chat support system, built for modern customer service</p>
+
+<p><strong>Real-time messaging</strong> - Instant connection between customers and support teams</p>
+<p><strong>Lightning-fast performance</strong> - Powered by Golang for high-concurrency handling</p>
+<div class="demo-container">
+    <a href="/login" class="demo-btn">TRY LIVE DEMO NOW</a>
+</div>
+<h2>Technical Architecture</h2>
+<p>A modern stack built for performance and scalability</p>
+
+<ul>
+    <li>Backend: <code>gin</code>, <code>jwt-go</code>, <code>websocket</code>, <code>go.uuid</code>, <code>gorm</code>, <code>cobra</code></li>
+    <li>Frontend: <code>VueJS</code>, <code>ElementUI</code></li>
+    <li>Database: <code>MySQL</code></li>
+</ul>
+
+<hr>
+
+<h2>Installation & Usage</h2>
+
+<h3>1. Set Up MySQL Database</h3>
+<ul>
+    <li>Install and run MySQL (version ≥ 5.5).</li>
+    <li>Create a database:</li>
+</ul>
+<pre><code class="language-sql">CREATE DATABASE goflychat CHARSET utf8mb4;</code></pre>
+
+<h4>Configure Database Connection</h4>
+<p>Edit mysql.json in the config directory:</p>
+<pre><code class="language-php">{
+    "Server":"127.0.0.1",
+    "Port":"3306",
+    "Database":"goflychat",
+    "Username":"goflychat",
+    "Password":"goflychat"
+}</code></pre>
+
+<h4>Install and Configure Golang</h4>
+<p>Run the following commands:</p>
+<pre><code class="language-php">wget https://studygolang.com/dl/golang/go1.20.2.linux-amd64.tar.gz
+tar -C /usr/local -xvf go1.20.2.linux-amd64.tar.gz
+mv go1.20.2.linux-amd64.tar.gz /tmp
+echo "PATH=\$PATH:/usr/local/go/bin" >> /etc/profile
+echo "PATH=\$PATH:/usr/local/go/bin" >> ~/.bashrc
+source /etc/profile
+go version
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.cn,direct</code></pre>
+
+<h4>Download the Source Code</h4>
+<p>Clone the repository in any directory:</p>
+<pre><code class="language-php">git clone https://github.com/taoshihan1991/goflylivechat.git
+cd goflylivechat</code></pre>
+
+<h4>Initialize the Database</h4>
+<pre><code class="language-php">go run main.go install</code></pre>
+
+<h4>Run the Application</h4>
+<pre><code class="language-php">go run main.go server</code></pre>
+
+<h4>Build executable</h4>
+<pre><code class="language-php">go build -o gochat</code></pre>
+
+<h4>Run binary:</h4>
+<pre><code class="language-php">Linux: ./gochat server (optional flags: -p 8082 -d)
+
+Windows: gochat.exe server (optional flags: -p 8082 -d)</code></pre>
+
+<h4>Terminate the Process</h4>
+<pre><code class="language-php">killall gochat</code></pre>
+
+<p>Once running, the service listens on port 8081. Access via http://[your-ip]:8081.</p>
+<p>For domain access, configure a reverse proxy to port 8081 to hide the port number.</p>
+
+<h3>Customer Service Integration</h3>
+<h4>Chat Link</h4>
+<p>http://127.0.0.1:8081/livechat?user_id=agent</p>
+
+<h4>Popup Integration</h4>
+<pre><code class="language-javascript">(function(a, b, c, d) {
+    let h = b.getElementsByTagName('head')[0];let s = b.createElement('script');
+    s.type = 'text/javascript';s.src = c+"/static/js/kefu-front.js";s.onload = s.onreadystatechange = function () {
+        if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") d(c);
+    };h.appendChild(s);
+})(window, document,"http://127.0.0.1:8081",function(u){
+    KEFU.init({
+        KEFU_URL:u,
+        KEFU_KEFU_ID: "agent",
+    })
+});</code></pre>
+
+<div class="notice">
+    <h3>Important Notice</h3>
+    <p>The use of this project for illegal or non-compliant purposes, including but not limited to viruses, trojans, pornography, gambling, fraud, prohibited items, counterfeit products, false information, cryptocurrencies, and financial violations, is strictly prohibited.</p>
+    <p>This project is intended solely for personal learning and testing purposes. Any commercial use or illegal activities are explicitly forbidden!!!</p>
+</div>
+
+<h3>Copyright Notice</h3>
+<p>This project provides full-featured code but is intended only for personal demonstration and testing. Commercial use is strictly prohibited.</p>
+<p>By using this software, you agree to comply with all applicable local laws and regulations. You are solely responsible for any legal consequences arising from misuse.</p>
+</body>
+</html>
