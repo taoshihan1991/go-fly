@@ -1,8 +1,9 @@
 package tools
 
 import (
-	"github.com/oschwald/geoip2-golang/v2"
-	"net/netip"
+	"fmt"
+	"github.com/oschwald/geoip2-golang"
+	"net"
 )
 
 func GetCity(path, ipAddress string) (string, string) {
@@ -11,13 +12,7 @@ func GetCity(path, ipAddress string) (string, string) {
 		return "", ""
 	}
 	defer db.Close()
-	ip, err := netip.ParseAddr(ipAddress)
-	if err != nil {
-		return "", ""
-	}
-	record, err := db.City(ip)
-	if err != nil {
-		return "", ""
-	}
-	return record.Country.Names.English, record.City.Names.English
+	record, err := db.City(net.ParseIP(ipAddress))
+	fmt.Println(record.City.Names["en"])
+	return record.Country.Names["en"], record.City.Names["en"]
 }
