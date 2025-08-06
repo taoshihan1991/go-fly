@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"goflylivechat/common"
 	"goflylivechat/models"
@@ -57,7 +58,7 @@ import (
 //		})
 //	}
 func PostVisitorLogin(c *gin.Context) {
-	ipcity := tools.ParseIp(c.ClientIP())
+
 	avator := ""
 	userAgent := c.GetHeader("User-Agent")
 	if tools.IsMobile(userAgent) {
@@ -73,25 +74,14 @@ func PostVisitorLogin(c *gin.Context) {
 		id = tools.Uuid()
 	}
 	refer := c.PostForm("refer")
-	var (
-		city string
-		name string
-	)
-
-	if ipcity != nil {
-		city = ipcity.CountryName + ipcity.RegionName + ipcity.CityName
-		name = ipcity.CountryName + ipcity.RegionName + ipcity.CityName
-		if ipcity.CityName == "本机地址" || ipcity.RegionName == "本机地址" || ipcity.CountryName == "本机地址" {
-			city = "local address"
-		}
-	} else {
-		city = "​​Unrecognized Region​​"
-		name = "visitor"
+	name := "Guest"
+	city := ""
+	countryname, cityname := tools.GetCity("./config/GeoLite2-City.mmdb", c.ClientIP())
+	if countryname != "" || cityname != "" {
+		city = fmt.Sprintf("%s %s", countryname, cityname)
+		name = fmt.Sprintf("%s Guest", city)
 	}
 
-	if name == "本机地址本机地址" {
-		name = "local visitor"
-	}
 	client_ip := c.ClientIP()
 	extra := c.PostForm("extra")
 	extraJson := tools.Base64Decode(extra)
@@ -108,7 +98,7 @@ func PostVisitorLogin(c *gin.Context) {
 		}
 	}
 	//log.Println(name,avator,c.ClientIP(),toId,id,refer,city,client_ip)
-	if name == "" || avator == "" || toId == "" || id == "" || refer == "" || city == "" || client_ip == "" {
+	if name == "" || avator == "" || toId == "" || id == "" || refer == "" || client_ip == "" {
 		c.JSON(200, gin.H{
 			"code": 400,
 			"msg":  "error",
