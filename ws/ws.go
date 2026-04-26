@@ -134,6 +134,8 @@ func WsServerBackend() {
 			if tools.LimitFreqSingle("inputing:"+from, 1, 2) {
 				OneKefuMessage(to, message.content)
 			}
+		case "check_kefu_status":
+			HandleCheckKefuStatus(conn, typeMsg.Data)
 		}
 
 	}
