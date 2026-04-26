@@ -75,6 +75,52 @@
                                     :total="visitorCount">
                             </el-pagination>
                         </el-tab-pane>
+                        <el-tab-pane label="Offline Messages" name="third">
+                            <div style="padding: 10px;">
+                                <el-row style="margin-bottom: 10px;">
+                                    <el-col :span="18">
+                                        <el-radio-group v-model="offlineMessageStatus" @change="offlineMessageStatusChange">
+                                            <el-radio-button label="unread">Unread <el-badge :value="offlineMessageStats.unread" :hidden="!offlineMessageStats.unread" class="item"></el-badge></el-radio-button>
+                                            <el-radio-button label="read">Read <el-badge :value="offlineMessageStats.read" :hidden="!offlineMessageStats.read" class="item"></el-badge></el-radio-button>
+                                            <el-radio-button label="replied">Replied <el-badge :value="offlineMessageStats.replied" :hidden="!offlineMessageStats.replied" class="item"></el-badge></el-radio-button>
+                                        </el-radio-group>
+                                    </el-col>
+                                    <el-col :span="6" style="text-align: right;">
+                                        <el-button type="primary" size="small" @click="batchMarkOfflineMessagesAsRead" v-if="offlineMessageStatus=='unread' && offlineMessageStats.unread>0">Mark All Read</el-button>
+                                    </el-col>
+                                </el-row>
+                                <el-row v-for="item in offlineMessages" :key="item.id" class="" style="border-bottom: 1px solid #f0f0f0; padding: 8px 0;">
+                                    <div style="cursor:pointer" class="onlineUsers" v-bind:class="{'cur': selectedOfflineMessage && selectedOfflineMessage.id==item.id }" v-on:click="viewOfflineMessageDetail(item)">
+                                        <el-col :span="4">
+                                            <el-badge :value="new" :hidden="item.status!='unread'" class="item">
+                                                <el-avatar :size="40" icon="el-icon-message"></el-avatar>
+                                            </el-badge>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <div style="height:20px;overflow: hidden; font-weight: bold;">
+                                                <{item.visitor_name}>
+                                                <el-tag v-if="item.status=='unread'" size="mini" type="danger" style="margin-left: 5px;">New</el-tag>
+                                                <el-tag v-else-if="item.status=='replied'" size="mini" type="success" style="margin-left: 5px;">Replied</el-tag>
+                                            </div>
+                                            <div class="lastNewMsg" style="margin-top: 2px;"><{item.subject}></div>
+                                            <div style="font-size: 11px; color: #999; margin-top: 2px;">
+                                                <{item.created_at}>
+                                            </div>
+                                        </el-col>
+                                    </div>
+                                </el-row>
+                                <el-empty v-if="offlineMessages.length==0" description="No messages found"></el-empty>
+                                <el-pagination
+                                        v-show="offlineMessageCount>offlineMessagePageSize"
+                                        background
+                                        @current-change="offlineMessagePageChange"
+                                        :current-page="offlineMessageCurrentPage"
+                                        layout="prev,pager, next"
+                                        :page-size="offlineMessagePageSize"
+                                        :total="offlineMessageCount">
+                                </el-pagination>
+                            </div>
+                        </el-tab-pane>
                     </el-tabs>
                 </div>
             </el-col>
@@ -307,6 +353,91 @@
                 <el-button @click="editReplyContentDialog = false">Cancel</el-button>
             </span>
         </el-dialog>
+
+        <!-- Offline Message Detail Dialog -->
+        <el-dialog title="Offline Message Detail" :visible.sync="offlineMessageDetailDialog" width="60%" top="0">
+            <el-descriptions :column="2" border v-if="selectedOfflineMessage">
+                <el-descriptions-item label="Visitor Name">
+                    <{selectedOfflineMessage.visitor_name}>
+                </el-descriptions-item>
+                <el-descriptions-item label="Status">
+                    <el-tag v-if="selectedOfflineMessage.status=='unread'" type="danger">Unread</el-tag>
+                    <el-tag v-else-if="selectedOfflineMessage.status=='read'" type="warning">Read</el-tag>
+                    <el-tag v-else type="success">Replied</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item label="Email">
+                    <{selectedOfflineMessage.visitor_email}>
+                </el-descriptions-item>
+                <el-descriptions-item label="Phone">
+                    <{selectedOfflineMessage.visitor_phone}>
+                </el-descriptions-item>
+                <el-descriptions-item label="Subject" :span="2">
+                    <{selectedOfflineMessage.subject}>
+                </el-descriptions-item>
+                <el-descriptions-item label="Submitted Time" :span="2">
+                    <{selectedOfflineMessage.created_at}>
+                </el-descriptions-item>
+            </el-descriptions>
+            <el-divider></el-divider>
+            <div style="margin-bottom: 15px;">
+                <div style="font-weight: bold; margin-bottom: 10px;">Message Content:</div>
+                <el-input
+                    type="textarea"
+                    :rows="8"
+                    :value="selectedOfflineMessage ? selectedOfflineMessage.content : ''"
+                    readonly
+                    style="background-color: #f9f9f9;">
+                </el-input>
+            </div>
+            <template v-if="selectedOfflineMessage && selectedOfflineMessage.status=='replied'">
+                <el-divider></el-divider>
+                <div style="margin-bottom: 15px;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">
+                        <i class="el-icon-reply" style="margin-right: 5px;"></i>Reply (Sent at <{selectedOfflineMessage.reply_time}>):
+                    </div>
+                    <el-input
+                        type="textarea"
+                        :rows="5"
+                        :value="selectedOfflineMessage.reply_content"
+                        readonly
+                        style="background-color: #e6f7ff;">
+                    </el-input>
+                </div>
+            </template>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="deleteOfflineMessage" type="danger">Delete</el-button>
+                <el-button v-if="selectedOfflineMessage && selectedOfflineMessage.status!='replied'" type="primary" @click="openReplyOfflineMessageDialog">Reply</el-button>
+                <el-button @click="offlineMessageDetailDialog = false">Close</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- Offline Message Reply Dialog -->
+        <el-dialog title="Reply Offline Message" :visible.sync="offlineMessageReplyDialog" width="50%" top="0">
+            <div style="margin-bottom: 15px;">
+                <div style="font-weight: bold; margin-bottom: 10px;">Original Message:</div>
+                <el-input
+                    type="textarea"
+                    :rows="4"
+                    :value="selectedOfflineMessage ? selectedOfflineMessage.content : ''"
+                    readonly
+                    style="background-color: #f9f9f9;">
+                </el-input>
+            </div>
+            <el-divider></el-divider>
+            <div>
+                <div style="font-weight: bold; margin-bottom: 10px;">Reply Content:</div>
+                <el-input
+                    type="textarea"
+                    :rows="6"
+                    v-model="offlineMessageReplyContent"
+                    placeholder="Enter your reply here...">
+                </el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="offlineMessageReplyDialog = false">Cancel</el-button>
+                <el-button type="primary" @click="submitOfflineMessageReply">Send Reply</el-button>
+            </span>
+        </el-dialog>
     </template>
 </div>
 </body>
@@ -375,6 +506,20 @@
                 pagesize:15,
                 list:[],
             },
+            offlineMessageStatus:'unread',
+            offlineMessageCurrentPage:1,
+            offlineMessagePageSize:20,
+            offlineMessageCount:0,
+            offlineMessages:[],
+            selectedOfflineMessage:null,
+            offlineMessageStats:{
+                unread:0,
+                read:0,
+                replied:0,
+            },
+            offlineMessageDetailDialog:false,
+            offlineMessageReplyDialog:false,
+            offlineMessageReplyContent:'',
         },
         methods: {
             //跳转
@@ -851,6 +996,10 @@
                 if(tab.name=="second"){
                     this.getVisitorPage(1);
                 }
+                if(tab.name=="third"){
+                    this.getOfflineMessageStats();
+                    this.getOfflineMessages();
+                }
                 if(tab.name=="blackList"){
                 }
             },
@@ -1175,6 +1324,118 @@
                     });
                 });
             },
+            //获取离线留言统计
+            getOfflineMessageStats(){
+                let _this=this;
+                this.sendAjax("/offline_messages/stats","get",{},function(result){
+                    _this.offlineMessageStats=result;
+                });
+            },
+            //获取离线留言列表
+            getOfflineMessages(){
+                let _this=this;
+                let params={
+                    status:this.offlineMessageStatus,
+                    page:this.offlineMessageCurrentPage,
+                    pagesize:this.offlineMessagePageSize,
+                };
+                this.sendAjax("/offline_messages","get",params,function(result){
+                    _this.offlineMessages=result.list?result.list:[];
+                    _this.offlineMessageCount=result.count?result.count:0;
+                    if(_this.offlineMessages.length>0){
+                        _this.selectedOfflineMessage=_this.offlineMessages[0];
+                    }
+                });
+            },
+            //状态筛选改变
+            offlineMessageStatusChange(){
+                this.offlineMessageCurrentPage=1;
+                this.getOfflineMessages();
+            },
+            //分页改变
+            offlineMessagePageChange(page){
+                this.offlineMessageCurrentPage=page;
+                this.getOfflineMessages();
+            },
+            //查看离线留言详情
+            viewOfflineMessageDetail(item){
+                let _this=this;
+                this.selectedOfflineMessage=item;
+                this.offlineMessageDetailDialog=true;
+                if(item.status=='unread'){
+                    this.sendAjax("/offline_messages/"+item.id+"/status","post",{status:'read'},function(result){
+                        _this.getOfflineMessages();
+                        _this.getOfflineMessageStats();
+                    });
+                }
+            },
+            //回复离线留言
+            openReplyOfflineMessageDialog(){
+                this.offlineMessageReplyDialog=true;
+                this.offlineMessageReplyContent='';
+            },
+            //提交回复
+            submitOfflineMessageReply(){
+                if(!this.offlineMessageReplyContent.trim()){
+                    this.$message({
+                        message: 'Please enter reply content',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                let _this=this;
+                let params={
+                    id:this.selectedOfflineMessage.id,
+                    reply_content:this.offlineMessageReplyContent,
+                };
+                this.sendAjax("/offline_messages/reply","post",params,function(result){
+                    _this.offlineMessageReplyDialog=false;
+                    _this.offlineMessageDetailDialog=false;
+                    _this.$message({
+                        message: 'Reply sent successfully',
+                        type: 'success'
+                    });
+                    _this.getOfflineMessages();
+                    _this.getOfflineMessageStats();
+                });
+            },
+            //批量标记已读
+            batchMarkOfflineMessagesAsRead(){
+                let _this=this;
+                this.$confirm('Mark all unread messages as read?', 'Confirm', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    _this.sendAjax("/offline_messages/mark_read","post",{},function(result){
+                        _this.$message({
+                            message: 'Marked as read successfully',
+                            type: 'success'
+                        });
+                        _this.getOfflineMessages();
+                        _this.getOfflineMessageStats();
+                    });
+                }).catch(() => {});
+            },
+            //删除离线留言
+            deleteOfflineMessage(){
+                let _this=this;
+                this.$confirm('Delete this message?', 'Confirm', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    _this.sendAjax("/offline_messages/"+_this.selectedOfflineMessage.id,"delete",{},function(result){
+                        _this.offlineMessageDetailDialog=false;
+                        _this.$message({
+                            message: 'Deleted successfully',
+                            type: 'success'
+                        });
+                        _this.getOfflineMessages();
+                        _this.getOfflineMessageStats();
+                    });
+                }).catch(() => {});
+            },
             //划词搜索
             selectText(){
                 return false;
@@ -1248,6 +1509,7 @@
             this.getOnlineVisitors();
             this.getReplys();
             this.getIpblacks();
+            this.getOfflineMessageStats();
             this.selectText();
             //心跳
             this.ping();

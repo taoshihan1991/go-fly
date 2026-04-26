@@ -111,3 +111,30 @@ CREATE TABLE `reply_item` (
  KEY `user_id` (`user_id`),
  KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `offline_message`;
+CREATE TABLE `offline_message` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `kefu_id` varchar(100) NOT NULL DEFAULT '' COMMENT '客服ID',
+ `visitor_id` varchar(100) NOT NULL DEFAULT '' COMMENT '访客ID',
+ `visitor_name` varchar(100) NOT NULL DEFAULT '' COMMENT '访客姓名',
+ `visitor_email` varchar(100) NOT NULL DEFAULT '' COMMENT '访客邮箱',
+ `visitor_phone` varchar(50) NOT NULL DEFAULT '' COMMENT '访客电话',
+ `subject` varchar(255) NOT NULL DEFAULT '' COMMENT '留言主题',
+ `content` text NOT NULL COMMENT '留言内容',
+ `status` enum('unread','read','replied') NOT NULL DEFAULT 'unread' COMMENT '状态：未读/已读/已回复',
+ `reply_content` text COMMENT '回复内容',
+ `reply_time` timestamp NULL DEFAULT NULL COMMENT '回复时间',
+ `replied_by` varchar(100) NOT NULL DEFAULT '' COMMENT '回复人',
+ `source_ip` varchar(50) NOT NULL DEFAULT '' COMMENT '来源IP',
+ `refer` varchar(500) NOT NULL DEFAULT '' COMMENT '来源页面',
+ `extra` varchar(2048) NOT NULL DEFAULT '' COMMENT '额外信息',
+ `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `updated_at` timestamp NULL DEFAULT NULL,
+ `deleted_at` timestamp NULL DEFAULT NULL,
+ PRIMARY KEY (`id`),
+ KEY `kefu_id` (`kefu_id`),
+ KEY `visitor_id` (`visitor_id`),
+ KEY `status` (`status`),
+ KEY `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='离线留言表';
