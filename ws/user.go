@@ -41,6 +41,7 @@ func NewKefuServer(c *gin.Context) {
 		messageType, receive, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("ws/user.go ", err)
+			RemoveKefuFromList(kefuInfo.Name)
 			conn.Close()
 			return
 		}
@@ -66,6 +67,18 @@ func AddKefuToList(kefu *User) {
 		}
 	}
 	KefuList[kefu.Id] = kefu
+	
+	// 广播客服上线状态给所有该客服的访客
+	BroadcastKefuOnlineStatus(kefu.Id, true)
+}
+
+func RemoveKefuFromList(kefuId string) {
+	_, ok := KefuList[kefuId]
+	if ok {
+		delete(KefuList, kefuId)
+		// 广播客服离线状态给所有该客服的访客
+		BroadcastKefuOnlineStatus(kefuId, false)
+	}
 }
 
 // 给指定客服发消息
@@ -103,16 +116,26 @@ func SendPingToKefuClient() {
 		Type: "many pong",
 	}
 	str, _ := json.Marshal(msg)
+	
+	// 收集需要删除的客服ID
+	var toRemove []string
+	
 	for kefuId, kefu := range KefuList {
 		if kefu == nil {
+			toRemove = append(toRemove, kefuId)
 			continue
 		}
 		kefu.Mux.Lock()
-		defer kefu.Mux.Unlock()
 		err := kefu.Conn.WriteMessage(websocket.TextMessage, str)
+		kefu.Mux.Unlock()
 		if err != nil {
 			log.Println("定时发送ping给客服，失败", err.Error())
-			delete(KefuList, kefuId)
+			toRemove = append(toRemove, kefuId)
 		}
+	}
+	
+	// 从列表中移除并广播离线状态
+	for _, kefuId := range toRemove {
+		RemoveKefuFromList(kefuId)
 	}
 }

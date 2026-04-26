@@ -91,6 +91,21 @@ func InitApiRouter(engine *gin.Engine) {
 		kefuGroup.GET("/chartStatistics", controller.GetChartStatistic)
 		kefuGroup.POST("/message", controller.SendKefuMessage)
 	}
+	//离线留言接口 - 访客端
+	engine.POST("/offline_message", middleware.Ipblack, controller.SubmitOfflineMessage)
+
+	//离线留言接口 - 客服端（需要认证）
+	offlineMessageGroup := engine.Group("/offline_messages")
+	offlineMessageGroup.Use(middleware.JwtApiMiddleware)
+	{
+		offlineMessageGroup.GET("", controller.GetOfflineMessages)
+		offlineMessageGroup.GET("/stats", controller.GetOfflineMessageStats)
+		offlineMessageGroup.GET("/:id", controller.GetOfflineMessageDetail)
+		offlineMessageGroup.POST("/reply", controller.ReplyOfflineMessage)
+		offlineMessageGroup.POST("/:id/status", controller.UpdateOfflineMessageStatus)
+		offlineMessageGroup.DELETE("/:id", controller.DeleteOfflineMessage)
+		offlineMessageGroup.POST("/mark_read", controller.BatchMarkOfflineMessagesAsRead)
+	}
 	//微信接口
 	engine.GET("/micro_program", middleware.JwtApiMiddleware, controller.GetCheckWeixinSign)
 }

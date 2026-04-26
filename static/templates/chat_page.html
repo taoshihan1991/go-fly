@@ -28,7 +28,72 @@
                 <div>Live Chat Support</div>
             </div>
         </div>
-        <div class="chatEntBox">
+        
+        <!-- 离线留言表单 - 当客服不在线时显示 -->
+        <div class="chatEntBox" v-if="showOfflineMessageForm">
+            <div class="offlineMessageContainer">
+                <div class="offlineMessageTitle">
+                    <h3><i class="el-icon-chat-dot-round"></i> 客服离线，请留言</h3>
+                    <p>我们的客服目前不在线，请填写以下表单，客服上线后会尽快回复您。</p>
+                </div>
+                
+                <el-form :model="offlineMessageForm" :rules="offlineMessageRules" ref="offlineMessageForm" label-width="80px" class="offlineMessageForm">
+                    <el-form-item label="您的姓名" prop="visitor_name">
+                        <el-input v-model="offlineMessageForm.visitor_name" placeholder="请输入您的姓名"></el-input>
+                    </el-form-item>
+                    
+                    <el-form-item label="联系邮箱" prop="visitor_email">
+                        <el-input v-model="offlineMessageForm.visitor_email" placeholder="请输入您的邮箱，方便我们回复"></el-input>
+                    </el-form-item>
+                    
+                    <el-form-item label="联系电话" prop="visitor_phone">
+                        <el-input v-model="offlineMessageForm.visitor_phone" placeholder="请输入您的电话（选填）"></el-input>
+                    </el-form-item>
+                    
+                    <el-form-item label="留言主题" prop="subject">
+                        <el-input v-model="offlineMessageForm.subject" placeholder="请输入留言主题"></el-input>
+                    </el-form-item>
+                    
+                    <el-form-item label="留言内容" prop="content">
+                        <el-input 
+                            type="textarea" 
+                            :rows="5" 
+                            v-model="offlineMessageForm.content" 
+                            placeholder="请输入您的留言内容...">
+                        </el-input>
+                    </el-form-item>
+                    
+                    <el-form-item>
+                        <el-button 
+                            type="primary" 
+                            :loading="offlineMessageSubmitting" 
+                            @click="submitOfflineMessage"
+                            :disabled="offlineMessageSubmitting">
+                            提交留言
+                        </el-button>
+                        <el-button @click="tryReconnect">
+                            尝试重新连接
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+                
+                <div class="offlineMessageSuccess" v-if="offlineMessageSubmitted">
+                    <el-alert
+                        title="留言提交成功！"
+                        type="success"
+                        :closable="false"
+                        show-icon
+                        description="感谢您的留言，客服上线后会尽快与您联系。">
+                    </el-alert>
+                    <el-button type="primary" plain @click="resetOfflineMessageForm" style="margin-top: 15px;">
+                        继续留言
+                    </el-button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 正常聊天界面 - 当客服在线时显示 -->
+        <div class="chatEntBox" v-else>
             <div class="chatContext chatVisitorPage">
                 <div class="chatBox">
                     <div class="chatNotice" v-on:click="getHistoryMessage" v-show="showLoadMore">
@@ -121,6 +186,31 @@
                 pagesize:5,
                 list:[],
             },
+            showOfflineMessageForm: false,
+            offlineMessageSubmitting: false,
+            offlineMessageSubmitted: false,
+            offlineMessageForm: {
+                visitor_name: '',
+                visitor_email: '',
+                visitor_phone: '',
+                subject: '',
+                content: '',
+            },
+            offlineMessageRules: {
+                visitor_name: [
+                    { required: true, message: '请输入您的姓名', trigger: 'blur' }
+                ],
+                visitor_email: [
+                    { required: true, message: '请输入您的邮箱', trigger: 'blur' },
+                    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+                ],
+                subject: [
+                    { required: true, message: '请输入留言主题', trigger: 'blur' }
+                ],
+                content: [
+                    { required: true, message: '请输入留言内容', trigger: 'blur' }
+                ],
+            },
         },
         methods: {
             initConn:function() {
@@ -142,6 +232,14 @@
                 this.socketClosed=false;
                 this.focusSendConn=false;
                 const redata = JSON.parse(e.data);
+                if (redata.type == "kefu_status") {
+                    let data = redata.data;
+                    this.handleKefuStatus(data);
+                }
+                if (redata.type == "kefu_status_change") {
+                    let data = redata.data;
+                    this.handleKefuStatus(data);
+                }
                 if (redata.type == "kfOnline") {
                     let msg = redata.data
                     if(this.showKfonline && this.visitor.to_id==msg.id){
@@ -214,6 +312,19 @@
                     this.socketClosed=true;
                 }
                 window.parent.postMessage(redata,"*");
+            },
+            handleKefuStatus:function(data) {
+                if(data && data.is_online) {
+                    this.showOfflineMessageForm = false;
+                    if(data.avator) {
+                        this.kefuInfo.avatar = data.avator;
+                    }
+                } else {
+                    this.showOfflineMessageForm = true;
+                    if(data && data.avator) {
+                        this.kefuInfo.avatar = data.avator;
+                    }
+                }
             },
             chatToUser:function() {
                 var messageContent=this.messageContent.trim("\r\n");
@@ -576,6 +687,73 @@
             showTitle:function(title){
                 $(".chatBox").append("<div class='chatNotice'><div class=\"chatNoticeContent\"><span>"+title+"</span></div></div>");
                 this.scrollBottom();
+            },
+            submitOfflineMessage:function() {
+                let _this = this;
+                this.$refs.offlineMessageForm.validate(function(valid) {
+                    if(valid) {
+                        _this.offlineMessageSubmitting = true;
+                        
+                        let formData = {
+                            kefu_id: KEFU_ID,
+                            visitor_name: _this.offlineMessageForm.visitor_name,
+                            visitor_email: _this.offlineMessageForm.visitor_email,
+                            visitor_phone: _this.offlineMessageForm.visitor_phone,
+                            subject: _this.offlineMessageForm.subject,
+                            content: _this.offlineMessageForm.content,
+                            refer: REFER,
+                        };
+                        
+                        if(_this.visitor && _this.visitor.visitor_id) {
+                            formData.visitor_id = _this.visitor.visitor_id;
+                        }
+                        
+                        $.post("/offline_message", formData, function(res) {
+                            _this.offlineMessageSubmitting = false;
+                            if(res.code == 200) {
+                                _this.offlineMessageSubmitted = true;
+                            } else {
+                                _this.$message({
+                                    message: res.msg || '提交失败，请稍后重试',
+                                    type: 'error'
+                                });
+                            }
+                        }).fail(function() {
+                            _this.offlineMessageSubmitting = false;
+                            _this.$message({
+                                message: '提交失败，请稍后重试',
+                                type: 'error'
+                            });
+                        });
+                    }
+                });
+            },
+            resetOfflineMessageForm:function() {
+                this.offlineMessageSubmitted = false;
+                this.offlineMessageForm = {
+                    visitor_name: '',
+                    visitor_email: '',
+                    visitor_phone: '',
+                    subject: '',
+                    content: '',
+                };
+                this.$refs.offlineMessageForm.resetFields();
+            },
+            tryReconnect:function() {
+                let _this = this;
+                _this.$message({
+                    message: '正在尝试重新连接...',
+                    type: 'info'
+                });
+                if(this.socket && this.socket.readyState === WebSocket.OPEN) {
+                    let msg = {
+                        type: "check_kefu_status",
+                        data: KEFU_ID
+                    };
+                    this.socket.send(JSON.stringify(msg));
+                } else {
+                    this.initConn();
+                }
             },
         },
         mounted:function() {
