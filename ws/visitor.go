@@ -212,7 +212,11 @@ func SendKefuStatusToVisitor(visitor *User, kefuId string) {
 	if visitor == nil || visitor.Conn == nil {
 		return
 	}
+	
+	Mux.RLock()
 	_, online := KefuList[kefuId]
+	Mux.RUnlock()
+	
 	kefuInfo := models.FindUser(kefuId)
 	msg := TypeMessage{
 		Type: "kefu_status",
@@ -225,26 +229,6 @@ func SendKefuStatusToVisitor(visitor *User, kefuId string) {
 	}
 	str, _ := json.Marshal(msg)
 	visitor.Conn.WriteMessage(websocket.TextMessage, str)
-}
-
-func BroadcastKefuOnlineStatus(kefuId string, isOnline bool) {
-	kefuInfo := models.FindUser(kefuId)
-	msg := TypeMessage{
-		Type: "kefu_status_change",
-		Data: map[string]interface{}{
-			"kefu_id":   kefuId,
-			"is_online": isOnline,
-			"nickname":  kefuInfo.Nickname,
-			"avator":    kefuInfo.Avator,
-		},
-	}
-	str, _ := json.Marshal(msg)
-	
-	for _, visitor := range ClientList {
-		if visitor.To_id == kefuId && visitor.Conn != nil {
-			visitor.Conn.WriteMessage(websocket.TextMessage, str)
-		}
-	}
 }
 
 func HandleCheckKefuStatus(conn *websocket.Conn, data interface{}) {
@@ -262,7 +246,10 @@ func HandleCheckKefuStatus(conn *websocket.Conn, data interface{}) {
 		return
 	}
 	
+	Mux.RLock()
 	_, online := KefuList[kefuId]
+	Mux.RUnlock()
+	
 	kefuInfo := models.FindUser(kefuId)
 	msg := TypeMessage{
 		Type: "kefu_status",

@@ -55,6 +55,9 @@ func NewKefuServer(c *gin.Context) {
 	}
 }
 func AddKefuToList(kefu *User) {
+	Mux.Lock()
+	defer Mux.Unlock()
+	
 	oldUser, ok := KefuList[kefu.Id]
 	if oldUser != nil || ok {
 		msg := TypeMessage{
@@ -69,21 +72,27 @@ func AddKefuToList(kefu *User) {
 	KefuList[kefu.Id] = kefu
 	
 	// 广播客服上线状态给所有该客服的访客
-	BroadcastKefuOnlineStatus(kefu.Id, true)
+	broadcastKefuOnlineStatusLocked(kefu.Id, true)
 }
 
 func RemoveKefuFromList(kefuId string) {
+	Mux.Lock()
+	defer Mux.Unlock()
+	
 	_, ok := KefuList[kefuId]
 	if ok {
 		delete(KefuList, kefuId)
 		// 广播客服离线状态给所有该客服的访客
-		BroadcastKefuOnlineStatus(kefuId, false)
+		broadcastKefuOnlineStatusLocked(kefuId, false)
 	}
 }
 
 // 给指定客服发消息
 func OneKefuMessage(toId string, str []byte) {
+	Mux.RLock()
 	kefu, ok := KefuList[toId]
+	Mux.RUnlock()
+	
 	if ok {
 		log.Println("OneKefuMessage lock")
 		kefu.Mux.Lock()
@@ -91,6 +100,27 @@ func OneKefuMessage(toId string, str []byte) {
 		log.Println("OneKefuMessage unlock")
 		error := kefu.Conn.WriteMessage(websocket.TextMessage, str)
 		tools.Logger().Println("send_kefu_message", error, string(str))
+	}
+}
+
+// 内部函数：在持有锁的情况下广播客服状态
+func broadcastKefuOnlineStatusLocked(kefuId string, isOnline bool) {
+	kefuInfo := models.FindUser(kefuId)
+	msg := TypeMessage{
+		Type: "kefu_status_change",
+		Data: map[string]interface{}{
+			"kefu_id":   kefuId,
+			"is_online": isOnline,
+			"nickname":  kefuInfo.Nickname,
+			"avator":    kefuInfo.Avator,
+		},
+	}
+	str, _ := json.Marshal(msg)
+	
+	for _, visitor := range ClientList {
+		if visitor.To_id == kefuId && visitor.Conn != nil {
+			visitor.Conn.WriteMessage(websocket.TextMessage, str)
+		}
 	}
 }
 func KefuMessage(visitorId, content string, kefuInfo models.User) {
@@ -120,11 +150,25 @@ func SendPingToKefuClient() {
 	// 收集需要删除的客服ID
 	var toRemove []string
 	
-	for kefuId, kefu := range KefuList {
-		if kefu == nil {
+	Mux.RLock()
+	// 先遍历获取所有需要检查的客服ID
+	var kefuIds []string
+	for kefuId := range KefuList {
+		kefuIds = append(kefuIds, kefuId)
+	}
+	Mux.RUnlock()
+	
+	// 遍历检查每个客服连接（遍历过程中不持有锁，避免死锁）
+	for _, kefuId := range kefuIds {
+		Mux.RLock()
+		kefu, ok := KefuList[kefuId]
+		Mux.RUnlock()
+		
+		if !ok || kefu == nil {
 			toRemove = append(toRemove, kefuId)
 			continue
 		}
+		
 		kefu.Mux.Lock()
 		err := kefu.Conn.WriteMessage(websocket.TextMessage, str)
 		kefu.Mux.Unlock()
