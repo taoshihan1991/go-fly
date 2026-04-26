@@ -232,6 +232,14 @@
                 this.socketClosed=false;
                 this.focusSendConn=false;
                 const redata = JSON.parse(e.data);
+                if (redata.type == "kefu_status") {
+                    let data = redata.data;
+                    this.handleKefuStatus(data);
+                }
+                if (redata.type == "kefu_status_change") {
+                    let data = redata.data;
+                    this.handleKefuStatus(data);
+                }
                 if (redata.type == "kfOnline") {
                     let msg = redata.data
                     if(this.showKfonline && this.visitor.to_id==msg.id){
@@ -304,6 +312,19 @@
                     this.socketClosed=true;
                 }
                 window.parent.postMessage(redata,"*");
+            },
+            handleKefuStatus:function(data) {
+                if(data && data.is_online) {
+                    this.showOfflineMessageForm = false;
+                    if(data.avator) {
+                        this.kefuInfo.avatar = data.avator;
+                    }
+                } else {
+                    this.showOfflineMessageForm = true;
+                    if(data && data.avator) {
+                        this.kefuInfo.avatar = data.avator;
+                    }
+                }
             },
             chatToUser:function() {
                 var messageContent=this.messageContent.trim("\r\n");
@@ -667,24 +688,6 @@
                 $(".chatBox").append("<div class='chatNotice'><div class=\"chatNoticeContent\"><span>"+title+"</span></div></div>");
                 this.scrollBottom();
             },
-            checkKefuOnline:function() {
-                let _this = this;
-                $.get("/kefu/online?kefu_id="+KEFU_ID, function(res) {
-                    if(res.code == 200 && res.result) {
-                        if(res.result.is_online) {
-                            _this.showOfflineMessageForm = false;
-                            _this.getUserInfo();
-                        } else {
-                            _this.showOfflineMessageForm = true;
-                            _this.kefuInfo.avatar = res.result.avator;
-                        }
-                    } else {
-                        _this.showOfflineMessageForm = true;
-                    }
-                }).fail(function() {
-                    _this.showOfflineMessageForm = true;
-                });
-            },
             submitOfflineMessage:function() {
                 let _this = this;
                 this.$refs.offlineMessageForm.validate(function(valid) {
@@ -742,7 +745,15 @@
                     message: '正在尝试重新连接...',
                     type: 'info'
                 });
-                this.checkKefuOnline();
+                if(this.socket && this.socket.readyState === WebSocket.OPEN) {
+                    let msg = {
+                        type: "check_kefu_status",
+                        data: KEFU_ID
+                    };
+                    this.socket.send(JSON.stringify(msg));
+                } else {
+                    this.initConn();
+                }
             },
         },
         mounted:function() {
@@ -751,7 +762,7 @@
         },
         created: function () {
             this.init();
-            this.checkKefuOnline();
+            this.getUserInfo();
         }
     })
 </script>

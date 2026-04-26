@@ -93,8 +93,7 @@ func InitApiRouter(engine *gin.Engine) {
 	}
 	//离线留言接口 - 访客端
 	engine.POST("/offline_message", middleware.Ipblack, controller.SubmitOfflineMessage)
-	engine.GET("/kefu/online", controller.CheckKefuOnline)
-	
+
 	//离线留言接口 - 客服端（需要认证）
 	offlineMessageGroup := engine.Group("/offline_messages")
 	offlineMessageGroup.Use(middleware.JwtApiMiddleware)

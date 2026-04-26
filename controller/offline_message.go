@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"goflylivechat/models"
 	"goflylivechat/tools"
-	"goflylivechat/ws"
 	"log"
 	"strconv"
 	"time"
@@ -420,44 +419,6 @@ func BatchMarkOfflineMessagesAsRead(c *gin.Context) {
 	})
 }
 
-func CheckKefuOnline(c *gin.Context) {
-	kefuId := c.Query("kefu_id")
-	if kefuId == "" {
-		c.JSON(200, gin.H{
-			"code": 400,
-			"msg":  "客服ID不能为空",
-		})
-		return
-	}
-
-	kefuInfo := models.FindUser(kefuId)
-	if kefuInfo.ID == 0 {
-		c.JSON(200, gin.H{
-			"code": 404,
-			"msg":  "客服不存在",
-		})
-		return
-	}
-
-	isOnline := false
-	for name := range ws.KefuList {
-		if name == kefuId {
-			isOnline = true
-			break
-		}
-	}
-
-	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "ok",
-		"result": gin.H{
-			"kefu_id":   kefuId,
-			"nickname":  kefuInfo.Nickname,
-			"avator":    kefuInfo.Avator,
-			"is_online": isOnline,
-		},
-	})
-}
 
 func SendOfflineMessageNotice(kefuName, visitorName, content string) {
 	smtp := models.FindConfig("NoticeEmailSmtp")

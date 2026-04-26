@@ -79,6 +79,10 @@ func AddVisitorToList(user *User) {
 		}
 	}
 	ClientList[user.Id] = user
+	
+	// 发送客服在线状态给访客
+	SendKefuStatusToVisitor(user, user.To_id)
+	
 	lastMessage := models.FindLastMessageByVisitorId(user.Id)
 	userInfo := make(map[string]string)
 	userInfo["uid"] = user.Id
@@ -202,4 +206,73 @@ func CleanVisitorExpire() {
 			<-t.C
 		}
 	}()
+}
+
+func SendKefuStatusToVisitor(visitor *User, kefuId string) {
+	if visitor == nil || visitor.Conn == nil {
+		return
+	}
+	_, online := KefuList[kefuId]
+	kefuInfo := models.FindUser(kefuId)
+	msg := TypeMessage{
+		Type: "kefu_status",
+		Data: map[string]interface{}{
+			"kefu_id":  kefuId,
+			"is_online": online,
+			"nickname": kefuInfo.Nickname,
+			"avator":   kefuInfo.Avator,
+		},
+	}
+	str, _ := json.Marshal(msg)
+	visitor.Conn.WriteMessage(websocket.TextMessage, str)
+}
+
+func BroadcastKefuOnlineStatus(kefuId string, isOnline bool) {
+	kefuInfo := models.FindUser(kefuId)
+	msg := TypeMessage{
+		Type: "kefu_status_change",
+		Data: map[string]interface{}{
+			"kefu_id":   kefuId,
+			"is_online": isOnline,
+			"nickname":  kefuInfo.Nickname,
+			"avator":    kefuInfo.Avator,
+		},
+	}
+	str, _ := json.Marshal(msg)
+	
+	for _, visitor := range ClientList {
+		if visitor.To_id == kefuId && visitor.Conn != nil {
+			visitor.Conn.WriteMessage(websocket.TextMessage, str)
+		}
+	}
+}
+
+func HandleCheckKefuStatus(conn *websocket.Conn, data interface{}) {
+	var kefuId string
+	switch v := data.(type) {
+	case string:
+		kefuId = v
+	case map[string]interface{}:
+		if id, ok := v["kefu_id"].(string); ok {
+			kefuId = id
+		}
+	}
+	
+	if kefuId == "" {
+		return
+	}
+	
+	_, online := KefuList[kefuId]
+	kefuInfo := models.FindUser(kefuId)
+	msg := TypeMessage{
+		Type: "kefu_status",
+		Data: map[string]interface{}{
+			"kefu_id":   kefuId,
+			"is_online": online,
+			"nickname":  kefuInfo.Nickname,
+			"avator":    kefuInfo.Avator,
+		},
+	}
+	str, _ := json.Marshal(msg)
+	conn.WriteMessage(websocket.TextMessage, str)
 }
